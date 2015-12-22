@@ -15,6 +15,7 @@ copyrights:
 
 <div class="warning">
     This is NOT an authoritative document. It does not purport to be anything more than a hopefully-useful overview of the IRC protocol as it is generally implemented today.
+    For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.
 </div>
 
 <div class="warning">
