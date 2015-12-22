@@ -450,8 +450,84 @@ The 'official' capability negotiation specifications and improvements to capabil
 ---
 
 
+# Client commands
+
+
+## Connection commands
+
+### PASS command
+
+         Command: PASS
+      Parameters: <password>
+
+The PASS command is used to set a 'connection password'. The password can and must be set before any attempt to register the connection is made. This requires that clients send a PASS command before sending the `NICK` / `USER` combination.
+
+The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once registered.
+
+Servers may also consider using the [`SASL`](#sasl-command) command as an alternative to this, for when more information such as a username and a form of identity verification is required.
+
+Numeric replies:
+
+               ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+Example:
+
+      PASS secretpasswordhere
+
+### NICK command
+
+         Command: NICK
+      Parameters: <nickname>
+
+The NICK command is used to give the client a nickname or change the previous one.
+
+If the server receives a NICK command from a client with a `<nickname>` which is already in use on the network, it may issue an `ERR_NICKCOLLISION` numeric to the client and ignore the `NICK` command.
+
+Numeric Replies:
+
+               ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
+               ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
+
+Example:
+
+      NICK Wiz                  ; Introducing the new nick "Wiz".
+
+      :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
+
+### User command
+
+         Command: USER
+      Parameters: <username> <hostname> <servername> <realname>
+
+The `USER` command is used at the beginning of a connection to specify the username, hostname, servername and realname of a new user.
+
+It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognised as such.
+
+Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This can be performed using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such a server enabled, the username is set to that as in the reply from the "Identity Server". If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde (`~`) to show that this value is user-set.
+
+Numeric Replies:
+
+                 ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+
+Examples:
+
+      USER guest tolmoon tolsun :Ronnie Reagan
+                                  ; No ident server
+                                  ; User gets registered with username
+                                  "~guest" and real name "Ronnie Reagan"
+
+      USER guest tolmoon tolsun :Ronnie Reagan
+                                  ; Ident server gets contacted and
+                                  returns the name "danp"
+                                  ; User gets registered with username
+                                  "danp" and real name "Ronnie Reagan"
+
+
+---
+
+
 # Acknowledgements
 
 Most of this document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) specifications.
 
-Parts of this document come from the "IRC RPL_ISUPPORT Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document came from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the IRCv3 Working Group specifications.
+Parts of this document come from the "IRC RPL_ISUPPORT Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the IRCv3 Working Group specifications.
