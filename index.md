@@ -442,9 +442,9 @@ The solution to these problems is to allow for active capability negotiation, an
 
 Capability negotiation is started by the client issuing a `CAP LS 302` command (referring to IRCv3.2 capability negotiation). Negotiation is then performed with the `CAP REQ`, `CAP ACK`, and `CAP NAK` commands, and is ended with the `CAP END` command.
 
-Clients may use the `CAP` command and request new capabilities at any time. Only if used during initial registration does it suspend registration. Once capability negotiation has ended the registration process shall continue.
+If used during initial registration, and the server supports capability negotiation, the `CAP` command will suspend registration. Once capability negotiation has ended the registration process will continue.
 
-The 'official' capability negotiation specifications and improvements to capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
+Clients and servers should implement capability negotiation and the `CAP` command based off the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. 'Official' updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
 
 
 ---
