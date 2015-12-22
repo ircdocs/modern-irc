@@ -428,6 +428,28 @@ A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Paramete
 ---
 
 
+# Capability Negotiation
+
+Over the years, various extensions to the IRC protocol have been made by server programmers. Often, these extensions are intended to conserve bandwidth, close loopholes left by the original protocol specification, or add new features for users or for the server administrators. Most of these changes are backwards-compatible with the base protocol specifications: A command may be added, a reply may be extended to contain more parameters, etc. However, there are extensions which may be designed to change protocol behaviour in a backwards-incompatible way.
+
+Capability Negotiation is a mechanism for the negotiation of protocol extensions, known as **client capabilities**, that is backwards-compatible with existing IRC clients and servers.
+
+Any server not implementing capability negotiation will still interoperate with clients that do implement it; similarly, clients that do not implement capability negotiation may successfully communicate with a server that does implement it.
+
+IRC is an asynchronous protocol, which means that clients may issue additional IRC commands while previous commands are being processed. Additionally, there is no guarantee of a specific kind of banner being issued upon connection. Some servers also do not complain about unknown commands during registration, which means that a client cannot reliably do passive implementation discovery at registration time.
+
+The solution to these problems is to allow for active capability negotiation, and to extend the registration process with this negotiation. If the server supports capability negotiation, the registration process will be suspended until negotiation is completed. If the server does not support this, then registration will complete immediately and the client will not use any capabilities.
+
+Capability negotiation is started by the client issuing a `CAP LS 302` command (referring to IRCv3.2 capability negotiation). Negotiation is then performed with the `CAP REQ`, `CAP ACK`, and `CAP NAK` commands, and is ended with the `CAP END` command.
+
+Clients may use the `CAP` command and request new capabilities at any time. Only if used during initial registration does it suspend registration. Once capability negotiation has ended the registration process shall continue.
+
+The 'official' capability negotiation specifications and improvements to capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
+
+
+---
+
+
 # Acknowledgements
 
 Most of this document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) specifications.
