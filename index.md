@@ -96,7 +96,7 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (also referred to as "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, channel operators are not required to have reasons for their actions in the management of that channel. Most IRC operators do not deal with 'channel politics' or 'channel drama'. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside the domain of what they deal with. However, it is best to read the network policy (usually presented on connection with the [`MOTD`](#rpl-motd)).
+As owners of a channel, channel operators are not required to have reasons for their actions in the management of that channel. Most IRC operators do not deal with 'channel politics' or 'channel drama'. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside the domain of what they deal with. However, it is best to read the network policy (usually presented on connection with the [`MOTD`](#rpl_motd)).
 
 Some IRC software also defines other various levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
@@ -382,7 +382,47 @@ The [`PASS`](#pass-command) command is not required for the connection to be reg
 
 The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a hostname/ident lookup, these commands will end the registration process immediately.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl-welcome) `(001)` and [`RPL_ISUPPORT`](#rpl-isupport) `(005)` numerics. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err-nomotd) if it does not), and MAY send other numerics.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl_welcome) `(001)` and [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numerics. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err_nomotd) if it does not), and MAY send other numerics.
+
+
+---
+
+
+# Feature Advertisement
+
+IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
+
+Once client registration is complete, the server MUST send at least one `RPL_ISUPPORT` numeric to the client. The server MAY send more than one `RPL_ISUPPORT` numeric and consecutive `RPL_ISUPPORT` numerics SHOULD be sent adjacent to each other.
+
+Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not require nor specify the `RPL_ISUPPORT` numeric.
+
+The ABNF representation for this is:
+
+      isupport   =  [ ":" servername SPACE ] "005" SPACE nick SPACE
+                    1*13( token SPACE ) ":are supported by this server"
+
+      token      =  *1"-" parameter / parameter *1( "=" value )
+      parameter  =  1*20 letter
+      value      =  * letpun
+      letter     =  ALPHA / DIGIT
+      punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
+      letpun     =  letter / punct
+
+      SPACE      =  %x20        ; space character
+
+<div class="warning">
+    We should take a good, hard look at this ABNF. See if that specific `'isupport'` definition is even necessary.
+</div>
+
+As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
+
+A token is of the form `-PARAMETER`, `PARAMETER`, or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
+
+It is possible for the status of features previously advertised to clients can change. When this happens, a server SHOULD reissue the `RPL_ISUPPORT` numeric with the relevant parameters that have changed. If a feature becomes unavailable, the server MUST prefix the parameter with the dash character (`'-'`) when issuing the updated RPL_ISUPPORT.
+
+As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue the `RPL_ISUPPORT` numeric after client registration has completed. It also MUST be issued after the [`RPL_WELCOME`](#rpl_welcome) `(001)` numeric and MUST be issued before further commands from the client are processed.
+
+A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rpl_isupport-parameters) section.
 
 
 ---
