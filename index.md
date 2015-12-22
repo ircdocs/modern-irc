@@ -21,7 +21,9 @@ copyrights:
     NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.
 </div>
 
+
 ---
+
 
 # Introduction
 
@@ -109,11 +111,15 @@ Channel moderators are identified by the channel member prefix (`'@'` for standa
 
 Specific prefixes and moderation levels are covered in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
 
+
 ---
+
 
 # IRC Concepts
 
 This section is devoted to describing the concepts behind the organisation of the IRC protocol and how the current implementations deliver different classes of messages.
+
+This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because this is the topology specified and used in all IRC software today, and other topologies are only being experimented with thus far.
 
                               1--\
                                   A        D---4
@@ -129,7 +135,7 @@ This section is devoted to describing the concepts behind the organisation of th
 
 ## One-to-one communication
 
-Communication on a one-to-one basis is usually only performed by clients, since most server-server traffic is not a result of servers talking only to each other. This section ONLY deals with the typical spanning-tree topology, shown in the figure above. This is because this is the topology used in all IRC software today, and other topologies are only being experimented with thus far.
+Communication on a one-to-one basis is usually only performed by clients, since most server-server traffic is not a result of servers talking only to each other.
 
 Servers MUST be able to send a message from any one client to any other. It is REQUIRED that all servers be able to send a message in exactly one direction along the spanning tree to reach any client. Thus the path of a message being delivered is the shortest path between any two points on the spanning tree.
 
@@ -179,21 +185,32 @@ For some class of messages, there is no option but to broadcast it to all server
 
 IRC Operators may be able to send a message to every client currently connected to the network. This depends on the specific features and commands implemented in the running server software.
 
+### Client-to-Server
+
+Most of the commands which result in a change of state information (such as channel membership, channel modes, user status, etc.) MUST be sent to all servers by default, and this distribution SHALL NOT be changed by the client.
+
+### Server-to-Server
+
+While most messages between servers are distributed to all 'other' servers, this is only required for any message that affects a user, channel, or server. Since these are the basic items found in IRC, nearly all messages originating from a server are broadcast to all other connected servers.
 
 
+## Current Architectural Problems
 
+There are a number of recognized problems with this protocol. This section only addresses the problems related to the architecture of the protocol.
 
+### Scalability
 
+It is widely recognized that this protocol does not scale sufficiently well when used in a large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
 
+### Reliability
 
+As the only network configuration used and specified for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
 
-
-
-
-
+Various software authors are experimenting with alternative topologies such as mesh networks, but there is not yet a production implementation or specification of any topology other than the standard spanning-tree configuration.
 
 
 ---
+
 
 # Acknowledgements
 
