@@ -1,0 +1,101 @@
+---
+---
+
+// variables
+//
+$spec-width: 57rem
+$standard_font_family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif
+$content_font_family: "Helvetica Neue", Helvetica, Arial, sans-serif
+$mono_font_family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace
+
+// // Media queries
+// //
+// @mixin respond-to($media)
+//     @if $media == desktop
+//         @media only screen and (min-width: $mobile-width)
+//             @content
+//     @else if $media == mobile
+//         @media only screen and (max-width: $mobile-width)
+//             @content
+
+// styling
+//
+html
+    box-sizing: border-box
+*, *:before, *:after
+    box-sizing: inherit
+
+// table stuff
+html, body
+    font-family: $standard_font_family
+    height: 100%
+
+#wrapper, #footer
+    max-width: $spec-width
+    padding: 1rem
+    margin: 0 auto
+
+.copyright .line
+    display: block
+    color: #222
+
+a
+    transition: color 0.2s
+    font-style: italic
+    text-decoration: none
+
+h1
+    color: #334
+    subtitle
+        display: block
+        font-size: 1.2rem
+        color: #445
+        font-weight: normal
+h2
+    color: #3e3e4e
+    margin-bottom: 1rem
+h3
+    color: #445
+    margin-bottom: 0.5rem
+h4
+    color: #4e4e5e
+    margin-bottom: 0.65rem
+
+h1, h2, h3, h4
+    a
+        color: #33a
+        &:hover
+            color: #119
+
+p
+    margin-top: 0.5rem
+    + p
+        margin-top: 1rem
+
+.warning
+    background: #d54
+    border-radius: 1rem
+    margin: 1.55rem auto
+    padding: 1.2rem 1.3rem
+    color: #f7f7f7
+    font-weight: bold
+
+.anchor
+    color: #f53
+    &:hover
+        color: #c12
+
+hr
+    border: #99b 0.2rem solid
+    border-radius: 2rem
+    margin: 1.55rem auto
+
+pre
+    padding: 1rem
+    border-radius: 0.5rem
+    background: #ffb
+
+.figure
+    text-align: center
+    color: #333
+    display: block

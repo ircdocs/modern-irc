@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+    <head>
+        <title>{{ page.title }}</title>
+        
+        <link href="/css/pure-min.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        <link href="/css/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+        <!-- <link href="/css/print.css" media="print" rel="stylesheet" type="text/css" /> -->
+
+        <script src="/js/anchor.min.js"></script>
+
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="content">
+                <h1>Modern IRC</h1>
+
+                <div id="spec">
+                    {{ content }}
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <a href="https://github.com/DanielOaks/modern-irc">Github repo</a>
+        </div>
+    </body>
+    <script>
+        anchors.options = {
+            placement: 'right',
+            class: 'anchor',
+        };
+        anchors.add('#spec h1, #spec h2, #spec h3, #spec h4, #spec h5, #spec .figure');
+    </script>
+</html>

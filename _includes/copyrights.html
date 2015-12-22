@@ -1,0 +1,12 @@
+<div class="pure-g copyright">
+{% for copyright in page.copyrights %}
+    <div class="pure-u-1-{{ page.copyrights | size }}">
+        <span class="line">{{ copyright.name }}</span>
+        {% if copyright contains "org" %}
+        <span class="line">{{ copyright.org }}</span>
+        {% endif %}
+        <span class="line"><a href="mailto:{{ copyright.email }}">{{ copyright.email }}</a></span>
+    </div>
+{% endfor %}
+</div>
+

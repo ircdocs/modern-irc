@@ -1,0 +1,1298 @@
+
+Network Working Group                                        K. Mitchell
+Internet-Draft                                                 P. Lorier
+Expires: September 5, 2005                          Undernet IRC Network
+                                                                L. Hardy
+                                                             ircd-ratbox
+                                                            P. Kucharski
+                                                                  IRCnet
+                                                           March 7, 2005
+
+                   IRC Client Capabilities Extension
+                   draft-mitchell-irc-capabilities-01
+
+Status of this Memo
+
+   This document is an Internet-Draft and is subject to all provisions
+   of section 3 of RFC 3667.  By submitting this Internet-Draft, each
+   author represents that any applicable patent or other IPR claims of
+   which he or she is aware have been or will be disclosed, and any of
+   which he or she become aware will be disclosed, in accordance with
+   RFC 3668.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as
+   Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on September 5, 2005.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2005).
+
+Abstract
+
+   IRC (Internet Relay Chat) is a long-standing protocol for real-time
+   chatting.  The basic client-server protocol is a very simple
+   text-based protocol with no explicit mechanism for introducing or
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 1]
+Internet-Draft                  IRC CAP                       March 2005
+
+   negotiating backwards-incompatible extensions.  This memo presents a
+   mechanism for negotiation of such extensions.
+
+Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in RFC
+   2119 [1].
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+
+   2.  Problems to be Solved  . . . . . . . . . . . . . . . . . . . .  4
+
+   3.  The CAP Command  . . . . . . . . . . . . . . . . . . . . . . .  5
+     3.1   CAP LS . . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.2   CAP LIST . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.3   CAP REQ  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.4   CAP ACK  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.5   CAP NAK  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     3.6   CAP CLEAR  . . . . . . . . . . . . . . . . . . . . . . . .  8
+     3.7   CAP END  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+
+   4.  Capability Negotiation . . . . . . . . . . . . . . . . . . . . 10
+
+   5.  Capabilities . . . . . . . . . . . . . . . . . . . . . . . . . 11
+     5.1   Capability Modifiers . . . . . . . . . . . . . . . . . . . 11
+
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 13
+
+   7.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
+
+   8.  Acknowledgments  . . . . . . . . . . . . . . . . . . . . . . . 15
+
+   9.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+       Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . 15
+
+   A.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+
+   B.  ABNF Description of Capabilities . . . . . . . . . . . . . . . 19
+
+   C.  ChangeLog  . . . . . . . . . . . . . . . . . . . . . . . . . . 21
+
+       Intellectual Property and Copyright Statements . . . . . . . . 28
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 2]
+Internet-Draft                  IRC CAP                       March 2005
+
+1.  Introduction
+
+   The IRC protocol, as originally documented by RFC 1459 [2] and
+   updated by RFC 2812 [3], is a simple, text-based conferencing
+   protocol, involving a number of users spread across a number of
+   interconnected servers.  These users may chat with other individual
+   users, or may chat with groups of users on "channels"--what other
+   chat systems refer to as "rooms" or "chat rooms".
+
+   Over the years, various extensions to the basic IRC protocol have
+   been made by IRC server programmers.  Often, these extensions are
+   intended to conserve bandwidth, close loopholes left by the original
+   protocol specification, or add features for users or for the server
+   administrators.  Most of these changes are backwards-compatible with
+   the original protocol specification: A command may be added, a reply
+   may be extended to contain more parameters, etc.  Recently, however,
+   there has been a desire to introduce changes that would not be
+   backwards-compatible with existing IRC clients.  Ideally, these
+   protocol changes would only be used with clients and servers that can
+   understand the revised protocol.  Unfortunately, the IRC protocol
+   does not provide any form of extension or protocol negotiation,
+   making it impossible to determine support for such extensions.
+
+   This memo introduces a standardized mechanism for negotiation of
+   protocol extensions, known as *capabilities*, that will be
+   backwards-compatible with all existing IRC clients and servers.  Any
+   server not implementing this extension will still interoperate with
+   clients that do implement it; similarly, clients that do not
+   implement the capabilities extension may successfully communicate
+   with a server that does implement the extension.
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 3]
+Internet-Draft                  IRC CAP                       March 2005
+
+2.  Problems to be Solved
+
+   The IRC protocol is not a lockstep protocol.  This means that a
+   client may issue additional commands before the server has finished
+   responding to the first one.  Additionally, unlike other protocols,
+   the server does not necessarily issue a banner response upon initial
+   connection.  This, combined with the fact that some servers do not
+   complain about unknown commands prior to completion of the client
+   registration phase, means that a client cannot know for certain
+   whether a server implements the extension.  If a client had to wait
+   for a banner message, it would fail to interoperate with a server not
+   implementing the capabilities extension.  If the client must issue a
+   command and then wait for a response, a similar problem results.  As
+   some potential protocol extensions must be set up prior to completion
+   of the client registration phase, there is no reliable way a server
+   may indicate implementation of the capabilities extension to a
+   client.
+
+   The solution to these problems turns out to be to extend the client
+   registration procedure.  The client sends a request to begin
+   capability negotiation, as well as the other information necessary
+   for client registration (user name, nick name, optional password,
+   etc.).  If the server understands the capabilities extension, it will
+   suspend completion of the registration phase until the negotiation is
+   complete; negotiation may then proceed in a lockstep fashion.  If the
+   server does not understand capabilities, then the registration will
+   complete immediately, and the client will receive the 001 numeric.
+   This will signal to the client that the server does not implement the
+   capabilities extension.
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 4]
+Internet-Draft                  IRC CAP                       March 2005
+
+3.  The CAP Command
+
+   The capabilities extension is implemented by addition of one command
+   with several subcommands.  The command added is *CAP*.  CAP takes a
+   single, required subcommand, optionally followed by a single
+   parameter consisting of a space-separated list of capabilities.  Each
+   capability within the list MAY be preceded by a capability modifier.
+   (Section 5.1)
+
+   The subcommands defined for CAP are:
+
+   1.  LS (Section 3.1)
+   2.  LIST (Section 3.2)
+   3.  REQ (Section 3.3)
+   4.  ACK (Section 3.4)
+   5.  NAK (Section 3.5)
+   6.  CLEAR (Section 3.6)
+   7.  END (Section 3.7)
+
+   The LS (Section 3.1), LIST (Section 3.2), REQ (Section 3.3), ACK
+   (Section 3.4), and NAK (Section 3.5) subcommands may be followed by a
+   single parameter consisting of a space-separated list of capability
+   names.  If more than one capability is named, this argument MUST be
+   preceded by the IRC protocol colon (':') sentinel to signal that the
+   remainder of the line is a single argument.
+
+   If a client sends a subcommand not listed above or issues an invalid
+   command, the server SHOULD reply with the ERR_INVALIDCAPCMD numeric
+   response, 410.  The first parameter after the client nickname SHALL
+   be the subcommand the client sent; the second parameter SHOULD be a
+   textual description of the error.
+
+   In ABNF [4] notation:
+
+          capcmd       =  [ ":" servername SP ] "CAP" SP subcmd
+
+          subcmd       =  lscmd / listcmd / reqcmd / ackcmd /
+                              nakcmd / clearcmd / endcmd
+
+          capcmderr    =  ":" servername SP "410" SP nick SP badcmd
+                              SP ":Invalid CAP subcommand"
+                           ; badcmd is the unrecognized subcommand
+
+          caplist      =  [ ":" ] *( capmod ) capab
+          caplist      =/ ":" *( capmod ) capab 1*( SP *( capmod ) capab )
+
+   where SP is as designated in Appendix A of RFC 2234 [4], and
+   servername and nick are as designated in section 2.3.1 of RFC 1459
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 5]
+Internet-Draft                  IRC CAP                       March 2005
+
+   [2].
+
+   The discussion in the following sections applies only to clients and
+   servers implementing the capabilities extension.  Servers (and
+   clients) not implementing the capabilities extension are exempted
+   from the requirements of this section.
+
+3.1  CAP LS
+
+   The LS subcommand is used to list the capabilities supported by the
+   server.  The client SHALL send an LS subcommand with no arguments to
+   solicit a list of supported capabilities from the server.  Servers
+   MUST respond to such LS subcommands with one or more LS subcommands
+   containing the list of recognized capabilities.  All but the last
+   subcommand MUST have a parameter containing only an asterisk ('*')
+   preceding the capability list.
+
+   If a client issues an LS subcommand during the client registration
+   phase, client registration MUST be suspended until an END (Section
+   3.7) subcommand is received.
+
+   ABNF [4] description of the LS subcommand:
+
+          lscmd        =  "LS"
+          lscmd        =/ "LS" SP [ "*" SP ] caplist
+
+3.2  CAP LIST
+
+   The LIST subcommand is provided to permit the client to request a
+   list of the capabilities currently active for the connection.  It is
+   similar to the LS (Section 3.1) subcommand--if a client issues a LIST
+   subcommand with no arguments, the server MUST respond with a sequence
+   of LIST subcommands, all but the last of which MUST have a single
+   parameter consisting solely of an asterisk ('*') preceding the list
+   of capabilities.  If no capabilities have been enabled, the server
+   MUST send a LIST command with an empty capability list; the parameter
+   MUST NOT be omitted.  The active capabilities MAY be listed in any
+   order.
+
+   ABNF [4] description of the LIST subcommand:
+
+          listcmd      =  "LIST"
+          listcmd      =/ "LIST" SP ":"
+          listcmd      =/ "LIST" SP [ "*" SP ] caplist
+
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 6]
+Internet-Draft                  IRC CAP                       March 2005
+
+3.3  CAP REQ
+
+   The REQ subcommand is sent by the client to request that a capability
+   or set of capabilities be enabled or disabled.  Its sole parameter
+   MUST be a space-separated list of capabilities.  Each capability name
+   MAY be preceded by a dash ('-') to indicate that the capability
+   should be disabled.  Additionally, receipt of this subcommand during
+   the client registration MUST suspend client registration until an END
+   (Section 3.7) subcommand is received.
+
+   Servers MUST respond to a REQ command with either the ACK (Section
+   3.4) or NAK (Section 3.5) subcommands to indicate acceptance or
+   rejection of the capability set requested by the client.  A server
+   MUST accept the entire capability set or reject it whole; servers
+   MUST NOT accept some capabilities in the set while rejecting others.
+   If a client requests that a "sticky" capability be disabled, the
+   server MUST reject the capability set.
+
+   ABNF [4] description of the REQ subcommand:
+
+          reqcmd       =  "REQ" SP caplist
+
+3.4  CAP ACK
+
+   The ACK subcommand has three uses.  It is used by the server to
+   acknowledge a REQ (Section 3.3) subcommand; by the server to
+   acknowledge a CLEAR (Section 3.6) subcommand and list the removed
+   capabilities; and by the client to acknowledge certain capabilities
+   designated as requiring acknowledgment.  If more than one ACK is
+   required due to the IRC line length limitation of 512 characters, all
+   but the last SHALL contain a parameter consisting of a single
+   asterisk ('*') immediately preceding the list of capabilities, as for
+   LS (Section 3.1) and LIST (Section 3.2).
+
+   If an ACK reply originating from the server is spread across multiple
+   lines, a client MUST NOT change capabilities until the last ACK of
+   the set is received.  Equally, a server MUST NOT change the
+   capabilities of the client until the last ACK of the set has been
+   sent.
+
+   In the first usage, acknowledging a REQ (Section 3.3) subcommand, the
+   ACK subcommand has a single parameter consisting of a space separated
+   list of capability names, which may optionally be preceded with one
+   or more modifiers (Section 5.1).
+
+   The second usage, acknowledging a CLEAR (Section 3.6) subcommand, is
+   similar to the first usage.  When a CLEAR (Section 3.6) subcommand is
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 7]
+Internet-Draft                  IRC CAP                       March 2005
+
+   issued, all non-"sticky" capabilities are disabled, and a set of ACK
+   subcommands will be generated by the server with the disable modifier
+   preceding each capability.
+
+   The third usage is when, in the preceding two cases, some capability
+   names have been preceded with the ack modifier.  ACK in this case is
+   used to fully enable or disable the capability.  Clients MUST NOT
+   issue an ACK subcommand for any capability not marked with the ack
+   modifier in a server-generated ACK subcommand.
+
+   ABNF [4] description of the ACK subcommand:
+
+          ackcmd       =  "ACK" SP [ "*" SP ] caplist
+
+3.5  CAP NAK
+
+   The NAK subcommand MUST be sent by the server in response to a REQ
+   (Section 3.3) subcommand when any capability change requested cannot
+   be performed for any reason.  The server MUST NOT make any change to
+   the set of capabilities for the client if it responds with a NAK
+   subcommand.  The argument of the NAK subcommand MUST consist of at
+   least the first one hundred characters of the capability list in the
+   REQ (Section 3.3) subcommand which triggered the NAK.
+
+   ABNF [4] description of the NAK subcommand:
+
+          nakcmd       =  "NAK" SP ":" acklist
+                           ; acklist is at least 100 characters of the
+                           ; capability list from the REQ
+
+3.6  CAP CLEAR
+
+   The CLEAR subcommand requests that the server clear the capability
+   set for the client.  The server MUST respond with a set of ACK
+   (Section 3.4) subcommands indicating the capabilities being
+   deactivated.
+
+   ABNF [4] description of the CLEAR subcommand:
+
+          clearcmd     =  "CLEAR"
+
+3.7  CAP END
+
+   The END subcommand signals to the server that capability negotiation
+   is complete and requests that the server continue with client
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 8]
+Internet-Draft                  IRC CAP                       March 2005
+
+   registration.  If the client is already registered, this command MUST
+   be ignored by the server.
+
+   Clients that support capabilities but do not wish to enter
+   negotiation SHOULD send CAP END upon connection to the server.
+
+   ABNF [4] description of the END subcommand:
+
+          endcmd       =  "END"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005                [Page 9]
+Internet-Draft                  IRC CAP                       March 2005
+
+4.  Capability Negotiation
+
+   Clients implementing this extension SHOULD take one of the following
+   three actions upon initial connection to a server:
+
+   o  Issue an LS (Section 3.1) subcommand (with an empty capability
+      list) to solicit a list of supported capabilities from the server;
+
+   o  Issue the REQ (Section 3.3) subcommand to request a particular set
+      of capabilities without knowing what capabilities the server
+      supports or if it supports the capabilities extension; or
+
+   o  Issue the END (Section 3.7) subcommand to signal implementation of
+      the capabilities extension without entering into capability
+      negotiation.
+
+   Although a client is permitted to not issue any CAP commands upon
+   connection, this is NOT RECOMMENDED.  Servers MAY assume a client
+   does not implement the capabilities extension if it does not issue
+   any CAP commands upon initial connection.
+
+   Clients SHOULD follow CAP commands issued upon connection with the
+   standard IRC client registration commands without waiting for any
+   responses from the server.  See RFC 1459 [2] for more details about
+   the client registration procedure.
+
+   If a client issues the LS (Section 3.1) or REQ (Section 3.3)
+   subcommands during the client registration procedure, a server
+   implementing the capabilities extension MUST NOT complete the client
+   registration until the client issues the END (Section 3.7)
+   subcommand.  A client that sees a RPL_WELCOME (001) numeric response
+   before it sends CAP END (Section 3.7) SHOULD assume that the server
+   does not support the capabilities extension.
+
+   Once the client is registered, CAP commands SHALL have no effect on
+   other connection operations, except that a client MAY change the
+   capabilities it has set.  In particular, CAP commands and their
+   responses MAY be interspersed with other protocol messages.  The END
+   (Section 3.7) subcommand SHALL have no effect once client
+   registration has been completed.
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 10]
+Internet-Draft                  IRC CAP                       March 2005
+
+5.  Capabilities
+
+   Capabilities are designated by a name composed of one or more
+   elements.  Name elements are not case-sensitive.  They must begin
+   with a letter and may contain any number of letters, numbers, and the
+   dash character ('-').  Names containing more than one name element
+   MUST also contain a period character ('.') in the first name element.
+   Name elements are separated from each other via the slash character
+   ('/').
+
+   There are two capability name spaces:
+
+   Network Specific: Names whose first element contains a period
+      character ('.') designate a delegated capability name space.  The
+      first element MUST be a valid, existing DNS domain name.  These
+      names MUST contain at least two elements.
+
+   Standardized: All other names MUST correspond to capabilities
+      documented by an RFC.  Further, these names MUST contain only one
+      element.
+
+   These rules are summarized by the following ABNF [4] representation:
+
+          elem         =  ALPHA *( ALPHA / DIGIT / "-" )
+
+          netname      =  elem 1*( "." elem )
+
+          netDeleg     =  netname 1*( "/" elem )
+
+          standardized =  elem
+
+          capab        =  netDeleg / standardized
+
+   where ALPHA and DIGIT are as designated in Appendix A of RFC 2234
+   [4].
+
+5.1  Capability Modifiers
+
+   There are various capability modifiers available.  If a capability
+   modifier is to be used, it MUST directly precede the capability name.
+   The following are the modifiers defined for capabilities.  Certain
+   modifiers MAY be combined.
+
+   The disable modifier is used by both the server and the client to
+   indicate that a capability should be disabled.  The disable modifier
+   is defined as the dash character ('-').  A client MUST only use the
+   disable modifier in the REQ (Section 3.3) and ACK (Section 3.4)
+   subcommands.  A server MUST use the disable modifier in the ACK
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 11]
+Internet-Draft                  IRC CAP                       March 2005
+
+   (Section 3.4) subcommand when disabling a capability, or in
+   conjunction with a ack modifier in the LIST (Section 3.2) subcommand.
+   The server MUST NOT use the disable modifier in any other command
+   response.
+
+   The sticky modifier is used by the server to indicate a capability
+   that, once enabled, cannot be disabled.  The sticky modifier is
+   defined as the equals character ('=').  A client MUST NOT use the
+   sticky modifier.  A server MUST only use the sticky modifier in the
+   ACK (Section 3.4), LIST (Section 3.2) and LS (Section 3.1)
+   subcommands and MUST use the modifier for all such capabilities.
+
+   The ack modifier is used by the server to indicate that the client
+   must issue an ACK (Section 3.4) subcommand to fully enable or disable
+   the capability.  The ack modifier is defined as the tilde character
+   ('~').  The ack modifier indicates that traffic originating from the
+   server SHALL make use of the capability, but the server SHALL NOT
+   expect traffic originating from the client to make use of the
+   capability.  When combined with the disable modifier, it indicates
+   traffic originating from the server SHALL NOT make use of the
+   capability, but the server expects traffic originating from the
+   client SHALL make use of the capability.  The ack modifier MAY be
+   combined with the sticky modifier.
+
+   A server MUST use the ack modifier in the ACK (Section 3.4) and LIST
+   (Section 3.2) subcommands to indicate capabilities that require an
+   ACK (Section 3.4) subcommand from the client to be fully enabled or
+   disabled.  Servers MUST also use the ack modifier in the response to
+   an LS (Section 3.1) subcommand to indicate capabilities which will
+   require ACK (Section 3.4) subcommands from the client.  Clients MUST
+   NOT use the ack modifier, but SHOULD issue the ACK (Section 3.4)
+   subcommand as soon as possible after receiving an ACK (Section 3.4)
+   or REQ (Section 3.3) subcommand from the server that contains a
+   capability marked with the ack modifier.
+
+   In ABNF [4] notation:
+
+          dismod       =  "-"
+          stickymod    =  "="
+          ackmod       =  "~"
+
+          capmod       =  dismod / stickymod / ackmod
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 12]
+Internet-Draft                  IRC CAP                       March 2005
+
+6.  IANA Considerations
+
+   The standardized capability name space shall be managed by IANA in
+   accordance with the description of capability names in Section 5.  In
+   particular, any name not containing the period character ('.') must
+   be specified by an RFC.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 13]
+Internet-Draft                  IRC CAP                       March 2005
+
+7.  Security Considerations
+
+   Capabilities are an extension to a preexisting, insecure chat
+   protocol.  This extension does not add and does not purport to add
+   any security to the IRC protocol.  Capability negotiation occurs
+   after client registration has already begun.  Moreover, no mechanism
+   is defined that allows parameters to be passed for specific
+   capabilities.  Although such a mechanism could be added,
+   cryptographic security systems frequently require several exchanges
+   to establish a secure context, particularly if authentication must
+   also be negotiated.  Thus, the capabilities extension is unsuited to
+   the implementation of those protocols, and other mechanisms, such as
+   SSL-encapsulated IRC, should be used.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 14]
+Internet-Draft                  IRC CAP                       March 2005
+
+8.  Acknowledgments
+
+   The authors wish to gratefully acknowledge the participation of Aaron
+   Wiebe and the members of the proto-desc@dal.net email list in the
+   design of this protocol extension.
+
+9  References
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", BCP 14, RFC 2119, March 1997.
+
+   [2]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol", RFC
+        1459, May 1993.
+
+   [3]  Kalt, C., "Internet Relay Chat: Client Protocol", RFC 2812,
+        April 2000.
+
+   [4]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+        Specifications: ABNF", RFC 2234, November 1997.
+
+   [5]  Bradner, S., "IETF Rights in Contributions", BCP 78, RFC 3667,
+        February 2004.
+
+Authors' Addresses
+
+   Kevin L. Mitchell
+   Undernet IRC Network
+   38 Eighth St., Apt. 7
+   Cambridge, Massachusetts  02141
+   US
+
+   Phone: +1-617-230-1021
+   EMail: klmitch@mit.edu
+   URI:   http://www.mit.edu/~klmitch/
+
+   Perry Lorier
+   Undernet IRC Network
+   3 Liston Cres
+   Hamilton, Waikato  2001
+   NZ
+
+   Phone: +64-7-859-1109
+   EMail: isomer@undernet.org
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 15]
+Internet-Draft                  IRC CAP                       March 2005
+
+   Lee Hardy
+   ircd-ratbox Development Team
+
+   EMail: lee@leeh.co.uk
+   URI:   http://www.leeh.co.uk
+
+   Piotr Kucharski
+   IRCnet
+
+   EMail: Beeth@irc.pl
+   URI:   http://42.pl/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 16]
+Internet-Draft                  IRC CAP                       March 2005
+
+Appendix A.  Examples
+
+   In the following examples, lines preceded by "CLIENT:" indicate
+   protocol messages sent by the client, and lines preceded by "SERVER:"
+   indicate protocol messages sent by the server.  For clarity, the
+   origin field for server-originated protocol messages has been
+   omitted.  This field would consist of a colon (':') followed by the
+   full server name, and would be the first field in the command.
+
+   A client communicating with a server not supporting CAP.
+
+          CLIENT: CAP LS
+          CLIENT: NICK nickname
+          CLIENT: USER username ignored ignored :real name
+          SERVER: 001 [...]
+
+   A client which does not wish to enter capability negotiation.
+
+          CLIENT: CAP END
+          CLIENT: NICK nickname
+          CLIENT: USER username ignored ignored :real name
+          SERVER: 001 [...]
+
+   A client entering into capability negotiation during registration,
+   and requesting a set of capabilities that the server does not
+   support.
+
+          CLIENT: CAP LS
+          CLIENT: NICK nickname
+          CLIENT: USER username ignored ignored :real name
+          SERVER: CAP LS * :A B C D E F G H
+          SERVER: CAP LS :I J
+          CLIENT: CAP REQ :A B C D E F
+          SERVER: CAP NAK :A B C D E F
+          CLIENT: CAP REQ :A C E F
+          SERVER: CAP ACK :A C E F
+          CLIENT: CAP REQ :B
+          SERVER: CAP ACK :B
+          CLIENT: CAP REQ :D
+          SERVER: CAP NAK :D
+          CLIENT: CAP END
+          SERVER: 001 [...]
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 17]
+Internet-Draft                  IRC CAP                       March 2005
+
+   A client requesting a capability that requires an ACK (Section 3.4)
+   subcommand from the client to be enabled.
+
+          CLIENT: CAP LS
+          SERVER: CAP LS :~I ~J K
+          CLIENT: CAP REQ :I J K
+          SERVER: CAP ACK :~I ~J K
+          CLIENT: CAP ACK :I J
+
+   A client requesting a capability that requires an ACK (Section 3.4)
+   subcommand from the client to be enabled and disabled, using the LIST
+   (Section 3.2) subcommand in between.
+
+          CLIENT: CAP LS
+          SERVER: CAP LS :~A ~B
+          CLIENT: CAP REQ :A B
+          SERVER: CAP ACK :~A ~B
+          CLIENT: CAP LIST
+          SERVER: CAP LIST :~A ~B
+          CLIENT: CAP ACK :A B
+          CLIENT: CAP LIST
+          SERVER: CAP LIST :A B
+          CLIENT: CAP REQ :-B
+          SERVER: CAP ACK :-~B
+          CLIENT: CAP LIST
+          SERVER: CAP LIST :A -~B
+          CLIENT: CAP ACK :-B
+          CLIENT: CAP LIST
+          SERVER: CAP LIST :A
+
+   A client requesting a capability that is sticky.
+
+          CLIENT: CAP LS
+          SERVER: CAP LS :=I J
+          CLIENT: CAP REQ :I J
+          SERVER: CAP ACK :=I J
+
+   A client requesting a capability be disabled.
+
+          CLIENT: CAP LIST
+          SERVER: CAP LIST :=A B C D
+          CLIENT: CAP REQ :-B -C
+          SERVER: CAP ACK :-B -C
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 18]
+Internet-Draft                  IRC CAP                       March 2005
+
+Appendix B.  ABNF Description of Capabilities
+
+   This section summarizes the ABNF [4] description of the capabilities
+   extension.
+
+          capcmd       =  [ ":" servername SP ] "CAP" SP subcmd
+
+          subcmd       =  lscmd / listcmd / reqcmd / ackcmd /
+                              nakcmd / clearcmd / endcmd
+
+          capcmderr    =  ":" servername SP "410" SP nick SP badcmd
+                              SP ":Invalid CAP subcommand"
+                           ; badcmd is the unrecognized subcommand
+
+          caplist      =  [ ":" ] *( capmod ) capab
+          caplist      =/ ":" *( capmod ) capab 1*( SP *( capmod ) capab )
+
+          lscmd        =  "LS"
+          lscmd        =/ "LS" SP [ "*" SP ] caplist
+
+          listcmd      =  "LIST"
+          listcmd      =/ "LIST" SP ":"
+          listcmd      =/ "LIST" SP [ "*" SP ] caplist
+
+          reqcmd       =  "REQ" SP caplist
+
+          ackcmd       =  "ACK" SP [ "*" SP ] caplist
+
+          nakcmd       =  "NAK" SP ":" acklist
+                           ; acklist is at least 100 characters of the
+                           ; capability list from the REQ
+
+          clearcmd     =  "CLEAR"
+
+          endcmd       =  "END"
+
+          elem         =  ALPHA *( ALPHA / DIGIT / "-" )
+
+          netname      =  elem 1*( "." elem )
+
+          netDeleg     =  netname 1*( "/" elem )
+
+          standardized =  elem
+
+          capab        =  netDeleg / standardized
+
+          dismod       =  "-"
+          stickymod    =  "="
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 19]
+Internet-Draft                  IRC CAP                       March 2005
+
+          ackmod       =  "~"
+
+          capmod       =  dismod / stickymod / ackmod
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 20]
+Internet-Draft                  IRC CAP                       March 2005
+
+Appendix C.  ChangeLog
+
+   Note to RFC Editor: This section may be removed on publication as an
+   RFC.
+
+   Here is a log of changes to this document:
+
+   2004-12-15 KLM Initial draft written.
+
+   2004-12-16 KLM
+
+      *  Added description of the argument to some CAP commands in
+         Section 3.
+
+      *  Clarified that requirements of Section 3 only apply to clients
+         and servers implementing capabilities.
+
+      *  Substitution of "performed" for "done" in Section 3.5
+
+      *  Added LIST (Section 3.2) subcommand to provide a mechanism to
+         query active capabilities.
+
+      *  Added reference to RFC 2812 [3].
+
+      *  Moved Examples (Appendix A) section into the back matter.
+
+      *  Corrected Perry Lorier's email address.
+
+      *  Added this ChangeLog section.
+
+      *  Corrected typo in Section 3.7: "sent" for "send".
+
+      *  Added <vspace> elements to enhance readability.
+
+      *  Changed to non-compact form.
+
+      *  Changed anchor for Section 5 to "capabilities" from "caps" to
+         reduce possible confusion.
+
+      *  Revise last sentence of first paragraph of Section 2 to remove
+         redundancy.
+
+      *  Revise last sentence of second paragraph of Section 2
+
+      *  Added email addresses for Lee H and Beeth; updated contact
+         information for Isomer.
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 21]
+Internet-Draft                  IRC CAP                       March 2005
+
+   2004-12-17 KLM
+
+      *  Augmented description of CAP command and subcommands with ABNF
+         description.
+
+      *  Revised Section 5 to remove "net." name space and replace it
+         with a delegated name space beginning with a DNS domain name
+         (suggested by Isomer).
+
+      *  Augmented ABNF description of capability names.
+
+      *  Revised Section 6 to reflect change in capability name space.
+
+      *  Added Appendix B to bring together the entire ABNF description
+         of capabilities.
+
+   2004-12-18 KLM
+
+      *  Added explanation of what should happen if an unrecognized
+         subcommand is given.
+
+      *  Clarified what to do if a client sends a subcommand that
+         shouldn't come from a client.
+
+      *  Add references to LIST (Section 3.2) to LSL and Section 3.1.
+
+      *  Section 3.3 omitted the caplist argument for the REQ command;
+         corrected.
+
+      *  Relax the prohibition against a client acknowledging a
+         capability that doesn't modify the protocol stream in Section
+         3.4
+
+      *  Relax the requirement for a client that understands
+         capabilities to send CAP END in Section 3.7
+
+   2004-12-19 KLM
+
+      *  Converted a number of common xrefs into internal entities to
+         simplify the text.
+
+      *  Inserted some white space to make the <front> section a bit
+         more readable.
+
+      *  Added the keyword "Protocol".
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 22]
+Internet-Draft                  IRC CAP                       March 2005
+
+      *  Added the term "NOT RECOMMENDED" to the note on "Requirements
+         Language".
+
+      *  Moved LIST (Section 3.2) up in the list of CAP subcommands.
+
+      *  Minor formatting change to the ABNF representation of subcmd.
+
+      *  Capitalized "MAY" in "empty" subcommand.
+
+      *  Added text about capability list order and what to do if no
+         capabilities are implemented to "empty" subcommand.
+
+      *  Mention LIST (Section 3.2) also in LSL when talking about
+         sending more than one LSL subcommand.
+
+      *  Clarify language in Section 3.1 a little bit.
+
+      *  Substitute "set of capabilities" for "list of capabilities" in
+         Section 3.3.
+
+      *  Fix minor typo in preamble to ABNF description of NAK (Section
+         3.5) subcommand: substitution of "ACK" for "NAK".
+
+      *  Add note about servers ignoring END (Section 3.7) after client
+         registration.
+
+      *  Fix minor typo in preamble to ABNF description of LIST (Section
+         3.2) subcommand: substitution of "END" for "LIST".
+
+      *  Added Section 4 discussing capability negotiation.
+
+      *  Add ".xml" extension to include files in references section.
+
+      *  Simplification of preamble of first example (Appendix A).
+
+      *  Add 'type="ABNF"' to <artwork> sections so that they can be
+         extracted and used to create the abnf.xml now included in
+         Appendix B.
+
+      *  It's now RFC 3667 [5], not RFC 2026...
+
+   2004-12-27 KLM
+
+      *  Minor wording changes to second paragraph of Section 1
+
+      *  Minor wording change to first paragraph of Section 2
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 23]
+Internet-Draft                  IRC CAP                       March 2005
+
+      *  Minor wording changes to first paragraph of Section 3; remove
+         redundant note about the IRC colon sentinel.
+
+      *  Change a "must" to a "MUST" in Section 3.4; note that
+         capability list may be truncated if it would otherwise exceed
+         the 512 character limit.
+
+      *  In Section 3.5, note that capability list may be truncated if
+         it would otherwise exceed the 512 character limit.
+
+      *  Remove redundant line about ignoring END (Section 3.7) commands
+         after registration.
+
+      *  Correct spelling of "acknowledgments".
+
+      *  Empty <organization> elements for Lee H and Beeth; put Beeth's
+         real name, Piotr Kucharski, in the right place.
+
+      *  Switch to using a new preprocessor that consolidates all the
+         ABNF artwork and inserts it with the processing instruction
+         <?art type="foo"?>.
+
+      *  Remove deliberate page break after <abstract> section.
+
+      *  Reorder authors section to consolidate <organization> elements
+         for everyone.
+
+      *  Drop abbreviation for Undernet.
+
+      *  Expand Section 7 a bit to try to explain why capabilities are
+         not suited to securing IRC.
+
+   2005-01-04 KLM
+
+      *  Add Lee Hardy's information to the list of authors.
+
+   2005-01-05 KLM
+
+      *  Replace UNKNOWNCAPCMD with INVALIDCAPCMD.
+
+      *  Begin rewriting LS (Section 3.1) documentation
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 24]
+Internet-Draft                  IRC CAP                       March 2005
+
+   2005-01-19 KLM
+
+      *  Redesign the protocol substantially to simplify it.
+
+   2005-01-20 KLM
+
+      *  Update Piotr's contact information.
+
+      *  Drop the "x-" namespace...
+
+   2005-01-20 LH
+
+      *  Some servers do issue banner responses, now.
+
+      *  The CAP subcommand is now a requirement.
+
+      *  Minor grammatical fix-up in documentation of REQ (Section 3.3)
+         ("acceptance of or rejection of"--strike first "of").
+
+      *  Clarify that sticky capabilities cause a REQ (Section 3.3) to
+         be NAK (Section 3.5)ed.
+
+      *  Mark the third case of an ACK (Section 3.4) with an explicit
+         indicator that it's the third case...
+
+      *  Strike redundant mention of not suspending client registration
+         in documentation for END (Section 3.7).
+
+   2005-01-21 LH
+
+      *  Move all references on capability modifiers to its own section
+
+      *  Clarify instructions on the ack ('~') modifier, indicating it
+         can be used with sticky capabilities.
+
+      *  Add a note into CAP section about capability modifiers
+
+   2005-01-21 KLM
+
+      *  Subcommands are not optional anymore; updated the description
+         of CAP and the ABNF to reflect this.
+
+      *  More than one modifier may precede a capability name.
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 25]
+Internet-Draft                  IRC CAP                       March 2005
+
+      *  Move ABNF for capmod into the "Capability Modifiers" section.
+
+      *  Fix a few minor grammatical errors (I think).
+
+      *  Note that capability names may be preceded by modifiers in the
+         first form of ACK.
+
+      *  Remove an unnecessary "MAY" in documentation for the third
+         usage of ACK.
+
+      *  Explicitly note in the ABNF for NAK that the parameter is an
+         opaque repeat of at least the first 100 characters of the
+         argument to REQ.
+
+      *  CLEAR may result in more than one ACK.
+
+      *  Clarify the language of what composes a capability name.
+
+      *  Add missing </figure>.
+
+      *  ACK subcommand should be sent in response to ACK with ack
+         modifier as soon as possible...
+
+      *  Allow disable modifier in LIST, but only in conjunction with an
+         ack modifier.
+
+      *  The ack modifier may also show up in an LS response; rewrote
+         the final paragraph to indicate that and clarify the language.
+
+      *  Add "Client" to the title in the appropriate place...
+
+      *  The "capability" rule in the ABNF got changed to "capab" for
+         brevity.
+
+      *  Update "date" to be current.
+
+   2005-01-22 LH
+
+      *  Clarify a client must not act upon an ACK spread across
+         multiple lines until it receives the final ACK of the set.
+
+   2005-01-23 KLM
+
+      *  Bump version number in preparation for any suggested edits...
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 26]
+Internet-Draft                  IRC CAP                       March 2005
+
+   2005-01-26 LH
+
+      *  Clarify a server also must not change capabilities until its
+         finished sending its ACKs.
+
+   2005-01-27 KLM
+
+      *  Acknowledge Aaron Wiebe as participating.
+
+   2005-03-01 LH
+
+      *  Add examples on sticky modifiers, the removal modifier and the
+         sticky modifier.
+
+   2005-03-07 KLM
+
+      *  Submit second draft...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 27]
+Internet-Draft                  IRC CAP                       March 2005
+
+Intellectual Property Statement
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+Disclaimer of Validity
+
+   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Copyright Statement
+
+   Copyright (C) The Internet Society (2005).  This document is subject
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+Acknowledgment
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+Mitchell, et al.       Expires September 5, 2005               [Page 28]

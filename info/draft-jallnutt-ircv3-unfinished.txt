@@ -1,0 +1,3416 @@
+
+
+
+
+Network Working Group                                    J. Allnutt, Ed.
+Internet-Draft                                                  Kiwi IRC
+Obsoletes: 1459, 2812 (if approved)                       March 15, 2015
+Intended status: Standards Track
+Expires: September 16, 2015
+
+
+                    Internet Relay Chat Protocol v3
+                          draft-jallnutt-ircv3
+
+Abstract
+
+   This document obseletes RFCs 1459 and 2812 and defines version 3 of
+   the Internet Relay Chat protocol.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on September 16, 2015.
+
+Copyright Notice
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+
+
+
+Allnutt                Expires September 16, 2015               [Page 1]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   4
+   2.  Protocol structure  . . . . . . . . . . . . . . . . . . . . .   4
+     2.1.  Character encoding  . . . . . . . . . . . . . . . . . . .   4
+     2.2.  Messages  . . . . . . . . . . . . . . . . . . . . . . . .   4
+       2.2.1.  Tags  . . . . . . . . . . . . . . . . . . . . . . . .   5
+       2.2.2.  Prefix  . . . . . . . . . . . . . . . . . . . . . . .   5
+       2.2.3.  Command . . . . . . . . . . . . . . . . . . . . . . .   6
+     2.3.  Wire format . . . . . . . . . . . . . . . . . . . . . . .   6
+       2.3.1.  Wire format in 'pseudo' BNF . . . . . . . . . . . . .   6
+   3.  Connection registration . . . . . . . . . . . . . . . . . . .   7
+     3.1.  Capability negotiation  . . . . . . . . . . . . . . . . .   8
+     3.2.  RPL_ISUPPORT  . . . . . . . . . . . . . . . . . . . . . .   9
+   4.  Command details . . . . . . . . . . . . . . . . . . . . . . .   9
+     4.1.  AWAY command  . . . . . . . . . . . . . . . . . . . . . .  10
+     4.2.  CAP command . . . . . . . . . . . . . . . . . . . . . . .  10
+       4.2.1.  Capability modifiers  . . . . . . . . . . . . . . . .  11
+       4.2.2.  CAP subcommands . . . . . . . . . . . . . . . . . . .  11
+     4.3.  CONNECT command . . . . . . . . . . . . . . . . . . . . .  14
+     4.4.  ERROR command . . . . . . . . . . . . . . . . . . . . . .  14
+     4.5.  INFO command  . . . . . . . . . . . . . . . . . . . . . .  15
+     4.6.  INVITE command  . . . . . . . . . . . . . . . . . . . . .  16
+     4.7.  ISON command  . . . . . . . . . . . . . . . . . . . . . .  16
+     4.8.  JOIN command  . . . . . . . . . . . . . . . . . . . . . .  17
+     4.9.  KICK command  . . . . . . . . . . . . . . . . . . . . . .  19
+     4.10. KILL command  . . . . . . . . . . . . . . . . . . . . . .  19
+     4.11. LINKS command . . . . . . . . . . . . . . . . . . . . . .  20
+     4.12. LIST command  . . . . . . . . . . . . . . . . . . . . . .  21
+     4.13. MODE command  . . . . . . . . . . . . . . . . . . . . . .  22
+       4.13.1.  Channel modes  . . . . . . . . . . . . . . . . . . .  22
+       4.13.2.  User modes . . . . . . . . . . . . . . . . . . . . .  24
+     4.14. NAMES command . . . . . . . . . . . . . . . . . . . . . .  25
+     4.15. NICK command  . . . . . . . . . . . . . . . . . . . . . .  25
+     4.16. NOTICE command  . . . . . . . . . . . . . . . . . . . . .  26
+     4.17. OPER command  . . . . . . . . . . . . . . . . . . . . . .  27
+     4.18. PART command  . . . . . . . . . . . . . . . . . . . . . .  28
+     4.19. PASS command  . . . . . . . . . . . . . . . . . . . . . .  28
+     4.20. PING command  . . . . . . . . . . . . . . . . . . . . . .  29
+     4.21. PONG command  . . . . . . . . . . . . . . . . . . . . . .  29
+     4.22. PRIVMSG command . . . . . . . . . . . . . . . . . . . . .  30
+     4.23. QUIT command  . . . . . . . . . . . . . . . . . . . . . .  31
+     4.24. REHASH command  . . . . . . . . . . . . . . . . . . . . .  31
+     4.25. RESTART command . . . . . . . . . . . . . . . . . . . . .  32
+     4.26. STATS command . . . . . . . . . . . . . . . . . . . . . .  32
+     4.27. TIME command  . . . . . . . . . . . . . . . . . . . . . .  33
+     4.28. TOPIC command . . . . . . . . . . . . . . . . . . . . . .  33
+
+
+
+Allnutt                Expires September 16, 2015               [Page 2]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+     4.29. TRACE command . . . . . . . . . . . . . . . . . . . . . .  34
+     4.30. USER command  . . . . . . . . . . . . . . . . . . . . . .  35
+     4.31. USERHOST command  . . . . . . . . . . . . . . . . . . . .  36
+     4.32. USERS command . . . . . . . . . . . . . . . . . . . . . .  36
+     4.33. VERSION command . . . . . . . . . . . . . . . . . . . . .  37
+     4.34. WALLOPS command . . . . . . . . . . . . . . . . . . . . .  37
+     4.35. WHO command . . . . . . . . . . . . . . . . . . . . . . .  38
+     4.36. WHOIS command . . . . . . . . . . . . . . . . . . . . . .  39
+     4.37. WHOWAS command  . . . . . . . . . . . . . . . . . . . . .  40
+   5.  Numeric replies . . . . . . . . . . . . . . . . . . . . . . .  40
+     5.1.  Command responses . . . . . . . . . . . . . . . . . . . .  41
+     5.2.  Error responses . . . . . . . . . . . . . . . . . . . . .  48
+   6.  Client and server authentication  . . . . . . . . . . . . . .  53
+   7.  Current implementations . . . . . . . . . . . . . . . . . . .  54
+     7.1.  Transport layers  . . . . . . . . . . . . . . . . . . . .  54
+       7.1.1.  TCP . . . . . . . . . . . . . . . . . . . . . . . . .  54
+       7.1.2.  SCTP  . . . . . . . . . . . . . . . . . . . . . . . .  54
+       7.1.3.  UNIX sockets  . . . . . . . . . . . . . . . . . . . .  54
+     7.2.  Command parsing . . . . . . . . . . . . . . . . . . . . .  54
+     7.3.  Message delivery  . . . . . . . . . . . . . . . . . . . .  55
+     7.4.  Connection 'Liveness' . . . . . . . . . . . . . . . . . .  55
+     7.5.  Establishing a server to client connection  . . . . . . .  55
+     7.6.  Establishing a server-server connection . . . . . . . . .  55
+       7.6.1.  Server exchange of state information when connecting   56
+     7.7.  Terminating server-client connections . . . . . . . . . .  56
+     7.8.  Terminating server-server connections . . . . . . . . . .  56
+     7.9.  Tracking nickname changes . . . . . . . . . . . . . . . .  57
+     7.10. Flood control of clients  . . . . . . . . . . . . . . . .  57
+     7.11. Non-blocking lookups  . . . . . . . . . . . . . . . . . .  58
+     7.12. Operators . . . . . . . . . . . . . . . . . . . . . . . .  58
+     7.13. Allowing servers to connect . . . . . . . . . . . . . . .  58
+     7.14. Administrivia . . . . . . . . . . . . . . . . . . . . . .  58
+   8.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  59
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  59
+     9.1.  IRC capability registry . . . . . . . . . . . . . . . . .  59
+     9.2.  IRC tag registry  . . . . . . . . . . . . . . . . . . . .  59
+     9.3.  IRC numeric registry  . . . . . . . . . . . . . . . . . .  60
+   10. Security Considerations . . . . . . . . . . . . . . . . . . .  60
+   11. Normative References  . . . . . . . . . . . . . . . . . . . .  60
+   Appendix A.  List of known RPL_ISUPPORT tokens  . . . . . . . . .  60
+     A.1.  CASEMAPPING . . . . . . . . . . . . . . . . . . . . . . .  60
+     A.2.  CHARSET . . . . . . . . . . . . . . . . . . . . . . . . .  60
+     A.3.  PREFIX  . . . . . . . . . . . . . . . . . . . . . . . . .  60
+     A.4.  CHANTYPES . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.5.  CHANMODES . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.6.  NETWORK . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.7.  MODES . . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.8.  MAXCHANNELS . . . . . . . . . . . . . . . . . . . . . . .  61
+
+
+
+Allnutt                Expires September 16, 2015               [Page 3]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+     A.9.  CHANLIMIT . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.10. NICKLEN . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.11. MAXLIST . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.12. EXCEPTS . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.13. INVEX . . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.14. KNOCK . . . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.15. STATUSMSG . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.16. CALLERID  . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.17. CHANNELLEN  . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.18. TOPICLEN  . . . . . . . . . . . . . . . . . . . . . . . .  61
+     A.19. AWAYLEN . . . . . . . . . . . . . . . . . . . . . . . . .  61
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  61
+
+1.  Introduction
+
+   Intro goes here
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+2.  Protocol structure
+
+2.1.  Character encoding
+
+   It is strongly RECOMMENDED that IRC servers and clients use the UTF-8
+   [RFC3629] character encoding throughout, however implementations MAY
+   use an alterntive 8-bit character encoding for backwards
+   compatibility with the previous version [RFC1459] of the protocol.
+
+   For historical reasons, the characters '{', '}', and '|' are
+   considered to be the lower case equivalents of the characters '[',
+   ']', and '\', respectively.  This is a critical issue when
+   determining the equivalence of two nicknames.
+
+   If the IRC server uses a character encoding other than UTF-8 or a
+   casemapping other than the one specified in this section, it MUST
+   include such information in the RPL_ISUPPORT (005) numeric sent on
+   completion of client registration, as set out in Section 3.2.
+
+2.2.  Messages
+
+   Servers and clients send eachother messages which may or may not
+   generate a reply; client to server and server to server communication
+   is essentially asynchronous in nature.
+
+
+
+
+Allnutt                Expires September 16, 2015               [Page 4]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   Each IRC message may consist of up to four main parts: tags
+   (optional), the prefix (optional), the command, and the command
+   parameters (of which there may be up to 15).
+
+2.2.1.  Tags
+
+   Tags are addtional and optional metadata included with relevant
+   messages.
+
+   Every message tag is enabled by a capability (as outlined in
+   Section 3.1).  The same capability may be used for several tags if
+   these tags are intended to be used together.
+
+   Each tag may have its own rules about how it can be used: from client
+   to server only, from server to client only, or in both directions.
+
+   The server MUST NOT add a tag to a message if the client did not
+   request the capability which enables the tag.  The server MUST NOT
+   add a tag to a message before replying to client's CAP REQ with CAP
+   ACK.  If the client requested a capability which enables one or more
+   message tags the client MUST be able to parse the message tags
+   syntax.
+
+   Similarly, the client MUST NOT add a tag to messages before server
+   replies to client's CAP REQ with CAP ACK.  If the server accepted the
+   capability request with CAP ACK, the server MUST be able to parse the
+   tags syntax.
+
+   Both clients and servers MAY parse the tags without any capabilities
+   being enabled on the connection.  They SHOULD ignore the tags of
+   capabilities which are not enabled.
+
+   The rules for naming and registering tags are detailed in Section 9.2
+
+2.2.2.  Prefix
+
+   The prefix is used by servers to indicate the true origin of the
+   message.  If the prefix is missing from the message, it is assumed to
+   have originated from the connection from which it was received.
+   Clients SHOULD NOT use prefix when sending a message from themselves;
+   if they use a prefix, the only valid prefix is the registered
+   nickname associated with the client.  If the source identified by the
+   prefix cannot be found from the server's internal database, or if the
+   source is registered from a different link than from which the
+   message arrived, the server MUST ignore the message silently.
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015               [Page 5]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+2.2.3.  Command
+
+   The command must either be a valid IRC command or a three-digit
+   number represented as text.
+
+2.3.  Wire format
+
+   IRC messages are extracted from a contiguous stream of octets.  A
+   pair of characters, CR (0x13) and LF (0x10), act as message
+   separators.  Empty messages are silently ignored, which permits use
+   of the sequence CR-LF between messages.
+
+   The tags, prefix, command, and all parameters are separated by one
+   (or more) UTF-8 space character(s) (0x20).
+
+   The presense of tags is indicated with a single leading at character
+   ('@', 0x40), which MUST be the first character of the message itself.
+   There MUST NOT be any whitespace between the at character and the
+   list of tags.
+
+   The presence of a prefix is indicated with a single leading colon
+   character (':', 0x3b).  If there are no tags it MUST be the first
+   character of the message itself.  There MUST NOT be any whitespace
+   between the colon character and the prefix.
+
+   IRC messages shall not exceed 1024 bytes in length, counting all
+   characters including the trailing CR-LF.  There are a maximum of 512
+   bytes allocated for message tags, including the leading '@' and
+   trailing space.  There are 510 bytes maximum allowed for the command
+   and its parameters.  There is no provision for continuation message
+   lines.
+
+2.3.1.  Wire format in 'pseudo' BNF
+
+   The extracted message is parsed into the components <tags>, <prefix>,
+   <command>, and a list of parameters matched either by <middle> or
+   <trailing> components.
+
+   The BNF representation for this is:
+
+
+
+
+
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015               [Page 6]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+<message>  = ['@' <tags> <SP> ] [':' <prefix> <SP> ] <command> <params> <crlf>
+<tags>     = <tag> *[';' <tag>]
+<tag>      = <key> ['=' <value>]
+<key>      = [ <vendor> '/' ] <sequence of letters, digits, hyphens (`-`)>
+<value>    = <sequence of any characters except NUL, BELL, CR, LF, semicolon (`;`) and SPACE>
+<vendor>   = <host>
+<prefix>   = <servername> | <nick> [ '!' <user> ] [ '@' <host> ]
+<command>  = <letter> { <letter> } | <number> <number> <number>
+<SP>       = ' ' { ' ' }
+<params>   = <SPACE> [ ':' <trailing> / <middle> <params> ]
+<middle>   = <Any *non-empty* sequence of octets not including SPACE or NUL or CR or LF, the first of which may not be ':'>
+<trailing> = <Any, possibly *empty*, sequence of octets not including NUL or CR or LF>
+<crlf>     = CR LF
+
+   NOTES:
+
+   1.  <SPACE> is consists only of SPACE character(s) (0x20).  Specially
+       notice that TABULATION, and all other control characters are
+       considered NON-WHITE-SPACE.
+
+   2.  After extracting the parameter list, all parameters are equal,
+       whether matched by <middle> or <trailing>. <Trailing> is just a
+       syntactic trick to allow SPACE within parameter.
+
+   3.  The NUL character is not special in message framing but as it
+       would cause extra complexities in normal C string handling it is
+       not allowed within messages.
+
+   4.  The last parameter may be an empty string.
+
+   5.  Use of the extended prefix (['!' <user> ] ['@' <host> ]) must not
+       be used in server to server communications and is only intended
+       for server to client messages in order to provide clients with
+       more useful information about who a message is from without the
+       need for additional queries.
+
+   Most protocol messages specify additional semantics and syntax for
+   the extracted parameter strings dictated by their position in the
+   list.  For example, many server commands will assume that the first
+   parameter after the command is the list of targets.
+
+3.  Connection registration
+
+   Immediately upon establishing a connection the client must attempt
+   registration without waiting for any banner message from the server.
+
+   Until registration is complete, only a small subset of commands may
+   be accepted by the server.
+
+
+
+Allnutt                Expires September 16, 2015               [Page 7]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   The recommended order of commands during registration is as follows:
+
+   1.  STARTTLS
+
+   2.  PASS
+
+   3.  CAP
+
+   4.  NICK
+
+   5.  USER
+
+   If the transport layer is not secured by TLS it is RECOMMENDED that
+   the client attempt to opportunistically enable encryption by sending
+   the STARTTLS command before sending any other messages.
+
+   The PASS command (see Section 4.19) is not required for the
+   connection to be registered, but if included it MUST precede the
+   latter of the NICK and USER commands.
+
+   If the server supports capaibility negotiation the CAP command (see
+   Section 4.2) suspends the registration process and immediately starts
+   the capability negotiation (see Section 3.1) process.
+
+   The NICK and USER commands (see Section 4.15 and Section 4.30,
+   respectively) are used to identify the user's nickname, username and
+   "real name".  Unless the registration process is suspended by a
+   STARTTLS or CAP negotiation, these commands will end the registration
+   process.
+
+   Upon successful completion of the registration process, the server
+   MUST send the RPL_WELCOME (001) and RPL_ISUPPORT (005) numerics.  The
+   server SHOULD also send the MOTD (Message of the Day), if one exists,
+   and MAY send other numerics.
+
+   The RPL_ISUPPORT (005) numeric contains significant information for
+   clients and is covered in more detail in Section 3.2.
+
+3.1.  Capability negotiation
+
+   IRC is an asynchronous protocol, which means that IRC clients may
+   issue additional IRC commands while previous commands are being
+   processed.  Additionally, there is no guarantee of a specific kind of
+   banner being issued upon connection.  Some servers also do not
+   complain about unknown commands during registration, which means that
+   a client cannot reliably do passive implementation discovery at
+   registration time.
+
+
+
+
+Allnutt                Expires September 16, 2015               [Page 8]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   The solution to these problems is to extend the registration process
+   with actual capability negotiation.  If the server supports
+   capability negotiation, the registration process will be suspended
+   until negotiation is completed.  If the server does not support
+   capability negotiation, then registration will complete immediately,
+   and the client will not use any IRCv3 capabilities.
+
+   Capability negotiation is started by the client issuing a CAP LS
+   command.  Negotiation is then performed with the CAP REQ, CAP ACK,
+   and CAP NAK commands, and ended with the CAP END command (See
+   Section 4.2).
+
+   Once capability negotiation has ended, the registration process shall
+   resume.
+
+   The rules for naming and registering capabilities are detailed in
+   Section 9.1
+
+3.2.  RPL_ISUPPORT
+
+   Once client registration is complete, the server MUST send at least
+   one RPL_ISUPPORT (005) numeric to the client.  The server MAY send
+   more than one RPL_ISUPPORT numeric and it is RECOMMENDED that
+   consecutive RPL_ISUPPORT numerics are sent adjacent to each other.
+
+   Each parameter of this numeric is a token and optional value in the
+   form of TOKEN[=VALUE].  The tokens MUST be sent in upper-case but,
+   unless otherwise specified, the value MUST be treated as case-
+   sentitive.
+
+   [TODO: properly flesh out the description on 005 tokens]
+
+   A list of known RPL_ISUPPORT tokens is given in Appendix A
+
+4.  Command details
+
+   The server to which a client is connected is required to parse the
+   complete message, returning any appropriate errors.  If the server
+   encounters a fatal error while parsing a message, an error must be
+   sent back to the client and the parsing terminated.  A fatal error
+   may be considered to be incorrect command, a destination which is
+   otherwise unknown to the server (server, nick or channel names fit
+   this category), not enough parameters or incorrect privileges.
+
+   If a full set of parameters is presented, then each must be checked
+   for validity and appropriate responses sent back to the client.  In
+   the case of messages which use parameter lists using the comma as an
+   item separator, a reply MUST be sent for each item.
+
+
+
+Allnutt                Expires September 16, 2015               [Page 9]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   In the examples below, some messages appear using the full format:
+   :Name COMMAND parameter list
+
+   Such examples represent a message from "Name" in transit between
+   servers, where it is essential to include the name of the original
+   sender of the message so remote servers may send back a reply along
+   the correct path.
+
+4.1.  AWAY command
+
+   Command: AWAY
+   Parameters: [message]
+
+   With the AWAY message, clients can set an automatic reply string for
+   any PRIVMSG commands directed at them (not to a channel they are on).
+   The automatic reply is sent by the server to client sending the
+   PRIVMSG command.  The only replying server is the one to which the
+   sending client is connected to.
+
+   The AWAY message is used either with one parameter (to set an AWAY
+   message) or with no parameters (to remove the AWAY message).
+
+   Numeric Replies:
+
+      RPL_UNAWAY
+
+      RPL_NOWAWAY
+
+   Examples:
+
+      AWAY :Gone to lunch.  Back in 5
+      ; set away message to "Gone to lunch.  Back in 5".
+
+      :WiZ AWAY
+      ; unmark WiZ as being away.
+
+4.2.  CAP command
+
+   The CAP message takes a single required subcommand, optionally
+   followed by a single parameter of space-seperated capability
+   identifiers.  Each capability in the list MAY be preceded by a
+   capability modifier (see Section 4.2.1).
+
+   The subcommands for CAP are: LS, LIST, REQ, ACK, NAK, CLEAR, and END
+   (See Section 4.2.2).
+
+   The LS, LIST, REQ, ACK and NAK subcommands MAY be followed by a
+   single parameter containing a space-seperated list of capabilities.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 10]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   If more than one capability is named, the designated sentinel (":")
+   for a multi-parameter argument MUST be present.
+
+   If a client sends a subcommand which is not in the list above or
+   otherwise issues an invalid command, then numeric 410
+   (ERR_INVALIDCAPCMD) MUST be sent.  The first parameter after the
+   client identifier (usually nickname) MUST be the commandname; the
+   second parameter SHOULD be a human-readable description of the error.
+
+   Replies from the server must contain the client identifier name or an
+   asterisk ("*") if one is not yet available.
+
+4.2.1.  Capability modifiers
+
+   There are three capability modifiers specified by this document.  If
+   a capability modifier is to be used, it MUST directly procede the
+   capability identifier.
+
+   The capability modifiers are:
+
+   o  "-" modifier (disable): this modifier indicates that the
+      capability is being disabled.
+
+   o  "~" modifier (ack): this modifier indicates the client must
+      acknowledge the capability using an ACK subcommand.
+
+   o  "=" modifier (sticky): this modifier indicates that the specified
+      capability may not be disabled.
+
+4.2.2.  CAP subcommands
+
+4.2.2.1.  CAP LS subcommand
+
+   The LS subcommand is used to list the capabilities supported by the
+   server.  The client should send an LS subcommand with no other
+   arguments to solicit a list of all capabilities.
+
+   If a client issues an LS subcommand, registration must be suspended
+   until an END subcommand is received.
+
+   Example:
+
+
+
+         Client: CAP LS
+
+         Server: CAP * LS :multi-prefix sasl
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 11]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.2.2.2.  CAP LIST subcommand
+
+   The LIST subcommand is used to list the capabilities associated with
+   the active connection.  The client should send a LIST subcommand with
+   no other arguments to solicit a list of active capabilities.
+
+   If no capabilities are active, an empty parameter must be sent.
+
+   Example:
+
+
+
+         Client: CAP LIST
+
+         Server: CAP * LIST :multi-prefix
+
+4.2.2.3.  CAP REQ subcommand
+
+   The REQ subcommand is used to request a change in capabilities
+   associated with the active connection.  It's sole parameter must be a
+   list of space-separated capability identifiers.  Each capability
+   identifier may be prefixed with a dash (-) to designate that the
+   capability should be disabled.
+
+   The capability identifier set must be accepted as a whole, or
+   rejected entirely.
+
+   If a client issues a REQ subcommand, registration must be suspended
+   until an END subcommand is received.
+
+   Example:
+
+
+
+         Client: CAP REQ :multi-prefix sasl
+
+         Server: CAP * ACK :multi-prefix sasl
+
+4.2.2.4.  CAP ACK subcommand
+
+   The ACK subcommand has three uses:
+
+   o  the server sends it to acknowledge a REQ subcommand;
+
+   o  the server sends it to acknowledge a CLEAR subcommand;
+
+   o  the client sends it to acknowledge capabilities which require
+      client-side acknowledgement.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 12]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   If an ACK reply originating from the server is spread across multiple
+   lines, a client MUST NOT change capabilities until the last ACK of
+   the set is received.  Equally, a server MUST NOT change the
+   capabilities of the client until the last ACK of the set has been
+   sent.
+
+   In the first usage, acknowledging a REQ subcommand, the ACK
+   subcommand has a single parameter consisting of a space separated
+   list of capability names, which may optionally be preceded with one
+   or more modifiers (see Section 4.2.1 for details of capability
+   modifiers).
+
+   The second usage, acknowledging a CLEAR subcommand, is similar to the
+   first usage.  When a CLEAR subcommand is issued, all non-"sticky"
+   capabilities are disabled, and a set of ACK subcommands will be
+   generated by the server with the disable modifier preceding each
+   capability.
+
+   The third usage is when, in the preceding two cases, some capability
+   names have been preceded with the ack modifier.  ACK in this case is
+   used to fully enable or disable the capability.  Clients MUST NOT
+   issue an ACK subcommand for any capability not marked with the ack
+   modifier in a server-generated ACK subcommand.
+
+4.2.2.5.  CAP NAK subcommand
+
+   The NAK subcommand designates that the requested capability change
+   was rejected.  The server MUST NOT make any change to any
+   capabilities if it replies with a NAK subcommand.
+
+   The argument of the NAK subcommand MUST consist of at least the first
+   100 characters of the capability list in the REQ subcommand which
+   triggered the NAK.
+
+4.2.2.6.  CAP CLEAR subcommand
+
+   The CLEAR subcommand requests that the server clear the capability
+   set for the client.  The server MUST respond with a set of ACK
+   subcommands indicating the capabilities being deactivated.
+
+4.2.2.7.  CAP END subcommand
+
+   The END subcommand signals to the server that capability negotiation
+   is complete and requests that the server continue with client
+   registration.  If the client is already registered, this command MUST
+   be ignored by the server.
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 13]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   Clients that support capabilities but do not wish to enter
+   negotiation SHOULD send CAP END upon connection to the server.
+
+4.3.  CONNECT command
+
+   Command: CONNECT
+   Parameters: <target server> [<port> [<remote server>]]
+
+   The CONNECT command can be used to force a server to try to establish
+   a new connection to another server immediately.  CONNECT is a
+   privileged command and is to be available only to IRC Operators.  If
+   a remote server is given then the CONNECT attempt is made by that
+   server to <target server> and <port>.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOPRIVILEGES
+
+   Examples:
+
+      CONNECT tolsun.oulu.fi
+      ; Attempt to connect a server totolsun.oulu.fi
+
+      :WiZ CONNECT eff.org 6667 csd.bu.edu
+      ; CONNECT attempt by WiZ to get servers eff.org and csd.bu.edu
+      connected on port 6667.
+
+4.4.  ERROR command
+
+   Command: ERROR
+   Parameters: :<error message>
+
+   The ERROR command is for use by servers when reporting a serious or
+   fatal error to its operators.  It may also be sent from one server to
+   another but must not be accepted from any normal unknown clients.
+
+   An ERROR message is for use for reporting errors which occur with a
+   server-to-server link only.  An ERROR message is sent to the server
+   at the other end (which sends it to all of its connected operators)
+   and to all operators currently connected.  It is not to be passed
+   onto any other servers by a server if it is received from a server.
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 14]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   When a server sends a received ERROR message to its operators, the
+   message should be encapsulated inside a NOTICE message, indicating
+   that the client was not responsible for the error.
+
+   Numeric Replies:
+   None.
+
+   Examples:
+
+      ERROR :Server *.fi already exists
+      ; ERROR message to the other server which caused this error.
+
+      NOTICE WiZ :ERROR from csd.bu.edu -- Server *.fi already exists
+      ; Same ERROR message as above but sent to user WiZ on the other
+      server.
+
+4.5.  INFO command
+
+   Command: INFO
+   Parameters: [<server>]
+
+   The INFO command is required to return information which describes
+   the server: its version, when it was compiled, the patchlevel, when
+   it was started, and any other miscellaneous information which may be
+   considered to be relevant.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_INFO
+
+      RPL_ENDOFINFO
+
+   Examples:
+
+      INFO csd.bu.edu
+      ; request an INFO reply from csd.bu.edu
+
+      :Avalon INFO *.fi
+      ; INFO request from Avalon for first server found to match *.fi.
+
+      INFO Angel
+      ; request info from the server that Angel is connected to.
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 15]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.6.  INVITE command
+
+   Command: INVITE
+   Parameters: <nickname> <channel>
+
+   he INVITE message is used to invite users to a channel.  The
+   parameter <nickname> is the nickname of the person to be invited to
+   the target channel <channel>.  There is no requirement that the
+   channel the target user is being invited to must exist or be a valid
+   channel.  To invite a user to a channel which is invite only (MODE
+   +i), the client sending the invite must be recognised as being a
+   channel operator on the given channel.
+
+   Numeric Replies:
+
+      RPL_INVITING
+
+      RPL_AWAY
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOSUCHNICK
+
+      ERR_NOTONCHANNEL
+
+      ERR_USERONCHANNEL
+
+      ERR_CHANOPRIVSNEEDED
+
+   Examples:
+
+      :Angel INVITE Wiz #Dust
+      ; User Angel inviting WiZ to channel #Dust
+
+      INVITE Wiz #Twilight_Zone
+      ; Command to invite WiZ to #Twilight_zone
+
+4.7.  ISON command
+
+   Command: ISON
+   Parameters: <nickname>{<space><nickname>}
+
+   The ISON command was implemented to provide a quick and efficient
+   means to get a response about whether a given nickname was currently
+   on IRC.  ISON only takes one (1) parameter: a space-separated list of
+   nicks.  For each nickname in the list that is present, the server
+   adds that to its reply string.  Thus the reply string may return
+   empty (none of the given nicks are present), an exact copy of the
+
+
+
+Allnutt                Expires September 16, 2015              [Page 16]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   parameter string (all of them present) or as any other subset of the
+   set of nicks given in the parameter.  The only limit on the number of
+   nicks that may be checked is that the combined length must not be too
+   large as to cause the server to chop it off so it fits in 512
+   characters.
+
+   ISON is only be processed by the server local to the client sending
+   the command and thus not passed onto other servers for further
+   processing.
+
+   Numeric Replies:
+
+      ERR_NEEDMOREPARAMS
+
+      RPL_ISON
+
+   Examples:
+
+      ISON phone trillian WiZ jarlek Avalon Angel Monstah
+      ; Sample ISON request for 7 nicks.
+
+4.8.  JOIN command
+
+   Command: JOIN
+   Parameters: <channel>{,<channel>} [<key>{,<key>}]
+
+   The JOIN command is used by client to start listening a specific
+   channel.  Whether or not a client is allowed to join a channel is
+   checked only by the server the client is connected to; all other
+   servers automatically add the user to the channel when it is received
+   from other servers.  The conditions which affect this are as follows:
+
+   1.  the user must be invited if the channel is invite-only;
+
+   2.  the user's nick/username/hostname must not match any active bans;
+
+   3.  the correct key (password) must be given if it is set.
+
+   These are discussed in more detail under the MODE command (see
+   Section 4.13 for more details).
+
+   Once a user has joined a channel, they receive notice about all
+   commands their server receives which affect the channel.  This
+   includes MODE, KICK, PART, QUIT and of course PRIVMSG/NOTICE.  The
+   JOIN command needs to be broadcast to all servers so that each server
+   knows where to find the users who are on the channel.  This allows
+   optimal delivery of PRIVMSG/NOTICE messages to the channel.
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 17]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   If a JOIN is successful, the user is then sent the channel's topic
+   (using RPL_TOPIC) and the list of users who are on the channel (using
+   RPL_NAMREPLY), which must include the user joining.
+
+   Numeric replies:
+
+      RPL_TOPIC
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_BANNEDFROMCHAN
+
+      ERR_INVITEONLYCHAN
+
+      ERR_BADCHANNELKEY
+
+      ERR_CHANNELISFULL
+
+      ERR_BADCHANMASK
+
+      ERR_NOSUCHCHANNEL
+
+      ERR_TOOMANYCHANNELS
+
+   Examples:
+
+      JOIN #foobar
+      ; join channel #foobar.
+
+      JOIN &foo fubar
+      ; join channel &foo using key "fubar".
+
+      JOIN #foo,&bar fubar
+      ; join channel #foo using key "fubar" and &bar using no key.
+
+      JOIN #foo,#bar fubar,foobar
+      ; join channel #foo using key "fubar" and channel #bar using key
+      "foobar".
+
+      JOIN #foo,#bar
+      ; join channels #foo and #bar.
+
+      :WiZ JOIN #Twilight_zone
+      ; JOIN message from WiZ
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 18]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.9.  KICK command
+
+   Command: KICK
+   Parameters: <channel>{,<channel>} <user>{,<user>} [<comment>]
+
+   The KICK command can be used to forcibly remove a user from a
+   channel.  It 'kicks them out' of the channel (forced PART).
+
+   Only a channel operator may kick another user out of a channel.  Each
+   server that receives a KICK message checks that it is valid (ie the
+   sender is actually a channel operator) before removing the victim
+   from the channel.
+
+   Numeric Replies:
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOSUCHCHANNEL
+
+      ERR_BADCHANMASK
+
+      ERR_CHANOPRIVSNEEDED
+
+      ERR_NOTONCHANNEL
+
+   Examples:
+
+      KICK &Melbourne Matthew ; Kick Matthew from &Melbourne
+
+      KICK #Finnish John :Speaking English ; Kick John from #Finnish
+      using "Speaking English" as the reason (comment).
+
+      :WiZ KICK #Finnish John ; KICK message from WiZ to remove John
+      from channel #Finnish
+
+4.10.  KILL command
+
+   Command: KILL
+   Parameters: <nickname> <comment>
+
+   The KILL message is used to cause a client-server connection to be
+   closed by the server which has the actual connection.  KILL is used
+   by servers when they encounter a duplicate entry in the list of valid
+   nicknames and is used to remove both entries.  It is also available
+   to operators.
+
+   Clients which have automatic reconnect algorithms effectively make
+   this command useless since the disconnection is only brief.  It does
+
+
+
+Allnutt                Expires September 16, 2015              [Page 19]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   however break the flow of data and can be used to stop large amounts
+   of being abused, any user may elect to receive KILL messages
+   generated for others to keep an 'eye' on would be trouble spots.
+
+   In an arena where nicknames are required to be globally unique at all
+   times, KILL messages are sent whenever 'duplicates' are detected
+   (that is an attempt to register two users with the same nickname) in
+   the hope that both of them will disappear and only 1 reappear.
+
+   The comment given must reflect the actual reason for the KILL.  For
+   server-generated KILLs it usually is made up of details concerning
+   the origins of the two conflicting nicknames.  For users it is left
+   up to them to provide an adequate reason to satisfy others who see
+   it.  To prevent/discourage fake KILLs from being generated to hide
+   the identify of the KILLer, the comment also shows a 'kill-path'
+   which is updated by each server it passes through, each prepending
+   its name to the path.
+
+   NOTE:
+   It is recommended that only Operators be allowed to kill other users
+   with KILL message.  In an ideal world not even operators would need
+   to do this and it would be left to servers to deal with.
+
+   Numeric Replies:
+
+      ERR_NOPRIVILEGES
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOSUCHNICK
+
+      ERR_CANTKILLSERVER
+
+   Examples:
+
+      KILL David (csd.bu.edu <- tolsun.oulu.fi)
+      ; Nickname collision between csd.bu.edu and tolson.oulu.fi
+
+4.11.  LINKS command
+
+   Command: LINKS
+   Parameters: [<remote server> [<server mask>]]
+
+   With LINKS, a user can list all servers which are known by the server
+   answering the query.  The returned list of servers must match the
+   mask, or if no mask is given, the full list is returned.
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 20]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   If <remote server> is given in addition to <server mask>, the LINKS
+   command is forwarded to the first server found that matches that name
+   (if any), and that server is then required to answer the query.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_LINKS
+
+      RPL_ENDOFLINKS
+
+   Examples:
+
+      LINKS *.au ; list all servers which have a name that matches *.au;
+
+
+      :WiZ LINKS *.bu.edu *.edu
+      ; LINKS message from WiZ to the first server matching *.edu for a
+      list of servers matching *.bu.edu.
+
+4.12.  LIST command
+
+   Command: LIST
+   Parameters: [<channel>{,<channel>}]
+
+   The list message is used to list channels and their topics.  If the
+   <channel> parameter is used, only the status of that channel is
+   displayed.  Private channels are listed (without their topics) as
+   channel "Prv" unless the client generating the query is actually on
+   that channel.  Likewise, secret channels are not listed at all unless
+   the client is a member of the channel in question.
+
+   Numeric Replies:
+
+      RPL_LISTSTART
+
+      RPL_LIST
+
+      RPL_LISTEND
+
+      ERR_NOSUCHSERVER
+
+   Examples:
+
+      LIST
+      ; List all channels.
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 21]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      LIST #twilight_zone,#42
+      ; List channels #twilight_zone and #42
+
+4.13.  MODE command
+
+   Command: MODE
+
+   The MODE command is a dual-purpose command in IRC.  It allows both
+   usernames and channels to have their mode changed.
+
+   When parsing MODE messages, it is recommended that the entire message
+   be parsed first and then the changes which resulted then passed on.
+
+4.13.1.  Channel modes
+
+   Parameters: <channel> {[+|-]|<mode>} {[<mode parameter>]}
+
+   The MODE command is provided so that channel operators may change the
+   characteristics of 'their' channel.  It is also REQUIRED that servers
+   be able to change channel modes so that channel operators may be
+   created.
+
+   The various standard modes available for channels are as follows:
+
+      o - give/take channel operator privileges;
+
+      p - private channel flag;
+
+      s - secret channel flag;
+
+      i - invite-only channel flag;
+
+      t - topic settable by channel operator only flag;
+
+      n - no messages to channel from clients on the outside;
+
+      m - moderated channel;
+
+      l - set the user limit to channel;
+
+      b - set a ban mask to keep users out;
+
+      v - give/take the ability to speak on a moderated channel;
+
+      k - set a channel key (password).
+
+   Servers MAY offer additional channel modes in addition to those
+   listed here.  Servers MUST list the channel modes they support in the
+
+
+
+Allnutt                Expires September 16, 2015              [Page 22]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   RPL_ISUPPORT numeric sent after client registration (see Section 3.2
+   for more details).
+
+   Numeric Replies:
+
+      RPL_CHANNELMODEIS
+
+      RPL_BANLIST
+
+      RPL_ENDOFBANLIST
+
+      ERR_KEYSET
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_CHANOPRIVSNEEDED
+
+      ERR_NOSUCHNICK
+
+      ERR_NOTONCHANNEL
+
+      ERR_UNKNOWNMODE
+
+   Examples:
+
+      MODE #Finnish +im
+      ; Makes #Finnish channel moderated and 'invite-only'.
+
+      MODE #Finnish +o Kilroy
+      ; Gives 'chanop' privileges to Kilroy on channel #Finnish.
+
+      MODE #Finnish +v Wiz
+      ; Allow WiZ to speak on #Finnish.
+
+      MODE #Fins -s
+      ; Removes 'secret' flag from channel #Fins.
+
+      MODE #42 +k oulu
+      ; Set the channel key to "oulu".
+
+      MODE #eu-opers +l 10
+      ; Set the limit for the number of users on channel to 10.
+
+      MODE &oulu +b
+      ; list ban masks set for channel.
+
+      MODE &oulu +b *!*@*
+      ; prevent all users from joining.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 23]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      MODE &oulu +b *!*@*.edu
+      ; prevent any user from a hostname matching *.edu from joining.
+
+4.13.2.  User modes
+
+   Parameters: <nickname> {[+|-]|<mode>}
+
+   The user MODEs are typically changes which affect either how the
+   client is seen by others or what 'extra' messages the client is sent.
+   A user MODE command MUST only be accepted if both the sender of the
+   message and the nickname given as a parameter are both the same,
+   although servers and opers MAY also be able to change some user
+   modes.
+
+   The various standard modes available for users are as follows:
+
+      i - marks a users as invisible;
+
+      s - marks a user for receipt of server notices;
+
+      w - user receives wallops;
+
+      o - operator flag.
+
+   Servers MAY offer additional user modes in addition to those listed
+   here.  Servers MUST list the user modes they support in the
+   RPL_ISUPPORT numeric sent after client registration (see Section 3.2
+   for more details).
+
+   If a user attempts to make themselves an operator using the "+o"
+   flag, the attempt should be ignored.  There is no restriction,
+   however, on anyone `deopping' themselves (using "-o").
+
+   Numeric Replies:
+
+      RPL_UMODEIS
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOSUCHNICK
+
+      ERR_NOSUCHCHANNEL
+
+      ERR_USERSDONTMATCH
+
+      ERR_UMODEUNKNOWNFLAG
+
+   Examples:
+
+
+
+Allnutt                Expires September 16, 2015              [Page 24]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      :MODE WiZ -w
+      ; turns reception of WALLOPS messages off for WiZ.
+
+      :Angel MODE Angel +i
+      ; Message from Angel to make themselves invisible.
+
+      MODE WiZ -o
+      ; WiZ 'deopping' (removing operator status).  The plain reverse of
+      this command ("MODE WiZ +o") must not be allowed from users since
+      would bypass the OPER command.
+
+4.14.  NAMES command
+
+   Command: NAMES
+   Parameters: [<channel>{,<channel>}]
+
+   By using the NAMES command, a user can list all nicknames that are
+   visible to them on any channel that they can see.  Channel names
+   which they can see are those which aren't private (+p) or secret (+s)
+   or those which they are actually on.  The <channel> parameter
+   specifies which channel(s) to return information about if valid.
+   There is no error reply for bad channel names.
+
+   If no <channel> parameter is given, a list of all channels and their
+   occupants is returned.  At the end of this list, a list of users who
+   are visible but either not on any channel or not on a visible channel
+   are listed as being on 'channel' "*".
+
+   Numerics:
+
+      RPL_NAMREPLY
+
+      RPL_ENDOFNAMES
+
+   Examples:
+
+      NAMES #twilight_zone,#42
+      ; list visible users on #twilight_zone and #42 if the channels are
+      visible to you.
+
+      NAMES
+      ; list all visible channels and users
+
+4.15.  NICK command
+
+   Command: NICK
+   Parameters: <nickname>
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 25]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   The NICK message is used to give user a nickname or change the
+   previous one.
+
+   If a NICK message arrives at a server which already knows about an
+   identical nickname for another client, a nickname collision occurs.
+   As a result of a nickname collision, all instances of the nickname
+   are removed from the server's database, and a KILL command is issued
+   to remove the nickname from all other server's database.  If the NICK
+   message causing the collision was a nickname change, then the
+   original (old) nick must be removed as well.
+
+   If the server recieves an identical NICK from a client which is
+   directly connected, it may issue an ERR_NICKCOLLISION to the local
+   client, drop the NICK command, and not generate any kills.
+
+   Numeric replies:
+
+      ERR_NONICKNAMEGIVEN
+
+      ERR_ERRONEUSNICKNAME
+
+      ERR_NICKNAMEINUSE
+
+      ERR_NICKCOLLISION
+
+4.16.  NOTICE command
+
+   Command: NOTICE
+   Parameters: <receiver>{,<receiver>} :<text to be sent>
+
+   The NOTICE message is used similarly to PRIVMSG.  The difference
+   between NOTICE and PRIVMSG is that automatic replies must never be
+   sent in response to a NOTICE message.  This rule applies to servers
+   too - they must not send any error reply back to the client on
+   receipt of a notice.  The object of this rule is to avoid loops
+   between a client automatically sending something in response to
+   something it received.  This is typically used by automatons (clients
+   with either an AI or other interactive program controlling their
+   actions) which are always seen to be replying lest they end up in a
+   loop with another automaton.
+
+   See PRIVMSG for more details on replies and examples.
+
+   Numeric Replies:
+
+      ERR_NORECIPIENT
+
+      ERR_NOTEXTTOSEND
+
+
+
+Allnutt                Expires September 16, 2015              [Page 26]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      ERR_CANNOTSENDTOCHAN
+
+      ERR_NOTOPLEVEL
+
+      ERR_WILDTOPLEVEL
+
+      ERR_TOOMANYTARGETS
+
+      ERR_NOSUCHNICK
+
+      RPL_AWAY
+
+   Examples:
+
+      :Angel PRIVMSG Wiz :Hello are you receiving this message?
+      ; Message from Angel to Wiz.
+
+      PRIVMSG Angel :yes I'm receiving it receiving it!
+      ;Message to Angel.
+
+      PRIVMSG jto@tolsun.oulu.fi :Hello!
+      ; Message to a client on server tolsun.oulu.fi with username of
+      "jto".
+
+      PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.
+      ; Message to everyone on a server which has a name matching *.fi.
+
+      PRIVMSG #*.edu :NSFNet is undergoing work, expect interruptions
+      ; Message to all users who come from a host which has a name
+      matching *.edu.
+
+4.17.  OPER command
+
+   Command: OPER
+   Parameters: <user> <password>
+
+   OPER message is used by a normal user to obtain operator privileges.
+   The combination of <user> and <password> are required to gain
+   Operator privileges.
+
+   If the client sending the OPER command supplies the correct password
+   for the given user, the server then informs the rest of the network
+   of the new operator by issuing a "MODE +o" for the clients nickname.
+
+   Numeric Replies:
+
+      RPL_YOUREOPER
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 27]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOOPERHOST
+
+      ERR_PASSWDMISMATCH
+
+   Example:
+
+      OPER foo bar
+      ; Attempt to register as an operator using a username of "foo" and
+      "bar" as the password.
+
+4.18.  PART command
+
+   Command: PART
+   Parameters: <channel>{,<channel>}
+
+   The PART message causes the client sending the message to be removed
+   from the list of active users for all given channels listed in the
+   parameter string.
+
+   Numeric Replies:
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_NOSUCHCHANNEL
+
+      ERR_NOTONCHANNEL
+
+   Examples:
+
+      PART #twilight_zone
+      ; leave channel "#twilight_zone"
+
+      PART #oz-ops,&group5
+      ; leave both channels "&group5" and "#oz-ops".
+
+4.19.  PASS command
+
+   Command: PASS
+   Parameters: <password>
+
+   Numeric replies:
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_ALREADYREGISTRED
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 28]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.20.  PING command
+
+   Command: PING
+   Parameters: <server1> [<server2>]
+
+   The PING message is used to test the presence of an active client at
+   the other end of the connection.  A PING message is sent at regular
+   intervals if no other activity detected coming from a connection.  If
+   a connection fails to respond to a PING command within a set amount
+   of time, that connection is closed.
+
+   Any client which receives a PING message must respond to <server1>
+   (server which sent the PING message out) as quickly as possible with
+   an appropriate PONG message to indicate it is still there and alive.
+   Servers should not respond to PING commands but rely on PINGs from
+   the other end of the connection to indicate the connection is alive.
+   If the <server2> parameter is specified, the PING message gets
+   forwarded there.
+
+   Numeric Replies:
+
+      ERR_NOORIGIN
+
+      ERR_NOSUCHSERVER
+
+   Examples:
+
+      PING tolsun.oulu.fi
+      ; server sending a PING message to another server to indicate it
+      is still alive.
+
+      PING WiZ
+      ; PING message being sent to nick WiZ
+
+4.21.  PONG command
+
+   Command: PONG
+   Parameters: <daemon1> [<daemon2>]
+
+   PONG message is a reply to ping message.  If parameter <daemon2> is
+   given this message must be forwarded to given daemon.  The <daemon>
+   parameter is the name of the daemon who has responded to PING message
+   and generated this message.
+
+   Numeric Replies:
+
+      ERR_NOORIGIN
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 29]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      ERR_NOSUCHSERVER
+
+   Examples:
+
+      PONG csd.bu.edu tolsun.oulu.fi
+      ; PONG message from csd.bu.edu to tolsun.oulu.fi
+
+4.22.  PRIVMSG command
+
+   Command: PRIVMSG
+   Parameters: <receiver>{,<receiver>} :<text to be sent>
+
+   PRIVMSG is used to send private messages between users.  <receiver>
+   is the nickname of the receiver of the message.  <receiver> can also
+   be a list of names or channels separated with commas.
+
+   The <receiver> parameter may also me a host mask (#mask) or server
+   mask ($mask).  In both cases the server will only send the PRIVMSG to
+   those who have a server or host matching the mask.  The mask must
+   have at least 1 (one) "." in it and no wildcards following the last
+   ".".  This requirement exists to prevent people sending messages to
+   "#*" or "$*", which would broadcast to all users; from experience,
+   this is abused more than used responsibly and properly.  Wildcards
+   are the '*' and '?' characters.  This extension to the PRIVMSG
+   command is only available to Operators.
+
+   Numeric Replies:
+
+      ERR_NORECIPIENT
+
+      ERR_NOTEXTTOSEND
+
+      ERR_CANNOTSENDTOCHAN
+
+      ERR_NOTOPLEVEL
+
+      ERR_WILDTOPLEVEL
+
+      ERR_TOOMANYTARGETS
+
+      ERR_NOSUCHNICK
+
+      RPL_AWAY
+
+   Examples:
+
+      :Angel PRIVMSG Wiz :Hello are you receiving this message?
+      ; Message from Angel to Wiz.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 30]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      PRIVMSG Angel :yes I'm receiving it receiving it!
+      ;Message to Angel.
+
+      PRIVMSG jto@tolsun.oulu.fi :Hello!
+      ; Message to a client on server tolsun.oulu.fi with username of
+      "jto".
+
+      PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.
+      ; Message to everyone on a server which has a name matching *.fi.
+
+      PRIVMSG #*.edu :NSFNet is undergoing work, expect interruptions
+      ; Message to all users who come from a host which has a name
+      matching *.edu.
+
+4.23.  QUIT command
+
+   Command: QUIT
+   Parameters: [<quit message>]
+
+   A client session is ended with a quit message.  The server must close
+   the connection to a client which sends a QUIT message.  If a "Quit
+   Message" is given, this will be sent instead of the default message,
+   the nickname.
+
+   When netsplits (disconnecting of two servers) occur, the quit message
+   is composed of the names of two servers involved, separated by a
+   space.  The first name is that of the server which is still connected
+   and the second name is that of the server that has become
+   disconnected.
+
+   If, for some other reason, a client connection is closed without the
+   client issuing a QUIT command (e.g. client dies and EOF occurs on
+   socket), the server is required to fill in the quit message with some
+   sort of message reflecting the nature of the event which caused it to
+   happen.
+
+   Example:
+
+      QUIT :Gone to lunch
+
+4.24.  REHASH command
+
+   Command: REHASH
+   Parameters: None
+
+   The rehash message can be used by the operator to force the server to
+   re-read and process its configuration file.
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 31]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   Numeric Replies:
+
+      RPL_REHASHING
+
+      ERR_NOPRIVILEGES
+
+   Examples:
+
+      REHASH
+      ; message from client with operator status to server asking it to
+      reread its configuration file.
+
+4.25.  RESTART command
+
+   Command: RESTART
+   Parameters: None
+
+   The restart message can only be used by an operator to force a server
+   restart itself.  This message is optional since it may be viewed as a
+   risk to allow arbitrary people to connect to a server as an operator
+   and execute this command, causing (at least) a disruption to service.
+
+   The RESTART command must always be fully processed by the server to
+   which the sending client is connected and not be passed onto other
+   connected servers.
+
+   Numeric Replies:
+
+      ERR_NOPRIVILEGES
+
+   Examples:
+
+      RESTART
+      ; no parameters required.
+
+4.26.  STATS command
+
+   Command: STATS Parameters: [<query> [<server>]]
+
+   The stats message is used to query statistics of certain server.  If
+   <server> parameter is omitted, only the end of stats reply is sent
+   back.  The implementation of this command is highly dependent on the
+   server which replies, although the server must be able to supply
+   information as described by the queries below (or similar).
+
+   A query may be given by any single letter which is only checked by
+   the destination server (if given as the <server> parameter) and is
+   otherwise passed on by intermediate servers, ignored and unaltered.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 32]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   All servers SHOULD be able to supply a valid reply to a STATS query
+   which is consistent with the reply formats currently used and the
+   purpose of the query.
+
+   [TODO: Insert list of supported STATS queries, numeric replies and
+   examples]
+
+4.27.  TIME command
+
+   Command: TIME
+   Parameters: [<server>>]
+
+   The time message is used to query local time from the specified
+   server.  If the server parameter is not given, the server handling
+   the command must reply to the query.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_TIME
+
+   Examples:
+
+      TIME tolsun.oulu.fi
+      ; check the time on the server "tolson.oulu.fi"
+
+      Angel TIME *.au
+      ; user angel checking the time on a server matching "*.au"
+
+4.28.  TOPIC command
+
+   Command: TOPIC
+   Parameters: <channel> [<topic>]
+
+   The TOPIC message is used to change or view the topic of a channel.
+   The topic for channel <channel> is returned if there is no <topic>
+   given.  If the <topic> parameter is present, the topic for that
+   channel will be changed, if the channel modes permit this action.
+
+   Numeric Replies:
+
+      RPL_TOPIC
+
+      RPL_NOTOPIC
+
+      ERR_NEEDMOREPARAMS
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 33]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      ERR_NOTONCHANNEL
+
+      ERR_CHANOPRIVSNEEDED
+
+   Examples:
+
+      :Wiz TOPIC #test :New topic
+      ;User Wiz setting the topic.
+
+      TOPIC #test :another topic
+      ;set the topic on #test to "another topic".
+
+      TOPIC #test
+      ; check the topic for #test.
+
+4.29.  TRACE command
+
+   Command: TRACE
+   Parameters: [<server>]
+
+   TRACE command is used to find the route to specific server.  Each
+   server that processes this message must tell the sender about it by
+   sending a reply indicating it is a pass-through link, forming a chain
+   of replies similar to that gained from using "traceroute".  After
+   sending this reply back, it must then send the TRACE message to the
+   next server until given server is reached.  If the <server> parameter
+   is omitted, it is recommended that TRACE command send a message to
+   the sender telling which servers the current server has direct
+   connection to.
+
+   If the destination given by "<server>" is an actual server, then the
+   destination server is required to report all servers and users which
+   are connected to it, although only operators are permitted to see
+   users present.  If the destination given by <server> is a nickname,
+   they only a reply for that nickname is given.
+
+   If the TRACE message is destined for another server, all intermediate
+   servers must return a RPL_TRACELINK reply to indicate that the TRACE
+   passed through it and where its going next.
+
+   A TRACE reply may be composed of any number of the following numeric
+   replies.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_TRACECONNECTING
+
+
+
+Allnutt                Expires September 16, 2015              [Page 34]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      RPL_TRACEUNKNOWN
+
+      RPL_TRACEOPERATOR
+
+      RPL_TRACEUSER
+
+      RPL_TRACESERVER
+
+      RPL_TRACESERVICE
+
+      RPL_TRACENEWTYPE
+
+      RPL_TRACECLASS
+
+   Examples:
+
+      TRACE *.oulu.fi
+      ; TRACE to a server matching *.oulu.fi
+
+      :WiZ TRACE AngelDust
+      ; TRACE issued by WiZ to nick AngelDust
+
+4.30.  USER command
+
+   Command: USER
+   Parameters: <user> <unused> <unused> <real name>
+
+   The USER command is used at the beginning of connection to specify
+   the username and realname of a new user.  Parameters 2 and 3 are
+   unused but MUST be transmitted for backwards compatibility with
+   version 2 of this protocol.  It is RECOMMENDED that the value of
+   these two parameters be "*".  The <realname> may contain space
+   characters.
+
+   Numeric replies:
+
+      ERR_NEEDMOREPARAMS
+
+      ERR_ALREADYREGISTRED
+
+   Example:
+
+      USER guest * * :Ronnie Reagan
+      ; User registering themselves with a username of "guest" and real
+      name "Ronnie Reagan".
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 35]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.31.  USERHOST command
+
+   Command: USERHOST
+   Parameters: <nickname>{<space><nickname>}
+
+   The USERHOST command takes a list of up to 5 nicknames, each
+   separated by a space character and returns a list of information
+   about each nickname that it found.  The returned list has each reply
+   separated by a space.
+
+   Numeric Replies:
+
+      ERR_NEEDMOREPARAMS
+
+      RPL_USERHOST
+
+   Examples:
+
+      USERHOST Wiz Michael Marty p
+      ;USERHOST request for information on nicks "Wiz", "Michael",
+      "Marty" and "p"
+
+4.32.  USERS command
+
+   Command: USERS
+   Parameters: [<server>]
+
+   The USERS command returns a list of users logged into the server in a
+   similar format to who(1), rusers(1) and finger(1).  Some people may
+   disable this command on their server for security related reasons.
+   If disabled, the correct numeric must be returned to indicate this.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      ERR_FILEERROR
+
+      ERR_USERSDISABLED
+
+      RPL_USERSSTART
+
+      RPL_USERS
+
+      RPL_NOUSERS
+
+      RPL_ENDOFUSERS
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 36]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   Examples:
+
+      USERS eff.org
+      ; request a list of users logged in on server eff.org
+
+      :John USERS tolsun.oulu.fi
+      ; request from John for a list of users logged in on server
+      tolsun.oulu.fi
+
+4.33.  VERSION command
+
+   Command: VERSION
+   Parameters: [<server>]
+
+   The VERSION message is used to query the version of the server
+   program.  An optional parameter <server> is used to query the version
+   of the server program which a client is not directly connected to.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_VERSION
+
+   Examples:
+
+      :Wiz VERSION *.se
+      ; message from Wiz to check the version of a server matching
+      "*.se"
+
+      VERSION tolsun.oulu.fi
+      ; check the version of server "tolsun.oulu.fi".
+
+4.34.  WALLOPS command
+
+   Command: WALLOPS
+   Parameters: Message
+
+   Sends a message to all operators currently online.  After
+   implementing WALLOPS as a user command it was found that it was often
+   and commonly abused as a means of sending a message to a lot of
+   people (much similar to WALL).  Due to this it is recommended that
+   the current implementation of WALLOPS be used as an example by
+   allowing and recognising only servers as the senders of WALLOPS.
+
+   Numeric Replies:
+
+      ERR_NEEDMOREPARAMS
+
+
+
+Allnutt                Expires September 16, 2015              [Page 37]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   Examples:
+
+      :csd.bu.edu WALLOPS :Connect '*.uiuc.edu 6667' from Joshua
+      ; WALLOPS message from csd.bu.edu announcing a CONNECT message it
+      received and acted upon from Joshua.
+
+4.35.  WHO command
+
+   Command: WHO
+   Parameters: [<name> [<o>]]
+
+   The WHO message is used by a client to generate a query which returns
+   a list of information which 'matches' the <name> parameter given by
+   the client.  In the absence of the <name> parameter, all visible
+   (users who aren't invisible (user mode +i) and who don't have a
+   common channel with the requesting client) are listed.  The same
+   result can be achieved by using a <name> of "0" or any wildcard which
+   will end up matching every entry possible.
+
+   The <name> passed to WHO is matched against users' host, server, real
+   name and nickname if the channel <name> cannot be found.
+
+   If the "o" parameter is passed only operators are returned according
+   to the name mask supplied.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      RPL_WHOREPLY
+
+      RPL_ENDOFWHO
+
+   Examples:
+
+      WHO *.fi
+      ; List all users who match against "*.fi".
+
+      PRIVMSG Angel :yes I'm receiving it receiving it!
+      ;Message to Angel.
+
+      WHO jto* o
+      ; List all users with a match against "jto*" if they are an
+      operator.
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 38]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+4.36.  WHOIS command
+
+   Command: WHOIS
+   Parameters: [<server>] <nickmask>[,<nickmask>[,...]]
+
+   This message is used to query information about particular user.  The
+   server will answer this message with several numeric messages
+   indicating different statuses of each user which matches the nickmask
+   (if you are entitled to see them).  If no wildcard is present in the
+   <nickmask>, any information about that nick which you are allowed to
+   see is presented.  A comma (',') separated list of nicknames may be
+   given.
+
+   The latter version sends the query to a specific server.  It is
+   useful if you want to know how long the user in question has been
+   idle as only local server (ie. the server the user is directly
+   connected to) knows that information, while everything else is
+   globally known.
+
+   Numeric Replies:
+
+      ERR_NOSUCHSERVER
+
+      ERR_NONICKNAMEGIVEN
+
+      ERR_NOSUCHNICK
+
+      RPL_WHOISUSER
+
+      RPL_WHOISCHANNELS
+
+      RPL_WHOISCHANNELS
+
+      RPL_WHOISSERVER
+
+      RPL_AWAY
+
+      RPL_WHOISOPERATOR
+
+      RPL_WHOISIDLE
+
+      RPL_ENDOFWHOIS
+
+   Examples:
+
+      WHOIS wiz
+      ; return available user information about nick WiZ
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 39]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      WHOIS eff.org trillian
+      ; ask server eff.org for user information about trillian
+
+4.37.  WHOWAS command
+
+   Command: WHOWAS
+   Parameters: <nickname> [<count> [<server>]]
+
+   Whowas asks for information about a nickname which no longer exists.
+   This may either be due to a nickname change or the user leaving IRC.
+   In response to this query, the server searches through its nickname
+   history, looking for any nicks which are lexically the same (no wild
+   card matching here).  The history is searched backward, returning the
+   most recent entry first.  If there are multiple entries, up to
+   <count> replies will be returned (or all of them if no <count>
+   parameter is given).  If a non-positive number is passed as being
+   <count>, then a full search is done.
+
+   Numeric Replies:
+
+      ERR_NONICKNAMEGIVEN
+
+      ERR_WASNOSUCHNICK
+
+      RPL_WHOWASUSER
+
+      RPL_WHOISSERVER
+
+      RPL_ENDOFWHOWAS
+
+   Examples:
+
+      WHOWAS Wiz
+      ; return all information in the nick history about nick "WiZ";
+
+      WHOWAS Mermaid 9
+      ; return at most, the 9 most recent entries in the nick history
+      for "Mermaid";
+
+      WHOWAS Trillian 1 *.edu
+      ; return the most recent history for "Trillian" from the first
+      server found to match "*.edu".
+
+5.  Numeric replies
+
+   The following is a list of numeric replies which are generated in
+   response to the commands given above.  Each numeric is given with its
+   number, name and reply string.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 40]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+5.1.  Command responses
+
+      001    RPL_WELCOME
+      ":Welcome to the Internet Relay Network <nick>!<user>@<host>"
+
+      002    RPL_YOURHOST
+      ":Your host is <servername>, running version <version>"
+
+      003    RPL_CREATED
+      ":This server was created <date>"
+
+      004    RPL_MYINFO
+      "<server_name> <version> <user_modes> <chan_modes>
+      <channel_modes_with_params> <user_modes_with_params>
+      <server_modes> <server_modes_with_params>"
+
+      005    RPL_ISUPPORT
+      - See Section 3.2 for the format of the 005 numeric
+
+      200    RPL_TRACELINK
+      "Link <version & debug level> <destination> <next server>"
+
+      201    RPL_TRACECONNECTING
+      "Try. <class> <server>"
+
+      202    RPL_TRACEHANDSHAKE
+      "H.S. <class> <server>"
+
+      203    RPL_TRACEUNKNOWN
+      "???? <class> [<client IP address in dot form>]"
+
+      204    RPL_TRACEOPERATOR
+      "Oper <class> <nick>"
+
+      205    RPL_TRACEUSER
+      "User <class> <nick>"
+
+      206    RPL_TRACESERVER
+      "Serv <class> <int>S <int>C <server>
+      <nick!user|*!*>@<host|server>"
+
+      208    RPL_TRACENEWTYPE
+      "<newtype> 0 <client name>"
+
+      211    RPL_STATSLINKINFO
+      "<linkname> <sendq> <sent messages> <sent bytes> <received
+      messages>> <received bytes> <time open>"
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 41]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      212    RPL_STATSCOMMANDS
+      "<command> <count>"
+
+      213    RPL_STATSCLINE
+      "C <host> * <name> <port> <class>"
+
+      214    RPL_STATSNLINE
+      "N <host> * <name> <port> <class>"
+
+      215    RPL_STATSILINE
+      "I <host> * <host> <port> <class>"
+
+      216    RPL_STATSKLINE
+      "K <host> * <username> <port> <class>"
+
+      218    RPL_STATSYLINE
+      "Y <class> <ping frequency> <connect frequency> <max sendq>"
+
+      219    RPL_ENDOFSTATS
+      "<stats letter> :End of /STATS report"
+
+      221    RPL_UMODEIS
+      "<user mode string>"
+
+      241    RPL_STATSLLINE
+      "L <hostmask> * <servername> <maxdepth>"
+
+      242    RPL_STATSUPTIME
+      ":Server Up %d days %d:%02d:%02d"
+
+      243    RPL_STATSOLINE
+      "O <hostmask> * <name>"
+
+      244    RPL_STATSHLINE
+      "H <hostmask> * <servername>"
+
+      251    RPL_LUSERCLIENT
+      ":There are <integer> users and <integer> invisible on <integer>
+      servers"
+
+      252    RPL_LUSEROP
+      "<integer> :operator(s) online"
+
+      253    RPL_LUSERUNKNOWN
+      "<integer> :unknown connection(s)"
+
+      254    RPL_LUSERCHANNELS
+      "<integer> :channels formed"
+
+
+
+Allnutt                Expires September 16, 2015              [Page 42]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      255    RPL_LUSERME
+      ":I have <integer> clients and <integer> servers"
+
+      - In processing an LUSERS message, the server sends a set of
+      replies from RPL_LUSERCLIENT, RPL_LUSEROP, RPL_USERUNKNOWN,
+      RPL_LUSERCHANNELS and RPL_LUSERME.  When replying, a server must
+      send back RPL_LUSERCLIENT and RPL_LUSERME.  The other replies are
+      only sent back if a non-zero count is found for them.
+
+      256    RPL_ADMINME
+      "<server> :Administrative info"
+
+      257    RPL_ADMINLOC1
+      ":<admin info>"
+
+      258    RPL_ADMINLOC2
+      ":<admin info>"
+
+      259    RPL_ADMINEMAIL
+      ":<admin info>"
+
+      - When replying to an ADMIN message, a server is expected to use
+      replies RLP_ADMINME through to RPL_ADMINEMAIL and provide a text
+      message with each.  For RPL_ADMINLOC1 a description of what city,
+      state and country the server is in is expected, followed by
+      details of the university and department (RPL_ADMINLOC2) and
+      finally the administrative contact for the server (an email
+      address here is required) in RPL_ADMINEMAIL.
+
+      261    RPL_TRACELOG
+      "File <logfile> <debug level>"
+
+      - The RPL_TRACE* are all returned by the server in response to the
+      TRACE message.  How many are returned is dependent on the the
+      TRACE message and whether it was sent by an operator or not.
+      There is no predefined order for which occurs first.  Replies
+      RPL_TRACEUNKNOWN, RPL_TRACECONNECTING and RPL_TRACEHANDSHAKE are
+      all used for connections which have not been fully established and
+      are either unknown, still attempting to connect or in the process
+      of completing the 'server handshake'.  RPL_TRACELINK is sent by
+      any server which handles a TRACE message and has to pass it on to
+      another server.  The list of RPL_TRACELINKs sent in response to a
+      TRACE command traversing the IRC network should reflect the actual
+      connectivity of the servers themselves along that path.
+      RPL_TRACENEWTYPE is to be used for any connection which does not
+      fit in the other categories but is being displayed anyway.
+
+      300    RPL_NONE
+
+
+
+Allnutt                Expires September 16, 2015              [Page 43]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      Dummy reply number.  Not used.
+
+      301    RPL_AWAY
+      "<nick> :<away message>"
+
+      302    RPL_USERHOST
+      ":[<reply>{<space><reply>}]"
+
+      - Reply format used by USERHOST to list replies to the query list.
+      The reply string is composed as follows:
+      <reply> ::= <nick>['*'] '=' <'+'|'-'><hostname> The '*' indicates
+      whether the client has registered as an Operator.  The '-' or '+'
+      characters represent whether the client has set an AWAY message or
+      not respectively.
+
+      303    RPL_ISON
+      ":[<nick> {<space><nick>}]"
+
+      305    RPL_UNAWAY
+      ":You are no longer marked as being away"
+
+      306    RPL_NOWAWAY
+      ":You have been marked as being away"
+
+      - These replies are used with the AWAY command (if allowed).
+      RPL_AWAY is sent to any client sending a PRIVMSG to a client which
+      is away.  RPL_AWAY is only sent by the server to which the client
+      is connected.  Replies RPL_UNAWAY and RPL_NOWAWAY are sent when
+      the client removes and sets an AWAY message.
+
+      311    RPL_WHOISUSER
+      "<nick> <user> <host> * :<real name>"
+
+      312    RPL_WHOISSERVER
+      "<nick> <server> :<server info>"
+
+      313    RPL_WHOISOPERATOR
+      "<nick> :is an IRC operator"
+
+      314    RPL_WHOWASUSER
+      "<nick> <user> <host> * :<real name>"
+
+      315    RPL_ENDOFWHO
+      "<name> :End of /WHO list"
+
+      317    RPL_WHOISIDLE
+      "<nick> <integer> :seconds idle"
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 44]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      318    RPL_ENDOFWHOIS
+      "<nick> :End of /WHOIS list"
+
+      319    RPL_WHOISCHANNELS
+      "<nick> :{[@|+]<channel><space>}"
+
+      - Replies 311 - 313, 317 - 319 are all replies generated in
+      response to a WHOIS message.  Given that there are enough
+      parameters present, the answering server must either formulate a
+      reply out of the above numerics (if the query nick is found) or
+      return an error reply.  The '*' in RPL_WHOISUSER is there as the
+      literal character and not as a wild card.  For each reply set,
+      only RPL_WHOISCHANNELS may appear more than once (for long lists
+      of channel names).  The '@' and '+' characters next to the channel
+      name indicate whether a client is a channel operator or has been
+      granted permission to speak on a moderated channel.  The
+      RPL_ENDOFWHOIS reply is used to mark the end of processing a WHOIS
+      message.
+
+      321    RPL_LISTSTART
+      "Channel :Users Name"
+
+      322    RPL_LIST
+      "<channel> <# visible> :<topic>"
+
+      323    RPL_LISTEND
+      ":End of /LIST"
+
+      - Replies RPL_LISTSTART, RPL_LIST, RPL_LISTEND mark the start,
+      actual replies with data and end of the server's response to a
+      LIST command.  If there are no channels available to return, only
+      the start and end reply must be sent.
+
+      324    RPL_CHANNELMODEIS
+      "<channel> <mode> <mode params>"
+
+      331    RPL_NOTOPIC
+      "<channel> :No topic is set"
+
+      332    RPL_TOPIC
+      "<channel> :<topic>"
+
+      - When sending a TOPIC message to determine the channel topic, one
+      of two replies is sent.  If the topic is set, RPL_TOPIC is sent
+      back else RPL_NOTOPIC.
+
+      341    RPL_INVITING
+      "<channel> <nick>"
+
+
+
+Allnutt                Expires September 16, 2015              [Page 45]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      - Returned by the server to indicate that the attempted INVITE
+      message was successful and is being passed onto the end client.
+
+      342    RPL_SUMMONING
+      "<user> :Summoning user to IRC" - Deprecated
+
+      351    RPL_VERSION
+      "<version>.<debuglevel> <server> :<comments>"
+
+      - Reply by the server showing its version details.  The <version>
+      is the version of the software being used (including any
+      patchlevel revisions) and the <debuglevel> is used to indicate if
+      the server is running in "debug mode".
+      The "comments" field may contain any comments about the version or
+      further version details.
+
+      352    RPL_WHOREPLY
+      "<channel> <user> <host> <server> <nick> <H|G>[*][@|+] :<hopcount>
+      <real name>"
+
+      353    RPL_NAMREPLY
+      "<channel> :[[@|+]<nick> [[@|+]<nick> [...]]]"
+
+      364    RPL_LINKS
+      "<mask> <server> :<hopcount> <server info>"
+
+      365    RPL_ENDOFLINKS
+      "<mask> :End of /LINKS list"
+
+      - In replying to the LINKS message, a server must send replies
+      back using the RPL_LINKS numeric and mark the end of the list
+      using an RPL_ENDOFLINKS reply.
+
+      366    RPL_ENDOFNAMES
+      "<channel> :End of /NAMES list"
+
+      367    RPL_BANLIST
+      "<channel> <banid>"
+
+      368    RPL_ENDOFBANLIST
+      "<channel> :End of channel ban list"
+
+      - When listing the active 'bans' for a given channel, a server is
+      required to send the list back using the RPL_BANLIST and
+      RPL_ENDOFBANLIST messages.  A separate RPL_BANLIST is sent for
+      each active banid.  After the banids have been listed (or if none
+      present) a RPL_ENDOFBANLIST must be sent.
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 46]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      369    RPL_ENDOFWHOWAS
+      "<nick> :End of WHOWAS"
+
+      - When replying to a WHOWAS message, a server must use the replies
+      RPL_WHOWASUSER, RPL_WHOISSERVER or ERR_WASNOSUCHNICK for each
+      nickname in the presented list.  At the end of all reply batches,
+      there must be RPL_ENDOFWHOWAS (even if there was only one reply
+      and it was an error).
+
+      371    RPL_INFO
+      ":<string>"
+
+      372    RPL_MOTD
+      ":- <text>"
+
+      374    RPL_ENDOFINFO
+      ":End of /INFO list"
+
+      - A server responding to an INFO message is required to send all
+      its 'info' in a series of RPL_INFO messages with a RPL_ENDOFINFO
+      reply to indicate the end of the replies.
+
+      375    RPL_MOTDSTART
+      ":- <server> Message of the day - "
+
+      376    RPL_ENDOFMOTD
+      ":End of /MOTD command"
+
+      - When responding to the MOTD message and the MOTD file is found,
+      the file is displayed line by line, with each line no longer than
+      80 characters, using RPL_MOTD format replies.  These should be
+      surrounded by a RPL_MOTDSTART (before the RPL_MOTDs) and an
+      RPL_ENDOFMOTD (after).
+
+      381    RPL_YOUREOPER
+      ":You are now an IRC operator"
+
+      - RPL_YOUREOPER is sent back to a client which has just
+      successfully issued an OPER message and gained operator status.
+
+      382    RPL_REHASHING
+      "<config file> :Rehashing"
+
+      - If the REHASH option is used and an operator sends a REHASH
+      message, an RPL_REHASHING is sent back to the operator.
+
+      391    RPL_TIME
+      "<server> :<string showing server's local time>"
+
+
+
+Allnutt                Expires September 16, 2015              [Page 47]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      - When replying to the TIME message, a server must send the reply
+      using the RPL_TIME format above.  The string showing the time need
+      only contain the correct day and time there.  There is no further
+      requirement for the time string.
+
+      392    RPL_USERSSTART
+      ":UserID Terminal Host"
+
+      393    RPL_USERS
+      ":%-8s %-9s %-8s"
+
+      394    RPL_ENDOFUSERS
+      ":End of users"
+
+      395    RPL_NOUSERS
+      ":Nobody logged in"
+
+      - If the USERS message is handled by a server, the replies
+      RPL_USERSTART, RPL_USERS, RPL_ENDOFUSERS and RPL_NOUSERS are used.
+      RPL_USERSSTART must be sent first, following by either a sequence
+      of RPL_USERS or a single RPL_NOUSER.  Following this is
+      RPL_ENDOFUSERS.
+
+5.2.  Error responses
+
+      401    ERR_NOSUCHNICK
+      "<nickname> :No such nick/channel"
+
+      - Used to indicate the nickname parameter supplied to a command is
+      currently unused.
+
+      402    ERR_NOSUCHSERVER
+      "<server name> :No such server"
+
+      - Used to indicate the server name given currently doesn't exist.
+
+      403    ERR_NOSUCHCHANNEL
+      "<channel name> :No such channel"
+
+      - Used to indicate the given channel name is invalid.
+
+      404    ERR_CANNOTSENDTOCHAN
+      "<channel name> :Cannot send to channel"
+
+      - Sent to a user who is either (a) not on a channel which is mode
+      +n or (b) not a chanop (or mode +v) on a channel which has mode +m
+      set and is trying to send a PRIVMSG message to that channel.
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 48]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      405    ERR_TOOMANYCHANNELS
+      "<channel name> :You have joined too many channels"
+
+      - Sent to a user when they have joined the maximum number of
+      allowed channels and they try to join another channel.
+
+      406    ERR_WASNOSUCHNICK
+      "<nickname> :There was no such nickname"
+
+      - Returned by WHOWAS to indicate there is no history information
+      for that nickname.
+
+      407    ERR_TOOMANYTARGETS
+      "<target> :Duplicate recipients.  No message delivered"
+
+      - Returned to a client which is attempting to send a PRIVMSG/
+      NOTICE using the user@host destination format and for a user@host
+      which has several occurrences.
+
+      409    ERR_NOORIGIN
+      ":No origin specified"
+
+      - PING or PONG message missing the originator parameter which is
+      required since these commands must work without valid prefixes.
+
+      410    ERR_INVALIDCAPCMD
+      "<command> :Invalid CAP command"
+
+      411    ERR_NORECIPIENT
+      ":No recipient given (<command>)"
+
+      412    ERR_NOTEXTTOSEND
+      ":No text to send"
+
+      413    ERR_NOTOPLEVEL
+      "<mask> :No toplevel domain specified"
+
+      414    ERR_WILDTOPLEVEL
+      "<mask> :Wildcard in toplevel domain"
+
+      - 412 - 414 are returned by PRIVMSG to indicate that the message
+      wasn't delivered for some reason.  ERR_NOTOPLEVEL and
+      ERR_WILDTOPLEVEL are errors that are returned when an invalid use
+      of "PRIVMSG $<server>" or "PRIVMSG #<host>" is attempted.
+
+      421    ERR_UNKNOWNCOMMAND
+      "<command> :Unknown command"
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 49]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      - Returned to a registered client to indicate that the command
+      sent is unknown by the server.
+
+      422    ERR_NOMOTD
+      ":MOTD File is missing"
+
+      - Server's MOTD file could not be opened by the server.
+
+      423    ERR_NOADMININFO
+      "<server> :No administrative info available"
+
+      - Returned by a server in response to an ADMIN message when there
+      is an error in finding the appropriate information.
+
+      424    ERR_FILEERROR
+      ":File error doing <file op> on <file>"
+
+      - Generic error message used to report a failed file operation
+      during the processing of a message.
+
+      431    ERR_NONICKNAMEGIVEN
+      ":No nickname given"
+
+      - Returned when a nickname parameter expected for a command and
+      isn't found.
+
+      432    ERR_ERRONEUSNICKNAME
+      "<nick> :Erroneus nickname"
+
+      - Returned after receiving a NICK message which contains
+      characters which do not fall in the defined set.
+
+      433    ERR_NICKNAMEINUSE
+      "<nick> :Nickname is already in use"
+
+      - Returned when a NICK message is processed that results in an
+      attempt to change to a currently existing nickname.
+
+      436    ERR_NICKCOLLISION
+      "<nick> :Nickname collision KILL"
+
+      - Returned by a server to a client when it detects a nickname
+      collision (registered of a NICK that already exists by another
+      server).
+
+      441    ERR_USERNOTINCHANNEL
+      "<nick> <channel> :They aren't on that channel"
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 50]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      - Returned by the server to indicate that the target user of the
+      command is not on the given channel.
+
+      442    ERR_NOTONCHANNEL
+      "<channel> :You're not on that channel"
+
+      - Returned by the server whenever a client tries to perform a
+      channel effecting command for which the client isn't a member.
+
+      443    ERR_USERONCHANNEL
+      "<user> <channel> :is already on channel"
+
+      - Returned when a client tries to invite a user to a channel they
+      are already on.
+
+      444    ERR_NOLOGIN
+      "<user> :User not logged in"
+
+      - Returned by the summon after a SUMMON command for a user was
+      unable to be performed since they were not logged in.
+
+      445    ERR_SUMMONDISABLED
+      ":SUMMON has been disabled"
+
+      - Deprecated
+
+      446    ERR_USERSDISABLED
+      ":USERS has been disabled"
+
+      - Returned as a response to the USERS command.  Must be returned
+      by any server which does not implement it.
+
+      451    ERR_NOTREGISTERED
+      ":You have not registered"
+
+      - Returned by the server to indicate that the client must be
+      registered before the server will allow it to be parsed in detail.
+
+      461    ERR_NEEDMOREPARAMS
+      "<command> :Not enough parameters"
+
+      - Returned by the server by numerous commands to indicate to the
+      client that it didn't supply enough parameters.
+
+      462    ERR_ALREADYREGISTRED
+      ":You may not reregister"
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 51]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      - Returned by the server to any link which tries to change part of
+      the registered details (such as password or user details from
+      second USER message).
+
+      463    ERR_NOPERMFORHOST
+      ":Your host isn't among the privileged"
+
+      - Returned to a client which attempts to register with a server
+      which does not been setup to allow connections from the host the
+      attempted connection is tried.
+
+      464    ERR_PASSWDMISMATCH
+      ":Password incorrect"
+
+      - Returned to indicate a failed attempt at registering a
+      connection for which a password was required and was either not
+      given or incorrect.
+
+      465    ERR_YOUREBANNEDCREEP
+      ":You are banned from this server"
+
+      - Returned after an attempt to connect and register yourself with
+      a server which has been setup to explicitly deny connections to
+      you.
+
+      467    ERR_KEYSET
+      "<channel> :Channel key already set"
+
+      471    ERR_CHANNELISFULL
+      "<channel> :Cannot join channel (+l)"
+
+      472    ERR_UNKNOWNMODE
+      "<char> :is unknown mode char to me"
+
+      473    ERR_INVITEONLYCHAN
+      "<channel> :Cannot join channel (+i)"
+
+      474    ERR_BANNEDFROMCHAN
+      "<channel> :Cannot join channel (+b)"
+
+      475    ERR_BADCHANNELKEY
+      "<channel> :Cannot join channel (+k)"
+
+      481    ERR_NOPRIVILEGES
+      ":Permission Denied- You're not an IRC operator"
+
+      - Any command requiring operator privileges to operate must return
+      this error to indicate the attempt was unsuccessful.
+
+
+
+Allnutt                Expires September 16, 2015              [Page 52]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+      482    ERR_CHANOPRIVSNEEDED
+      "<channel> :You're not channel operator"
+
+      - Any command requiring 'chanop' privileges (such as MODE
+      messages) must return this error if the client making the attempt
+      is not a chanop on the specified channel.
+
+      483    ERR_CANTKILLSERVER
+      ":You cant kill a server!"
+
+      - Any attempts to use the KILL command on a server are to be
+      refused and this error returned directly to the client.
+
+      491    ERR_NOOPERHOST
+      ":No O-lines for your host"
+
+      - If a client sends an OPER message and the server has not been
+      configured to allow connections from the client's host as an
+      operator, this error must be returned.
+
+      501    ERR_UMODEUNKNOWNFLAG
+      ":Unknown MODE flag"
+
+      - Returned by the server to indicate that a MODE message was sent
+      with a nickname parameter and that the a mode flag sent was not
+      recognized.
+
+      502    ERR_USERSDONTMATCH
+      ":Cant change mode for other users"
+
+      - Error sent to any user trying to view or change the user mode
+      for a user other than themselves.
+
+6.  Client and server authentication
+
+   Clients and servers are both subject to the same level of
+   authentication.  For both, an IP number to hostname lookup (and
+   reverse check on this) is performed for all connections made to the
+   server.  Both connections are then subject to a password check (if
+   there is a password set for that connection).  These checks are
+   possible on all connections although the password check is only
+   commonly used with servers.
+
+   An additional check that is becoming of more and more common is that
+   of the username responsible for making the connection.  Finding the
+   username of the other end of the connection typically involves
+   connecting to an authentication server such as IDENT as described in
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 53]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   RFC 1413.  [TODO: Is this still best common practice (I think it
+   isn't and/or shouldn't be)]
+
+   Given that without passwords it is not easy to reliably determine who
+   is on the other end of a network connection, use of passwords is
+   strongly recommended on inter-server connections in addition to any
+   other measures such as using an ident server.
+
+   [TODO: Modify this section to mention SASL and use of TLS]
+
+7.  Current implementations
+
+7.1.  Transport layers
+
+7.1.1.  TCP
+
+   IRC has been implemented on top of TCP since TCP supplies a reliable
+   network protocol which is well suited to this scale of conferencing.
+   The use of multicast IP is an alternative, but it is not widely
+   available or supported, and does not look like it will be in the near
+   future.
+
+7.1.2.  SCTP
+
+   [TODO: SCTP has been suggested, awaiting specification.]
+
+7.1.3.  UNIX sockets
+
+   Given that Unix domain sockets allow listen/connect operations, the
+   current implementation can be configured to listen and accept both
+   client and server connections on a Unix domain socket.  These are
+   recognized as sockets where the hostname starts with a '/'.
+
+   When providing any information about the connections on a Unix domain
+   socket, the server is required to supplant the actual hostname in
+   place of the pathname unless the actual socket name is being asked
+   for.
+
+7.2.  Command parsing
+
+   To provide useful 'non-buffered' network IO for clients and servers,
+   each connection is given its own private 'input buffer' in which the
+   results of the most recent read and parsing are kept.  A buffer size
+   of 1024 bytes is used so as to hold 1 full message (including message
+   tags), although, this will usually hold several commands.  The
+   private buffer is parsed after every read operation for valid
+   messages.  When dealing with multiple messages from one client in the
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 54]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   buffer, care should be taken in case one happens to cause the client
+   to be 'removed'.
+
+7.3.  Message delivery
+
+   It is common to find network links saturated or hosts to which you
+   are sending data unable to send data.  Although Unix typically
+   handles this through the TCP window and internal buffers, the server
+   often has large amounts of data to send (especially when a new
+   server-server link forms) and the small buffers provided in the
+   kernel are not enough for the outgoing queue.  To alleviate this
+   problem, a "send queue" is used as a FIFO queue for data to be sent.
+   A typical "send queue" may grow to 200 Kbytes on a large IRC network
+   with a slow network connection when a new server connects.
+
+   When polling its connections, a server will first read and parse all
+   incoming data, queuing any data to be sent out.  When all available
+   input is processed, the queued data is sent.  This reduces the number
+   of write() system calls and helps TCP make bigger packets.
+
+7.4.  Connection 'Liveness'
+
+   To detect when a connection has died or become unresponsive, the
+   server must ping each of its connections that it doesn't get a
+   response from in a given amount of time.
+
+   If a connection doesn't respond in time, its connection is closed
+   using the appropriate procedures.  A connection is also dropped if
+   its sendq grows beyond the maximum allowed, because it is better to
+   close a slow connection than have a server process block.
+
+7.5.  Establishing a server to client connection
+
+   Upon connecting to an IRC server, a client is sent the MOTD (if
+   present) as well as the current user/server count (as per the LUSER
+   command).  The server is also required to give an unambiguous message
+   to the client which states its name and version as well as any other
+   introductory messages which may be deemed appropriate.
+
+7.6.  Establishing a server-server connection
+
+   The process of establishing of a server-to-server connection is
+   fraught with danger since there are many possible areas where
+   problems can occur - the least of which are race conditions.
+
+   After a server has received a connection following by a PASS/SERVER
+   pair which were recognised as being valid, the server should then
+   reply with its own PASS/SERVER information for that connection as
+
+
+
+Allnutt                Expires September 16, 2015              [Page 55]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   well as all of the other state information it knows about as
+   described below.
+
+   When the initiating server receives a PASS/SERVER pair, it too then
+   checks that the server responding is authenticated properly before
+   accepting the connection to be that server.
+
+7.6.1.  Server exchange of state information when connecting
+
+   The order of state information being exchanged between servers is
+   essential.  The required order is as follows:
+
+   1.  all known other servers;
+
+   2.  all known user information;
+
+   3.  all known channel information.
+
+   Information regarding servers is sent via extra SERVER messages, user
+   information with NICK/USER/MODE/JOIN messages and channels with MODE
+   messages.
+
+   NOTE: channel topics are *NOT* exchanged here because the TOPIC
+   command overwrites any old topic information, so at best, the two
+   sides of the connection would exchange topics.
+
+   By passing the state information about servers first, any collisions
+   with servers that already exist occur before nickname collisions due
+   to a second server introducing a particular nickname.  Due to the IRC
+   network only being able to exist as an acyclic graph, it may be
+   possible that the network has already reconnected in another
+   location, the place where the collision occurs indicating where the
+   net needs to split.
+
+   [TODO: Update this with a reference to TS6/P10 server-to-server
+   protocols?]
+
+7.7.  Terminating server-client connections
+
+   When a client connection closes, a QUIT message is generated on
+   behalf of the client by the server to which the client connected.  No
+   other message is to be generated or used.
+
+7.8.  Terminating server-server connections
+
+   If a server-server connection is closed, either via a remotely
+   generated SQUIT or 'natural' causes, the rest of the connected IRC
+   network must have its information updated with by the server which
+
+
+
+Allnutt                Expires September 16, 2015              [Page 56]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   detected the closure.  The server then sends a list of SQUITs (one
+   for each server behind that connection) and a list of QUITs (again,
+   one for each client behind that connection).
+
+7.9.  Tracking nickname changes
+
+   All IRC servers are required to keep a history of recent nickname
+   changes.  This is required to allow the server to have a chance of
+   keeping in touch of things when nick-change race conditions occur
+   with commands which manipulate them.  Commands which must trace nick
+   changes are:
+
+   o  KILL (the nick being killed)
+
+   o  MODE (+/- o,v)
+
+   o  KICK (the nick being kicked)
+
+   No other commands are to have nick changes checked for.
+
+   In the above cases, the server is required to first check for the
+   existence of the nickname, then check its history to see who that
+   nick currently belongs to (if anyone!).  This reduces the chances of
+   race conditions but they can still occur with the server ending up
+   affecting the wrong client.  When performing a change trace for an
+   above command it is recommended that a time range be given and
+   entries which are too old ignored.
+
+   For a reasonable history, a server should be able to keep previous
+   nickname for every client it knows about if they all decided to
+   change.  This size is limited by other factors (such as memory, etc).
+
+7.10.  Flood control of clients
+
+   With a large network of interconnected IRC servers, it is quite easy
+   for any single client attached to the network to supply a continuous
+   stream of messages that result in not only flooding the network, but
+   also degrading the level of service provided to others.  Rather than
+   require every 'victim' to be provide their own protection, flood
+   protection SHOULD be written into the server and applied to all
+   clients except services.  The current algorithm is as follows:
+
+   1.  check to see if client's `message timer' is less than current
+       time (set to be equal if it is);
+
+   2.  read any data present from the client;
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 57]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+   3.  while the timer is less than ten seconds ahead of the current
+       time, parse any present messages and penalize the client by 2
+       seconds for each message;
+
+   which in essence means that the client may send 1 message every 2
+   seconds without being adversely affected.
+
+7.11.  Non-blocking lookups
+
+   In a real-time environment, it is essential that a server process do
+   as little waiting as possible so that all the clients are serviced
+   fairly.  Obviously this requires non-blocking IO on all network read/
+   write operations.  For normal server connections, this was not
+   difficult, but there are other support operations that may cause the
+   server to block (such as disk reads).  Where possible, such activity
+   should be performed with a short timeout.
+
+7.12.  Operators
+
+   The granting of operator privileges to a disruptive person can have
+   dire consequences for the well-being of the IRC net in general due to
+   the powers given to them.  Thus, the acquisition of such powers
+   should not be very easy.  The current setup requires two 'passwords'
+   to be used although one of them is usually easy guessed.  Storage of
+   oper passwords in configuration files is preferable to hard coding
+   them in and should be stored in a crypted format (ie using crypt(3)
+   from Unix) to prevent easy theft.
+
+7.13.  Allowing servers to connect
+
+   The interconnection of server is not a trivial matter: a bad
+   connection can have a large impact on the usefulness of IRC.  Thus,
+   each server should have a list of servers to which it may connect and
+   which servers may connect to it.  Under no circumstances should a
+   server allow an arbitrary host to connect as a server.  In addition
+   to which servers may and may not connect, the configuration file
+   should also store the password and other characteristics of that
+   link.
+
+7.14.  Administrivia
+
+   To provide accurate and valid replies to the ADMIN command (see
+   section 4.3.7), the server should find the relevant details in the
+   configuration.
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 58]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+8.  Acknowledgements
+
+   This template was derived from an initial version written by Pekka
+   Savola and contributed by him to the xml2rfc project.
+
+9.  IANA Considerations
+
+   Following the policies outlined in "Guidelines for Writing an IANA
+   Considerations Section in RFCs" [RFC5226], this document defines a
+   new registry Internet Relay Chat (IRC) protocol containing three
+   namespaces:
+
+   o  IRC Capability Registry - Section 9.1
+
+   o  IRC Tag Registry - Section 9.2
+
+   o  IRC Numeric Registry - Section 9.3
+
+9.1.  IRC capability registry
+
+   Values in this registry are short ASCII strings that MUST NOT contain
+   a space, equals sign ("="), non-printable character or begin with a
+   dash ("-") or tilde ("~").  They are to be assigned according to the
+   "Specification Required" policy defined in [RFC5226], except where
+   the capability is a vendor-specific capability.
+
+   Values which contain a period character (".") designate a vendor-
+   specific capability and are reserved for Private Use. These names
+   SHALL be prefixed by a valid DNS domain name, and slash e.g. "example
+   .org/example-cap".
+
+9.2.  IRC tag registry
+
+   Values in this registry are short ASCII strings that MUST NOT contain
+   a space, equals sign ("="), semicolon (";") or non-printable
+   character.  They are to be assigned according to the "Specification
+   Required" policy defined in [RFC5226], except where the tag is a
+   vendor-specific tag.
+
+   Values which contain a slash character ("/") designate a vendor-
+   specific tag and are reserved for Private Use. These names SHALL be
+   prefixed by a valid DNS domain name e.g. "example.org/example-tag".
+
+   Documents defining tags MUST specifiy that the tag may only be used
+   when the corresponding capability is enabled.
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 59]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+9.3.  IRC numeric registry
+
+   Values in this registry are 3-digit numbers allocated on a First Come
+   First Served basis.
+
+   Requests for assignments MUST include a short name for the requested
+   numeric (e.g.  "RPL_EXAMPLEREPLY" for replies and "ERR_EXAMPLERROR"
+   for errors) and state the format of the list of parameters (if any).
+
+   Error numerics SHOULD be allocated from the range 400-599 and
+   910-999.
+
+   Values in the range 100-199 are Reserved.
+
+   A list of initial assignments is given in section Section 5
+
+10.  Security Considerations
+
+   All drafts are required to have a security considerations section.
+   See RFC 3552 for a guide.
+
+11.  Normative References
+
+   [RFC1459]  Oikarinen, J. and D. Reed, "Internet Relay Chat Protocol",
+              RFC 1459, May 1993.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119, March 1997.
+
+   [RFC3629]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", STD 63, RFC 3629, November 2003.
+
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", BCP 26, RFC 5226,
+              May 2008.
+
+Appendix A.  List of known RPL_ISUPPORT tokens
+
+A.1.  CASEMAPPING
+
+A.2.  CHARSET
+
+A.3.  PREFIX
+
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 60]
+
+Internet-Draft                    IRCv3                       March 2015
+
+
+A.4.  CHANTYPES
+
+A.5.  CHANMODES
+
+A.6.  NETWORK
+
+A.7.  MODES
+
+A.8.  MAXCHANNELS
+
+A.9.  CHANLIMIT
+
+A.10.  NICKLEN
+
+A.11.  MAXLIST
+
+A.12.  EXCEPTS
+
+A.13.  INVEX
+
+A.14.  KNOCK
+
+A.15.  STATUSMSG
+
+A.16.  CALLERID
+
+A.17.  CHANNELLEN
+
+A.18.  TOPICLEN
+
+A.19.  AWAYLEN
+
+Author's Address
+
+   Jack Allnutt (editor)
+   Kiwi IRC
+
+   Email: jack@allnutt.eu
+   URI:   http://allnutt.eu/
+
+
+
+
+
+
+
+
+
+
+
+
+Allnutt                Expires September 16, 2015              [Page 61]
