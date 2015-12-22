@@ -360,6 +360,34 @@ Examples:
 ---
 
 
+# Connection Registration
+
+Immediately upon establishing a connection the client must attempt registration, without waiting for any banner message from the server.
+
+Until registration is complete, only a limited subset of commands may be accepted by the server.
+
+The recommended order of commands during registration is as follows:
+
+1. CAP
+2. SASL (if negotiated)
+3. PASS
+4. NICK
+5. USER
+
+If the server supports capability negotiation, the [`CAP`](#cap-command) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
+
+If the client supports [`SASL`](#sasl) authentication, it should perform this after a successful `CAP ACK` of this capability from the server while registration is suspended.
+
+The [`PASS`](#pass-command) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
+
+The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a hostname/ident lookup, these commands will end the registration process immediately.
+
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl-welcome) `(001)` and [`RPL_ISUPPORT`](#rpl-isupport) `(005)` numerics. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err-nomotd) if it does not), and MAY send other numerics.
+
+
+---
+
+
 # Acknowledgements
 
 Most of this document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) specifications.
