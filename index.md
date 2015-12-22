@@ -212,6 +212,154 @@ Various software authors are experimenting with alternative topologies such as m
 ---
 
 
+# Protocol Structure
+
+
+## Overview
+
+The protocol as described herein is used for client to server connections.
+
+Various server to server protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) (both based on the original client to server protocol) among the most popular. However, with the fragmented nature of IRC server to server protocols and differences in server implementations, features and network designs, it is at this point impossible to define a single standard server to server protocol.
+
+### Character Codes
+
+Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. However, clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
+
+The `'rfc1459'` casemapping defines the characters `'{'`, `'}'`, and `'|'` to be considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-token) `RPL_ISUPPORT` token.
+
+Servers MUST specify the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric sent on completion of client registration.
+
+
+## Messages
+
+Servers and clients send each other messages which may or may not generate a reply; client to server communication is essentially asynchronous in nature.
+
+Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters (of which there may be up to 15).
+
+Servers may supply tags (when enabled) and a prefix on any or all messages they send to clients. Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix.
+
+### Tags
+
+Tags are additional and optional metadata included with relevant messages.
+
+Every message tag is enabled by a capability (as outlined in the [Capability Negotiation](#capability-negotiation) section). One capability may enable several tags if those tags are intended to be used together.
+
+Each tag may have its own rules about how it can be used: from client to server only, from server to client only, or in both directions.
+
+The server MUST NOT add a tag to a message if the client has not requested the capability which enables the tag. The server MUST NOT add a tag to a message before replying to a client's request (`CAP REQ`) for the capability which enables that tag with an acknowledgement (`CAP ACK`). If a client requests a capability which enables one or more message tags, that client MUST be able to parse the tags syntax.
+
+Similarly, the client MUST NOT add a tag to messages before the server replies to the client's request (`CAP REQ`) with an acknowledgement (`CAP ACK`). If the server accepts the capability request, the server MUST be able to parse the tags syntax.
+
+Both clients and servers MAY parse supplied tags without any capabilities being enabled on the connection. They SHOULD ignore the tags of capabilities which are not enabled.
+
+More information on the naming and registration of tags can be found in the [Message Tags](#message-tags) section.
+
+### Prefix
+
+The prefix is used by servers to indicate the true origin of a message. If the prefix is missing from the message, it is assumed to have originated from the connection from which it was received.
+
+Clients SHOULD NOT use a prefix when sending a message from themselves. If they use a prefix, the only valid prefix is the registered nickname associated with the client. If the source identified by the prefix cannot be found in the server's internal database, or if the source is registered from a different link than from which the message arrived, the server MUST ignore the message silently.
+
+### Command
+
+The command must either be a valid IRC command or a three-digit number represented as text.
+
+
+## Wire Format
+
+The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR (0x13)` and `LF (0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
+
+The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(0x20)`.
+
+The presense of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
+
+The presence of a prefix is indicated with a single leading colon character `(':', 0x3b)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
+
+Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
+
+The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, including both the tags section and the rest of the message. However, this token is only used in an experimental server right now.
+
+### Wire format in 'pseudo' ABNF
+
+The extracted message is parsed into the components `tags`, `prefix`, `command`, and a list of parameters (`params`).
+
+The ABNF representation for this is:
+
+      message     =  ["@" tags SPACE ] [ ":" prefix SPACE ] command
+                     [ params ] crlf
+      tags        =  tag *[ ";" tag ]
+      tag         =  key [ "=" value ]
+      key         =  [ vendor "/" ] 1*( ALPHA / DIGIT / "-" )
+      value       =  *valuechar
+      valuechar   =  <any character except NUL, BELL, CR, LF, semicolon (";")
+                     and SPACE>
+      vendor      =  hostname
+      prefix      =  severname / ( nickname [ [ "!" user ] "@" host ] )
+      command     =  1*letter / 3digit
+      params      =  *13( SPACE middle ) [ SPACE ":" trailing ]
+                  =/ 14( SPACE middle ) [ SPACE [ ":" ] trailing ]
+
+      nospcrlfcl  =  %x01-09 / %x0B-0C / %x0E-1F / %x21-39 / %x3B-FF
+                       ; any octet except NUL, CR, LF, " " and ":"
+      middle      =  nospcrlfcl *( ":" / nospcrlfcl )
+      trailing    =  *( ":" / " " / nospcrlfcl )
+
+      SPACE       =  %x20        ; space character
+      crlf        =  %x0D %x0A   ; "carriage return" "linefeed"
+
+NOTES:
+
+1. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(%x20)` characters within a parameter.
+2. The `NUL` `(%x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
+3. The last parameter may be an empty string.
+4. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
+
+Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. For example, many server commands assume that the first parameter after the command is a list of targets.
+
+<div class="warning">
+    TODO: This section is unfinished. Defining the various names (nickname, username, hostname) and such are likely to require quite a bit of thought. This is to cater for how software can let IRC operators use almost anything in them including formatting characters, etc. We should also make sure that the ABNF block above is correct and defined properly.
+</div>
+
+
+## Numeric Replies
+
+Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. A numeric reply MUST be sent as one message consisting of the sender prefix, the three-digit numeric, and the target of the reply. A numeric reply is not allowed to originate from a client.
+
+In all other respects, a numeric reply is just like a normal message, except that the keyword is made up of 3 numeric digits rather than a string of letters. A list of replies is supplied in the [Replies](#replies) section.
+
+
+## Wildcard Expressions
+
+When wildcards are allowed in a string, it is referred to as a "mask".
+
+For string matching purposes, the protocol allows the use of two special characters: `'?'` `(%x3F)` to match one and only one character, and `'*'` `(%x2A)` to match any number of any characters. These two characters can be escaped using the `'\'` `(%x5C)` character.
+
+The ABNF syntax for this is:
+
+      mask        =  *( nowild / noesc wildone / noesc wildmany )
+      wildone     =  %x3F
+      wildmany    =  %x2A
+      nowild      =  %x01-29 / %x2B-3E / %x40-FF
+                       ; any octet except NUL, "*", "?"
+      noesc       =  %x01-5B / %x5D-FF
+                       ; any octet except NUL and "\"
+      matchone    =  %x01-FF
+                       ; matches wildone
+      matchmany   =  *matchone
+                       ; matches wildmany
+
+Examples:
+
+      a?c         ; Matches any string of 3 characters in length starting
+                  with "a" and ending with "c"
+
+      a*c         ; Matches any string of 2 or more characters in length
+                  starting with "a" and ending with "c"
+
+
+---
+
+
 # Acknowledgements
 
 Most of this document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) specifications.
