@@ -31,9 +31,16 @@ html, body
     height: 100%
 
 #wrapper, #footer
-    max-width: $spec-width
+    @media screen
+        max-width: $spec-width
+        margin: 0 auto
+    @media print
+        width: 100%
     padding: 1rem
-    margin: 0 auto
+
+#spec
+    h1
+        page-break-before: always
 
 .copyright .line
     display: block
@@ -46,7 +53,7 @@ a
 
 h1
     color: #334
-    subtitle
+    .subtitle
         display: block
         font-size: 1.2rem
         color: #445
@@ -62,6 +69,7 @@ h4
     margin-bottom: 0.65rem
 
 h1, h2, h3, h4
+    page-break-after: avoid
     a
         color: #33a
         &:hover
@@ -73,14 +81,19 @@ p
         margin-top: 1rem
 
 .warning
-    background: #d54
+    color: #fff
+    @media screen
+        background: #d54
+    @media print
+        background: #666
     border-radius: 1rem
     margin: 1.55rem auto
     padding: 1.2rem 1.3rem
-    color: #f7f7f7
     font-weight: bold
     a
         color: #abf
+        @media print
+            color: #fff
         &:hover
             color: #78c
 
@@ -90,16 +103,22 @@ p
         color: #c12
 
 hr
-    border: #99b 0.2rem solid
-    border-radius: 2rem
-    margin: 1.55rem auto
+    @media screen
+        border: #99b 0.2rem solid
+        border-radius: 2rem
+        margin: 1.55rem auto
+    @media print
+        display: none
 
 pre
+    font-size: 90%
     padding: 1rem
     border-radius: 0.5rem
     background: #ffb
+    page-break-inside: avoid
 
 .figure
     text-align: center
     color: #333
     display: block
+    page-break-before: avoid
