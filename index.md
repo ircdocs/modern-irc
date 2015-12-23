@@ -391,7 +391,7 @@ The [`PASS`](#pass-command) command is not required for the connection to be reg
 
 The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete another lookup (such as hostname or ident), these commands will end the registration process immediately.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl_welcome) `(001)` and [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numerics. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err_nomotd) if it does not), and MAY send other numerics.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl_welcome) `(001)`, [`RPL_YOURHOST`](#rpl_yourhost) `(002)`, [`RPL_CREATED`](#rpl_created) `(003)`, [`RPL_MYINFO`](#rpl_myinfo) `(004)`, and at least one [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numeric to the client. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err_nomotd) if it does not), and MAY send other numerics.
 
 
 ---
@@ -403,7 +403,7 @@ IRC servers and networks implement many different IRC features, limits, and prot
 
 Once client registration is complete, the server MUST send at least one `RPL_ISUPPORT` numeric to the client. The server MAY send more than one `RPL_ISUPPORT` numeric and consecutive `RPL_ISUPPORT` numerics SHOULD be sent adjacent to each other.
 
-Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not require nor specify the `RPL_ISUPPORT` numeric.
+Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not specify the `RPL_ISUPPORT` numeric.
 
 The ABNF representation for this is:
 
@@ -429,7 +429,7 @@ A token is of the form `-PARAMETER`, `PARAMETER`, or `PARAMETER=VALUE`. A server
 
 It is possible for the status of features previously advertised to clients can change. When this happens, a server SHOULD reissue the `RPL_ISUPPORT` numeric with the relevant parameters that have changed. If a feature becomes unavailable, the server MUST prefix the parameter with the dash character (`'-'`) when issuing the updated RPL_ISUPPORT.
 
-As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue the `RPL_ISUPPORT` numeric after client registration has completed. It also MUST be issued after the [`RPL_WELCOME`](#rpl_welcome) `(001)` numeric and MUST be issued before further commands from the client are processed.
+As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
 A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rpl_isupport-parameters) section.
 
@@ -443,7 +443,7 @@ Over the years, various extensions to the IRC protocol have been made by server 
 
 Capability Negotiation is a mechanism for the negotiation of protocol extensions, known as **client capabilities**, that is backwards-compatible with existing IRC clients and servers.
 
-Any server not implementing capability negotiation will still interoperate with clients that do implement it; similarly, clients that do not implement capability negotiation may successfully communicate with a server that does implement it.
+Any clients implementing capability negotiation will still interoperate with servers that do not implement it; similarly, servers that implement capability negotiation will successfully communicate with clients that do not implement it.
 
 IRC is an asynchronous protocol, which means that clients may issue additional IRC commands while previous commands are being processed. Additionally, there is no guarantee of a specific kind of banner being issued upon connection. Some servers also do not complain about unknown commands during registration, which means that a client cannot reliably do passive implementation discovery at registration time.
 
@@ -453,7 +453,7 @@ Capability negotiation is started by the client issuing a `CAP LS 302` command (
 
 If used during initial registration, and the server supports capability negotiation, the `CAP` command will suspend registration. Once capability negotiation has ended the registration process will continue.
 
-Clients and servers should implement capability negotiation and the `CAP` command based off the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. 'Official' updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
+Clients and servers should implement capability negotiation and the `CAP` command based on the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. 'Official' updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
 
 
 ---
