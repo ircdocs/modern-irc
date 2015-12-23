@@ -253,6 +253,8 @@ Similarly, the client MUST NOT add a tag to messages before the server replies t
 
 Both clients and servers MAY parse supplied tags without any capabilities being enabled on the connection. They SHOULD ignore the tags of capabilities which are not enabled.
 
+Clients that enable message tags MUST NOT fail to parse any message because of the presence of tags on that message. In other words, clients that enable message tags MUST assume that any message from the server may contain message tags, and must handle this correctly.
+
 More information on the naming and registration of tags can be found in the [Message Tags](#message-tags) section.
 
 ### Prefix
@@ -265,7 +267,9 @@ Clients MUST be able to correctly parse and handle any message from the server c
 
 ### Command
 
-The command must either be a valid IRC command or a three-digit number represented as text. Information on specific commands can be found in the [Commands](#commands) section.
+The command must either be a valid IRC command or a three-digit number represented as text.
+
+Information on specific commands can be found in the [Commands](#commands) section.
 
 
 ## Wire Format
@@ -280,7 +284,7 @@ The presence of a prefix is indicated with a single leading colon character `(':
 
 Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
 
-The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, including both the tags section and the rest of the message. However, this token is only used in an experimental server right now.
+The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, this token is only used in an experimental server right now.
 
 ### Wire format in 'pseudo' ABNF
 
@@ -294,8 +298,8 @@ The ABNF representation for this is:
       tag         =  key [ "=" value ]
       key         =  [ vendor "/" ] 1*( ALPHA / DIGIT / "-" )
       value       =  *valuechar
-      valuechar   =  <any character except NUL, BELL, CR, LF, semicolon (";")
-                     and SPACE>
+      valuechar   =  %x01-06 / %x08-09 / %x0B-0C / %x0E-1F / %x21-3A / %x3C-FF
+                       ; any octet except NUL, BELL, CR, LF, " " and ";"
       vendor      =  hostname
       prefix      =  severname / ( nickname [ [ "!" user ] "@" host ] )
       command     =  1*letter / 3digit
@@ -307,13 +311,14 @@ The ABNF representation for this is:
       middle      =  nospcrlfcl *( ":" / nospcrlfcl )
       trailing    =  *( ":" / " " / nospcrlfcl )
 
+
       SPACE       =  %x20        ; space character
       crlf        =  %x0D %x0A   ; "carriage return" "linefeed"
 
 NOTES:
 
-1. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(%x20)` characters within a parameter.
-2. The `NUL` `(%x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
+1. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(0x20)` characters within a parameter.
+2. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
 3. The last parameter may be an empty string.
 4. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
 
@@ -326,7 +331,7 @@ Most protocol messages specify additional semantics and syntax for the extracted
 
 ## Numeric Replies
 
-Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. A numeric reply MUST be sent as one message consisting of the sender prefix, the three-digit numeric, and the target of the reply. A numeric reply is not allowed to originate from a client.
+Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. A numeric reply MUST be sent as one message containing the sender prefix and the three-digit numeric. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
 
 In all other respects, a numeric reply is just like a normal message, except that the keyword is made up of 3 numeric digits rather than a string of letters. A list of replies is supplied in the [Replies](#replies) section.
 
@@ -335,7 +340,7 @@ In all other respects, a numeric reply is just like a normal message, except tha
 
 When wildcards are allowed in a string, it is referred to as a "mask".
 
-For string matching purposes, the protocol allows the use of two special characters: `'?'` `(%x3F)` to match one and only one character, and `'*'` `(%x2A)` to match any number of any characters. These two characters can be escaped using the `'\'` `(%x5C)` character.
+For string matching purposes, the protocol allows the use of two special characters: `'?'` `(0x3F)` to match one and only one character, and `'*'` `(0x2A)` to match any number of any characters. These two characters can be escaped using the `'\'` `(0x5C)` character.
 
 The ABNF syntax for this is:
 
@@ -346,6 +351,7 @@ The ABNF syntax for this is:
                        ; any octet except NUL, "*", "?"
       noesc       =  %x01-5B / %x5D-FF
                        ; any octet except NUL and "\"
+
       matchone    =  %x01-FF
                        ; matches wildone
       matchmany   =  *matchone
@@ -379,11 +385,11 @@ The recommended order of commands during registration is as follows:
 
 If the server supports capability negotiation, the [`CAP`](#cap-command) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
-If the client supports [`SASL`](#sasl) authentication, it should perform this after a successful `CAP ACK` of this capability from the server while registration is suspended.
+If the client supports [`SASL`](#sasl) authentication and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
 
 The [`PASS`](#pass-command) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
-The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a hostname/ident lookup, these commands will end the registration process immediately.
+The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete another lookup (such as hostname or ident), these commands will end the registration process immediately.
 
 Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl_welcome) `(001)` and [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numerics. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err_nomotd) if it does not), and MAY send other numerics.
 
