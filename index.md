@@ -39,12 +39,12 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Servers form the backbone of IRC, providing a point to which clients may connect and talk to each other, and a point for other servers to connect to, forming an IRC network.
 
-The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the net it sees. Other topologies are being experimented with, but right there are no others in production.
+The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the network it sees. Other topologies are being experimented with, but right there are no others in production.
 
-                               [ Server 15 ]  [ Server 13 ] [ Server 14]
+                               [ Server 15 ]  [ Server 13 ] [ Server 14 ]
                                      /                \         /
                                     /                  \       /
-            [ Server 11 ] ------ [ Server 1 ]       [ Server 12]
+            [ Server 11 ] ------ [ Server 1 ]       [ Server 12 ]
                                   /        \          /
                                  /          \        /
                       [ Server 2 ]          [ Server 3 ]
@@ -61,7 +61,7 @@ The most common network configuration for IRC servers is that of a spanning tree
                                    [ etc. ]
                                       :
 
-<span class="figure">Format of a typical IRC network.</span>
+<p class="figure">Format of a typical IRC network.</p>
 
 
 ## Clients
@@ -72,22 +72,22 @@ A client is anything connecting to a server that is not another server. Each cli
 
 To allow a reasonable amount of order to be kept within the IRC network, a special class of clients (operators) are allowed to perform general maintenance functions on the network. Although the powers granted to an operator can be considered as 'dangerous', they are nonetheless required.
 
-The tasks operators can perform vary from software to software and with the privileges granted to each operator. Some can perform network maintenence tasks, such as disconnecting and reconnecting servers as needed to prevent long-term use of bad network routing.
+The tasks operators can perform vary with different server software and the specific privileges granted to each operator. Some can perform network maintenence tasks, such as disconnecting and reconnecting servers as needed to prevent long-term use of bad network routing. Some operators can also remove a user from their server or the IRC network by 'force', i.e. the operator is able to close the connection between a client and server.
 
-Some operators can remove a user from their server or the IRC network by 'force', i.e. the operator is able to close the connection between a client and server. The justification for this is delicate since its abuse is both destructive and annoying. However, IRC network policies handle operators who abuse their privileges, and what is considered abuse.
+The justification for operators being able to remove users from the network is delicate since its abuse is both destructive and annoying. However, IRC network policies handle operators who abuse their privileges, and what is considered abuse on that network.
 
 
 ## Channels
 
-A channel is a named group of one or more clients. All clients in the channel will all receive messages addressed to that channel. The channel is created implicitly when the first client joins it, and the channel ceases to exist when the last client leaves is. While the channel exists, any client can reference the channel using the name of the channel.
+A channel is a named group of one or more clients. All clients in the channel will receive all messages addressed to that channel. The channel is created implicitly when the first client joins it, and the channel ceases to exist when the last client leaves it. While the channel exists, any client can reference the channel using the name of the channel. Networks that support the concept of 'channel ownership' may persist specific channels in some way while no clients are connected to them.
 
-Channel names are strings (beginning with specified prefix characters). Apart from the requirement of the first character being a valid channel prefix character; the only restriction on a channel name is that it may not contain any spaces (`' '`), a control G (`^G` or `ASCII 7`), or a comma (`','` which is used as a list item separator by the protocol).
+Channel names are strings (beginning with specified prefix characters). Apart from the requirement of the first character being a valid [channel type](#channel-types) prefix character; the only restriction on a channel name is that it may not contain any spaces (`' '`), a control G (`^G` or `ASCII 7`), or a comma (`','` which is used as a list item separator by the protocol).
 
-There are several types of channels used in the IRC protocol. The first standard type of channel is a distributed channel which is known to all servers that are connected to the network. The prefix character for this type of channel is `'#'`. The second type are server-specific channels, where the clients connected can only see and talk to other clients on the same server. The prefix character for this type of channel is `'&'`. Other types of channels are described in the [Channel Types](#channel-types) section.
+There are several types of channels used in the IRC protocol. The first standard type of channel is a distributed channel, which is known to all servers that are connected to the network. The prefix character for this type of channel is `'#'`. The second type are server-specific channels, where the clients connected can only see and talk to other clients on the same server. The prefix character for this type of channel is `'&'`. Other types of channels are described in the [Channel Types](#channel-types) section.
 
 Along with the various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
-To create a new channel or become part of an existing channel, a user is required to [`JOIN`](#join-command) the channel. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have an invite exemption.
+To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-command) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they match an invite exemption.
 
 A user may be a part of several channels at once, but a limit may be imposed as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
@@ -97,9 +97,9 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (also referred to as "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, channel operators are not required to have reasons for their actions in the management of that channel. Most IRC operators do not deal with 'channel politics' or 'channel drama'. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside the domain of what they deal with. However, it is best to read the network policy (usually presented on connection with the [`MOTD`](#rpl_motd)).
+As owners of a channel, chanops are **not** required to have reasons for their actions in the management of that channel, unless dictated by the moderation policies set by that specific channel. Most IRC operators do not concern themselves with 'channel politics' or 'channel drama', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the [`MOTD`](#rpl_motd)).
 
-Some IRC software also defines other various levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
+Some IRC software also defines other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
 The commands which may only be used by channel moderators include:
 
@@ -120,7 +120,7 @@ Specific prefixes and moderation levels are covered in the [Channel Membership P
 
 This section is devoted to describing the concepts behind the organisation of the IRC protocol and how the current implementations deliver different classes of messages.
 
-This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because this is the topology specified and used in all IRC software today, and other topologies are only being experimented with thus far.
+This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by software today.
 
                               1--\
                                   A        D---4
@@ -131,7 +131,7 @@ This section ONLY deals with the spanning-tree topology, shown in the figure bel
 
        Servers: A, B, C, D, E         Clients: 1, 2, 3, 4
 
-<span class="figure">Sample small IRC network.</span>
+<p class="figure">Sample small IRC network.</p>
 
 
 ## One-to-one communication
@@ -184,7 +184,7 @@ For some class of messages, there is no option but to broadcast it to all server
 
 ### Client-to-Client
 
-IRC Operators may be able to send a message to every client currently connected to the network. This depends on the specific features and commands implemented in the running server software.
+IRC Operators may be able to send a message to every client currently connected to the network. This depends on the specific features and commands implemented in the server software.
 
 ### Client-to-Server
 
@@ -205,7 +205,7 @@ It is widely recognized that this protocol does not scale sufficiently well when
 
 ### Reliability
 
-As the only network configuration used and specified for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
+As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
 
 Various software authors are experimenting with alternative topologies such as mesh networks, but there is not yet a production implementation or specification of any topology other than the standard spanning-tree configuration.
 
@@ -224,7 +224,7 @@ Various server to server protocols have been defined over the years, with [TS6](
 
 ### Character Codes
 
-Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. However, clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
+Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
 
 The `'rfc1459'` casemapping defines the characters `'{'`, `'}'`, and `'|'` to be considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-token) `RPL_ISUPPORT` token.
 
@@ -237,7 +237,7 @@ Servers and clients send each other messages which may or may not generate a rep
 
 Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters (of which there may be up to 15).
 
-Servers may supply tags (when enabled) and a prefix on any or all messages they send to clients. Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix.
+Servers may supply tags (when negotiated) and a prefix on any or all messages they send to clients.
 
 ### Tags
 
@@ -261,14 +261,16 @@ The prefix is used by servers to indicate the true origin of a message. If the p
 
 Clients SHOULD NOT use a prefix when sending a message from themselves. If they use a prefix, the only valid prefix is the registered nickname associated with the client. If the source identified by the prefix cannot be found in the server's internal database, or if the source is registered from a different link than from which the message arrived, the server MUST ignore the message silently.
 
+Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix.
+
 ### Command
 
-The command must either be a valid IRC command or a three-digit number represented as text.
+The command must either be a valid IRC command or a three-digit number represented as text. Information on specific commands can be found in the [Commands](#commands) section.
 
 
 ## Wire Format
 
-The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR (0x13)` and `LF (0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
+The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `(0x13)` and `LF` `(0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
 
 The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(0x20)`.
 
@@ -369,11 +371,11 @@ Until registration is complete, only a limited subset of commands may be accepte
 
 The recommended order of commands during registration is as follows:
 
-1. CAP
-2. SASL (if negotiated)
-3. PASS
-4. NICK
-5. USER
+1. `CAP`
+2. `SASL` (if negotiated)
+3. `PASS`
+4. `NICK`
+5. `USER`
 
 If the server supports capability negotiation, the [`CAP`](#cap-command) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
