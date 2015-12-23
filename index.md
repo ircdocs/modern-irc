@@ -97,7 +97,7 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (also referred to as "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, chanops are **not** required to have reasons for their actions in the management of that channel, unless dictated by the moderation policies set by that specific channel. Most IRC operators do not concern themselves with 'channel politics' or 'channel drama', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the [`MOTD`](#rpl_motd)).
+As owners of a channel, chanops are **not** required to have reasons for their actions in the management of that channel, unless dictated by the moderation policies set by that specific channel. Most IRC operators do not concern themselves with 'channel politics' or 'channel drama', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the [`MOTD`](#motd-command)).
 
 Some IRC software also defines other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
@@ -391,7 +391,7 @@ The [`PASS`](#pass-command) command is not required for the connection to be reg
 
 The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete another lookup (such as hostname or ident), these commands will end the registration process immediately.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rpl_welcome) `(001)`, [`RPL_YOURHOST`](#rpl_yourhost) `(002)`, [`RPL_CREATED`](#rpl_created) `(003)`, [`RPL_MYINFO`](#rpl_myinfo) `(004)`, and at least one [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numeric to the client. The server SHOULD also send the Message of the Day (MOTD) if one exists (or [`ERR_NOMOTD`](#err_nomotd) if it does not), and MAY send other numerics.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-command)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
 
 
 ---
@@ -399,7 +399,7 @@ Upon successful completion of the registration process, the server MUST send the
 
 # Feature Advertisement
 
-IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rpl_isupport) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
+IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
 
 Once client registration is complete, the server MUST send at least one `RPL_ISUPPORT` numeric to the client. The server MAY send more than one `RPL_ISUPPORT` numeric and consecutive `RPL_ISUPPORT` numerics SHOULD be sent adjacent to each other.
 
@@ -431,7 +431,7 @@ It is possible for the status of features previously advertised to clients can c
 
 As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
-A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rpl_isupport-parameters) section.
+A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 
 ---
@@ -530,6 +530,38 @@ Examples:
                                   returns the name "danp"
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
+
+
+---
+
+
+
+# Numerics
+
+### `RPL_WELCOME (001)`
+
+      ":Welcome to the <networkname> Network, <nick>!<user>@<host>"
+
+The first message sent after client registration. The text used in this message varies wildly.
+
+### `RPL_YOURHOST (002)`
+
+      ":Your host is <servername>, running version <version>"
+
+Part of the post-registration greeting. The text used in this message varies wildly.
+
+### `RPL_CREATED (003)`
+
+      ":This server was created <date>"
+
+Part of the post-registration greeting. The text used in this message varies wildly.
+
+### `RPL_MYINFO (004)`
+
+      "<servername> <version> <available user modes>
+      <available channel modes> [<channel modes with a parameter>]"
+
+Part of the post-registration greeting.
 
 
 ---
