@@ -473,7 +473,7 @@ The PASS command is used to set a 'connection password'. The password can and mu
 
 The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once registered.
 
-Servers may also consider using the [`SASL`](#sasl-command) command as an alternative to this, for when more information such as a username and a form of identity verification is required.
+Servers may also consider requiring the [`SASL`](#sasl-command) command on connection as an alternative to this, for when more information such as a username and some form of identity verification is desired.
 
 Numeric replies:
 
