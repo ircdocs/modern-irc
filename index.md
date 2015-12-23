@@ -405,29 +405,7 @@ Once client registration is complete, the server MUST send at least one `RPL_ISU
 
 Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not specify the `RPL_ISUPPORT` numeric.
 
-The ABNF representation for this is:
-
-      isupport   =  [ ":" servername SPACE ] "005" SPACE nick SPACE
-                    1*13( token SPACE ) ":are supported by this server"
-
-      token      =  parameter *1( "=" value )
-      parameter  =  1*20 letter
-      value      =  * letpun
-      letter     =  ALPHA / DIGIT
-      punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
-      letpun     =  letter / punct
-
-      SPACE      =  %x20        ; space character
-
-<div class="warning">
-    We should take a good, hard look at this ABNF. See if that specific `'isupport'` definition is even necessary.
-</div>
-
-As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
-
-A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
-
-As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
+For more information and specific details on tokens, see the [`RPL_ISUPPORT`](#rplisupport-005) reply.
 
 A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
@@ -475,7 +453,8 @@ Servers may also consider requiring the [`SASL`](#sasl-command) command on conne
 
 Numeric replies:
 
-               ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461)
+* [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462)
 
 Example:
 
@@ -492,8 +471,10 @@ If the server receives a NICK command from a client with a `<nickname>` which is
 
 Numeric Replies:
 
-               ERR_NONICKNAMEGIVEN             ERR_ERRONEUSNICKNAME
-               ERR_NICKNAMEINUSE               ERR_NICKCOLLISION
+* [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431)
+* [`ERR_ERRONEUSNICKNAME`](#errerroneusnickname-432)
+* [`ERR_NICKNAMEINUSE`](#errnicknameinuse-433)
+* [`ERR_NICKCOLLISION`](#errnickcollision-436)
 
 Example:
 
@@ -514,7 +495,8 @@ Since it is easy for a client to lie about its username by relying solely on the
 
 Numeric Replies:
 
-                 ERR_NEEDMOREPARAMS              ERR_ALREADYREGISTRED
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461)
+* [`ERR_ALREADYREGISTERED`](#erralreadyregistered-462)
 
 Examples:
 
@@ -536,30 +518,63 @@ Examples:
 
 # Numerics
 
+As mentioned in the [numeric replies](#numeric-replies) section, the first parameter of most numerics is the target of that numeric (the nickname of the client that is receiving it). Underneath the name and numeric of each reply, we list the parameters sent by this message.
+
+Optional parameters are surrounded with the standard square brackets `([<optional>])` -- this means clients SHOULD NOT assume they will receive this parameter from all servers, and this means that servers SHOULD send this parameter.
+
 ### `RPL_WELCOME (001)`
 
-      ":Welcome to the <networkname> Network, <nick>!<user>@<host>"
+      "<client> :Welcome to the <networkname> Network, <nick>!<user>@<host>"
 
-The first message sent after client registration. The text used in this message varies wildly.
+The first message sent after client registration. The text used in the last param of this message varies wildly.
 
 ### `RPL_YOURHOST (002)`
 
-      ":Your host is <servername>, running version <version>"
+      "<client> :Your host is <servername>, running version <version>"
 
-Part of the post-registration greeting. The text used in this message varies wildly.
+Part of the post-registration greeting. The text used in the last param of this message varies wildly.
 
 ### `RPL_CREATED (003)`
 
-      ":This server was created <date>"
+      "<client> :This server was created <date>"
 
 Part of the post-registration greeting. The text used in this message varies wildly.
 
 ### `RPL_MYINFO (004)`
 
-      "<servername> <version> <available user modes>
+      "<client> <servername> <version> <available user modes>
       <available channel modes> [<channel modes with a parameter>]"
 
 Part of the post-registration greeting.
+
+### `RPL_ISUPPORT (005)`
+
+      "<client> <1-13 tokens> :are supported by this server"
+
+The ABNF representation for an `RPL_ISUPPORT` token is:
+
+      token      =  parameter *1( "=" value )
+      parameter  =  1*20 letter
+      value      =  * letpun
+      letter     =  ALPHA / DIGIT
+      punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
+      letpun     =  letter / punct
+
+As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
+
+As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
+
+A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
+
+See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`. A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
+
+### `RPL_BOUNCE (010)`
+
+      "<client> <hostname> <port> :<info>"
+
+Sent to the client to redirect it to another server. The `<info>` text varies between server software and reasons for the redirection.
+
+This numeric is also called `RPL_REDIR` by some software.
 
 
 ---
