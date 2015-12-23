@@ -410,7 +410,7 @@ The ABNF representation for this is:
       isupport   =  [ ":" servername SPACE ] "005" SPACE nick SPACE
                     1*13( token SPACE ) ":are supported by this server"
 
-      token      =  *1"-" parameter / parameter *1( "=" value )
+      token      =  parameter *1( "=" value )
       parameter  =  1*20 letter
       value      =  * letpun
       letter     =  ALPHA / DIGIT
@@ -425,9 +425,7 @@ The ABNF representation for this is:
 
 As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
 
-A token is of the form `-PARAMETER`, `PARAMETER`, or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
-
-It is possible for the status of features previously advertised to clients can change. When this happens, a server SHOULD reissue the `RPL_ISUPPORT` numeric with the relevant parameters that have changed. If a feature becomes unavailable, the server MUST prefix the parameter with the dash character (`'-'`) when issuing the updated RPL_ISUPPORT.
+A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
 
 As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
