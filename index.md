@@ -541,6 +541,28 @@ Examples:
       VERSION tolsun.oulu.fi          ; check the version of server
                                       "tolsun.oulu.fi".
 
+### CONNECT command
+
+         Command: CONNECT
+      Parameters: <target server> [<port> [<remote server>]]
+
+The CONNECT command forces a server to try to establish a new connection to another server. CONNECT is a privileged command and is available only to IRC Operators. If a remote server is given, the connection is attempted by that remote server to `<target server>` using `<port>`.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
+* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+
+Examples:
+
+      CONNECT tolsun.oulu.fi
+      ; Attempt to connect the current server to tololsun.oulu.fi
+
+      CONNECT  eff.org 12765 csd.bu.edu
+      ; Attempt to connect csu.bu.edu to eff.org on port 12765
+
 
 ---
 
@@ -605,6 +627,14 @@ See the [Feature Advertisement](#feature-advertisement) section for more details
 Sent to the client to redirect it to another server. The `<info>` text varies between server software and reasons for the redirection.
 
 This numeric is also called `RPL_REDIR` by some software.
+
+### `ERR_NOPRIVS (723)`
+
+      "<client> <priv> :Insufficient oper privileges."
+
+Sent by a server to alert an operator that they do not have the required operator privilege to perform the command or action they requested.
+
+`<priv>` is a string that has meaning in the server software and allows an operator the privileges to perform certain commands or actions, such as: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
 
 
 ---
