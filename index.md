@@ -453,8 +453,8 @@ Servers may also consider requiring the [`SASL`](#sasl-command) command on conne
 
 Numeric replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461)
-* [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462)
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462) `(462)`
 
 Example:
 
@@ -471,10 +471,10 @@ If the server receives a NICK command from a client with a `<nickname>` which is
 
 Numeric Replies:
 
-* [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431)
-* [`ERR_ERRONEUSNICKNAME`](#errerroneusnickname-432)
-* [`ERR_NICKNAMEINUSE`](#errnicknameinuse-433)
-* [`ERR_NICKCOLLISION`](#errnickcollision-436)
+* [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431) `(431)`
+* [`ERR_ERRONEUSNICKNAME`](#errerroneusnickname-432) `(432)`
+* [`ERR_NICKNAMEINUSE`](#errnicknameinuse-433) `(433)`
+* [`ERR_NICKCOLLISION`](#errnickcollision-436) `(436)`
 
 Example:
 
@@ -482,7 +482,7 @@ Example:
 
       :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
 
-### User command
+### USER command
 
          Command: USER
       Parameters: <username> <hostname> <servername> <realname>
@@ -491,12 +491,12 @@ The `USER` command is used at the beginning of a connection to specify the usern
 
 It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognised as such.
 
-Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This can be performed using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such a server enabled, the username is set to that as in the reply from the "Identity Server". If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde (`~`) to show that this value is user-set.
+Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde (`~`) to show that this value is user-set.
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461)
-* [`ERR_ALREADYREGISTERED`](#erralreadyregistered-462)
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_ALREADYREGISTERED`](#erralreadyregistered-462) `(462)`
 
 Examples:
 
@@ -510,6 +510,36 @@ Examples:
                                   returns the name "danp"
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
+
+### CAP command
+
+         Command: CAP
+      Parameters: <subcommand> [:<capabilities>]
+
+The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
+
+For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
+
+### VERSION command
+
+         Command: VERSION
+      Parameters: [<server>]
+
+The VERSION command is used to query the version of the server software and to request the server's ISUPPORT tokens. An optional parameter `<server>` is used to query the version of the given server instead of the server the client is directly connected to.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`RPL_ISUPPORT`](#rplisupport-005) `(005)`
+* [`RPL_VERSION`](#rplversion-351) `(351)`
+
+Examples:
+
+      :Wiz VERSION *.se               ; message from Wiz to check the
+                                      version of a server matching "*.se"
+
+      VERSION tolsun.oulu.fi          ; check the version of server
+                                      "tolsun.oulu.fi".
 
 
 ---
@@ -526,19 +556,19 @@ Optional parameters are surrounded with the standard square brackets `([<optiona
 
       "<client> :Welcome to the <networkname> Network, <nick>!<user>@<host>"
 
-The first message sent after client registration. The text used in the last param of this message varies wildly.
+The first message sent after client registration, this message introduces the client to the network. The text used in the last param of this message varies wildly.
 
 ### `RPL_YOURHOST (002)`
 
       "<client> :Your host is <servername>, running version <version>"
 
-Part of the post-registration greeting. The text used in the last param of this message varies wildly.
+Part of the post-registration greeting, this numeric returns the name and software/version of the server the client is currently connected to. The text used in the last param of this message varies wildly.
 
 ### `RPL_CREATED (003)`
 
-      "<client> :This server was created <date>"
+      "<client> :This server was created <datetime>"
 
-Part of the post-registration greeting. The text used in this message varies wildly.
+Part of the post-registration greeting, this numeric returns a human-readable date/time that the server was started or created. The text used in this message varies wildly.
 
 ### `RPL_MYINFO (004)`
 
@@ -566,7 +596,7 @@ As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST b
 
 A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
 
-See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`. A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
+See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 ### `RPL_BOUNCE (010)`
 
