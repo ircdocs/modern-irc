@@ -312,15 +312,16 @@ The ABNF representation for this is:
       trailing    =  *( ":" / " " / nospcrlfcl )
 
 
-      SPACE       =  %x20        ; space character
-      crlf        =  %x0D %x0A   ; "carriage return" "linefeed"
+      SPACE       =  %x20 *( %x20 )   ; space character(s)
+      crlf        =  %x0D %x0A        ; "carriage return" "linefeed"
 
 NOTES:
 
-1. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(0x20)` characters within a parameter.
-2. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
-3. The last parameter may be an empty string.
-4. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
+1. `<SPACE>` consists only of ASCII SPACE character(s) `(' ', 0x20)`. Specifically notice that TABULATION, and all other control characters are not considered a part of `<SPACE>`.
+2. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(0x20)` characters within a parameter.
+3. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
+4. The last parameter may be an empty string.
+5. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
 
 Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. For example, many server commands assume that the first parameter after the command is a list of targets.
 
