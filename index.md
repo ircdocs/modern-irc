@@ -81,9 +81,9 @@ The justification for operators being able to remove users from the network is d
 
 A channel is a named group of one or more clients. All clients in the channel will receive all messages addressed to that channel. The channel is created implicitly when the first client joins it, and the channel ceases to exist when the last client leaves it. While the channel exists, any client can reference the channel using the name of the channel. Networks that support the concept of 'channel ownership' may persist specific channels in some way while no clients are connected to them.
 
-Channel names are strings (beginning with specified prefix characters). Apart from the requirement of the first character being a valid [channel type](#channel-types) prefix character; the only restriction on a channel name is that it may not contain any spaces (`' '`), a control G (`^G` or `ASCII 7`), or a comma (`','` which is used as a list item separator by the protocol).
+Channel names are strings (beginning with specified prefix characters). Apart from the requirement of the first character being a valid [channel type](#channel-types) prefix character; the only restriction on a channel name is that it may not contain any spaces `(' ', 0x20)`, a control G / `BELL` `('^G', 0x02)`, or a comma `(',', 0x2C)` (which is used as a list item separator by the protocol).
 
-There are several types of channels used in the IRC protocol. The first standard type of channel is a distributed channel, which is known to all servers that are connected to the network. The prefix character for this type of channel is `'#'`. The second type are server-specific channels, where the clients connected can only see and talk to other clients on the same server. The prefix character for this type of channel is `'&'`. Other types of channels are described in the [Channel Types](#channel-types) section.
+There are several types of channels used in the IRC protocol. The first standard type of channel is a distributed channel, which is known to all servers that are connected to the network. The prefix character for this type of channel is `('#', 0x23)`. The second type are server-specific channels, where the clients connected can only see and talk to other clients on the same server. The prefix character for this type of channel is `('&', 0x26)`. Other types of channels are described in the [Channel Types](#channel-types) section.
 
 Along with the various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
@@ -274,9 +274,9 @@ Information on specific commands can be found in the [Commands](#commands) secti
 
 ## Wire Format
 
-The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `(0x13)` and `LF` `(0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
+The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
 
-The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(0x20)`.
+The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(' ', 0x20)`.
 
 The presense of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
 
