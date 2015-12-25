@@ -564,6 +564,26 @@ Examples:
       CONNECT  eff.org 12765 csd.bu.edu
       ; Attempt to connect csu.bu.edu to eff.org on port 12765
 
+### TIME command
+
+         Command: TIME
+      Parameters: [<server>]
+
+The TIME command is used to query local time from the specified server. If the server parameter is not given, the server handling the command must reply to the query.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`RPL_TIME`](#rpltime-391) `(391)`
+
+Examples:
+
+      TIME tolsun.oulu.fi             ; check the time on the server
+                                      "tolson.oulu.fi"
+
+      Angel TIME *.au                 ; user angel checking the time on a
+                                      server matching "*.au"
+
 
 ---
 
