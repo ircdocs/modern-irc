@@ -584,6 +584,54 @@ Examples:
       Angel TIME *.au                 ; user angel checking the time on a
                                       server matching "*.au"
 
+### STATS command
+
+         Command: STATS
+      Parameters: [<query> [<server>]]
+
+The STATS command is used to query statistics of a certain server. If the `<server>` parameter is omitted, only the end of stats reply is sent back. The specific queries supported by this command depend on the server that replies, although the server must be able to supply information as described by the queries below (or similar).
+
+A query may be given by any single letter which is only checked by the destination server and is otherwise passed on by intermediate servers, ignored and unaltered.
+
+The following queries are those found in current IRC implementations and provide a large portion of the setup information for that server. All servers should be able to supply a valid reply to a `STATS` query which is consistent with the reply formats currently used and the purpose of the query.
+
+The currently supported queries are:
+
+* `c` - returns a list of servers which the server may connect to or allow connections from;
+* `h` - returns a list of servers which are either forced to be treated as leaves or allowed to act as hubs;
+* `i` - returns a list of hosts which the server allows a client to connect from;
+* `k` - returns a list of banned username/hostname combinations for that server;
+* `l` - returns a list of the server's connections, showing how long each connection has been established and the traffic over that connection in bytes and messages for each direction;
+* `m` - returns a list of commands supported by the server and the usage count for each if the usage count is non zero;
+* `o` - returns a list of hosts from which normal clients may become operators;
+* `u` - returns a string showing how long the server has been up.
+* `y` - show Y (Class) lines from server's configuration file;
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
+* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+* [`RPL_STATSCLINE`](#statscline-213) `(213)`
+* [`RPL_STATSHLINE`](#statshline-244) `(244)`
+* [`RPL_STATSILINE`](#statsiline-215) `(215)`
+* [`RPL_STATSKLINE`](#statskline-216) `(216)`
+* [`RPL_STATSLLINE`](#statslline-241) `(241)`
+* [`RPL_STATSOLINE`](#statsoline-243) `(243)`
+* [`RPL_STATSQLINE`](#statsqline-217) `(217)`
+* [`RPL_STATSLINKINFO`](#rplstatslinkinfo-211) `(211)`
+* [`RPL_STATSUPTIME`](#rplstatsuptime-242) `(242)`
+* [`RPL_STATSCOMMANDS`](#rplstatscommands-212) `(212)`
+* [`RPL_ENDOFSTATS`](#rplendofstats-219) `(219)`
+
+Examples:
+
+      STATS m                         ; check the command usage for the
+                                      server you are connected to
+
+      :Wiz STATS c eff.org            ; request by WiZ for C/N line
+                                      information from server eff.org
+
 
 ---
 
@@ -593,7 +641,7 @@ Examples:
 
 As mentioned in the [numeric replies](#numeric-replies) section, the first parameter of most numerics is the target of that numeric (the nickname of the client that is receiving it). Underneath the name and numeric of each reply, we list the parameters sent by this message.
 
-Optional parameters are surrounded with the standard square brackets `([<optional>])` -- this means clients SHOULD NOT assume they will receive this parameter from all servers, and this means that servers SHOULD send this parameter.
+Optional parameters are surrounded with the standard square brackets `([<optional>])` -- this means clients MUST NOT assume they will receive this parameter from all servers, and that servers SHOULD send this parameter.
 
 ### `RPL_WELCOME (001)`
 
@@ -635,7 +683,7 @@ The ABNF representation for an `RPL_ISUPPORT` token is:
 
 As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
-As with other local numerics, when RPL_ISUPPORT is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
+As with other local numerics, when `RPL_ISUPPORT` is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
 
 A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
 
