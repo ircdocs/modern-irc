@@ -28,7 +28,7 @@ copyrights:
 
 # Introduction
 
-The Internet Relay Chat (IRC) protocol has been designed and implemented over a number of years, with multitudes of implementations and use cases appearing. This document describes the IRC Client-Server protocol.
+The Internet Relay Chat (IRC) protocol has been designed over a number of years, with multitudes of implementations and use cases appearing. This document describes the IRC Client-Server protocol.
 
 IRC is a text-based teleconferencing system, which has proven itself as a very valuable and useful protocol. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network, through which messages are delivered and state is maintained across the network for the connected clients and active channels.
 
@@ -39,7 +39,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Servers form the backbone of IRC, providing a point to which clients may connect and talk to each other, and a point for other servers to connect to, forming an IRC network.
 
-The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the network it sees. Other topologies are being experimented with, but right there are no others in production.
+The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the network it sees. Other topologies are being experimented with, but right there are no others widely used in production.
 
                                [ Server 15 ]  [ Server 13 ] [ Server 14 ]
                                      /                \         /
@@ -66,7 +66,7 @@ The most common network configuration for IRC servers is that of a spanning tree
 
 ## Clients
 
-A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. See the protocol grammar rules for what may and may not be used in a nickname. In addition to the nickname, all servers must have the following information about all clients: The real name of the host that the client is running on, the username of the client on that host, and the server to which the client is connected.
+A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. See the protocol grammar rules for what may and may not be used in a nickname. In addition to the nickname, all servers must have the following information about all clients: The real name/address of the host that the client is connecting from, the username of the client on that host, and the server to which the client is connected.
 
 ### Operators
 
@@ -74,7 +74,7 @@ To allow a reasonable amount of order to be kept within the IRC network, a speci
 
 The tasks operators can perform vary with different server software and the specific privileges granted to each operator. Some can perform network maintenence tasks, such as disconnecting and reconnecting servers as needed to prevent long-term use of bad network routing. Some operators can also remove a user from their server or the IRC network by 'force', i.e. the operator is able to close the connection between a client and server.
 
-The justification for operators being able to remove users from the network is delicate since its abuse is both destructive and annoying. However, IRC network policies handle operators who abuse their privileges, and what is considered abuse on that network.
+The justification for operators being able to remove users from the network is delicate since its abuse is both destructive and annoying. However, IRC network policies and administrators handle operators who abuse their privileges, and what is considered abuse by that network.
 
 
 ## Channels
@@ -85,11 +85,11 @@ Channel names are strings (beginning with specified prefix characters). Apart fr
 
 There are several types of channels used in the IRC protocol. The first standard type of channel is a distributed channel, which is known to all servers that are connected to the network. The prefix character for this type of channel is `('#', 0x23)`. The second type are server-specific channels, where the clients connected can only see and talk to other clients on the same server. The prefix character for this type of channel is `('&', 0x26)`. Other types of channels are described in the [Channel Types](#channel-types) section.
 
-Along with the various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
+Along with various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
-To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-command) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they match an invite exemption.
+To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-command) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
-A user may be a part of several channels at once, but a limit may be imposed as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
+A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
 If the IRC network becomes disjoint because of a split between servers, the channel on either side is only composed of those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side of the split. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
@@ -97,9 +97,9 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (also referred to as "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, chanops are **not** required to have reasons for their actions in the management of that channel, unless dictated by the moderation policies set by that specific channel. Most IRC operators do not concern themselves with 'channel politics' or 'channel drama', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the [`MOTD`](#motd-command)).
+As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day ([`MOTD`](#motd-command))).
 
-Some IRC software also defines other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
+IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
 The commands which may only be used by channel moderators include:
 
@@ -120,7 +120,7 @@ Specific prefixes and moderation levels are covered in the [Channel Membership P
 
 This section is devoted to describing the concepts behind the organisation of the IRC protocol and how the current implementations deliver different classes of messages.
 
-This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by software today.
+This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by networks.
 
                               1--\
                                   A        D---4
@@ -220,13 +220,13 @@ Various software authors are experimenting with alternative topologies such as m
 
 The protocol as described herein is used for client to server connections.
 
-Various server to server protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) (both based on the original client to server protocol) among the most popular. However, with the fragmented nature of IRC server to server protocols and differences in server implementations, features and network designs, it is at this point impossible to define a single standard server to server protocol.
+Various server to server protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) among the most popular (both based on the original client-server protocol). However, with the fragmented nature of IRC server to server protocols and differences in server implementations, features and network designs, it is at this point impossible to define a single standard server to server protocol.
 
 ### Character Codes
 
 Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
 
-The `'rfc1459'` casemapping defines the characters `'{'`, `'}'`, and `'|'` to be considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-token) `RPL_ISUPPORT` token.
+The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-token) `RPL_ISUPPORT` token.
 
 Servers MUST specify the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric sent on completion of client registration.
 
@@ -247,9 +247,9 @@ Every message tag is enabled by a capability (as outlined in the [Capability Neg
 
 Each tag may have its own rules about how it can be used: from client to server only, from server to client only, or in both directions.
 
-The server MUST NOT add a tag to a message if the client has not requested the capability which enables the tag. The server MUST NOT add a tag to a message before replying to a client's request (`CAP REQ`) for the capability which enables that tag with an acknowledgement (`CAP ACK`). If a client requests a capability which enables one or more message tags, that client MUST be able to parse the tags syntax.
+Servers MUST NOT add a tag to a message if the client has not requested the capability which enables the tag. Servers MUST NOT add a tag to a message before replying to a client's request (`CAP REQ`) for the capability which enables that tag with an acknowledgement (`CAP ACK`). If a client requests a capability which enables one or more message tags, that client MUST be able to parse the tags syntax.
 
-Similarly, the client MUST NOT add a tag to messages before the server replies to the client's request (`CAP REQ`) with an acknowledgement (`CAP ACK`). If the server accepts the capability request, the server MUST be able to parse the tags syntax.
+Similarly, clients MUST NOT add a tag to messages before the server replies to the client's request (`CAP REQ`) with an acknowledgement (`CAP ACK`). If the server accepts a capability request which enables tags on messages sent from the client to the server, the server MUST be able to parse the tags syntax on incoming messages from clients.
 
 Both clients and servers MAY parse supplied tags without any capabilities being enabled on the connection. They SHOULD ignore the tags of capabilities which are not enabled.
 
@@ -263,13 +263,17 @@ The prefix is used by servers to indicate the true origin of a message. If the p
 
 Clients SHOULD NOT use a prefix when sending a message from themselves. If they use a prefix, the only valid prefix is the registered nickname associated with the client. If the source identified by the prefix cannot be found in the server's internal database, or if the source is registered from a different link than from which the message arrived, the server MUST ignore the message silently.
 
-Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix.
+Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix. In other words, servers MAY add a prefix to any message sent to clients, and clients MUST be able to handle this correctly.
 
 ### Command
 
 The command must either be a valid IRC command or a three-digit number represented as text.
 
 Information on specific commands can be found in the [Commands](#commands) section.
+
+### Parameters
+
+Parameters (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. The meaning of specific parameters changes for every single message.
 
 
 ## Wire Format
@@ -284,7 +288,7 @@ The presence of a prefix is indicated with a single leading colon character `(':
 
 Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
 
-The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, this token is only used in an experimental server right now.
+The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, use of this token is not widespread and is only used in an experimental server right now.
 
 ### Wire format in 'pseudo' ABNF
 
@@ -301,7 +305,7 @@ The ABNF representation for this is:
       valuechar   =  %x01-06 / %x08-09 / %x0B-0C / %x0E-1F / %x21-3A / %x3C-FF
                        ; any octet except NUL, BELL, CR, LF, " " and ";"
       vendor      =  hostname
-      prefix      =  severname / ( nickname [ [ "!" user ] "@" host ] )
+      prefix      =  servername / ( nickname [ [ "!" user ] "@" host ] )
       command     =  1*letter / 3digit
       params      =  *13( SPACE middle ) [ SPACE ":" trailing ]
                   =/ 14( SPACE middle ) [ SPACE [ ":" ] trailing ]
@@ -323,7 +327,7 @@ NOTES:
 4. The last parameter may be an empty string.
 5. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
 
-Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. For example, many server commands assume that the first parameter after the command is a list of targets.
+Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. As an example, for many server commands, the first parameter of that message is a list of targets.
 
 <div class="warning">
     TODO: This section is unfinished. Defining the various names (nickname, username, hostname) and such are likely to require quite a bit of thought. This is to cater for how software can let IRC operators use almost anything in them including formatting characters, etc. We should also make sure that the ABNF block above is correct and defined properly.
@@ -390,7 +394,7 @@ If the client supports [`SASL`](#sasl) authentication and wishes to authenticate
 
 The [`PASS`](#pass-command) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
-The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete another lookup (such as hostname or ident), these commands will end the registration process immediately.
+The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a lookup of client information (such as hostname or ident), these commands will end the registration process immediately.
 
 Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-command)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
 
@@ -416,11 +420,11 @@ A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Paramete
 
 # Capability Negotiation
 
-Over the years, various extensions to the IRC protocol have been made by server programmers. Often, these extensions are intended to conserve bandwidth, close loopholes left by the original protocol specification, or add new features for users or for the server administrators. Most of these changes are backwards-compatible with the base protocol specifications: A command may be added, a reply may be extended to contain more parameters, etc. However, there are extensions which may be designed to change protocol behaviour in a backwards-incompatible way.
+Over the years, various extensions to the IRC protocol have been made by server programmers. Often, these extensions are intended to conserve bandwidth, close loopholes left by the original protocol specification, or add new features for users or for server administrators. Most of these changes are backwards-compatible with the base protocol specifications: A command may be added, a reply may be extended to contain more parameters, etc. However, there are extensions which are designed to change protocol behaviour in a backwards-incompatible way.
 
-Capability Negotiation is a mechanism for the negotiation of protocol extensions, known as **client capabilities**, that is backwards-compatible with existing IRC clients and servers.
+Capability Negotiation is a mechanism for the negotiation of protocol extensions, known as **client capabilities**, that makes sure servers implementing backwards-incompatible protocol extensions still interoperate with existing clients, and vice-versa.
 
-Any clients implementing capability negotiation will still interoperate with servers that do not implement it; similarly, servers that implement capability negotiation will successfully communicate with clients that do not implement it.
+Clients implementing capability negotiation will still interoperate with servers that do not implement it; similarly, servers that implement capability negotiation will successfully communicate with clients that do not implement it.
 
 IRC is an asynchronous protocol, which means that clients may issue additional IRC commands while previous commands are being processed. Additionally, there is no guarantee of a specific kind of banner being issued upon connection. Some servers also do not complain about unknown commands during registration, which means that a client cannot reliably do passive implementation discovery at registration time.
 
@@ -430,7 +434,7 @@ Capability negotiation is started by the client issuing a `CAP LS 302` command (
 
 If used during initial registration, and the server supports capability negotiation, the `CAP` command will suspend registration. Once capability negotiation has ended the registration process will continue.
 
-Clients and servers should implement capability negotiation and the `CAP` command based on the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. 'Official' updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
+Clients and servers should implement capability negotiation and the `CAP` command based on the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. Updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
 
 
 ---
@@ -446,11 +450,11 @@ Clients and servers should implement capability negotiation and the `CAP` comman
          Command: PASS
       Parameters: <password>
 
-The PASS command is used to set a 'connection password'. The password can and must be set before any attempt to register the connection is made. This requires that clients send a PASS command before sending the `NICK` / `USER` combination.
+The PASS command is used to set a 'connection password'. If set, the password must be set before any attempt to register the connection is made. This requires that clients send a PASS command before sending the `NICK` / `USER` combination.
 
-The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once registered.
+The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once the client has been registered.
 
-Servers may also consider requiring the [`SASL`](#sasl-command) command on connection as an alternative to this, for when more information such as a username and some form of identity verification is desired.
+Servers may also consider requiring [`SASL` Authentication](#sasl) upon connection as an alternative to this, for when more information or an alternate form of identity verification is desired.
 
 Numeric replies:
 
@@ -468,7 +472,11 @@ Example:
 
 The NICK command is used to give the client a nickname or change the previous one.
 
-If the server receives a NICK command from a client with a `<nickname>` which is already in use on the network, it may issue an `ERR_NICKCOLLISION` numeric to the client and ignore the `NICK` command.
+If the server receives a NICK command from a client where the desired nickname is already in use on the network, it should issue an `ERR_NICKNAMEINUSE` numeric and ignore the `NICK` command.
+
+If the server does not accept the new nickname supplied by the client as valid (for instance, due to containing invalid characters), it should issue an `ERR_ERRONEUSNICKNAME` numeric and ignore the `NICK` command.
+
+If the server does not receive the `<nickname>` parameter with the `NICK` command, it should issue an `ERR_NONICKNAMEGIVEN` numeric and ignore the `NICK` command.
 
 Numeric Replies:
 
@@ -486,13 +494,15 @@ Example:
 ### USER command
 
          Command: USER
-      Parameters: <username> <hostname> <servername> <realname>
+      Parameters: <username> * * <realname>
 
 The `USER` command is used at the beginning of a connection to specify the username, hostname, servername and realname of a new user.
 
 It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognised as such.
 
-Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde (`~`) to show that this value is user-set.
+Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
+
+The second and third parameters of this command SHOULD be sent as one literal asterix character for each parameter `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
 Numeric Replies:
 
@@ -659,14 +669,14 @@ Part of the post-registration greeting, this numeric returns the name and softwa
 
       "<client> :This server was created <datetime>"
 
-Part of the post-registration greeting, this numeric returns a human-readable date/time that the server was started or created. The text used in this message varies wildly.
+Part of the post-registration greeting, this numeric returns a human-readable date/time that the server was started or created. The text used in the last param of this message varies wildly.
 
 ### `RPL_MYINFO (004)`
 
       "<client> <servername> <version> <available user modes>
       <available channel modes> [<channel modes with a parameter>]"
 
-Part of the post-registration greeting.
+Part of the post-registration greeting. Clients SHOULD discover available features using `RPL_ISUPPORT` tokens rather than the mode letters listed in this reply.
 
 ### `RPL_ISUPPORT (005)`
 
@@ -695,15 +705,17 @@ See the [Feature Advertisement](#feature-advertisement) section for more details
 
 Sent to the client to redirect it to another server. The `<info>` text varies between server software and reasons for the redirection.
 
-This numeric is also called `RPL_REDIR` by some software.
+This numeric is also known as `RPL_REDIR` by some software.
 
 ### `ERR_NOPRIVS (723)`
 
       "<client> <priv> :Insufficient oper privileges."
 
-Sent by a server to alert an operator that they do not have the required operator privilege to perform the command or action they requested.
+Sent by a server to alert an IRC operator that while they they do not have the specific operator privilege required by this server/network to perform the command or action they requested.
 
-`<priv>` is a string that has meaning in the server software and allows an operator the privileges to perform certain commands or actions, such as: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
+`<priv>` is a string that has meaning in the server software and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
+
+Examples of the sorts of privilege strings used by server software today include: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
 
 
 ---
@@ -711,6 +723,6 @@ Sent by a server to alert an operator that they do not have the required operato
 
 # Acknowledgements
 
-Most of this document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) specifications.
+This document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) IRC protocol specifications.
 
-Parts of this document come from the "IRC RPL_ISUPPORT Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the IRCv3 Working Group specifications.
+Parts of this document come from the "IRC `RPL_ISUPPORT` Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the IRCv3 Working Group specifications.
