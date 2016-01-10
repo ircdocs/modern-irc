@@ -48,6 +48,35 @@ html, body
     h1
         page-break-before: always
 
+#toc-popup
+    background: rgba(20,20,20,0.75)
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    overflow-y: scroll
+    > div
+        max-width: calc(100% - 2rem)
+        width: 40rem
+        background: #fbfbfb
+        margin: 1rem auto
+        padding: 1.5rem 1.85rem
+        border-radius: 1.5rem
+        > h2
+            margin-top: 0
+    #table-of-contents
+        li
+            margin-top: 0.3rem
+#show-toc
+    position: fixed
+    top: 1rem
+    right: 1.5rem
+    padding: 1rem
+    background: rgba(255, 255, 255, 0.925)
+    border-radius: 1.5rem
+    cursor: pointer
+
 .copyright .line
     display: block
     color: #222
