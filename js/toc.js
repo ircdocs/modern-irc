@@ -51,6 +51,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector("#toc-popup").style= "display: none;";
   }
 
-  document.querySelector("#show-toc").addEventListener('click', showToc, false);
+  document.querySelector("#show-toc").addEventListener('click', showToc, true);
   document.querySelector("#toc-popup").addEventListener('click', hideToc, true);
+
+  // yay, I love mobile safari
+  document.querySelector("#show-toc").addEventListener('touchstart', showToc, true);
+  document.querySelector("#show-toc").addEventListener('touchmove', showToc, true);
+  document.querySelector("#show-toc").addEventListener('touchend', showToc, true);
+  document.querySelector("#toc-popup").addEventListener('touchstart', hideToc, true);
+  document.querySelector("#toc-popup").addEventListener('touchmove', hideToc, true);
+  document.querySelector("#toc-popup").addEventListener('touchend', hideToc, true);
+  document.querySelector("#show-toc").onclick = function () {}
+  document.querySelector("#toc-popup").onclick = function () {}
 }, false);
