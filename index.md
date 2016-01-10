@@ -660,9 +660,13 @@ We do try to note numerics where this is the case with a message like *"The text
 
 ### `RPL_WELCOME (001)`
 
-      "<client> :Welcome to the <networkname> Network, <nick>!<user>@<host>"
+      "<client> :Welcome to the <networkname> Network, <nick>[!<user>@<host>]"
 
 The first message sent after client registration, this message introduces the client to the network. The text used in the last param of this message varies wildly.
+
+Servers that implement spoofed hostmasks in any capacity SHOULD NOT include the extended (complete) hostmask in the last parameter of this reply, either for all clients or for those whose hostnames have been spoofed. This is because some clients try to extract the hostname from this final parameter of this message and resolve this hostname, in order to discover their 'local IP address'.
+
+Clients MUST NOT try to extract the hostname from the final parameter of this message and then attempt to resolve this hostname. This method of operation WILL BREAK and will cause issues when the server returns a spoofed hostname.
 
 ### `RPL_YOURHOST (002)`
 
