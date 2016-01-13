@@ -99,7 +99,7 @@ Channel operators (also referred to as "chanops") on a given channel are conside
 
 As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day ([`MOTD`](#motd-command))).
 
-IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected op), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
+IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected user/operator), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
 The commands which may only be used by channel moderators include:
 
@@ -108,7 +108,7 @@ The commands which may only be used by channel moderators include:
 - [`INVITE`](#invite-command): Invite a client to an invite-only channel (mode +i)
 - [`TOPIC`](#topic-command): Change the channel topic in a mode +t channel
 
-Channel moderators are identified by the channel member prefix (`'@'` for standard channel operators) next to their nickname whenever it is associated with a channel (ie: replies to the `NAMES`, `WHO`, and `WHOIS` commands).
+Channel moderators are identified by the channel member prefix (`'@'` for standard channel operators, `'%'` for halfops) next to their nickname whenever it is associated with a channel (ie: replies to the `NAMES`, `WHO`, and `WHOIS` commands).
 
 Specific prefixes and moderation levels are covered in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
 
@@ -504,10 +504,14 @@ Since it is easy for a client to lie about its username by relying solely on the
 
 The second and third parameters of this command SHOULD be sent as one literal asterix character for each parameter `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
+If a client tries to send the `USER` command after they have already completed registration with the server, the `ERR_ALREADYREGISTERED` reply should be sent and the attempt should fail.
+
+If the client sends a `USER` command after the server has successfully received a username using the Ident Protocol, the `<username>` parameter from this command should be ignored in favour of the one received from the identity server.
+
 Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_ALREADYREGISTERED`](#erralreadyregistered-462) `(462)`
+* [`ERR_ALREADYREGISTRED`](#erralreadyregistred-462) `(462)`
 
 Examples:
 
@@ -530,6 +534,34 @@ Examples:
 The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
 
 For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
+
+### OPER command
+
+         Command: OPER
+      Parameters: <user> <password>
+
+The OPER command is used by a normal user to obtain IRC operator privileges. Both parameters are required for the command to be successful.
+
+If the client does not send the correct password for the given user, the server replies with an `ERR_PASSWDMISMATCH` message and the request is not successful.
+
+If the client is not connecting from a valid host for the given user, the server replies with an `ERR_NOOPERHOST` message and the request is not successful.
+
+If the supplied username and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE` message](#mode-message) indicating their new user modes, and other messages may be sent.
+
+The `<user>` specified by this command is separate to the accounts specified by SASL authentication.
+
+Numeric Replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_PASSWDMISMATCH`](#errpasswdmismatch-464) `(464)`
+* [`ERR_NOOPERHOST`](#errnooperhost-491) `(491)`
+* [`RPL_YOUREOPER`](#erryoureoper-381) `(381)`
+
+Example:
+
+      OPER foo bar                ; Attempt to register as an operator
+                                  using a username of "foo" and the password
+                                  "bar".
 
 ### VERSION command
 
