@@ -448,6 +448,8 @@ Messages are client-to-server only unless otherwise specified. If messages may b
 
 In message descriptions, 'command' generally refers to the message's behaviour when sent from a client to the server.
 
+In the `"Parameters:"` section, optional parts or parameters are noted with square brackets as such: `"[<param>]"`. Curly braces around a part of parameter indicate that it may be repeated zero or more times, for example: `"<key>{,<key>}"` indicates that there must be at least one `<key>`, and that there may be additional keys separated by the comma `(",", 0x2C)` character.
+
 
 ## Connection Messages
 
@@ -595,6 +597,53 @@ Numeric Replies:
 Example:
 
       QUIT :Gone to have lunch         ; Client exiting from the network
+
+
+## Channel Operations
+
+This group of messages is concerned with manipulating channels, their properties (channel modes), and their contents (typically clients).
+
+These commands may be requests to the server, in which case the server will or will not grant the request. If a 'request' is granted, it will be acknowledged by the server sending a message containing the same information back to the client. This is to tell the user that the request was successful. These sort of 'request' commands will be noted in the message information.
+
+In implementing these messages, race conditions are inevitable when clients at opposing ends of a network send commands which will ultimately clash. Server-to-server protocols should be aware of this and make sure their protocol ensures consistent state across the entire network.
+
+### JOIN message
+
+         Command: JOIN
+      Parameters: <channel>{,<channel>} [<key>{,<key>}]
+
+The `JOIN` command indicates that the client wants to join the given channel(s), each channel using the given key for it. The server receiving the command checks whether or not the client can join the given channel, and processes the request. Servers MUST process the parameters of this command as lists on incoming commands from clients, with the first `<key>` being used for the first `<channel>`, the second `<key>` being used for the second `<channel>`, etc.
+
+While a client is joined to a channel, they receive all relevant information about that channel including the `JOIN`, `PART`, `KICK`, and `MODE` messages affecting the channel. They receive all `PRIVMSG` and `NOTICE` messages sent to the channel, and they also receive `QUIT` messages from other clients joined to the same channel (to let them know those users have left the channel and the network). This allows them to keep track of other channel members and channel modes.
+
+If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332) or [`RPL_NOTOPIC`](#rplnotopic-331)) and a list of users currently joined to the channel (with [`RPL_NAMREPLY`](#rplnamreply-353)). This `RPL_NAMREPLY` message sent by the server MUST include the requesting client that has just joined the channel.
+
+If a client sends a `JOIN` request for a channel, and the channel requires a [key](#key-channel-mode), the key given in the `JOIN` request MUST match the key currently set on the channel. If it does not match, or the user does not supply a key on a channel which requires one, the client will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
+
+Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-010) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
+
+If a client sends a `JOIN` request for a channel, and the client's mask matches a mask in the channel's list of banned client masks ([channel mode `+b`](#ban-channel-mode)), the client will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the command will fail. However, if they match a mask in the channel's list of ban-exempt client masks ([typically channel mode `+e`](#ban-exemption-channel-mode)), the user will instead proceed normally without any interruption.
+
+If a client sends a `JOIN` request for a channel, and the channel has a [client limit](#limit-channel-mode) set, if the client cannot join due to the limit set on this channel they will receive an [`ERR_CHANNELISFULL`](#errchannelisfull-471) reply and the command will fail.
+
+If a client sends a `JOIN` request for a channel, and the channel has [`invite-only`](#invite-only-channel-mode) mode set, they must have either been invited to the channel by another user or their mask must match an entry in the channel's [invite exemption](#invite-exemption-channel-mode) list in order to join. If they cannot join the channel due to this, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
+
+Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-command) command for each channel they are a member of.
+
+This message may be sent from a server to a client to notify the client that someone has joined a channel. In this case, the message `<source>` will be the client who is joining, and `<channel>` will be the channel which that client has joined. Servers SHOULD NOT send multiple channels in this message to clients.
+
+Numeric Replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
+* [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) `(405)`
+* [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) `(475)`
+* [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) `(474)`
+* [`ERR_CHANNELISFULL`](#errchannelisfull-471) `(471)`
+* [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) `(473)`
+* [`RPL_TOPIC`](#rpltopic-332) `(332)`
+* [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
+* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
 
 
 ## Server Queries and Commands
