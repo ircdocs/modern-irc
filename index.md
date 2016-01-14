@@ -19,7 +19,8 @@ copyrights:
 </div>
 
 <div class="warning">
-    NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.
+    <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
+    <p>Please feel free to contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>.</p>
 </div>
 
 
