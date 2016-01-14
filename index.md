@@ -239,6 +239,8 @@ Each IRC message may consist of up to four main parts: tags (optional), the pref
 
 Servers may supply tags (when negotiated) and a prefix on any or all messages they send to clients.
 
+Information on standard client messages are available in the [Client Messages](#client-messages) and [Numerics](#numerics) sections.
+
 ### Tags
 
 Tags are additional and optional metadata included with relevant messages.
@@ -269,7 +271,7 @@ Clients MUST be able to correctly parse and handle any message from the server c
 
 The command must either be a valid IRC command or a three-digit number represented as text.
 
-Information on specific commands can be found in the [Commands](#commands) section.
+Information on specific commands can be found in the [Client Messages](#client-messages) section.
 
 ### Parameters
 
@@ -338,7 +340,7 @@ Most protocol messages specify additional semantics and syntax for the extracted
 
 Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. A numeric reply MUST be sent as one message containing the sender prefix and the three-digit numeric. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
 
-In all other respects, a numeric reply is just like a normal message, except that the keyword is made up of 3 numeric digits rather than a string of letters. A list of replies is supplied in the [Replies](#replies) section.
+In all other respects, a numeric reply is just like a normal message, except that the keyword is made up of 3 numeric digits rather than a string of letters. A list of numeric replies is supplied in the [Numerics](#numerics) section.
 
 
 ## Wildcard Expressions
