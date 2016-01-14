@@ -38,31 +38,20 @@ TableOfContents.prototype.appendTo = function(element) {
   element.appendChild(this.uls[0]);
 };
 
+function showToc() {
+  document.querySelector("#toc-popup").style.display = "block";
+}
+
+function hideToc() {
+  document.querySelector("#toc-popup").style.display = "none";
+}
+
 // to initialize a new table of contents on a page, specify the page's wrapper and the table of contents's wrapper
 document.addEventListener('DOMContentLoaded', function() {
   var t = new TableOfContents(document.querySelector("#spec"));
   t.appendTo(document.querySelector("#table-of-contents"));
 
-  function showToc() {
-    document.querySelector("#toc-popup").style= "display: block;";
-  }
-
-  function hideToc() {
-    document.querySelector("#toc-popup").style= "display: none;";
-  }
-
-  document.querySelector("#show-toc").addEventListener('click', showToc, false);
-  document.querySelector("#toc-popup").addEventListener('click', hideToc, false);
-
-  // yay, I love mobile safari
-  document.querySelector("#show-toc").addEventListener('touchstart', showToc, false);
-  document.querySelector("#show-toc").addEventListener('touchmove', showToc, false);
-  document.querySelector("#show-toc").addEventListener('touchend', showToc, false);
-  document.querySelector("#toc-popup").addEventListener('touchstart', hideToc, false);
-  document.querySelector("#toc-popup").addEventListener('touchmove', hideToc, false);
-  document.querySelector("#toc-popup").addEventListener('touchend', hideToc, false);
-  document.querySelector("#show-toc").onclick = function () {alert("T1")}
-  document.querySelector("#toc-popup").onclick = function () {alert("T2")}
-  document.querySelector("#show-toc").ontouchstart = function () {alert("T3")}
-  document.querySelector("#toc-popup").ontouchstart = function () {alert("T4")}
+  // I love mobile browsers so much, they are amazing
+  document.querySelector("#show-toc").onclick = function () {showToc();}
+  document.querySelector("#toc-popup").onclick = function () {hideToc();}
 }, false);
