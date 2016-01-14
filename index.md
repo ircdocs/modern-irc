@@ -87,7 +87,7 @@ There are several types of channels used in the IRC protocol. The first standard
 
 Along with various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
-To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-command) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
+To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message). If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
 A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
@@ -97,16 +97,16 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (also referred to as "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day ([`MOTD`](#motd-command))).
+As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day ([`MOTD`](#motd-message))).
 
 IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected user/operator), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
 The commands which may only be used by channel moderators include:
 
-- [`KICK`](#kick-command): Eject a client from the channel
-- [`MODE`](#mode-command): Change the channel's modes
-- [`INVITE`](#invite-command): Invite a client to an invite-only channel (mode +i)
-- [`TOPIC`](#topic-command): Change the channel topic in a mode +t channel
+- [`KICK`](#kick-message): Eject a client from the channel
+- [`MODE`](#mode-message): Change the channel's modes
+- [`INVITE`](#invite-message): Invite a client to an invite-only channel (mode +i)
+- [`TOPIC`](#topic-message): Change the channel topic in a mode +t channel
 
 Channel moderators are identified by the channel member prefix (`'@'` for standard channel operators, `'%'` for halfops) next to their nickname whenever it is associated with a channel (ie: replies to the `NAMES`, `WHO`, and `WHOIS` commands).
 
@@ -388,15 +388,15 @@ The recommended order of commands during registration is as follows:
 4. `NICK`
 5. `USER`
 
-If the server supports capability negotiation, the [`CAP`](#cap-command) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
+If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
 If the client supports [`SASL`](#sasl) authentication and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
 
-The [`PASS`](#pass-command) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
+The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
-The [`NICK`](#nick-command) and [`USER`](#user-command) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a lookup of client information (such as hostname or ident), these commands will end the registration process immediately.
+The [`NICK`](#nick-message) and [`USER`](#user-message) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a lookup of client information (such as hostname or ident), these commands will end the registration process immediately.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-command)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-message)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
 
 
 ---
@@ -440,12 +440,16 @@ Clients and servers should implement capability negotiation and the `CAP` comman
 ---
 
 
-# Client commands
+# Client messages
+
+Messages are client-to-server only unless otherwise specified. If messages may be sent from the server to a connected client, it will be noted in the message's description. For server-to-client messages of this type, the message `<source>` usually indicates the client the message relates to, but this will be noted in the description.
+
+In message descriptions, 'command' generally refers to the message's behaviour when sent from a client to the server.
 
 
-## Connection commands
+## Connection messages
 
-### PASS command
+### PASS message
 
          Command: PASS
       Parameters: <password>
@@ -465,7 +469,7 @@ Example:
 
       PASS secretpasswordhere
 
-### NICK command
+### NICK message
 
          Command: NICK
       Parameters: <nickname>
@@ -477,6 +481,8 @@ If the server receives a NICK command from a client where the desired nickname i
 If the server does not accept the new nickname supplied by the client as valid (for instance, due to containing invalid characters), it should issue an `ERR_ERRONEUSNICKNAME` numeric and ignore the `NICK` command.
 
 If the server does not receive the `<nickname>` parameter with the `NICK` command, it should issue an `ERR_NONICKNAMEGIVEN` numeric and ignore the `NICK` command.
+
+The `NICK` message may be sent from the server to client to inform clients about other clients changing their nicknames. In this case, the `<source>` of the message will be the user who is changing their nickname.
 
 Numeric Replies:
 
@@ -491,7 +497,7 @@ Example:
 
       :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
 
-### USER command
+### USER message
 
          Command: USER
       Parameters: <username> * * <realname>
@@ -526,16 +532,18 @@ Examples:
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
 
-### CAP command
+### CAP message
 
          Command: CAP
       Parameters: <subcommand> [:<capabilities>]
 
 The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
 
+The `CAP` message may be sent from the server to the client. The exact semantics are described in the IRCv3 Capability Negotiation specifications above.
+
 For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
 
-### OPER command
+### OPER message
 
          Command: OPER
       Parameters: <user> <password>
@@ -563,7 +571,7 @@ Example:
                                   using a username of "foo" and the password
                                   "bar".
 
-### VERSION command
+### VERSION message
 
          Command: VERSION
       Parameters: [<server>]
@@ -584,7 +592,7 @@ Examples:
       VERSION tolsun.oulu.fi          ; check the version of server
                                       "tolsun.oulu.fi".
 
-### CONNECT command
+### CONNECT message
 
          Command: CONNECT
       Parameters: <target server> [<port> [<remote server>]]
@@ -606,7 +614,7 @@ Examples:
       CONNECT  eff.org 12765 csd.bu.edu
       ; Attempt to connect csu.bu.edu to eff.org on port 12765
 
-### TIME command
+### TIME message
 
          Command: TIME
       Parameters: [<server>]
@@ -626,7 +634,7 @@ Examples:
       Angel TIME *.au                 ; user angel checking the time on a
                                       server matching "*.au"
 
-### STATS command
+### STATS message
 
          Command: STATS
       Parameters: [<query> [<server>]]
