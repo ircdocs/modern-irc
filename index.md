@@ -621,7 +621,7 @@ If a client's `JOIN` command to the server is successful, they receive a `JOIN` 
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
-Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-010) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
+Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-005) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
 
 Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-command) command for each channel they are a member of.
 
