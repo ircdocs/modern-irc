@@ -763,6 +763,8 @@ Modes affect the behaviour and reflect details about targets -- clients and chan
 
 The status and letter used for each mode is defined in the description of that mode.
 
+We only cover modes that are widely-used by IRC software today and whose meanings will almost never change with different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
+
 
 ## Channel Modes
 
