@@ -348,7 +348,7 @@ In all other respects, a numeric reply is just like a normal message, except tha
 
 When wildcards are allowed in a string, it is referred to as a "mask".
 
-For string matching purposes, the protocol allows the use of two special characters: `'?'` `(0x3F)` to match one and only one character, and `'*'` `(0x2A)` to match any number of any characters. These two characters can be escaped using the `'\'` `(0x5C)` character.
+For string matching purposes, the protocol allows the use of two special characters: `('?', 0x3F)` to match one and only one character, and `('*', 0x2A)` to match any number of any characters. These two characters can be escaped using the `('\', 0x5C)` character.
 
 The ABNF syntax for this is:
 
