@@ -618,19 +618,13 @@ While a client is joined to a channel, they receive all relevant information abo
 
 If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332) or [`RPL_NOTOPIC`](#rplnotopic-331)) and a list of users currently joined to the channel (with [`RPL_NAMREPLY`](#rplnamreply-353)). This `RPL_NAMREPLY` message sent by the server MUST include the requesting client that has just joined the channel.
 
-If a client sends a `JOIN` request for a channel, and the channel requires a [key](#key-channel-mode), the key given in the `JOIN` request MUST match the key currently set on the channel. If it does not match, or the user does not supply a key on a channel which requires one, the client will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
+The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
 Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-010) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
 
-If a client sends a `JOIN` request for a channel, and the client's mask matches a mask in the channel's list of banned client masks ([channel mode `+b`](#ban-channel-mode)), the client will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the command will fail. However, if they match a mask in the channel's list of ban-exempt client masks ([typically channel mode `+e`](#ban-exemption-channel-mode)), the user will instead proceed normally without any interruption.
-
-If a client sends a `JOIN` request for a channel, and the channel has a [client limit](#limit-channel-mode) set, if the client cannot join due to the limit set on this channel they will receive an [`ERR_CHANNELISFULL`](#errchannelisfull-471) reply and the command will fail.
-
-If a client sends a `JOIN` request for a channel, and the channel has [`invite-only`](#invite-only-channel-mode) mode set, they must have either been invited to the channel by another user or their mask must match an entry in the channel's [invite exemption](#invite-exemption-channel-mode) list in order to join. If they cannot join the channel due to this, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
-
 Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-command) command for each channel they are a member of.
 
-This message may be sent from a server to a client to notify the client that someone has joined a channel. In this case, the message `<source>` will be the client who is joining, and `<channel>` will be the channel which that client has joined. Servers SHOULD NOT send multiple channels in this message to clients.
+This message may be sent from a server to a client to notify the client that someone has joined a channel. In this case, the message `<source>` will be the client who is joining, and `<channel>` will be the channel which that client has joined. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `JOIN` messages as a series of messages with a single channel name on each.
 
 Numeric Replies:
 
@@ -762,6 +756,66 @@ Examples:
 
 ---
 
+
+# Modes
+
+Modes affect the behaviour and reflect details about targets -- clients and channels. The modes listed here are the ones that have been adopted and are used by the IRC community at large. If we say a mode is 'standard', that means it is defined in the official IRC specification documents.
+
+The status and letter used for each mode is defined in the description of that mode.
+
+
+## Channel Modes
+
+### Ban Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+b"`.
+
+This channel mode controls a list of client masks that are 'banned' from joining or speaking in the channel. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
+
+### Ban Exemption Channel Mode
+
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-token) `RPL_ISUPPORT` token on connection.
+
+This channel mode controls a list of client masks that are exempt from the ['ban'](#ban-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and their nickmask also matches any one of the masks set by the [ban](#ban-channel-mode) channel mode, they will not be blocked from joining due to the [ban](#ban-channel-mode) mode.
+
+### Client Limit Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+l"`.
+
+This channel mode controls whether new users may join based on the number of users who already exist in the channel. If this mode is set, its value is an integer and defines the limit of how many clients may be joined to the channel.
+
+If this mode is set on a channel, and the number of users joined to that channel matches or exceeds the value of this mode, new users cannot join that channel. If a client sends a `JOIN` request for this channel, they will receive an [`ERR_CHANNELISFULL`](#errchannelisfull-471) reply and the command will fail.
+
+### Invite-Only Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+i"`.
+
+This channel mode controls whether new users need to be invited to the channel before being able to join.
+
+If this mode is set on a channel, a user must have received an [`INVITE`](#invite-message) for this channel before being allowed to join it. If they have not received an invite, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
+
+### Invite Exemption Channel Mode
+
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-token) `RPL_ISUPPORT` token on connection.
+
+This channel mode controls a list of channel masks that are exempt from the [invite-only](#invite-only-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for that channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and the channel is in [invite-only](#invite-only-channel-mode) mode, they do not need to require an `INVITE` in order to join the channel.
+
+### Key Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+k"`.
+
+This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
+
+
+---
 
 
 # Numerics
