@@ -440,14 +440,25 @@ Clients and servers should implement capability negotiation and the `CAP` comman
 ---
 
 
-# Client messages
+# Client Messages
 
 Messages are client-to-server only unless otherwise specified. If messages may be sent from the server to a connected client, it will be noted in the message's description. For server-to-client messages of this type, the message `<source>` usually indicates the client the message relates to, but this will be noted in the description.
 
 In message descriptions, 'command' generally refers to the message's behaviour when sent from a client to the server.
 
 
-## Connection messages
+## Connection Messages
+
+### CAP message
+
+         Command: CAP
+      Parameters: <subcommand> [:<capabilities>]
+
+The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
+
+The `CAP` message may be sent from the server to the client. The exact semantics are described in the IRCv3 Capability Negotiation specifications above.
+
+For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
 
 ### PASS message
 
@@ -458,7 +469,7 @@ The PASS command is used to set a 'connection password'. If set, the password mu
 
 The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once the client has been registered.
 
-Servers may also consider requiring [`SASL` Authentication](#sasl) upon connection as an alternative to this, for when more information or an alternate form of identity verification is desired.
+Servers may also consider requiring [`SASL` Authentication](#sasl) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
 
 Numeric replies:
 
@@ -532,17 +543,6 @@ Examples:
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
 
-### CAP message
-
-         Command: CAP
-      Parameters: <subcommand> [:<capabilities>]
-
-The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
-
-The `CAP` message may be sent from the server to the client. The exact semantics are described in the IRCv3 Capability Negotiation specifications above.
-
-For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
-
 ### OPER message
 
          Command: OPER
@@ -570,6 +570,9 @@ Example:
       OPER foo bar                ; Attempt to register as an operator
                                   using a username of "foo" and the password
                                   "bar".
+
+
+## Server Queries and Commands
 
 ### VERSION message
 
