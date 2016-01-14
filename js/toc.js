@@ -51,16 +51,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector("#toc-popup").style= "display: none;";
   }
 
-  document.querySelector("#show-toc").addEventListener('click', showToc, true);
-  document.querySelector("#toc-popup").addEventListener('click', hideToc, true);
+  document.querySelector("#show-toc").addEventListener('click', showToc, false);
+  document.querySelector("#toc-popup").addEventListener('click', hideToc, false);
 
   // yay, I love mobile safari
-  document.querySelector("#show-toc").addEventListener('touchstart', showToc, true);
-  document.querySelector("#show-toc").addEventListener('touchmove', showToc, true);
-  document.querySelector("#show-toc").addEventListener('touchend', showToc, true);
-  document.querySelector("#toc-popup").addEventListener('touchstart', hideToc, true);
-  document.querySelector("#toc-popup").addEventListener('touchmove', hideToc, true);
-  document.querySelector("#toc-popup").addEventListener('touchend', hideToc, true);
-  document.querySelector("#show-toc").onclick = function () {}
-  document.querySelector("#toc-popup").onclick = function () {}
+  document.querySelector("#show-toc").addEventListener('touchstart', showToc, false);
+  document.querySelector("#show-toc").addEventListener('touchmove', showToc, false);
+  document.querySelector("#show-toc").addEventListener('touchend', showToc, false);
+  document.querySelector("#toc-popup").addEventListener('touchstart', hideToc, false);
+  document.querySelector("#toc-popup").addEventListener('touchmove', hideToc, false);
+  document.querySelector("#toc-popup").addEventListener('touchend', hideToc, false);
+  document.querySelector("#show-toc").onclick = function () {alert("T1")}
+  document.querySelector("#toc-popup").onclick = function () {alert("T2")}
+  document.querySelector("#show-toc").ontouchstart = function () {alert("T3")}
+  document.querySelector("#toc-popup").ontouchstart = function () {alert("T4")}
 }, false);
