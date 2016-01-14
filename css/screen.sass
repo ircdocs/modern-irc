@@ -70,12 +70,23 @@ html, body
             margin-top: 0.3rem
 #show-toc
     position: fixed
-    top: 1rem
-    right: 1.5rem
-    padding: 1rem
-    background: rgba(255, 255, 255, 0.925)
-    border-radius: 1.5rem
-    cursor: pointer
+    bottom: 0
+    left: 0
+    width: 100%
+    pointer-events: none
+    > div
+        display: block
+        margin: 0 auto
+        height: 2.5rem
+        max-width: 16rem
+        padding: 0.75rem
+        background: rgba(255, 255, 255, 0.925)
+        border: 0.1rem solid #2b2b2b
+        border-bottom: none
+        border-radius: 1rem 1rem 0 0
+        cursor: pointer
+        text-align: center
+        pointer-events: all
 
 .copyright .line
     display: block
