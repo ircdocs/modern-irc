@@ -64,6 +64,15 @@ The most common network configuration for IRC servers is that of a spanning tree
 
 <p class="figure">Format of a typical IRC network.</p>
 
+There have been several terms created over time to describe the role of various servers on an IRC network. Some of the most common terms are as follows:
+
+* **Hub**: A 'hub' is a server that connects to multiple other servers. For instance, in the figure above, Server 2, Server 3, and Server 4 would be examples of hub servers.
+* **Core Hub**: A 'core hub' is a hub server that connects fairly major parts of the IRC network together. What is a 'core hub' will change depending on the size of a network and what the administrators of the network considers important. For instance, in the figure above, Server 1, Server 2, and Server 3 may be considered core hubs by the network.
+* **Leaf**: A 'leaf' is a server that is only connected to a single other server on the network. Typically, leafs are the servers which primarily handle client connections. In the figure above, Servers 7, 8, 10, 13, 14, and others would be considered leaf servers.
+* **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network. Services servers are not used on all networks, and their capabilities may even simply be built-into server software itself rather than being provided by a separate software package. Typical things handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing the 'ownership' of channels by client accounts), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol, and what they provide depends entirely on the software packages being run.
+
+These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the sorts of servers that they run.
+
 
 ## Clients
 
@@ -202,7 +211,9 @@ There are a number of recognized problems with this protocol. This section only 
 
 ### Scalability
 
-It is widely recognized that this protocol does not scale sufficiently well when used in a large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
+It is widely recognized that this protocol may not scale sufficiently well when used in a very large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
+
+Some server-to-server protocols may attempt to alleviate this by, as an example, only sending necessary state information to leaf servers. These sort of optimisations are implementation-specific and are not covered in this document. However, server authors should take great care in their protocols to ensure race conditions and other network instability does not happen as a result of these attempts to improve the scalability of their protocol.
 
 ### Reliability
 
