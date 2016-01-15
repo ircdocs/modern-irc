@@ -537,7 +537,7 @@ Message Examples:
       :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
 
       :dan-!d@localhost NICK Mamoped
-        ; dan- changed his nickname to Mamoped.
+                                ; dan- changed his nickname to Mamoped.
 
 ### USER message
 
@@ -628,8 +628,8 @@ Command Example:
 Message Example:
 
       dan-!d@localhost QUIT :Quit: Bye for now!
-        ; dan- is exiting the network with the message:
-        ;   "Quit: Bye for now!
+                                       ; dan- is exiting the network with
+                                       the message: "Quit: Bye for now!"
 
 
 ## Channel Operations
@@ -688,7 +688,8 @@ Command Examples:
 
 Message Examples:
 
-      :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel #Twilight_zone
+      :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel
+                                      #Twilight_zone
 
       :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
 
@@ -908,6 +909,8 @@ As mentioned in the [numeric replies](#numeric-replies) section, the first param
 Clients MUST not fail because the number of parameters on a given incoming numeric is larger than the number of parameters we list for that numeric here. Most IRC servers extends some of these numerics with their own special additions. For example, if a message is listed here as having 2 parameters, and your client receives it with 5 parameters, your client should not fail to parse or handle that message correctly because of the extra parameters.
 
 Optional parameters are surrounded with the standard square brackets `([<optional>])` -- this means clients MUST NOT assume they will receive this parameter from all servers, and that servers SHOULD send this parameter unless otherwise specified.
+
+Server authors that wish to extend one of the numerics listed here SHOULD make their extension into a [client capability](#capability-negotiation). If your extension would be useful to other client and server software, you should consider submitting it to the [IRCv3 Working Group](http://ircv3.net/) for standardisation.
 
 Note that for numerics with very "human-readable" informational strings for the last parameter which are not designed to be parsed, such as in `RPL_WELCOME`, servers commonly change this last-param text. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
 We do try to note numerics where this is the case with a message like *"The text used in the last param of this message varies wildly"*.
