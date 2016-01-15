@@ -481,7 +481,7 @@ Numeric replies:
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462) `(462)`
 
-Example:
+Command Example:
 
       PASS secretpasswordhere
 
@@ -507,11 +507,16 @@ Numeric Replies:
 * [`ERR_NICKNAMEINUSE`](#errnicknameinuse-433) `(433)`
 * [`ERR_NICKCOLLISION`](#errnickcollision-436) `(436)`
 
-Example:
+Command Example:
 
-      NICK Wiz                  ; Introducing the new nick "Wiz".
+      NICK Wiz                  ; Requesting the new nick "Wiz".
+
+Message Examples:
 
       :WiZ NICK Kilroy          ; WiZ changed his nickname to Kilroy.
+
+      :dan-!d@localhost NICK Mamoped
+        ; dan- changed his nickname to Mamoped.
 
 ### USER message
 
@@ -535,7 +540,7 @@ Numeric Replies:
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_ALREADYREGISTRED`](#erralreadyregistred-462) `(462)`
 
-Examples:
+Command Examples:
 
       USER guest tolmoon tolsun :Ronnie Reagan
                                   ; No ident server
@@ -570,7 +575,7 @@ Numeric Replies:
 * [`ERR_NOOPERHOST`](#errnooperhost-491) `(491)`
 * [`RPL_YOUREOPER`](#erryoureoper-381) `(381)`
 
-Example:
+Command Example:
 
       OPER foo bar                ; Attempt to register as an operator
                                   using a username of "foo" and the password
@@ -595,9 +600,15 @@ Numeric Replies:
 
 * None
 
-Example:
+Command Example:
 
       QUIT :Gone to have lunch         ; Client exiting from the network
+
+Message Example:
+
+      dan-!d@localhost QUIT :Quit: Bye for now!
+        ; dan- is exiting the network with the message:
+        ;   "Quit: Bye for now!
 
 
 ## Channel Operations
@@ -640,6 +651,26 @@ Numeric Replies:
 * [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
 
+Command Examples:
+
+      JOIN #foobar                    ; join channel #foobar.
+
+      JOIN &foo fubar                 ; join channel &foo using key "fubar".
+
+      JOIN #foo,&bar fubar            ; join channel #foo using key "fubar"
+                                      and &bar using no key.
+
+      JOIN #foo,#bar fubar,foobar     ; join channel #foo using key "fubar".
+                                      and channel #bar using key "foobar".
+
+      JOIN #foo,#bar                  ; join channels #foo and #bar.
+
+Message Examples:
+
+      :WiZ JOIN #Twilight_zone        ; WiZ is joining the channel #Twilight_zone
+
+      :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
+
 
 ## Server Queries and Commands
 
@@ -656,7 +687,7 @@ Numeric Replies:
 * [`RPL_ISUPPORT`](#rplisupport-005) `(005)`
 * [`RPL_VERSION`](#rplversion-351) `(351)`
 
-Examples:
+Command Examples:
 
       :Wiz VERSION *.se               ; message from Wiz to check the
                                       version of a server matching "*.se"
@@ -678,7 +709,7 @@ Numeric Replies:
 * [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
 * [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
 
-Examples:
+Command Examples:
 
       CONNECT tolsun.oulu.fi
       ; Attempt to connect the current server to tololsun.oulu.fi
@@ -698,12 +729,12 @@ Numeric Replies:
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
 * [`RPL_TIME`](#rpltime-391) `(391)`
 
-Examples:
+Command Examples:
 
       TIME tolsun.oulu.fi             ; check the time on the server
                                       "tolson.oulu.fi"
 
-      Angel TIME *.au                 ; user angel checking the time on a
+      :Angel TIME *.au                ; user angel checking the time on a
                                       server matching "*.au"
 
 ### STATS message
@@ -746,7 +777,7 @@ Numeric Replies:
 * [`RPL_STATSCOMMANDS`](#rplstatscommands-212) `(212)`
 * [`RPL_ENDOFSTATS`](#rplendofstats-219) `(219)`
 
-Examples:
+Command Examples:
 
       STATS m                         ; check the command usage for the
                                       server you are connected to
