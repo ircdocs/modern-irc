@@ -393,7 +393,7 @@ The recommended order of commands during registration is as follows:
 
 If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
-If the client supports [`SASL`](#sasl) authentication and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
+If the client supports [`SASL` authentication](#authenticate-command) and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
 
 The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
@@ -459,22 +459,32 @@ In the `"Parameters:"` section, optional parts or parameters are noted with squa
          Command: CAP
       Parameters: <subcommand> [:<capabilities>]
 
-The CAP command takes a single required subcommand, optionally followed by a single parameter of space-separated capability identifiers. Each capability in the list MAY be preceded by a capability modifier as described in the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
+The `CAP` command is used for capability negotiation between a server and a client.
 
-The `CAP` message may be sent from the server to the client. The exact semantics are described in the IRCv3 Capability Negotiation specifications above.
+The `CAP` message may be sent from the server to the client.
 
-For the specific semantics of the `CAP` command and subcommands, please see the IRCv3 specifications linked above.
+For the exact semantics of the `CAP` command and subcommands, please see the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
+
+### AUTHENTICATE message
+
+         Command: AUTHENTICATE
+
+The `AUTHENTICATE` command is used for SASL authentication between a server and a client. The client must support and successfully negotiate the `"sasl"` client capability (as listed below in the specifications) before using this command.
+
+The `AUTHENTICATE` message may be sent from the server to the client.
+
+For the exact semantics of the `AUTHENTICATE` command, please see the [IRCv3.1](http://ircv3.net/specs/extensions/sasl-3.1.html) and [IRCv3.2](http://ircv3.net/specs/extensions/sasl-3.2.html) SASL Authentication specifications.
 
 ### PASS message
 
          Command: PASS
       Parameters: <password>
 
-The PASS command is used to set a 'connection password'. If set, the password must be set before any attempt to register the connection is made. This requires that clients send a PASS command before sending the `NICK` / `USER` combination.
+The `PASS` command is used to set a 'connection password'. If set, the password must be set before any attempt to register the connection is made. This requires that clients send a `PASS` command before sending the `NICK` / `USER` combination.
 
 The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once the client has been registered.
 
-Servers may also consider requiring [`SASL` Authentication](#sasl) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
+Servers may also consider requiring [`SASL` Authentication](#authenticate-message) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
 
 Numeric replies:
 
@@ -490,9 +500,9 @@ Command Example:
          Command: NICK
       Parameters: <nickname>
 
-The NICK command is used to give the client a nickname or change the previous one.
+The `NICK` command is used to give the client a nickname or change the previous one.
 
-If the server receives a NICK command from a client where the desired nickname is already in use on the network, it should issue an `ERR_NICKNAMEINUSE` numeric and ignore the `NICK` command.
+If the server receives a `NICK` command from a client where the desired nickname is already in use on the network, it should issue an `ERR_NICKNAMEINUSE` numeric and ignore the `NICK` command.
 
 If the server does not accept the new nickname supplied by the client as valid (for instance, due to containing invalid characters), it should issue an `ERR_ERRONEUSNICKNAME` numeric and ignore the `NICK` command.
 
@@ -527,7 +537,7 @@ The `USER` command is used at the beginning of a connection to specify the usern
 
 It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognised as such.
 
-Since it is easy for a client to lie about its username by relying solely on the USER command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
+Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
 
 The second and third parameters of this command SHOULD be sent as one literal asterix character for each parameter `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
@@ -558,7 +568,7 @@ Command Examples:
          Command: OPER
       Parameters: <user> <password>
 
-The OPER command is used by a normal user to obtain IRC operator privileges. Both parameters are required for the command to be successful.
+The `OPER` command is used by a normal user to obtain IRC operator privileges. Both parameters are required for the command to be successful.
 
 If the client does not send the correct password for the given user, the server replies with an `ERR_PASSWDMISMATCH` message and the request is not successful.
 
@@ -586,7 +596,7 @@ Command Example:
         Command: QUIT
      Parameters: [<reason>]
 
-The QUIT command is used to terminate a client's connection to the server. The server acknowledges this by replying with an [`ERROR` message](#error-message) and closing the connection to the client.
+The `QUIT` command is used to terminate a client's connection to the server. The server acknowledges this by replying with an [`ERROR` message](#error-message) and closing the connection to the client.
 
 This message may also be sent from the server to a client to show that a client has exited from the network. This is typically only dispatched to clients that share a channel with the exiting user. When the `QUIT` message is sent to clients, `<source>` represents the client that has exited the network.
 
@@ -707,7 +717,7 @@ Message Examples:
          Command: VERSION
       Parameters: [<server>]
 
-The VERSION command is used to query the version of the server software and to request the server's ISUPPORT tokens. An optional parameter `<server>` is used to query the version of the given server instead of the server the client is directly connected to.
+The `VERSION` command is used to query the version of the server software and to request the server's [`RPL_ISUPPORT`](#rplisupport-tokens) tokens. An optional parameter `<server>` is used to query the version of the given server instead of the server the client is directly connected to.
 
 Numeric Replies:
 
@@ -728,7 +738,7 @@ Command Examples:
          Command: CONNECT
       Parameters: <target server> [<port> [<remote server>]]
 
-The CONNECT command forces a server to try to establish a new connection to another server. CONNECT is a privileged command and is available only to IRC Operators. If a remote server is given, the connection is attempted by that remote server to `<target server>` using `<port>`.
+The `CONNECT` command forces a server to try to establish a new connection to another server. `CONNECT` is a privileged command and is available only to IRC Operators. If a remote server is given, the connection is attempted by that remote server to `<target server>` using `<port>`.
 
 Numeric Replies:
 
@@ -750,7 +760,7 @@ Command Examples:
          Command: TIME
       Parameters: [<server>]
 
-The TIME command is used to query local time from the specified server. If the server parameter is not given, the server handling the command must reply to the query.
+The `TIME` command is used to query local time from the specified server. If the server parameter is not given, the server handling the command must reply to the query.
 
 Numeric Replies:
 
@@ -770,7 +780,7 @@ Command Examples:
          Command: STATS
       Parameters: [<query> [<server>]]
 
-The STATS command is used to query statistics of a certain server. If the `<server>` parameter is omitted, only the end of stats reply is sent back. The specific queries supported by this command depend on the server that replies, although the server must be able to supply information as described by the queries below (or similar).
+The `STATS` command is used to query statistics of a certain server. If the `<server>` parameter is omitted, only the end of stats reply is sent back. The specific queries supported by this command depend on the server that replies, although the server must be able to supply information as described by the queries below (or similar).
 
 A query may be given by any single letter which is only checked by the destination server and is otherwise passed on by intermediate servers, ignored and unaltered.
 
