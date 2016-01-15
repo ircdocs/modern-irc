@@ -293,7 +293,7 @@ Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-
 
 The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, use of this token is not widespread and is only used in an experimental server right now.
 
-### Wire format in 'pseudo' ABNF
+### Wire format in ABNF
 
 The extracted message is parsed into the components `tags`, `prefix`, `command`, and a list of parameters (`params`).
 
