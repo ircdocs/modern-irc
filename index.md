@@ -404,7 +404,7 @@ The recommended order of commands during registration is as follows:
 
 If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
-If the client supports [`SASL` authentication](#authenticate-command) and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
+If the client supports [`SASL` authentication](#authenticate-message) and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
 
 The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
@@ -655,7 +655,7 @@ The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban]
 
 Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-005) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
 
-Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-command) command for each channel they are a member of.
+Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-message) command for each channel they are a member of.
 
 This message may be sent from a server to a client to notify the client that someone has joined a channel. In this case, the message `<source>` will be the client who is joining, and `<channel>` will be the channel which that client has joined. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `JOIN` messages as a series of messages with a single channel name on each.
 
