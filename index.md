@@ -542,7 +542,7 @@ Message Examples:
 ### USER message
 
          Command: USER
-      Parameters: <username> * * <realname>
+      Parameters: <username> 0 * <realname>
 
 The `USER` command is used at the beginning of a connection to specify the username, hostname, servername and realname of a new user.
 
@@ -550,7 +550,7 @@ It must be noted that `<realname>` must be the last parameter, because it may co
 
 Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
 
-The second and third parameters of this command SHOULD be sent as one literal asterix character for each parameter `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
+The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterix character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
 If a client tries to send the `USER` command after they have already completed registration with the server, the `ERR_ALREADYREGISTERED` reply should be sent and the attempt should fail.
 
