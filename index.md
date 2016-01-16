@@ -727,9 +727,15 @@ Message Examples:
 ### VERSION message
 
          Command: VERSION
-      Parameters: [<server>]
+      Parameters: [<target>]
 
-The `VERSION` command is used to query the version of the server software and to request the server's [`RPL_ISUPPORT`](#rplisupport-tokens) tokens. An optional parameter `<server>` is used to query the version of the given server instead of the server the client is directly connected to.
+The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT`](#rplisupport-tokens) tokens on the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
+
+If `<target>` is a server, the information for that server is requested. If `<target>` is a client, the information for the server that client is connected to is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
+
+Wildcards are allowed in the `<target>` parameter.
+
+Upon receiving a `VERSION` command, the given server SHOULD respond with one `RPL_VERSION` reply and one or more `RPL_ISUPPORT` replies.
 
 Numeric Replies:
 
@@ -744,6 +750,35 @@ Command Examples:
 
       VERSION tolsun.oulu.fi          ; check the version of server
                                       "tolsun.oulu.fi".
+
+### ADMIN message
+
+         Command: ADMIN
+      Parameters: [<target>]
+
+The `ADMIN` command is used to find the name of the administrator of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
+
+If `<target>` is a server, the information for that server is requested. If `<target>` is a client, the information for the server that client is connected to is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
+
+Wildcards are allowed in the `<target>` parameter.
+
+Upon receiving an `ADMIN` command, the given server SHOULD respond with the `RPL_ADMINME`, `RPL_ADMINLOC1`, `RPL_ADMINLOC2`, and `RPL_ADMINEMAIL` replies.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`RPL_ADMINME`](#rpladminme-256) `(256)`
+* [`RPL_ADMINLOC1`](#rpladminloc1-257) `(257)`
+* [`RPL_ADMINLOC2`](#rpladminloc2-258) `(258)`
+* [`RPL_ADMINEMAIL`](#rpladminemail-259) `(259)`
+
+Command Examples:
+
+      ADMIN tolsun.oulu.fi            ; request an ADMIN reply from
+                                      tolsun.oulu.fi
+
+      ADMIN syrk                      ; ADMIN request for the server to
+                                      which the user syrk is connected
 
 ### CONNECT message
 
