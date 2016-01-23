@@ -649,7 +649,7 @@ The `JOIN` command indicates that the client wants to join the given channel(s),
 
 While a client is joined to a channel, they receive all relevant information about that channel including the `JOIN`, `PART`, `KICK`, and `MODE` messages affecting the channel. They receive all `PRIVMSG` and `NOTICE` messages sent to the channel, and they also receive `QUIT` messages from other clients joined to the same channel (to let them know those users have left the channel and the network). This allows them to keep track of other channel members and channel modes.
 
-If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332) or [`RPL_NOTOPIC`](#rplnotopic-331)) and a list of users currently joined to the channel (with [`RPL_NAMREPLY`](#rplnamreply-353)). This `RPL_NAMREPLY` message sent by the server MUST include the requesting client that has just joined the channel.
+If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332)), and no message if the channel does not have a topic. They are also sent a list of users currently joined to the channel (with [`RPL_NAMREPLY`](#rplnamreply-353)). This `RPL_NAMREPLY` message sent by the server MUST include the requesting client that has just joined the channel.
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
@@ -669,7 +669,6 @@ Numeric Replies:
 * [`ERR_CHANNELISFULL`](#errchannelisfull-471) `(471)`
 * [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) `(473)`
 * [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
 
 Command Examples:
