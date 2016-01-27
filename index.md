@@ -577,17 +577,17 @@ Command Examples:
 ### OPER message
 
          Command: OPER
-      Parameters: <user> <password>
+      Parameters: <name> <password>
 
 The `OPER` command is used by a normal user to obtain IRC operator privileges. Both parameters are required for the command to be successful.
 
-If the client does not send the correct password for the given user, the server replies with an `ERR_PASSWDMISMATCH` message and the request is not successful.
+If the client does not send the correct password for the given name, the server replies with an `ERR_PASSWDMISMATCH` message and the request is not successful.
 
-If the client is not connecting from a valid host for the given user, the server replies with an `ERR_NOOPERHOST` message and the request is not successful.
+If the client is not connecting from a valid host for the given name, the server replies with an `ERR_NOOPERHOST` message and the request is not successful.
 
-If the supplied username and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE` message](#mode-message) indicating their new user modes, and other messages may be sent.
+If the supplied name and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE` message](#mode-message) indicating their new user modes, and other messages may be sent.
 
-The `<user>` specified by this command is separate to the accounts specified by SASL authentication.
+The `<name>` specified by this command is separate to the accounts specified by SASL authentication, and is generally stored in the IRCd configuration.
 
 Numeric Replies:
 
@@ -599,8 +599,7 @@ Numeric Replies:
 Command Example:
 
       OPER foo bar                ; Attempt to register as an operator
-                                  using a username of "foo" and the password
-                                  "bar".
+                                  using a name of "foo" and the password "bar".
 
 ### QUIT message
 
