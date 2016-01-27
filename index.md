@@ -843,6 +843,10 @@ The currently supported queries are:
 * `u` - returns a string showing how long the server has been up.
 * `y` - show Y (Class) lines from server's configuration file;
 
+<div class="warning">
+    Need to give this a good look-over. It's probably quite incorrect.
+</div>
+
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
