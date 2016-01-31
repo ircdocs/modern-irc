@@ -31,7 +31,7 @@ copyrights:
 
 The Internet Relay Chat (IRC) protocol has been designed over a number of years, with multitudes of implementations and use cases appearing. This document describes the IRC Client-Server protocol.
 
-IRC is a text-based teleconferencing system, which has proven itself as a very valuable and useful protocol. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network, through which messages are delivered and state is maintained across the network for the connected clients and active channels.
+IRC is a text-based teleconferencing protocol, which has proven itself very valuable and useful. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network. Messages are delivered through this network and state is maintained across it for the connected clients and active channels.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
@@ -67,11 +67,11 @@ The most common network configuration for IRC servers is that of a spanning tree
 There have been several terms created over time to describe the role of various servers on an IRC network. Some of the most common terms are as follows:
 
 * **Hub**: A 'hub' is a server that connects to multiple other servers. For instance, in the figure above, Server 2, Server 3, and Server 4 would be examples of hub servers.
-* **Core Hub**: A 'core hub' is a hub server that connects fairly major parts of the IRC network together. What is a 'core hub' will change depending on the size of a network and what the administrators of the network considers important. For instance, in the figure above, Server 1, Server 2, and Server 3 may be considered core hubs by the network.
+* **Core Hub**: A 'core hub' is typically a hub server that connects fairly major parts of the IRC network together. What is considered a core hub will change depending on the size of a network and what the administrators of the network consider important. For instance, in the figure above, Server 1, Server 2, and Server 3 may be considered core hubs by the network administration.
 * **Leaf**: A 'leaf' is a server that is only connected to a single other server on the network. Typically, leafs are the servers which primarily handle client connections. In the figure above, Servers 7, 8, 10, 13, 14, and others would be considered leaf servers.
-* **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network. Services servers are not used on all networks, and their capabilities may even simply be built-into server software itself rather than being provided by a separate software package. Typical things handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing the 'ownership' of channels by client accounts), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol, and what they provide depends entirely on the software packages being run.
+* **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network. Services servers are not used on all networks, and the capabilities typically provided by them may even just be built-into server software itself rather than being provided by a separate software package. Features usually handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing the 'ownership' of channels by client accounts), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol. What they provide depends entirely on the software packages being run.
 
-These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the sorts of servers that they run.
+These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the sorts of servers they run and their roles.
 
 
 ## Clients
@@ -97,7 +97,7 @@ There are several types of channels used in the IRC protocol. The first standard
 
 Along with various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
-To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message). If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
+To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
 A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
@@ -107,7 +107,7 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (or "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day ([`MOTD`](#motd-message))).
+As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day \[[`MOTD`](#motd-message)\]).
 
 IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected user/operator), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
@@ -128,7 +128,7 @@ Specific prefixes and moderation levels are covered in the [Channel Membership P
 
 # IRC Concepts
 
-This section is devoted to describing the concepts behind the organisation of the IRC protocol and how the current implementations deliver different classes of messages.
+This section is devoted to describing the concepts behind the organisation of the IRC protocol and how current implementations deliver different classes of messages.
 
 This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by networks.
 
