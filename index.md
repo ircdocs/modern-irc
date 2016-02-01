@@ -875,11 +875,13 @@ Command Examples:
 ### INFO message
 
          Command: INFO
-      Parameters: [<server>]
+      Parameters: [<target>]
 
 The `INFO` command is used to return information which describes the specified server. This information usually includes the software name/version and its authors. Some other info that may be returned includes the patch level and compile date of the server, the copyright on the server software, and whatever miscellaneous information the server authors consider relevant.
 
-If the server parameter is not given, the server handling the command must reply to the query.
+If `<target>` is not given, the server handling the command must reply to the query. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
+
+Upon receiving an `INFO` command, the given server will respond with zero or more `RPL_INFO` replies, followed by one `RPL_ENDOFINFO` numeric.
 
 Numeric Replies:
 
