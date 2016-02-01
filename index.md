@@ -872,6 +872,32 @@ Command Examples:
       :Wiz STATS c eff.org            ; request by WiZ for C/N line
                                       information from server eff.org
 
+### INFO message
+
+         Command: INFO
+      Parameters: [<server>]
+
+The `INFO` command is used to return information which describes the specified server. This information usually includes the software name/version and its authors. Some other info that may be returned includes the patch level and compile date of the server, the copyright on the server software, and whatever miscellaneous information the server authors consider relevant.
+
+If the server parameter is not given, the server handling the command must reply to the query.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`RPL_INFO`](#rplinfo-371) `(371)`
+* [`RPL_ENDOFINFO`](#rplendofinfo-374) `(374)`
+
+Command Examples:
+
+     INFO csd.bu.edu                 ; request an INFO reply from
+                                     csd.bu.edu
+
+     :Avalon INFO *.fi               ; INFO request from Avalon for first
+                                     server found to match *.fi.
+
+     INFO Angel                      ; request info from the server that
+                                     Angel is connected to.
+
 
 ---
 
