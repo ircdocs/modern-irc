@@ -1036,6 +1036,8 @@ See the [Feature Advertisement](#feature-advertisement) section for more details
 
 Sent to the client to redirect it to another server. The `<info>` text varies between server software and reasons for the redirection.
 
+Because this numeric does not specify whether to enable SSL and is not interpreted correctly by all clients, it is recommended that this not be used.
+
 This numeric is also known as `RPL_REDIR` by some software.
 
 ### `ERR_NOPRIVS (723)`
