@@ -396,19 +396,28 @@ Until registration is complete, only a limited subset of commands may be accepte
 
 The recommended order of commands during registration is as follows:
 
-1. `CAP`
-2. `SASL` (if negotiated)
-3. `PASS`
-4. `NICK`
-5. `USER`
+1. `CAP LS 302`
+2. `PASS`
+3. `NICK` and `USER`
+4. [Capability Negotiation](#capability-negotiation)
+5. `SASL` (if negotiated)
+6. `CAP END`
 
-If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. The capability negotiation process is resumed when the client sends `CAP END` to the server.
+The commands specified in steps 1-3 should be sent on connection. If the server supports [capability negotiation](#capability-negotiation) then registration will be suspended and the client can negotiate client capabilities (steps 4-6). If the server does not support capability negotiation then registration will continue immediately without steps 4-6.
 
-If the client supports [`SASL` authentication](#authenticate-message) and wishes to authenticate with the server, it should attempt this after a successful `CAP ACK` of the `sasl` capability is received and while registration is suspended.
+1. If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The capability negotiation process is resumed when the client sends `CAP END` to the server.
 
-The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
+2. The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
-The [`NICK`](#nick-message) and [`USER`](#user-message) commands are used to set the user's nickname, username, and "real name". Unless the registration is suspended by a CAP negotiation or the server is waiting to complete a lookup of client information (such as hostname or ident), these commands will end the registration process immediately.
+3. The [`NICK`](#nick-message) and [`USER`](#user-message) commands are used to set the user's nickname, username and "real name". Unless the registration is suspended by a `CAP` negotiation, these commands will end the registration process.
+
+4. The client should request advertised capabilities it wishes to enable here.
+
+5. If the client supports [`SASL` authentication](#authenticate-message) and wishes to authenticate with the server, it should attempt this after a successful [`CAP ACK`](#cap-message) of the `sasl` capability is received and while registration is suspended.
+
+6. If the server support capability negotiation, [`CAP END`](#cap-message) will end the negotiation period and resume the registration.
+
+If the server is waiting to complete a lookup of client information (such as hostname or ident for a username), there may be an arbitrary wait at some point during registration. Servers should set a reasonable timeout for these lookups.
 
 Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-message)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
 
