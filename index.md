@@ -64,14 +64,14 @@ The most common network configuration for IRC servers is that of a spanning tree
 
 <p class="figure">Format of a typical IRC network.</p>
 
-There have been several terms created over time to describe the role of various servers on an IRC network. Some of the most common terms are as follows:
+There have been several terms created over time to describe the roles of different servers on an IRC network. Some of the most common terms are as follows:
 
 * **Hub**: A 'hub' is a server that connects to multiple other servers. For instance, in the figure above, Server 2, Server 3, and Server 4 would be examples of hub servers.
-* **Core Hub**: A 'core hub' is typically a hub server that connects fairly major parts of the IRC network together. What is considered a core hub will change depending on the size of a network and what the administrators of the network consider important. For instance, in the figure above, Server 1, Server 2, and Server 3 may be considered core hubs by the network administration.
-* **Leaf**: A 'leaf' is a server that is only connected to a single other server on the network. Typically, leafs are the servers which primarily handle client connections. In the figure above, Servers 7, 8, 10, 13, 14, and others would be considered leaf servers.
-* **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network. Services servers are not used on all networks, and the capabilities typically provided by them may even just be built-into server software itself rather than being provided by a separate software package. Features usually handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing the 'ownership' of channels by client accounts), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol. What they provide depends entirely on the software packages being run.
+* **Core Hub**: A 'core hub' is typically a hub server that connects fairly major parts of the IRC network together. What is considered a core hub will change depending on the size of a network and what the administrators of the network consider important. For instance, in the figure above, Server 1, Server 2, and Server 3 may be considered core hubs by the network administrators.
+* **Leaf**: A 'leaf' is a server that is only connected to a single other server on the network. Typically, leafs are the primary servers that handle client connections. In the figure above, Servers 7, 8, 10, 13, 14, and others would be considered leaf servers.
+* **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network (ie, they provide *services* to the network). Services are not used on all networks, and the capabilities typically provided by them may be built-into server software itself rather than being provided by a separate software package. Features usually handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing the 'ownership' of channels by client accounts), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol. What they provide depends entirely on the software packages being run.
 
-These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the sorts of servers they run and their roles.
+These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the servers they run and their roles.
 
 
 ## Clients
@@ -101,7 +101,7 @@ To create a new channel or become part of an existing channel, a user is require
 
 A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
-If the IRC network becomes disjoint because of a split between servers, the channel on either side is only composed of those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side of the split. When the split is healed, the connecting servers ensure the network state is consistent between them.
+If the IRC network becomes disjoint because of a split between servers, the channel on either side is composed of only those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
 ### Channel Operators
 
