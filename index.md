@@ -909,6 +909,55 @@ Command Examples:
      INFO Angel                      ; request info from the server that
                                      Angel is connected to.
 
+## Sending Messages
+
+### PRIVMSG message
+
+         Command: PRIVMSG
+      Parameters: <target>{,<target>} <text to be sent>
+
+The `PRIVMSG` command is used to send private messages between users, as well as to send messages to channels. `<target>` is the nickname of a client or the name of a channel.
+
+If `<target>` is a channel name and the client is [banned](#ban-channel-mode) and not covered by a [ban exemption](#ban-exemption-channel-mode), the message will not be delivered and the command will silently fail. Channels with the [moderated](#moderated-channel-mode) mode active may block messages from certain users. Other channel modes may affect the delivery of the message or cause the message to be modified before delivery, and these modes are defined by the server software and configuration being used.
+
+If a message cannot be delivered to a channel, the server SHOULD respond with an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric to let the user know that this message could not be delivered.
+
+If `<target>` is a channel name, it may be prefixed with a [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG` token](#statusmsg-token), and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
+
+If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rplaway-301) numeric and the command will continue.
+
+The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<prefix>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
+
+Numeric Replies:
+
+* [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) `(404)`
+* [`ERR_TOOMANYTARGETS`](#errtoomanytargets-407) `(407)`
+* [`ERR_NORECIPIENT`](#errnorecipient-411) `(411)`
+* [`ERR_NOTEXTTOSEND`](#errnotexttosend-412) `(412)`
+* [`ERR_NOTOPLEVEL`](#errnotoplevel-413) `(413)`
+* [`ERR_WILDTOPLEVEL`](#errwildtoplevel-414) `(414)`
+* [`RPL_AWAY`](#rplaway-301) `(301)`
+
+<div class="warning">
+    There are strange "X@Y" target rules and such which are noted in the examples of the original PRIVMSG RFC section. We need to check to make sure modern servers actually process them properly, and if so then specify them.
+</div>
+
+Command Examples:
+
+      PRIVMSG Angel :yes I'm receiving it !
+                                      ; Command to send a message to Angel.
+
+Message Examples:
+
+      :Angel PRIVMSG Wiz :Hello are you receiving this message ?
+                                      ; Message from Angel to Wiz.
+
+      :dan!~h@localhost PRIVMSG #coolpeople :Hi everyone!
+                                      ; Message from dan to the channel
+                                      #coolpeople
+
 
 ---
 
@@ -971,6 +1020,48 @@ This mode is standard, and the mode letter used for it is `"+k"`.
 This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
 
 If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
+
+### Moderated Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+m"`.
+
+This channel mode controls whether users may freely talk on the channel.
+
+If this mode is set on a channel, only users who have channel privileges may send messages to that channel. The [voice](#voice-prefix) channel mode is designed to let a user talk in a moderated channel without giving them other channel moderation abilities, and users of higher privileges (such as [halfops](#halfop-prefix) or [chanops](#operator-prefix)) may also speak in moderated channels.
+
+## Channel Membership Prefixes
+
+Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in [`NAMES`](#names-message), [`WHO`](#who-message) and [`WHOIS`](#whois-message) messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-token) `RPL_ISUPPORT` token on connection.
+
+### Founder Prefix
+
+This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"~"` and `"+q"`.
+
+This prefix shows that the given user is the 'founder' of the current channel and has full moderation control over it -- ie, they are considered to 'own' that channel by the network. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
+
+### Protected Prefix
+
+This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"&"` and `"+a"`.
+
+Users with this mode cannot be kicked and cannot have this mode removed by other protected users. In some software, they may perform actions that operators can, but at a higher privilege level than operators. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
+
+### Operator Prefix
+
+This mode is standard. The prefix and mode letter used for it, respectively, are `"@"` and `"+o"`.
+
+Users with this mode may perform channel moderation tasks such as kicking users, applying channel modes, and set other users to operator (or lower) status.
+
+### Halfop Prefix
+
+This mode is widely used in networks today. The prefix and mode letter used for it, respectively, are `"%"` and `"+h"`.
+
+Users with this mode may perform channel moderation tasks, but at a lower privilege level than operators. Which channel moderation tasks they can and cannot perform varies with server software and configuration.
+
+### Voice Prefix
+
+This mode is standard. The prefix and mode letter used for it, respectively, are `"+"` and `"+v"`.
+
+Users with this mode may send messages to a channel that is [moderated](#moderated-channel-mode).
 
 
 ---
