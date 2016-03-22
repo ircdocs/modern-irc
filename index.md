@@ -99,7 +99,7 @@ Along with various channel types, there are also channel modes that can alter th
 
 To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
-A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit) `RPL_ISUPPORT` token. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
+A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
 If the IRC network becomes disjoint because of a split between servers, the channel on either side is composed of only those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
@@ -238,7 +238,7 @@ Various server to server protocols have been defined over the years, with [TS6](
 
 Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
 
-The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-token) `RPL_ISUPPORT` token.
+The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter.
 
 Servers MUST specify the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric sent on completion of client registration.
 
@@ -302,7 +302,7 @@ The presence of a prefix is indicated with a single leading colon character `(':
 
 Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
 
-The proposed [`LINELEN`](#linelen-token) `RPL_ISUPPORT` token lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, use of this token is not widespread and is only used in an experimental server right now.
+The proposed [`LINELEN`](#linelen-parameter) `RPL_ISUPPORT` parameter lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, use of this token is not widespread and is only used in an experimental server right now.
 
 ### Wire format in ABNF
 
@@ -661,7 +661,7 @@ If a client's `JOIN` command to the server is successful, they receive a `JOIN` 
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
-Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-token) [`RPL_ISUPPORT`](#rplisupport-005) token. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
+Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
 
 Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-message) command for each channel they are a member of.
 
@@ -736,7 +736,7 @@ Message Examples:
          Command: VERSION
       Parameters: [<target>]
 
-The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT`](#rplisupport-tokens) tokens on the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
+The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT`](#rplisupport-parameters) parameters of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
 
 If `<target>` is a server, the information for that server is requested. If `<target>` is a client, the information for the server that client is connected to is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
 
@@ -922,7 +922,7 @@ If `<target>` is a channel name and the client is [banned](#ban-channel-mode) an
 
 If a message cannot be delivered to a channel, the server SHOULD respond with an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric to let the user know that this message could not be delivered.
 
-If `<target>` is a channel name, it may be prefixed with a [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG` token](#statusmsg-token), and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
+If `<target>` is a channel name, it may be prefixed with a [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
 
 If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rplaway-301) numeric and the command will continue.
 
@@ -994,7 +994,7 @@ If this mode is set on a channel, and a client sends a `JOIN` request for this c
 
 ### Ban Exemption Channel Mode
 
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-token) `RPL_ISUPPORT` token on connection.
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-parameter) `RPL_ISUPPORT` parameter on connection.
 
 This channel mode controls a list of client masks that are exempt from the ['ban'](#ban-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
 
@@ -1018,7 +1018,7 @@ If this mode is set on a channel, a user must have received an [`INVITE`](#invit
 
 ### Invite Exemption Channel Mode
 
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-token) `RPL_ISUPPORT` token on connection.
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-parameter) `RPL_ISUPPORT` parameter on connection.
 
 This channel mode controls a list of channel masks that are exempt from the [invite-only](#invite-only-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
 
@@ -1042,7 +1042,7 @@ If this mode is set on a channel, only users who have channel privileges may sen
 
 ## Channel Membership Prefixes
 
-Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in [`NAMES`](#names-message), [`WHO`](#who-message) and [`WHOIS`](#whois-message) messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-token) `RPL_ISUPPORT` token on connection.
+Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in [`NAMES`](#names-message), [`WHO`](#who-message) and [`WHOIS`](#whois-message) messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter on connection.
 
 ### Founder Prefix
 
@@ -1160,6 +1160,402 @@ Sent by a server to alert an IRC operator that while they they do not have the s
 `<priv>` is a string that has meaning in the server software, and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
 
 Examples of the sorts of privilege strings used by server software today include: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
+
+
+---
+
+
+# `RPL_ISUPPORT` Parameters
+
+Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPPORT`](#rplisupport-005) numeric lists parameters that let the client know which features are active and their value, if any.
+
+The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more complete list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](http://defs.ircdocs.horse/defs/isupport.html).
+
+If a 'default value' is listed for a parameter, this is the assumed value of the parameter until and unless it is advertised by the server. This is primarily to interoperate with servers that don't advertise particular well-known and well-used parameters. If an 'empty value' is listed for a parameter, this is the assumed value of the parameter if it is advertised without a value.
+
+### `AWAYLEN` Parameter
+
+The `AWAYLEN` parameter indicates the maximum length for the `<reason>` of an [`AWAY`](#away-message) command. If an [`AWAY`](#away-message) `<reason>` has more characters than this parameter, it may be silently truncated by the server before being passed on to other clients. Clients MAY receive an [`AWAY`](#away-message) `<reason>` that has more characters than this parameter.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      AWAYLEN=200
+
+      AWAYLEN=307
+
+### `CASEMAPPING` Parameter
+
+      Format: CASEMAPPING=<casemap>
+
+The `CASEMAPPING` parameter indicates what method the server uses to compare equality of case-insensitive strings (such as channel names and nicks).
+
+The value MUST be specified and MUST be a string representing the method that the server uses.
+
+The specified casemappings are as follows:
+
+* **`ascii`**: Defines the characters `a` to be considered the lower-case equivalents of the characters `A` to `Z` only.
+* **`rfc1459`**: Defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively.
+* **`rfc3454`**: Proposed casemapping which defines that strings are to be compared using the nameprep method described in [`RFC3454`](http://tools.ietf.org/html/rfc3454) and [`RFC3491`](https://tools.ietf.org/html/rfc3491).
+
+The value MUST be specified and is a string. Servers MAY advertise alternate casemappings to those above, but clients MAY NOT be able to understand or perform them.
+
+<div class="warning">
+      We should see whether the <code>rfc1459/strict-rfc1459</code> difference and warning at the end of <a href="https://tools.ietf.org/html/draft-hardy-irc-isupport-00#section-4.1">this section</a> is still applicable these days.
+</div>
+
+Examples:
+
+      CASEMAPPING=ascii
+
+      CASEMAPPING=rfc1459
+
+### `CHANLIMIT` Parameter
+
+      Format: CHANLIMIT=<prefixes>:[limit],<prefixes>:[limit],...
+
+The `CHANLIMIT` parameter indicates the number of channels a client may join.
+
+The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',',` `0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) `RPL_ISUPPORT` parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
+
+Clients should not assume other clients are limited to what is specified in the `CHANLIMIT` parameter.
+
+Examples:
+
+      CHANLIMIT=#:25           ; indicates that clients may join 25 '#' channels
+
+      CHANLIMIT=#&:50          ; indicates that clients may join 50 '#' and 50 '&' channels
+
+      CHANLIMIT=#:70,&:        ; indicates that clients may join 70 '#' channels and any
+                               number of '&' channels
+
+### `CHANMODES` Parameter
+
+      Format: CHANMODES=A,B,C,D
+
+The `CHANMODES` parameter specifies the channel modes available and which types of arguments they do or do not take when using them with the [`MODE` command](#mode-message).
+
+There are four categories of channel modes, defined as follows:
+
+* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list.
+* **Type B**: Modes that change a setting on a channel. These modes MUST always have a parameter.
+* **Type C**: Modes that change a setting on a channel. These modes MUST have a parameter when being set, and MUST NOT have a parameter when being unset.
+* **Type D**: Modes that change a setting on a channel. These modes MUST NOT have a parameter.
+
+To allow for future extensions, a server MAY send additional types, delimited by a comma `(',',` `0x2C)`. However, server authors SHOULD NOT extend this parameter in this way without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
+
+Server MUST NOT list modes in this parameter that are also advertised in the [`PREFIX`](#prefix-parameter) parameter. However, modes within the [`PREFIX`](#prefix-parameter) parameter may be treated as type B modes.
+
+Examples:
+
+      CHANMODES=b,k,l,imnpst
+
+      CHANMODES=beI,k,l,BCMNORScimnpstz
+
+      CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTGZ
+
+### `CHANNELLEN` Parameter
+
+      Format: CHANNELLEN=<string>
+
+The `CHANNELLEN` parameter specifies the maximum length of a channel name that a client may join. A client elsewhere on the network MAY join a channel with a larger name, but network administrators should take care to ensure this value stays consistent across the network.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      CHANNELLEN=32
+
+      CHANNELLEN=50
+
+      CHANNELLEN=64
+
+### `CHANTYPES` Parameter
+
+       Format: CHANTYPES=[string]
+      Default: CHANTYPES=#
+
+The `CHANTYPES` parameter indicates the channel prefix characters that are available on the current server. Common channel types are listed in the [Channel Types](#channel-types) section.
+
+The value is OPTIONAL and if not specified indicates that no channel types are supported.
+
+Examples:
+
+      CHANTYPES=#
+
+      CHANTYPES=&#
+
+      CHANTYPES=#&
+
+### `ELIST` Parameter
+
+      Format: ELIST=<string>
+
+The `ELIST` parameter indicates that the server supports search extensions to the [`LIST`](#list-message) command.
+
+The value MUST be specified, and is a non-delimited list of letters, each of which denote an extension. The letters MUST be treated as being case-insensitive.
+
+The following search extensions are defined:
+
+* **C**: Searching based on channel creation time, via the `"C<val"` and `"C>val"` modifiers to search for a channel creation time that is higher or lower than `val`.
+* **M**: Searching based on a mask.
+* **N**: Searching based on a non-matching mask. i.e., the opposite of `M`.
+* **T**: Searching based on topic set time, via the `"T<val"` and `"T>val"` modifiers to search for a topic time that is higher or lower than `val`.
+* **U**: Searching based on user count within the channel, via the `"U<val"` and `"U>val"` modifiers to search for a channel that has less or more user than `val`.
+
+Examples:
+
+      ELIST=MNUCT
+
+      ELIST=MU
+
+      ELIST=CMNTU
+
+### `EXCEPTS` Parameter
+
+      Format: EXCEPTS=[character]
+       Empty: e
+
+The `EXCEPTS` parameter indicates that the server supports ban exceptions, as specified in the [ban exemption](#ban-exemption-channel-mode) channel mode section.
+
+The value is OPTIONAL and when not specified indicates that the letter `"e"` is used as the channel mode for ban exceptions. If the value is specified, the character indicates the letter which is used for ban exceptions.
+
+Examples:
+
+      EXCEPTS
+
+      EXCEPTS=e
+
+### `EXTBAN` Parameter
+
+      Format: EXTBAN=<prefix>,<types>
+
+The `EXTBAN` parameter indicates the types of "extended bans" that the server supports.
+
+`<prefix>` denotes the character that indicates an extban to the server and `<types>` is a list of characters indicating the types of extended bans the server supports.
+
+Extended bans may allow clients to issue bans based on account name, SSL certificate fingerprints and other attributes, based on what the server supports.
+
+Extban masks SHOULD also be supported for the [ban exemption](#ban-exemption-channel-mode) and [invite exemption](#invite-exemption-channel-mode) modes.
+
+<div class="warning">
+    <p>Ensure that extban masks are actually typically supported in ban exemption and invite exemption modes.</p>
+
+    <p>We should include a list of 'typical' extban characters and their associated meaning, but make sure we specify that these are not standardised and may change based on server software. See also: <a href="https://github.com/DanielOaks/irc-defs/issues/9"><code>irc-defs#9</code></a></p>
+</div>
+
+Examples:
+
+      EXTBAN=~,cqnr
+
+      EXTBAN=~,qjncrRa
+
+### `INVEX` Parameter
+
+      Format: INVEX=[character]
+       Empty: I
+
+The `INVEX` parameter indicates that the server supports invite exceptions, as specified in the [invite exemption](#invite-exemption-channel-mode) channel mode section.
+
+The value is OPTIONAL and when not specified indicates that the letter `"I"` is used as the channel mode for invite exceptions. If the value is specified, the character indicates the letter which is used for invite exceptions.
+
+Examples:
+
+      INVEX
+
+      INVEX=I
+
+### `KICKLEN` Parameter
+
+The `KICKLEN` parameter indicates the maximum length for the `<reason>` of a [`KICK`](#kick-message) command. If a [`KICK`](#kick-message) `<reason>` has more characters than this parameter, it may be silently truncated by the server before being passed on to other clients. Clients MAY receive a [`KICK`](#kick-message) `<reason>` that has more characters than this parameter.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      KICKLEN=255
+
+      KICKLEN=307
+
+### `MAXLIST` Parameter
+
+      Format: MAXLIST=<modes>:<limit>[,<modes>:<limit>,...]
+
+The `MAXLIST` parameter specifies how many "variable" modes of type A that have been defined in the [`CHANMODES`](#chanmodes-parameter) parameter that a client may set in total on a channel.
+
+The value MUST be specified and is a list of `<modes>:<limit>` pairs, delimited by a comma `(',',` `0x2C)`. `<modes>` is a list of type A modes defined in [`CHANMODES`](#chanmodes-parameter). `<limit>` is a positive integer specifying the maximum number of entries that all of the modes in `<modes>`, combined, may set on a channel.
+
+A client MUST NOT make any assumptions on how many mode entries may actually exist on any given channel. This limit only applies to the client setting new modes of the given types, and other clients may have different limits.
+
+Examples:
+
+      MAXLIST=beI:25           ; indicates that a client may set up to a total of 25 of a
+                               combination of "b", "e", and "I" modes.
+
+      MAXLIST=b:60,e:60,I:60   ; indicates that a client may set up to 60 "b" modes,
+                               "e" modes, and 60 "I" modes.
+
+      MAXLIST=beI:100,q:50     ; indicates that a client may set up to a total of 100 of
+                               a combination of "b", "e", and "I" modes, and that they
+                               may set up to 50 "q" modes.
+
+### `MAXTARGETS` Parameter
+
+      Format: MAXTARGETS=[number]
+
+The `MAXTARGETS` parameter specifies the maximum number of targets a [`PRIVMSG`](#privmsg-message) or [`NOTICE`](#notice-message) command may have, and may apply to other commands based on server software.
+
+The value is OPTIONAL and if specified, `[number]` is a positive integer representing the maximum number of targets those commands may have. If there is no limit, then `[number]` MAY not be specified.
+
+The [`TARGMAX`](#targmax-parameter) `RPL_ISUPPORT` parameter SHOULD be advertised instead of or in addition to this parameter. [`TARGMAX`](#targmax-parameter) is intended to replace `MAXTARGETS` as that parameter is more clear about which commands limits apply to.
+
+Examples:
+
+      MAXTARGETS=4
+
+      MAXTARGETS=20
+
+### `MODES` Parameter
+
+      Format: MODES=[number]
+
+The `MODES` parameter specifies how many 'variable' modes may be set on a channel by a single [`MODE`](#mode-message) command from a client. A 'variable' mode is defined as being a type A, B or C mode as defined in the [`CHANMODES`](#chanmodes-parameter) parameter, or in the channel modes specified in the [`PREFIX`](#prefix-parameter) parameter.
+
+A client SHOULD NOT issue more 'variable' modes than this in a single [`MODE`](#mode-message) command. A server MAY however issue more 'variable' modes than this in a single [`MODE`](#mode-message) message. The value is OPTIONAL and when not specified indicates that there is no limit to the number of 'variable' modes that may be set in a single client [`MODE`](#mode-message) command.
+
+If the value is specified, it MUST be a positive integer.
+
+Examples:
+
+      MODES=4
+
+      MODES=12
+
+      MODES=20
+
+### `NETWORK` Parameter
+
+      Format: NETWORK=<string>
+
+The `NETWORK` parameter indicates the name of the IRC network that the client is connected to. This parameter is advertised for INFORMATIONAL PURPOSES ONLY. Clients SHOULD NOT use this value to make assumptions about supported features on the server as networks may change server software and configuration at any time.
+
+Examples:
+
+      NETWORK=EFNet
+
+      NETWORK=Rizon
+
+### `NICKLEN` Parameter
+
+       Format: NICKLEN=<number>
+
+The `NICKLEN` parameter indicates the maximum length of a nickname that a client may set. Clients on the network MAY have longer nicks than this.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      NICKLEN=9
+
+      NICKLEN=30
+
+      NICKLEN=31
+
+### `PREFIX` Parameter
+
+       Format: PREFIX=[(modes)prefixes]
+      Default: PREFIX=(ov)@+
+
+Within channels, clients can have different statuses, denoted by single-character prefixes. The `PREFIX` parameter specifies these prefixes and the channel mode characters that they are mapped to. There is a one-to-one mapping between prefixes and channel modes. The prefixes in this parameter are in descending order, from the prefix that gives the most privileges to the prefix that gives the least.
+
+The typical prefixes advertised in this parameter are listed in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
+
+The value is OPTIONAL and when it is not specified indicates that no prefixes are supported.
+
+Examples:
+
+      PREFIX=(ov)@+
+
+      PREFIX=(ohv)@%+
+
+      PREFIX=(qaohv)~&@%+
+
+### `SAFELIST` Parameter
+
+      Format: SAFELIST
+
+If `SAFELIST` parameter is advertised, the server ensures that a client may perform the [`LIST`](#list-message) command without being disconnected due to the large volume of data the [`LIST`](#list-message) command generates.
+
+The `SAFELIST` parameter MUST NOT be specified with a value.
+
+Examples:
+
+      SAFELIST
+
+### `SILENCE` Parameter
+
+      Format: SILENCE[=<limit>]
+
+The `SILENCE` parameter indicates the maximum number of entries a client can have in their silence list.
+
+The value is OPTIONAL and if specified is a positive integer. If the value is not specified, the server does not support the [`SILENCE`](#silence-message) command.
+
+Most IRC clients also include client-side filter/ignore lists as an alternative to this command.
+
+Examples:
+
+      SILENCE
+
+      SILENCE=15
+
+      SILENCE=32
+
+### `STATUSMSG` Parameter
+
+      Format: STATUSMSG=<string>
+
+The `STAUSMSG` parameter indicates that the server supports a method for clients to send a message via the [`PRIVMSG`](#privmsg-message) / [`NOTICE`](#notice-message) commands to those people on a channel with the specified [channel membership prefixes](#channel-membership-prefixes).
+
+The value MUST be specified and MUST be a list of prefixes as specified in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter.
+
+Examples:
+
+      STATUSMSG=@+
+
+      STATUSMSG=@%+
+
+      STATUSMSG=~&@%+
+
+### `TARGMAX` Parameter
+
+      Format: TARGMAX=[<command>:[limit],<command>:[limit],...]
+
+Certain client commands MAY contain multiple targets, delimited by a comma `(',',` `0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets.
+
+The value is OPTIONAL and is a set of `<command>:<limit>` pairs, delimited by a comma `(',',` `0x2C)`. `<command>` is the name of a client command. `<limit>` is the maximum number of targets which that command accepts. If `<limit>` is specified, it is a positive integer. If `<limit>` is not specified, then there is no maximum number of targets for that command. Clients MUST treat `<command>` as case-insensitive.
+
+Examples:
+
+      TARGMAX=PRIVMSG:3,WHOIS:1,JOIN:
+
+      TARGMAX=NAMES:1,LIST:1,KICK:1,WHOIS:1,PRIVMSG:4,NOTICE:4,ACCEPT:,MONITOR:
+
+      TARGMAX=ACCEPT:,KICK:1,LIST:1,NAMES:1,NOTICE:4,PRIVMSG:4,WHOIS:1
+
+### `TOPICLEN` Parameter
+
+      Format: TOPICLEN=<number>
+
+The `TOPICLEN` parameter indicates the maximum length of a topic that a client may set on a channel. Channels on the network MAY have topics with longer lengths than this.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      TOPICLEN=307
+
+      TOPICLEN=390
 
 
 ---
