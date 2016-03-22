@@ -1194,6 +1194,12 @@ Because this numeric does not specify whether to enable SSL and is not interpret
 
 This numeric is also known as `RPL_REDIR` by some software.
 
+### `RPL_UMODEIS (221)`
+
+      "<client> <user modes>"
+
+Sent to a client to inform that client of their currently-set user modes.
+
 ### `ERR_NOPRIVS (723)`
 
       "<client> <priv> :Insufficient oper privileges."
