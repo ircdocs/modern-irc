@@ -467,7 +467,7 @@ Clients and servers should implement capability negotiation and the `CAP` comman
 
 Messages are client-to-server only unless otherwise specified. If messages may be sent from the server to a connected client, it will be noted in the message's description. For server-to-client messages of this type, the message `<source>` usually indicates the client the message relates to, but this will be noted in the description.
 
-In message descriptions, 'command' generally refers to the message's behaviour when sent from a client to the server. Similarly, 'Command Examples' represent example messages sent from a client to the server, and 'Message Examples' represent example messages sent from the server to a client.
+In message descriptions, 'command' refers to the message's behaviour when sent from a client to the server. Similarly, 'Command Examples' represent example messages sent from a client to the server, and 'Message Examples' represent example messages sent from the server to a client. If a command is sent from a client to a server with less parameters than the command requires to be processed, the server will reply with an [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) numeric and the command will fail.
 
 In the `"Parameters:"` section, optional parts or parameters are noted with square brackets as such: `"[<param>]"`. Curly braces around a part of parameter indicate that it may be repeated zero or more times, for example: `"<key>{,<key>}"` indicates that there must be at least one `<key>`, and that there may be additional keys separated by the comma `(",", 0x2C)` character.
 
@@ -832,9 +832,9 @@ Command Examples:
 ### STATS message
 
          Command: STATS
-      Parameters: [<query> [<server>]]
+      Parameters: <query> [<server>]
 
-The `STATS` command is used to query statistics of a certain server. If the `<server>` parameter is omitted, only the end of stats reply is sent back. The specific queries supported by this command depend on the server that replies, although the server must be able to supply information as described by the queries below (or similar).
+The `STATS` command is used to query statistics of a certain server. The specific queries supported by this command depend on the server that replies, although the server must be able to supply information as described by the queries below (or similar).
 
 A query may be given by any single letter which is only checked by the destination server and is otherwise passed on by intermediate servers, ignored and unaltered.
 
@@ -859,6 +859,7 @@ The currently supported queries are:
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
 * [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
 * [`RPL_STATSCLINE`](#statscline-213) `(213)`
