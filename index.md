@@ -1331,11 +1331,11 @@ Examples:
 
       Format: EXTBAN=<prefix>,<types>
 
-The `EXTBAN` parameter indicates the types of "extended bans" that the server supports.
+The `EXTBAN` parameter indicates the types of "extended ban masks" that the server supports.
 
 `<prefix>` denotes the character that indicates an extban to the server and `<types>` is a list of characters indicating the types of extended bans the server supports.
 
-Extended bans may allow clients to issue bans based on account name, SSL certificate fingerprints and other attributes, based on what the server supports.
+Extbans may allow clients to issue bans based on account name, SSL certificate fingerprints and other attributes, based on what the server supports.
 
 Extban masks SHOULD also be supported for the [ban exemption](#ban-exemption-channel-mode) and [invite exemption](#invite-exemption-channel-mode) modes.
 
