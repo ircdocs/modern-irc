@@ -979,7 +979,42 @@ Modes affect the behaviour and reflect details about targets -- clients and chan
 
 The status and letter used for each mode is defined in the description of that mode.
 
-We only cover modes that are widely-used by IRC software today and whose meanings will almost never change with different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
+We only cover modes that are widely-used by IRC software today and whose meanings should stay consistent between different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
+
+
+## User Modes
+
+### Invisible User Mode
+
+This mode is standard, and the mode letter used for it is `"+i"`.
+
+If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) unless they share a channel with the user that submitted the command. In addition, the only channels that will show up in a [`WHOIS`](#whois-command) will be those that they share with the user that submitted the command.
+
+### Oper User Mode
+
+This mode is standard, and the mode letter used for is it `"+o"`.
+
+If a user has this mode, this indicates that they are a network [operator](#operators).
+
+### Local Oper User Mode
+
+This mode is standard, and the mode letter used for it is `"+O"`.
+
+If a user has this mode, this indicates that they are a server [operator](#operators). A local operator only has [operator](#operators) priveleges for their server, and not for the rest of the network.
+
+### Registered User Mode
+
+This mode is widely-used, and the mode letter used for it is typically `"+r"`. The character used for this mode may vary depending on server software and configuration.
+
+If a user has this mode, this indicates that they have logged into a user account.
+
+IRCv3 extensions such as [`account-notify`](http://ircv3.net/specs/extensions/account-notify-3.1.html), [`account-tag`](http://ircv3.net/specs/extensions/account-tag-3.2.html), and [`extended-join`](http://ircv3.net/specs/extensions/extended-join-3.1.html) provide the account name of logged-in users, and are more accurate than trying to detect this user mode due to the capability name remaining consistent.
+
+### `WALLOPS` User Mode
+
+This mode is standard, and the mode letter used for it is `"+w"`.
+
+If a user has this mode, this indicates that they will receive [`WALLOPS`](#wallops-message) messages from the server.
 
 
 ## Channel Modes
@@ -1036,9 +1071,17 @@ If this mode is set on a channel, and a client sends a `JOIN` request for that c
 
 This mode is standard, and the mode letter used for it is `"+m"`.
 
-This channel mode controls whether users may freely talk on the channel.
+This channel mode controls whether users may freely talk on the channel, and does not have any value.
 
 If this mode is set on a channel, only users who have channel privileges may send messages to that channel. The [voice](#voice-prefix) channel mode is designed to let a user talk in a moderated channel without giving them other channel moderation abilities, and users of higher privileges (such as [halfops](#halfop-prefix) or [chanops](#operator-prefix)) may also speak in moderated channels.
+
+### Secret Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+s"`.
+
+This channel mode controls whether the channel is 'secret', and does not have any value.
+
+A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
 
 ## Channel Membership Prefixes
 
