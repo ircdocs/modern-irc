@@ -419,7 +419,7 @@ The commands specified in steps 1-3 should be sent on connection. If the server 
 
 If the server is waiting to complete a lookup of client information (such as hostname or ident for a username), there may be an arbitrary wait at some point during registration. Servers should set a reasonable timeout for these lookups.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD also send the Message of the Day ([`MOTD`](#motd-message)) if one exists (or [`ERR_NOMOTD`](#errnomotd-422) if it does not), and MAY send other numerics.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
 
 
 ---
@@ -731,6 +731,27 @@ Message Examples:
 
 ## Server Queries and Commands
 
+### MOTD message
+
+         Command: MOTD
+      Parameters: [<target>]
+
+The `MOTD` command is used to get the "Message of the Day" of the given server. If `<target>` is not given, the MOTD of the server the client is connected to should be returned.
+
+If `<target>` is a server, the MOTD for that server is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
+
+If the MOTD can be found, one `RPL_MOTDSTART` numeric is returned, followed by one or more `RPL_MOTD` numeric, then one `RPM_ENDOFMOTD` numeric.
+
+If the MOTD does not exist or could not be found, the `ERR_NOMOTD` numeric is returned.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_NOMOTD`](#errnomotd-422) `(422)`
+* [`RPL_MOTDSTART`](#rplmotdstart-375) `(375)`
+* [`RPL_MOTD`](#rplmotd-372) `(372)`
+* [`RPL_ENDOFMOTD`](#rplendofmotd-376) `(376)`
+
 ### VERSION message
 
          Command: VERSION
@@ -838,7 +859,7 @@ The `STATS` command is used to query statistics of a certain server. The specifi
 
 A query may be given by any single letter which is only checked by the destination server and is otherwise passed on by intermediate servers, ignored and unaltered.
 
-The following queries are those found in current IRC implementations and provide a large portion of the setup information for that server. All servers should be able to supply a valid reply to a `STATS` query which is consistent with the reply formats currently used and the purpose of the query.
+The following queries are those found in current IRC implementations and provide a large portion of the setup and runtime information for that server. All servers should be able to supply a valid reply to a `STATS` query which is consistent with the reply formats currently used and the purpose of the query.
 
 The currently supported queries are:
 
@@ -1201,11 +1222,47 @@ This numeric is also known as `RPL_REDIR` by some software.
 
 Sent to a client to inform that client of their currently-set user modes.
 
+### `RPL_MOTDSTART (375)`
+
+      "<client> :- <server> Message of the day - "
+
+Indicates the start of the [Message of the Day](#motd-message) to the client. The text used in the last param of this message may vary, and SHOULD be displayed as-is by IRC clients to their users.
+
+### `RPL_MOTD (372)`
+
+      "<client> :<line of the motd>"
+
+When sending the [`Message of the Day`](#motd-message) to the client, servers reply with each line of the `MOTD` as this numeric. `MOTD` lines MAY be wrapped to 80 characters by the server.
+
+### `RPL_ENDOFMOTD (376)`
+
+      "<client> :End of /MOTD command."
+
+Indicates the end of the [Message of the Day](#motd-message) to the client. The text used in the last param of this message may vary.
+
+### `RPL_YOUREOPER (381)`
+
+      "<client> :You are now an IRC operator"
+
+Sent to a client which has just successfully issued an [`OPER`](#oper-message) command and gained [operator](#operators) status. The text used in the last param of this message varies wildly.
+
+### `RPL_REHASHING (382)`
+
+      "<client> <config file> :Rehashing"
+
+Sent to an [operator](#operators) which has just successfully issued a [`REHASH`](#rehash-message) command. The text used in the last param of this message may vary.
+
+### `ERR_NOMOTD (422)`
+
+      "<client> :MOTD File is missing"
+
+Indicates that the [Message of the Day](#motd-message) file does not exist or could not be found. The text used in the last param of this message may vary.
+
 ### `ERR_NOPRIVS (723)`
 
       "<client> <priv> :Insufficient oper privileges."
 
-Sent by a server to alert an IRC operator that while they they do not have the specific operator privilege required by this server/network to perform the command or action they requested.
+Sent by a server to alert an IRC operator that while they they do not have the specific operator privilege required by this server/network to perform the command or action they requested. The text used in the last param of this message may vary.
 
 `<priv>` is a string that has meaning in the server software, and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
 
