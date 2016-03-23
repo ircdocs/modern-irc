@@ -236,7 +236,7 @@ Various server to server protocols have been defined over the years, with [TS6](
 
 ### Character Codes
 
-Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and even lines they cannot decode with any of their standard encodings.
+Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and lines they cannot decode correctly with any of their standard encodings.
 
 The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter.
 
