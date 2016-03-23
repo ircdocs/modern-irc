@@ -1010,7 +1010,7 @@ We only cover modes that are widely-used by IRC software today and whose meaning
 
 This mode is standard, and the mode letter used for it is `"+i"`.
 
-If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) unless they share a channel with the user that submitted the command. In addition, the only channels that will show up in a [`WHOIS`](#whois-command) will be those that they share with the user that submitted the command.
+If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) unless they share a channel with the user that submitted the command. In addition, the only channels that will show up in a [`WHOIS`](#whois-command) of an invisible user will be those they share with the user that submitted the command.
 
 ### Oper User Mode
 
