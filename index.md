@@ -310,7 +310,7 @@ The extracted message is parsed into the components `tags`, `prefix`, `command`,
 
 The ABNF representation for this is:
 
-      message     =  ["@" tags SPACE ] [ ":" prefix SPACE ] command
+      message     =  [ "@" tags SPACE ] [ ":" prefix SPACE ] command
                      [ params ] crlf
       tags        =  tag *[ ";" tag ]
       tag         =  key [ "=" value ]
@@ -594,7 +594,7 @@ If the client does not send the correct password for the given name, the server 
 
 If the client is not connecting from a valid host for the given name, the server replies with an `ERR_NOOPERHOST` message and the request is not successful.
 
-If the supplied name and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE` message](#mode-message) indicating their new user modes, and other messages may be sent.
+If the supplied name and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE`](#mode-message) message indicating their new user modes, and other messages may be sent.
 
 The `<name>` specified by this command is separate to the accounts specified by SASL authentication, and is generally stored in the IRCd configuration.
 
@@ -931,6 +931,70 @@ Command Examples:
      INFO Angel                      ; request info from the server that
                                      Angel is connected to.
 
+### MODE message
+
+         Command: MODE
+      Parameters: <target> [<modestring> [<mode arguments>...]]
+
+The `MODE` command is used to set or remove options (or *modes*) from a given target.
+
+If `<target>` is a nickname, it MUST be the same nickname as the user who sent the command. If a client is trying to set modes for a different user, the [`ERR_USERSDONTMATCH`](#errusersdontmatch-502) numeric is returned and the command will fail.
+
+If `<target>` is a channel, the user sending the command MUST have appropriate channel priveleges to change modes (as well as to change the specific modes it is requesting), such as [halfop](#halfop-prefix) or [chanop](#operator-prefix). If a user does not have permission to change modes on the target channel, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail. Servers MAY check permissions once at the start of processing the `MODE` command, or may check it on setting each mode character.
+
+If `<target>` is a nickname and `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric will be sent back containing the current modes of the target user. If `<target>` is a channel and `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric will be sent back containing the current modes of the target channel.
+
+If `<modestring>` is given and the user has permission to change modes on the target, the supplied modes will be applied and a `MODE` message will be returned containing the mode changes that were applied. For type A, B, and C modes, arguments will be obtained from `<mode arguments>`, sequentially, as required. If a type B or C mode cannot be acted upon as it requires a argument and one has not been supplied, that mode will be silently ignored. If a type A mode has been sent without an argument (i.e., listing the contents of that mode's list), servers SHOULD only send the list for that mode to the client once, regardless of how many times that type A mode is contained in the `<modestring>`.
+
+The `MODE` message is sent from the server to a client to show that the `<target>`'s modes have changed. Mode changes are only sent to clients for channels they are joined to and their own user modes. When the `MODE` message is sent to clients, `<source>` represents the client or server that changed the modes.
+
+---
+
+`<modestring>` starts with a plus `('+',` `0x53)` or minus `('-',` `0x55)` character, and is made up of the following characters:
+
+* **`'+'`**: Adds the following mode(s).
+* **`'-'`**: Removes the following mode(s).
+* **`'a-zA-Z'`**: Mode letters, indicating which modes are to be added/removed.
+
+The ABNF representation for `<modestring>` is:
+
+      modestring  =  1*( modeset )
+      modeset     =  plusminus *( modechar )
+      plusminus   =  %x53 / %x55
+                       ; + or -
+      modechar    =  ALPHA
+
+There are four categories of channel modes, defined as follows:
+
+* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list. The numerics used to retrieve contents of Type A modes depends on the specific mode.
+* **Type B**: Modes that change a setting on a channel. These modes MUST always have a parameter.
+* **Type C**: Modes that change a setting on a channel. These modes MUST have a parameter when being set, and MUST NOT have a parameter when being unset.
+* **Type D**: Modes that change a setting on a channel. These modes MUST NOT have a parameter.
+
+Channel mode letters, along with their types, are defined in the [`CHANMODES`](#chanmodes-parameter) `RPL_ISUPPORT` parameter. User mode letters are always **Type D** modes.
+
+The meaning of standard (and/or well-used) channel and user mode letters can be found in the [Channel Modes](#channel-modes) and [User Modes](#user-modes) sections. The meaning of any mode letters not in this list are defined by the server software and configuration.
+
+Command Examples:
+
+      MODE dan +i                     ; Setting the "invisible" user mode on dan.
+
+      MODE #foobar +mb *@127.0.0.1    ; Setting the "moderated" channel mode and
+                                      adding the "*@127.0.0.1" mask to the ban
+                                      list of the #foobar channel.
+
+Message Examples:
+
+      :dan!~h@localhost MODE #foobar -bl+i *@192.168.0.1
+                                      ; dan unbanned the "*@192.168.0.1" mask,
+                                      removed the client limit from, and set the
+                                      #foobar channel to invite-only.
+
+      :irc.example.com MODE #foobar +o bunny
+                                      ; The irc.example.com server gave channel
+                                      operator priveleges to bunny on #foobar.
+
+
 ## Sending Messages
 
 ### PRIVMSG message
@@ -1026,7 +1090,7 @@ If a user has this mode, this indicates that they are a server [operator](#opera
 
 ### Registered User Mode
 
-This mode is widely-used, and the mode letter used for it is typically `"+r"`. The character used for this mode may vary depending on server software and configuration.
+This mode is widely-used, and the mode letter used for it is typically `"+r"`. The character used for this mode, and whether it exists at all, may vary depending on server software and configuration.
 
 If a user has this mode, this indicates that they have logged into a user account.
 
@@ -1104,6 +1168,22 @@ This mode is standard, and the mode letter used for it is `"+s"`.
 This channel mode controls whether the channel is 'secret', and does not have any value.
 
 A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
+
+### Protected Topic Mode
+
+This mode is standard, and the mode letter used for it is `"+t"`.
+
+This channel mode controls whether channel priveleges are required to set the topic, and does not have any value.
+
+If this mode is enabled, users must have channel priveledges such as [halfop](#halfop-prefix) or [operator](#operator-prefix) status in order to change the topic of a channel. In a channel that does not have this mode enabled, anyone may set the topic of the channel using the [`TOPIC`](#topic-message) command.
+
+### No External Messages Mode
+
+This mode is standard, and the mode letter used for it is `"+n"`.
+
+This channel mode controls whether users who are not joined to the channel can send messages to it, and does not have any value.
+
+If this mode is enabled, users MUST be joined to the channel in order to send [private messages](#privmsg-message) and [notices](#notice-message) to the channel. If this mode is enabled and they try to send one of these to a channel they are not joined to, they will receive an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric and the message will not be sent to that channel.
 
 ## Channel Membership Prefixes
 
@@ -1339,18 +1419,13 @@ Examples:
 
 ### `CHANMODES` Parameter
 
-      Format: CHANMODES=A,B,C,D
+      Format: CHANMODES=A,B,C,D[,X,Y...]
 
-The `CHANMODES` parameter specifies the channel modes available and which types of arguments they do or do not take when using them with the [`MODE` command](#mode-message).
+The `CHANMODES` parameter specifies the channel modes available and which types of arguments they do or do not take when using them with the [`MODE`](#mode-message) command.
 
-There are four categories of channel modes, defined as follows:
+The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**, delimited by a comma `(',',` `0x2C)`. The channel mode types are defined in the the [`MODE`](#mode-message) message description.
 
-* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list.
-* **Type B**: Modes that change a setting on a channel. These modes MUST always have a parameter.
-* **Type C**: Modes that change a setting on a channel. These modes MUST have a parameter when being set, and MUST NOT have a parameter when being unset.
-* **Type D**: Modes that change a setting on a channel. These modes MUST NOT have a parameter.
-
-To allow for future extensions, a server MAY send additional types, delimited by a comma `(',',` `0x2C)`. However, server authors SHOULD NOT extend this parameter in this way without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
+To allow for future extensions, a server MAY send additional types, delimited by a comma `(',',` `0x2C)`. However, server authors SHOULD NOT extend this parameter without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
 
 Server MUST NOT list modes in this parameter that are also advertised in the [`PREFIX`](#prefix-parameter) parameter. However, modes within the [`PREFIX`](#prefix-parameter) parameter may be treated as type B modes.
 
