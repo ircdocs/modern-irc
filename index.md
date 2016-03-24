@@ -1000,7 +1000,7 @@ Message Examples:
 ### PRIVMSG message
 
          Command: PRIVMSG
-      Parameters: <target>{,<target>} <text to be sent>
+      Parameters: <target>{,<target>...} <text to be sent>
 
 The `PRIVMSG` command is used to send private messages between users, as well as to send messages to channels. `<target>` is the nickname of a client or the name of a channel.
 
@@ -1047,7 +1047,7 @@ Message Examples:
 ### NOTICE message
 
          Command: NOTICE
-      Parameters: <target>{,<target>} <text to be sent>
+      Parameters: <target>{,<target>...} <text to be sent>
 
 The `NOTICE` command is used to send notices between users, as well as to send notices to channels. `<target>` is interpreted the same way as it is for the [`PRIVMSG`](#privmsg-message) command.
 
