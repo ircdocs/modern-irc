@@ -1486,7 +1486,7 @@ Indicates that a [`MODE`](#mode-message) command affecting a user failed because
 
       "<client> <priv> :Insufficient oper privileges."
 
-Sent by a server to alert an IRC operator that while they they do not have the specific operator privilege required by this server/network to perform the command or action they requested. The text used in the last param of this message may vary.
+Sent by a server to alert an IRC [operator](#operators) that they they do not have the specific operator privilege required by this server/network to perform the command or action they requested. The text used in the last param of this message may vary.
 
 `<priv>` is a string that has meaning in the server software, and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
 
