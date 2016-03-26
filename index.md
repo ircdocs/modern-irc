@@ -1548,7 +1548,7 @@ Examples:
 
 The `CHANLIMIT` parameter indicates the number of channels a client may join.
 
-The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',',` `0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) `RPL_ISUPPORT` parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
+The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',',` `0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
 
 Clients should not assume other clients are limited to what is specified in the `CHANLIMIT` parameter.
 
@@ -1734,7 +1734,7 @@ The `MAXTARGETS` parameter specifies the maximum number of targets a [`PRIVMSG`]
 
 The value is OPTIONAL and if specified, `[number]` is a positive integer representing the maximum number of targets those commands may have. If there is no limit, then `[number]` MAY not be specified.
 
-The [`TARGMAX`](#targmax-parameter) `RPL_ISUPPORT` parameter SHOULD be advertised instead of or in addition to this parameter. [`TARGMAX`](#targmax-parameter) is intended to replace `MAXTARGETS` as that parameter is more clear about which commands limits apply to.
+The [`TARGMAX`](#targmax-parameter) parameter SHOULD be advertised instead of or in addition to this parameter. [`TARGMAX`](#targmax-parameter) is intended to replace `MAXTARGETS` as that parameter is more clear about which commands limits apply to.
 
 Examples:
 
@@ -1778,7 +1778,7 @@ Examples:
 
 The `NICKLEN` parameter indicates the maximum length of a nickname that a client may set. Clients on the network MAY have longer nicks than this.
 
-The value MUST be specified and MUST be a positive integer.
+The value MUST be specified and MUST be a positive integer. `30` or `31` are typical values for this parameter advertised by servers today.
 
 Examples:
 
@@ -1843,7 +1843,7 @@ Examples:
 
 The `STAUSMSG` parameter indicates that the server supports a method for clients to send a message via the [`PRIVMSG`](#privmsg-message) / [`NOTICE`](#notice-message) commands to those people on a channel with the specified [channel membership prefixes](#channel-membership-prefixes).
 
-The value MUST be specified and MUST be a list of prefixes as specified in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter.
+The value MUST be specified and MUST be a list of prefixes as specified in the [`PREFIX`](#prefix-parameter) parameter. Most servers today advertise every prefix in their [`PREFIX`](#prefix-parameter) parameter in `STATUSMSG`.
 
 Examples:
 
@@ -1875,7 +1875,7 @@ Examples:
 
 The `TOPICLEN` parameter indicates the maximum length of a topic that a client may set on a channel. Channels on the network MAY have topics with longer lengths than this.
 
-The value MUST be specified and MUST be a positive integer.
+The value MUST be specified and MUST be a positive integer. `307` is the typical value for this parameter advertised by servers today.
 
 Examples:
 
