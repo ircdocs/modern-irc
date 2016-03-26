@@ -14,7 +14,7 @@ copyrights:
 {% include copyrights.html %}
 
 <div class="warning">
-    <p>This is NOT an authoritative document. It does not purport to be anything more than a hopefully-useful overview of the IRC protocol as it is generally implemented today. If something written in here isn't correct for or interoperable with an IRC server or network you know of, please open an issue or <a href="mailto:daniel@danieloaks.net">contact me!</a> There are lots networks and servers out there, and when you're writing a document like this you're bound to miss something.</p>
+    <p>This is NOT an authoritative document. It does not purport to be anything more than a hopefully-useful overview of the IRC protocol as it is generally implemented today. If something written in here isn't correct for or interoperable with an IRC server / network you know of, please open an issue or <a href="mailto:daniel@danieloaks.net">contact me!</a> There are lots networks and servers out there, and when you're writing a document like this you're bound to miss something.</p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
 

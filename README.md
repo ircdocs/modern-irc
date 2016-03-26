@@ -1,10 +1,12 @@
 # Modern IRC
 
-This is an attempt to create a somewhat updated document about how the IRC client protocol works these days.
+This is an attempt to create an updated document about how the IRC client protocol works these days.
 
-This is **not an authoritative document**, just something that's hopefully useful when writing software. This is not aiming to be an RFC, I'm just trying to get some relatively sane subset of the IRC protocol written down. Look at [ircv3-harmony](https://github.com/kaniini/ircv3-harmony) for something which aims to be a specification.
+This is **not an authoritative document**. This means that if there are multiple ways something is done, this document doesn't make decisions about which method is better or which one to specify -- it usually notes both down and just tries to show what clients and servers do today. Making decisions is the job of an RFC, and writing an RFC is the job of someone else. I'm just trying to get some relatively sane subset of the IRC protocol written down. Look at [ircv3-harmony](https://github.com/kaniini/ircv3-harmony) for something which aims to be an RFC.
 
-This covers the client-server protocol only, random bits and pieces cherry-picked from the RFCs, IRCv3, Internet-Drafts, and commands/replies that have generally been accepted by the IRC community.
+If something written in here isn't correct for or interoperable with an IRC server / network you know of, please open an issue. Pull requests are appreciated.
+
+This covers the client-server protocol only, and does not touch the S2S protocol. The reasons for this are discussed in the document. This document includes bits and pieces cherry-picked from the RFCs, [IRCv3](http://ircv3.net/), Internet-Drafts, and commands/replies that have generally been accepted by the IRC community.
 
 ---
 
