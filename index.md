@@ -1567,7 +1567,7 @@ Examples:
 
 The `CHANMODES` parameter specifies the channel modes available and which types of arguments they do or do not take when using them with the [`MODE`](#mode-message) command.
 
-The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**, delimited by a comma `(',',` `0x2C)`. The channel mode types are defined in the the [`MODE`](#mode-message) message description.
+The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**, respectively, delimited by a comma `(',',` `0x2C)`. The channel mode types are defined in the the [`MODE`](#mode-message) message description.
 
 To allow for future extensions, a server MAY send additional types, delimited by a comma `(',',` `0x2C)`. However, server authors SHOULD NOT extend this parameter without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
 
