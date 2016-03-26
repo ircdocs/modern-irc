@@ -1332,11 +1332,77 @@ Sent to a client which has just successfully issued an [`OPER`](#oper-message) c
 
 Sent to an [operator](#operators) which has just successfully issued a [`REHASH`](#rehash-message) command. The text used in the last param of this message may vary.
 
+### `ERR_NOSUCHNICK (401)`
+
+      "<client> <nickname> :No such nick/channel"
+
+Indicates that no client can be found for the supplied nickname. The text used in the last param of this message may vary.
+
+### `ERR_NOSUCHSERVER (402)`
+
+      "<client> <server name> :No such server"
+
+Indicates that the given server name does not exist. The text used in the last param of this message may vary.
+
+### `ERR_NOSUCHCHANNEL (403)`
+
+      "<client> <channel> :No such channel"
+
+Indicates that no channel can be found for the supplied channel name. The text used in the last param of this message may vary.
+
+### `ERR_CANNOTSENDTOCHAN (404)`
+
+      "<client> <channel> :Cannot send to channel"
+
+Indicates that the `PRIVMSG` / `NOTICE` could not be delivered to `<channel>`. The text used in the last param of this message may vary.
+
+This is generally sent in response to channel modes, such as a channel being [moderated](#moderated-channel-mode) and the client not having permission to speak on the channel, or not being joined to a channel with the [no external messages](#no-external-messages-mode) mode set.
+
+### `ERR_TOOMANYCHANNELS (405)`
+
+      "<client> <channel> :You have joined too many channels"
+
+Indicates that the `JOIN` command failed because the client has joined their maximum number of channels. The text used in the last param of this message may vary.
+
+### `ERR_UNKNOWNCOMMAND (421)`
+
+      "<client> <command> :Unknown command"
+
+Sent to a registered client to indicate that the command they sent isn't known by the server. The text used in the last param of this message may vary.
+
 ### `ERR_NOMOTD (422)`
 
       "<client> :MOTD File is missing"
 
 Indicates that the [Message of the Day](#motd-message) file does not exist or could not be found. The text used in the last param of this message may vary.
+
+### `ERR_ERRONEUSNICKNAME (432)`
+
+      "<client> <nick> :Erroneus nickname"
+
+Returned when a [`NICK`](#nick-message) command cannot be successfully completed as the desired nickname contains characters that are disallowed by the server. See the [wire format](#wire-format-in-abnf) section for more information on characters which are allowed in various IRC servers. The text used in the last param of this message may vary.
+
+### `ERR_NICKNAMEINUSE (433)`
+
+      "<client> <nick> :Nickname is already in use"
+
+Returned when a [`NICK`](#nick-message) command cannot be successfully completed as the desired nickname is already in use on the network. The text used in the last param of this message may vary.
+
+### `ERR_NOTREGISTERED (451)`
+
+      "<client> :You have not registered"
+
+Returned when a client command cannot be parsed as they are not yet registered. Servers offer only a limited subset of commands until clients are properly registered to the server. The text used in the last param of this message may vary.
+
+### `ERR_NEEDMOREPARAMS (461)`
+
+      "<client> <command> :Not enough parameters"
+
+Returned when a client command cannot be parsed because not enough parameters were supplied. The text used in the last param of this message may vary.
+
+### `ERR_ALREADYREGISTERED (462)`
+
+Returned when a client tries to change a detail that can only be set during registration (such as resending the [`PASS`](#pass-command) or [`USER`](#user-command) after registration). The text used in the last param of this message may vary.
 
 ### `ERR_NOPRIVS (723)`
 
