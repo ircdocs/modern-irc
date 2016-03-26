@@ -555,7 +555,7 @@ Message Examples:
 
 The `USER` command is used at the beginning of a connection to specify the username, hostname, servername and realname of a new user.
 
-It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognised as such.
+It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognized as such.
 
 Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
 
@@ -1403,6 +1403,84 @@ Returned when a client command cannot be parsed because not enough parameters we
 ### `ERR_ALREADYREGISTERED (462)`
 
 Returned when a client tries to change a detail that can only be set during registration (such as resending the [`PASS`](#pass-command) or [`USER`](#user-command) after registration). The text used in the last param of this message may vary.
+
+### `ERR_PASSWDMISMATCH (464)`
+
+      "<client> :Password incorrect"
+
+Returned to indicate that the connection could not be registered as the [password](#pass-message) was either incorrect or not supplied. The text used in the last param of this message may vary.
+
+### `ERR_YOUREBANNEDCREEP (465)`
+
+      "<client> :You are banned from this server."
+
+Returned to indicate that the server has been configured to explicitly deny connections from this client. The text used in the last param of this message varies wildly and typically also contains the reason for the ban and/or ban details, and SHOULD be displayed as-is by IRC clients to their users.
+
+### `ERR_CHANNELISFULL (471)`
+
+      "<client> <channel> :Cannot join channel (+l)"
+
+Returned to indicate that a [`JOIN`](#join-message) command failed because the [client limit](#client-limit-channel-mode) mode has been set and the maximum number of users are already joined to the channel. The text used in the last param of this message may vary.
+
+### `ERR_UNKNOWNMODE (472)`
+
+      "<client> <modechar> :is unknown mode char to me"
+
+Indicates that a mode character used by a client is not recognized by the server. The text used in the last param of this message may vary.
+
+### `ERR_INVITEONLYCHAN (473)`
+
+      "<client> <channel> :Cannot join channel (+i)"
+
+Returned to indicate that a [`JOIN`](#join-message) command failed because the channel is set to [invite-only] mode and the client has not been [invited](#invite-message) to the channel or had an [invite exemption](#invite-exemption-channel-mode) set for them. The text used in the last param of this message may vary.
+
+### `ERR_BANNEDFROMCHAN (474)`
+
+      "<client> <channel> :Cannot join channel (+b)"
+
+Returned to indicate that a [`JOIN`](#join-message) command failed because the client has been [banned](#ban-channel-mode) from the channel and has not had a [ban exemption](#ban-exemption-channel-mode) set for them. The text used in the last param of this message may vary.
+
+### `ERR_BADCHANNELKEY (475)`
+
+      "<client> <channel> :Cannot join channel (+k)"
+
+Returned to indicate that a [`JOIN`](#join-message) command failed because the channel requires a [key](#key-channel-mode) and the key was either incorrect or not supplied. The text used in the last param of this message may vary.
+
+### `ERR_NOPRIVILEGES (481)`
+
+      "<client> :Permission Denied- You're not an IRC operator"
+
+Indicates that the command failed because the user is not an [IRC operator](#operators). The text used in the last param of this message may vary.
+
+### `ERR_CHANOPRIVSNEEDED (482)`
+
+      "<client> <channel> :You're not channel operator"
+
+Indicates that a command failed because the client does not have the appropriate [channel priveleges](#channel-operators). This numeric can apply for different prefixes such as [halfop](#halfop-prefix), [operator](#operator-prefix), etc. The text used in the last param of this message may vary.
+
+### `ERR_CANTKILLSERVER (483)`
+
+      "<client> :You cant kill a server!"
+
+Indicates that a [`KILL`](#kill-message) command failed because the user tried to kill a server. The text used in the last param of this message may vary.
+
+### `ERR_NOOPERHOST (491)`
+
+      "<client> :No O-lines for your host"
+
+Indicates that an [`OPER`](#oper-message) command failed because the server has not been configured to allow connections from this client's host to become an operator. The text used in the last param of this message may vary.
+
+### `ERR_UMODEUNKNOWNFLAG (501)`
+
+      "<client> :Unknown MODE flag"
+
+Indicates that a [`MODE`](#mode-message) command affecting a user contained a `MODE` letter that was not recognized. The text used in the last param of this message may vary.
+
+### `ERR_USERSDONTMATCH (502)`
+
+      "<client> :Cant change mode for other users"
+
+Indicates that a [`MODE`](#mode-message) command affecting a user failed because they were trying to set or view modes for other users. The text used in the last param of this message varies, for instance when trying to view modes for another user, a server may send: `"Can't view modes for other users"`.
 
 ### `ERR_NOPRIVS (723)`
 
