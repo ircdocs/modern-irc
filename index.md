@@ -553,9 +553,9 @@ Message Examples:
          Command: USER
       Parameters: <username> 0 * <realname>
 
-The `USER` command is used at the beginning of a connection to specify the username, hostname, servername and realname of a new user.
+The `USER` command is used at the beginning of a connection to specify the username and realname of a new user.
 
-It must be noted that `<realname>` must be the last parameter, because it may contain space characters and should be prefixed with a colon (`:`) to make sure this is recognized as such.
+It must be noted that `<realname>` must be the last parameter because it may contain space characters, and should be prefixed with a colon (`:`) if required.
 
 Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
 
@@ -1377,6 +1377,68 @@ The two optional parameters SHOULD be supplied to allow clients to better extrac
 Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are non-negative integers. `<u>` represents the number of clients currently connected to this server, globally (directly and through other server links). `<m>` represents the maximum number of clients that have been connected to this server at one time, globally.
 
 The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
+
+### `RPL_WHOISCERTFP (276)`
+
+      "<client> <nick> :has client certificate fingerprint <fingerprint>"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the SSL/TLS certificate fingerprint used by the client with the nickname `<nick>`. Clients MUST only be sent this numeric if they are either using the `WHOIS` command on themselves or they are an [operator](#operators).
+
+### `RPL_AWAY (301)`
+
+      "<client> <nick> :<message>"
+
+Indicates that the user with the nickname `<nick>` is currently away and sends the away message that they set.
+
+### `RPL_UNAWAY (305)`
+
+      "<client> :You are no longer marked as being away"
+
+Sent as a reply to the [`AWAY`](#away-message) command, this lets the client know that they are no longer set as being away. The text used in the last param of this message may vary.
+
+### `RPL_AWAY (306)`
+
+      "<client> :You have been marked as being away"
+
+Sent as a reply to the [`AWAY`](#away-message) command, this lets the client know that they are set as being away. The text used in the last param of this message may vary.
+
+### `RPL_WHOISUSER (311)`
+
+      "<client> <nick> <username> <host> * :<realname>"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). The second-last parameter is a literal asterix character `('*', 0x2A)` and does not mean anything.
+
+### `RPL_WHOISSERVER (312)`
+
+      "<client> <nick> <server> :<server info>"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows which server the client with the nickname `<nick>` is connected to. `<server>` is the name of the server (as used in message prefixes). `<server info>` is a string containing a description of that server.
+
+### `RPL_WHOISOPERATOR (313)`
+
+      "<client> <nick> :is an IRC operator"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` is an [operator](#operators). This command MAY also indicate what type or level of operator the client is by changing the text in the last parameter of this numeric. The text used in the last param of this message varies wildly, and SHOULD be displayed as-is by IRC clients to their users.
+
+### `RPL_WHOISIDLE (317)`
+
+      "<client> <nick> <secs> [<signon>] :seconds idle, signon time
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates how long the client with the nickname `<nick>` has been idle. `<secs>` is the number of seconds since the client has been active. Servers generally denote specific commands (for instance, perhaps [`JOIN`](#join-message), [`PRIVMSG`](#privmsg-message), [`NOTICE`](#notice-message), etc) as updating the 'idle time', and calculate this off when the idle time was last updated. `<signon>` is a unix timestamp representing when the user joined the network. The text used in the last param of this message may vary.
+
+### `RPL_ENDOFWHOIS (318)`
+
+      "<client> <nick> :End of /WHOIS list"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates the end of a `WHOIS` response for the client with the nickname `<nick>`. This numeric is sent after all other `WHOIS` response numerics have been sent to the client.
+
+### `RPL_WHOISCHANNELS (319)`
+
+      "<client> <nick> :[prefix]<channel>{ [prefix]<channel>}
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric lists the channels that the client with the nickname `<nick>` is joined to and their status in these channels. `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that the client has in that channel, if the client has one. `<channel>` is the name of a channel that the client is joined to. The last parameter of this numeric is a list of `[prefix]<channel>` pairs, delimited by a SPACE character `(' ', 0x20)`.
+
+The channels in this response are affected by the [secret](#secret-channel-mode) channel mode and the [invisible](#invisible-user-mode) user mode, and may be affected by other modes depending on server software and configuration.
 
 ### `RPL_MOTDSTART (375)`
 
