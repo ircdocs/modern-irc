@@ -1302,6 +1302,82 @@ This numeric is also known as `RPL_REDIR` by some software.
 
 Sent to a client to inform that client of their currently-set user modes.
 
+### `RPL_LUSERCLIENT (251)`
+
+      "<client> :There are <u> users and <i> invisible on <s> servers"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<u>`, `<i>`, and `<s>` are non-negative integers, and represent the number of total users, invisible users, and other servers connected to this server.
+
+### `RPL_LUSEROP (252)`
+
+      "<client> <ops> :operator(s) online"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<ops>` is a positive integer and represents the number of [IRC operators](#operators) connected to this server. The text used in the last param of this message may vary.
+
+### `RPL_LUSERUNKNOWN (253)`
+
+      "<client> <connections> :unknown connection(s)"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<connections>` is a positive integer and represents the number of connections to this server that are currently in an unknown state. The text used in the last param of this message may vary.
+
+### `RPL_LUSERCHANNELS (254)`
+
+      "<client> <channels> :channels formed"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<channels>` is a positive integer and represents the number of channels that currently exist on this server. The text used in the last param of this message may vary.
+
+### `RPL_LUSERME (255)`
+
+      "<client> :I have <c> clients and <s> servers"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<c>` and `<s>` are non-negative integers and represent the number of clients and other servers connected to this server, respectively.
+
+### `RPL_ADMINME (256)`
+
+      "<client> <server> :Administrative info"
+
+Sent as a reply to an [`ADMIN`](#admin-message) command, this numeric establishes the name of the server whose administrative info is being provided. The text used in the last param of this message may vary.
+
+### `RPL_ADMINLOC1 (257)`
+
+      "<client> :<info>"
+
+Sent as a reply to an [`ADMIN`](#admin-message) command, `<info>` is a string intended to provide information about the location of the server (i.e. city, state and country). The text used in the last param of this message varies wildly.
+
+### `RPL_ADMINLOC2 (258)`
+
+      "<client> :<info>"
+
+Sent as a reply to an [`ADMIN`](#admin-message) command, `<info>` is a string intended to provide information about whoever runs the server (i.e. details of the institution hosting it). The text used in the last param of this message varies wildly.
+
+### `RPL_ADMINEMAIL (259)`
+
+      "<client> :<info>"
+
+Sent as a reply to an [`ADMIN`](#admin-message) command, `<info>` MUST contain the email address to contact the administrator(s) of the server. The text used in the last param of this message varies wildly.
+
+### `RPL_TRYAGAIN (263)`
+
+      "<client> <command> :Please wait a while and try again."
+
+When a server drops a command without processing it, this numeric MUST be sent to inform the client. The text used in the last param of this message varies wildly, and commonly provides the client with more information about why the command could not be processed (i.e., due to rate-limiting).
+
+### `RPL_LOCALUSERS (264)`
+
+      "<client> [<u> <m>] :Current local users <u>, max <m>"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are non-negative integers and represent the number of clients currently and the maximum number of clients that have been connected directly to this server at one time, respectively.
+
+The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
+
+### `RPL_GLOBALUSERS (265)`
+
+      "<client> [<u> <m>] :Current global users <u>, max <m>"
+
+Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are non-negative integers. `<u>` represents the number of clients currently connected to this server, globally (directly and through other server links). `<m>` represents the maximum number of clients that have been connected to this server at one time, globally.
+
+The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
+
 ### `RPL_MOTDSTART (375)`
 
       "<client> :- <server> Message of the day - "
