@@ -2085,6 +2085,16 @@ Examples:
 ---
 
 
+# Obsolete Numerics
+
+These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) that are not contained in this document or that should be considered obsolete.
+
+* **`RPL_BOUNCE (005)`**: This numeric is now used for [`RPL_ISUPPORT`](#rplisupport-005). `RPL_BOUNCE` was moved to [`010`](#rplbounce-010).
+
+
+---
+
+
 # Acknowledgements
 
 This document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) IRC protocol specifications.
