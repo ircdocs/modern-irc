@@ -1420,6 +1420,12 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows whi
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` is an [operator](#operators). This command MAY also indicate what type or level of operator the client is by changing the text in the last parameter of this numeric. The text used in the last param of this message varies wildly, and SHOULD be displayed as-is by IRC clients to their users.
 
+### `RPL_WHOWASUSER (314)`
+
+      "<client> <nick> <username> <host> * :<realname>"
+
+Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric shows details about the last client that used the nickname `<nick>`. The purpose of each argument is the same as with the [`RPL_WHOISUSER`](#rplwhoisuser-311) numeric.
+
 ### `RPL_WHOISIDLE (317)`
 
       "<client> <nick> <secs> [<signon>] :seconds idle, signon time
@@ -1439,6 +1445,60 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric lists the channels that the client with the nickname `<nick>` is joined to and their status in these channels. `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that the client has in that channel, if the client has one. `<channel>` is the name of a channel that the client is joined to. The last parameter of this numeric is a list of `[prefix]<channel>` pairs, delimited by a SPACE character `(' ', 0x20)`.
 
 The channels in this response are affected by the [secret](#secret-channel-mode) channel mode and the [invisible](#invisible-user-mode) user mode, and may be affected by other modes depending on server software and configuration.
+
+### `RPL_LISTSTART (321)`
+
+      "<client> Channel :Users  Name"
+
+Sent as a reply to the [`LIST`](#list-message) command, this numeric marks the start of a channel list. As noted in the command description, this numeric MAY be skipped by the server so clients MUST NOT depend on receiving it.
+
+### `RPL_LIST (322)`
+
+      "<client> <channel> <visible clients> :<topic>"
+
+Sent as a reply to the [`LIST`](#list-message) command, this numeric sends information about a channel to the client. `<channel>` is the name of the channel. `<visible clients>` is an integer indicating how many clients are joined to that channel. `<topic>` is the channel's topic (as set by the [`TOPIC`](#topic-message) command).
+
+### `RPL_LISTEND (323)`
+
+      "<client> :End of /LIST"
+
+Sent as a reply to the [`LIST`](#list-message) command, this numeric indicates the end of a `LIST` response.
+
+### `RPL_CHANNELMODEIS (324)`
+
+      "<client> <channel> <modestring> <mode arguments>..."
+
+Sent to a client to inform them of the currently-set modes of a channel. `<channel>` is the name of the channel. `<modestring>` and `<mode arguments>` are a mode string and the mode arguments (delimited as separate parameters) as defined in the [`MODE`](#mode-message) message description.
+
+### `RPL_NOTOPIC (331)`
+
+      "<client> <channel> :No topic is set"
+
+Sent as a reply to the [`TOPIC`](#topic-message) command, this numeric indicates that the channel with the name `<channel>` does not have any topic set.
+
+### `RPL_TOPIC (332)`
+
+      "<client> <channel> :<topic>"
+
+Sent to a client to inform them of the current [topic](#topic-message) of the channel.
+
+### `RPL_INVITING (341)`
+
+      "<client> <channel> <nick>"
+
+Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the attempt was successful and the client with the nickname `<nick>` has been invited to `<channel>`.
+
+### `RPL_VERSION (351)`
+
+      "<client> <version> <server> :<comments>"
+
+Sent as a reply to the [`VERSION`](#version-message) command, this numeric indicates information about the desired server. `<version>` is the name and version of the software being used (including any revision information). `<server>` is the name of the server. `<comments>` may contain any further comments or details about the specific version of the server.
+
+### `RPL_ENDOFWHOWAS (369)`
+
+      "<client> <nick> :End of WHOWAS"
+
+Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric indicates the end of a `WHOWAS` reponse for the nickname `<nick>`. This numeric is sent after all other `WHOWAS` response numerics have been sent to the client.
 
 ### `RPL_MOTDSTART (375)`
 
