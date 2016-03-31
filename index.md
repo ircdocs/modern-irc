@@ -1056,6 +1056,33 @@ The `NOTICE` message is used similarly to [`PRIVMSG`](#privmsg-message). The dif
 One thing for bot authors to note is that the `NOTICE` message may be interpreted differently by various clients. Some clients highlight or interpret any `NOTICE` sent to a channel in the same way that a `PRIVMSG` with their nickname gets interpreted. This means that users may be irritated by the use of `NOTICE` messages rather than `PRIVMSG` messages by clients or bots, and they are not commonly used by client bots for this reason.
 
 
+## Optional Messages
+
+These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the [`ERR_UNKNOWNCOMMAND`](#errunknowncommand-421) numeric.
+
+### USERHOST message
+
+         Command: USERHOST
+      Parameters: <nickname>{ <nickname>}
+
+The `USERHOST` command is used to return information about users with the given nicknames. The `USERHOST` command takes up to five nicknames, each a separate parameters. The nicknames are returned in [`RPL_USERHOST`](#rpluserhost-302) numerics.
+
+Numeric Replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`RPL_USERHOST`](#rpluserhost-302) `(302)`
+
+Command Examples:
+
+      USERHOST Wiz Michael Marty p    ;USERHOST request for information on
+                                      nicks "Wiz", "Michael", "Marty" and "p"
+
+Reply Examples:
+
+      :ircd.stealth.net 302 yournick :syrk=+syrk@millennium.stealth.net
+                                      ; Reply for user syrk
+
+
 ---
 
 
@@ -1385,6 +1412,8 @@ The two optional parameters SHOULD be supplied to allow clients to better extrac
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the SSL/TLS certificate fingerprint used by the client with the nickname `<nick>`. Clients MUST only be sent this numeric if they are either using the `WHOIS` command on themselves or they are an [operator](#operators).
 
 ### `RPL_NONE (300)`
+
+      Undefined format
 
 `RPL_NONE` is a dummy numeric. It does not have a defined use nor format.
 
