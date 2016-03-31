@@ -1420,7 +1420,7 @@ Sent as a reply to the [`ISON`](#ison-message) command, this numeric lists the n
 
 Sent as a reply to the [`AWAY`](#away-message) command, this lets the client know that they are no longer set as being away. The text used in the last param of this message may vary.
 
-### `RPL_AWAY (306)`
+### `RPL_NOWAWAY (306)`
 
       "<client> :You have been marked as being away"
 
