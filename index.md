@@ -1000,7 +1000,7 @@ Message Examples:
 ### PRIVMSG message
 
          Command: PRIVMSG
-      Parameters: <target>{,<target>...} <text to be sent>
+      Parameters: <target>{,<target>} <text to be sent>
 
 The `PRIVMSG` command is used to send private messages between users, as well as to send messages to channels. `<target>` is the nickname of a client or the name of a channel.
 
@@ -1047,7 +1047,7 @@ Message Examples:
 ### NOTICE message
 
          Command: NOTICE
-      Parameters: <target>{,<target>...} <text to be sent>
+      Parameters: <target>{,<target>} <text to be sent>
 
 The `NOTICE` command is used to send notices between users, as well as to send notices to channels. `<target>` is interpreted the same way as it is for the [`PRIVMSG`](#privmsg-message) command.
 
@@ -1766,7 +1766,7 @@ Examples:
 
 ### `CHANLIMIT` Parameter
 
-      Format: CHANLIMIT=<prefixes>:[limit],<prefixes>:[limit],...
+      Format: CHANLIMIT=<prefixes>:[limit]{,<prefixes>:[limit]}
 
 The `CHANLIMIT` parameter indicates the number of channels a client may join.
 
@@ -1928,7 +1928,7 @@ Examples:
 
 ### `MAXLIST` Parameter
 
-      Format: MAXLIST=<modes>:<limit>[,<modes>:<limit>,...]
+      Format: MAXLIST=<modes>:<limit>{,<modes>:<limit>}
 
 The `MAXLIST` parameter specifies how many "variable" modes of type A that have been defined in the [`CHANMODES`](#chanmodes-parameter) parameter that a client may set in total on a channel.
 
@@ -2077,7 +2077,7 @@ Examples:
 
 ### `TARGMAX` Parameter
 
-      Format: TARGMAX=[<command>:[limit],<command>:[limit],...]
+      Format: TARGMAX=[<command>:[limit]{,<command>:[limit]}]
 
 Certain client commands MAY contain multiple targets, delimited by a comma `(',',` `0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets.
 
