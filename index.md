@@ -889,7 +889,6 @@ Numeric Replies:
 * [`RPL_STATSKLINE`](#statskline-216) `(216)`
 * [`RPL_STATSLLINE`](#statslline-241) `(241)`
 * [`RPL_STATSOLINE`](#statsoline-243) `(243)`
-* [`RPL_STATSQLINE`](#statsqline-217) `(217)`
 * [`RPL_STATSLINKINFO`](#rplstatslinkinfo-211) `(211)`
 * [`RPL_STATSUPTIME`](#rplstatsuptime-242) `(242)`
 * [`RPL_STATSCOMMANDS`](#rplstatscommands-212) `(212)`
