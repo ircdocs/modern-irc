@@ -14,13 +14,13 @@ copyrights:
 {% include copyrights.html %}
 
 <div class="warning">
-    <p>This is NOT an authoritative document. It does not purport to be anything more than a hopefully-useful overview of the IRC protocol as it is generally implemented today. If something written in here isn't correct for or interoperable with an IRC server / network you know of, please open an issue or <a href="mailto:daniel@danieloaks.net">contact me!</a></p>
+    <p>This is NOT an authoritative document. It does not purport to be anything more than an overview of the IRC protocol as it is generally implemented today. If something written in here isn't correct for or interoperable with an IRC server / network you know of, please open an issue or <a href="mailto:daniel@danieloaks.net">contact me!</a></p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
 
 <div class="warning">
     <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
-    <p>Please feel free to contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>.</p>
+    <p>Feel free to contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>.</p>
 </div>
 
 
@@ -31,7 +31,7 @@ copyrights:
 
 The Internet Relay Chat (IRC) protocol has been designed over a number of years, with multitudes of implementations and use cases appearing. This document describes the IRC Client-Server protocol.
 
-IRC is a text-based teleconferencing protocol, which has proven itself very valuable and useful. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network. Messages are delivered through this network and state is maintained across it for the connected clients and active channels.
+IRC is a text-based chat protocol which has proven itself valuable and useful. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network. Messages are delivered through this network and state is maintained across it for the connected clients and active channels.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
@@ -1259,7 +1259,7 @@ Optional parameters are surrounded with the standard square brackets `([<optiona
 
 Server authors that wish to extend one of the numerics listed here SHOULD make their extension into a [client capability](#capability-negotiation). If your extension would be useful to other client and server software, you should consider submitting it to the [IRCv3 Working Group](http://ircv3.net/) for standardisation.
 
-Note that for numerics with very "human-readable" informational strings for the last parameter which are not designed to be parsed, such as in `RPL_WELCOME`, servers commonly change this last-param text. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
+Note that for numerics with "human-readable" informational strings for the last parameter which are not designed to be parsed, such as in `RPL_WELCOME`, servers commonly change this last-param text. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
 We do try to note numerics where this is the case with a message like *"The text used in the last param of this message varies wildly"*.
 
 ### `RPL_WELCOME (001)`
@@ -1750,7 +1750,7 @@ Examples of the sorts of privilege strings used by server software today include
 
 Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPPORT`](#rplisupport-005) numeric lists parameters that let the client know which features are active and their value, if any.
 
-The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more complete list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](http://defs.ircdocs.horse/defs/isupport.html).
+The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more extensive list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](http://defs.ircdocs.horse/defs/isupport.html).
 
 If a 'default value' is listed for a parameter, this is the assumed value of the parameter until and unless it is advertised by the server. This is primarily to interoperate with servers that don't advertise particular well-known and well-used parameters. If an 'empty value' is listed for a parameter, this is the assumed value of the parameter if it is advertised without a value.
 
