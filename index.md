@@ -419,7 +419,7 @@ The commands specified in steps 1-3 should be sent on connection. If the server 
 
 If the server is waiting to complete a lookup of client information (such as hostname or ident for a username), there may be an arbitrary wait at some point during registration. Servers SHOULD set a reasonable timeout for these lookups.
 
-Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD send the [`RPL_LOCALUSERS`](#rpllocalusers-264) and the [`RPL_GLOBALUSERS`](#rplglobalusers-265) numerics before the MOTD numerics are sent. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
+Upon successful completion of the registration process, the server MUST send the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD send the [`RPL_LOCALUSERS`](#rpllocalusers-265) and the [`RPL_GLOBALUSERS`](#rplglobalusers-266) numerics before the MOTD numerics are sent. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
 
 
 ---
@@ -1388,7 +1388,7 @@ Sent as a reply to an [`ADMIN`](#admin-message) command, `<info>` MUST contain t
 
 When a server drops a command without processing it, this numeric MUST be sent to inform the client. The text used in the last param of this message varies wildly, and commonly provides the client with more information about why the command could not be processed (i.e., due to rate-limiting).
 
-### `RPL_LOCALUSERS (264)`
+### `RPL_LOCALUSERS (265)`
 
       "<client> [<u> <m>] :Current local users <u>, max <m>"
 
@@ -1396,7 +1396,7 @@ Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are no
 
 The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
 
-### `RPL_GLOBALUSERS (265)`
+### `RPL_GLOBALUSERS (266)`
 
       "<client> [<u> <m>] :Current global users <u>, max <m>"
 
