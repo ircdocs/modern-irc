@@ -966,12 +966,12 @@ The ABNF representation for `<modestring>` is:
 
 There are four categories of channel modes, defined as follows:
 
-* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list. The numerics used to retrieve contents of Type A modes depends on the specific mode.
+* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list. The numerics used to retrieve contents of Type A modes depends on the specific mode. Also see the [`EXTBAN`](#extban-parameter) parameter.
 * **Type B**: Modes that change a setting on a channel. These modes MUST always have a parameter.
 * **Type C**: Modes that change a setting on a channel. These modes MUST have a parameter when being set, and MUST NOT have a parameter when being unset.
 * **Type D**: Modes that change a setting on a channel. These modes MUST NOT have a parameter.
 
-Channel mode letters, along with their types, are defined in the [`CHANMODES`](#chanmodes-parameter) `RPL_ISUPPORT` parameter. User mode letters are always **Type D** modes.
+Channel mode letters, along with their types, are defined in the [`CHANMODES`](#chanmodes-parameter) parameter. User mode letters are always **Type D** modes.
 
 The meaning of standard (and/or well-used) channel and user mode letters can be found in the [Channel Modes](#channel-modes) and [User Modes](#user-modes) sections. The meaning of any mode letters not in this list are defined by the server software and configuration.
 
