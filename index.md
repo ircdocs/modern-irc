@@ -14,13 +14,14 @@ copyrights:
 {% include copyrights.html %}
 
 <div class="warning">
-    <p>This is NOT an authoritative document. It does not purport to be anything more than an overview of the IRC protocol as it is generally implemented today. If something written in here isn't correct for or interoperable with an IRC server / network you know of, please open an issue or <a href="mailto:daniel@danieloaks.net">contact me!</a></p>
+    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is NOT a concrete specification and does not specify brand new stuff &ndash; only existing behaviour and what we consider best-practices for new software.</p>
+    <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/DanielOaks/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
 
 <div class="warning">
     <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
-    <p>Feel free to contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>.</p>
+    <p>You can contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>!</p>
 </div>
 
 
@@ -2151,4 +2152,4 @@ These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) a
 
 This document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) IRC protocol specifications.
 
-Parts of this document come from the "IRC `RPL_ISUPPORT` Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the IRCv3 Working Group specifications.
+Parts of this document come from the "IRC `RPL_ISUPPORT` Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the [IRCv3 Working Group](http://ircv3.net) specifications.
