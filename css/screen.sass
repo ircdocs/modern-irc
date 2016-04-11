@@ -181,8 +181,14 @@ pre
     background: #ffb
     page-break-inside: avoid
 
+body
+    counter-reset: figure
+
 .figure
     text-align: center
     color: #333
     display: block
     page-break-before: avoid
+    &::before
+        counter-increment: figure
+        content: "Figure " counter(figure) ": "
