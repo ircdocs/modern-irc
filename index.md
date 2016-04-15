@@ -1008,7 +1008,7 @@ If `<target>` is a channel name and the client is [banned](#ban-channel-mode) an
 
 If a message cannot be delivered to a channel, the server SHOULD respond with an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric to let the user know that this message could not be delivered.
 
-If `<target>` is a channel name, it may be prefixed with a [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
+If `<target>` is a channel name, it may be prefixed with one or more [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
 
 If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rplaway-301) numeric and the command will continue.
 
@@ -1034,6 +1034,16 @@ Command Examples:
 
       PRIVMSG Angel :yes I'm receiving it !
                                       ; Command to send a message to Angel.
+
+      PRIVMSG %#bunny :Hi! I have a problem!
+                                      ; Command to send a message to halfops
+                                      and chanops on #bunny.
+
+      PRIVMSG @%#bunny :Hi! I have a problem!
+                                      ; Command to send a message to halfops
+                                      and chanops on #bunny. This command is
+                                      functionally identical to the above
+                                      command.
 
 Message Examples:
 
@@ -2092,7 +2102,7 @@ Examples:
 
       Format: STATUSMSG=<string>
 
-The `STAUSMSG` parameter indicates that the server supports a method for clients to send a message via the [`PRIVMSG`](#privmsg-message) / [`NOTICE`](#notice-message) commands to those people on a channel with the specified [channel membership prefixes](#channel-membership-prefixes).
+The `STAUSMSG` parameter indicates that the server supports a method for clients to send a message via the [`PRIVMSG`](#privmsg-message) / [`NOTICE`](#notice-message) commands to those people on a channel with (one of) the specified [channel membership prefixes](#channel-membership-prefixes).
 
 The value MUST be specified and MUST be a list of prefixes as specified in the [`PREFIX`](#prefix-parameter) parameter. Most servers today advertise every prefix in their [`PREFIX`](#prefix-parameter) parameter in `STATUSMSG`.
 
