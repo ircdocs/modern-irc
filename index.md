@@ -1663,7 +1663,9 @@ Returned when a client command cannot be parsed because not enough parameters we
 
 ### `ERR_ALREADYREGISTERED (462)`
 
-Returned when a client tries to change a detail that can only be set during registration (such as resending the [`PASS`](#pass-command) or [`USER`](#user-command) after registration). The text used in the last param of this message may vary.
+      "<client> :You may not reregister"
+
+Returned when a client tries to change a detail that can only be set during registration (such as resending the [`PASS`](#pass-command) or [`USER`](#user-command) after registration). The text used in the last param of this message varies.
 
 ### `ERR_PASSWDMISMATCH (464)`
 
