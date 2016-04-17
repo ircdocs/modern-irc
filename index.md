@@ -1769,6 +1769,8 @@ If a 'default value' is listed for a parameter, this is the assumed value of the
 
 ### `AWAYLEN` Parameter
 
+      Format: AWAYLEN=<number>
+
 The `AWAYLEN` parameter indicates the maximum length for the `<reason>` of an [`AWAY`](#away-message) command. If an [`AWAY`](#away-message) `<reason>` has more characters than this parameter, it may be silently truncated by the server before being passed on to other clients. Clients MAY receive an [`AWAY`](#away-message) `<reason>` that has more characters than this parameter.
 
 The value MUST be specified and MUST be a positive integer.
