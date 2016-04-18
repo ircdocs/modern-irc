@@ -145,6 +145,7 @@ li
         background: #d54
     @media print
         background: #666
+        border: 0.5rem #000 dashed
     border-radius: 1rem
     margin: 1.55rem auto
     padding: 1.2rem 1.3rem
@@ -192,3 +193,96 @@ body
     &::before
         counter-increment: figure
         content: "Figure " counter(figure) ": "
+
+@media print
+    #printable-toc
+        display: block !important
+        page-break-before: always
+        &::before
+            content: "Table of Contents"
+            color: #3e3e4e
+            margin-bottom: 1rem
+            font-size: 2rem
+            font-weight: bold
+        > ul
+            padding: 0.5rem 0
+            counter-reset: toc-lvl-1
+            > li
+                &::before
+                    content: counter(toc-lvl-1)
+                    counter-increment: toc-lvl-1
+                    padding-right: 1rem
+                > ul
+                    counter-reset: toc-lvl-2
+                    > li
+                        &::before
+                            content: counter(toc-lvl-1) "." counter(toc-lvl-2)
+                            counter-increment: toc-lvl-2
+                            padding-right: 1rem
+                        > ul
+                            counter-reset: toc-lvl-3
+                            > li
+                                &::before
+                                    content: counter(toc-lvl-1) "." counter(toc-lvl-2) "." counter(toc-lvl-3)
+                                    counter-increment: toc-lvl-3
+                                    padding-right: 1rem
+                &.parent-appendixes
+                    &.parent-appendixes-1
+                        counter-reset: toc-appendixes
+                    &::before
+                        content: "Appendix " counter(toc-appendixes, upper-alpha) ". "
+                        counter-increment: toc-appendixes
+                        padding: 0
+                    > ul, ol, li
+                        display: none
+        ul, ol
+            margin: 0
+            list-style-type: none
+        li
+            margin: 0
+            padding-top: 0.25rem
+
+    #spec
+        &::before
+            counter-reset: h-lvl-1
+        h1
+            counter-increment: h-lvl-1
+            counter-reset: h-lvl-2 h-lvl-3
+            &::before
+                content: counter(h-lvl-1)
+                padding-right: 1.2rem
+                font-size: 1.25rem
+        h2
+            counter-increment: h-lvl-2
+            counter-reset: h-lvl-3
+            &::before
+                content: counter(h-lvl-1) "." counter(h-lvl-2)
+                padding-right: 1rem
+                font-size: 1.25rem
+        h3
+            counter-increment: h-lvl-3
+            &::before
+                content: counter(h-lvl-1) "." counter(h-lvl-2) "." counter(h-lvl-3)
+                padding-right: 1rem
+                font-size: 1.25rem
+        .toc-id-acknowledgements
+            &::before
+                content: ""
+                padding-right: 0
+        #appendixes
+            &::before
+                counter-reset: a-lvl-1
+            h1
+                counter-increment: a-lvl-1
+                &::before
+                    content: "Appendix " counter(a-lvl-1, upper-alpha) ". "
+                    font-size: inherit
+                    padding-right: 0
+            h3
+                &::before
+                    content: none
+                    padding-right: 0
+        #acknowledgements
+            &::before
+                content: ""
+                padding-right: 0

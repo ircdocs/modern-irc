@@ -9,7 +9,9 @@ function TableOfContents(container) {
 TableOfContents.prototype.buildStructure = function() {
   var titles = this.container.querySelectorAll("h1, h2, h3, h4, h5"),
   lastLvl = 0,
-  mapLvl = 0;
+  mapLvl = 0,
+  parentId = '',
+  parentI = 1;
   for (var i = 0; i < titles.length; i++) {
     var title = titles[i],
     lvl = parseInt(title.tagName.replace("H", ""), 10);
@@ -24,6 +26,15 @@ TableOfContents.prototype.buildStructure = function() {
     a.setAttribute('href', '#' + title.id);
     a.textContent = title.textContent;
     li.appendChild(a);
+    // let people style appendixes and such differently
+    newParentId = title.parentElement.id
+    if (parentId != newParentId) {
+      parentId = newParentId;
+      parentI = 1;
+    } else {
+      parentI++;
+    }
+    li.setAttribute('class', 'parent-' + parentId + ' parent-' + parentId + '-' + parentI + ' toc-id-' + title.id);
     if (!this.uls[lvl - mapLvl - 1]) {
       var ul = document.createElement("ul");
       this.uls[lvl - mapLvl - 1] = ul;
@@ -35,7 +46,7 @@ TableOfContents.prototype.buildStructure = function() {
 };
 
 TableOfContents.prototype.appendTo = function(element) {
-  element.appendChild(this.uls[0]);
+  element.appendChild(this.uls[0].cloneNode(true));
 };
 
 function showToc() {
@@ -50,6 +61,7 @@ function hideToc() {
 document.addEventListener('DOMContentLoaded', function() {
   var t = new TableOfContents(document.querySelector("#spec"));
   t.appendTo(document.querySelector("#table-of-contents"));
+  t.appendTo(document.querySelector("#printable-toc"));
 
   // I love mobile browsers so much, they are amazing
   document.querySelector("#show-toc").onclick = function () {showToc();}
