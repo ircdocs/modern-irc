@@ -483,6 +483,22 @@ Indicates that a [`MODE`](#mode-message) command affecting a user contained a `M
 
 Indicates that a [`MODE`](#mode-message) command affecting a user failed because they were trying to set or view modes for other users. The text used in the last param of this message varies, for instance when trying to view modes for another user, a server may send: `"Can't view modes for other users"`.
 
+### `RPL_STARTTLS (670)`
+
+      "<client> :STARTTLS successful, proceed with TLS handshake"
+
+This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-3.1.html) extension and indicates that the client may begin a TLS handshake. For more information on this numeric, see the linked IRCv3 specification.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_STARTTLS (691)`
+
+      "<client> :STARTTLS failed (Wrong moon phase)"
+
+This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-3.1.html) extension and indicates that a server-side error occured and the `STARTTLS` command failed. For more information on this numeric, see the linked IRCv3 specification.
+
+The text used in the last param of this message varies wildly.
+
 ### `ERR_NOPRIVS (723)`
 
       "<client> <priv> :Insufficient oper privileges."
@@ -492,6 +508,80 @@ Sent by a server to alert an IRC [operator](#operators) that they they do not ha
 `<priv>` is a string that has meaning in the server software, and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
 
 Examples of the sorts of privilege strings used by server software today include: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
+
+### `RPL_LOGGEDIN (900)`
+
+      "<client> <nick>!<user>@<host> <account> :You are now logged in as <username>"
+
+This numeric indicates that the client was logged into the specified account (whether by [SASL authentication](#authenticate-message) or otherwise). For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `RPL_LOGGEDOUT (901)`
+
+      "<client> <nick>!<user>@<host> :You are now logged out"
+
+This numeric indicates that the client was logged out of their account. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_NICKLOCKED (902)`
+
+      "<client> :You must use a nick assigned to you"
+
+This numeric indicates that [SASL authentication](#authenticate-message) failed because the account is currently locked out, held, or otherwise administratively made unavailable. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `RPL_SASLSUCCESS (903)`
+
+      "<client> :SASL authentication successful"
+
+This numeric indicates that [SASL authentication](#authenticate-message) was completed successfully, and is normally sent along with [`RPL_LOGGEDIN`](#rplloggedin-900). For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_SASLFAIL (904)`
+
+      "<client> :SASL authentication failed"
+
+This numeric indicates that [SASL authentication](#authenticate-message) failed because of invalid credentials or other errors not explicitly mentioned by other numerics. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_SASLTOOLONG (905)`
+
+      "<client> :SASL message too long"
+
+This numeric indicates that [SASL authentication](#authenticate-message) failed because the [`AUTHENTICATE`](#authenticate-message) command sent by the client was too long (i.e. the parameter was longer than 400 bytes). For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_SASLABORTED (906)`
+
+      "<client> :SASL authentication aborted"
+
+This numeric indicates that [SASL authentication](#authenticate-message) failed because the client sent an [`AUTHENTICATE`](#authenticate-message) command with the parameter `('*', 0x2A)`. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+The text used in the last param of this message varies wildly.
+
+### `ERR_SASLALREADY (907)`
+
+      "<client> :You have already authenticated using SASL"
+
+This numeric indicates that [SASL authentication](#authenticate-message) failed because the client has already authenticated using SASL and reauthentication is not available or has been administratively disabled. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) and [`sasl-3.2`](http://ircv3.net/specs/extensions/sasl-3.2.html) extensions.
+
+The text used in the last param of this message varies wildly.
+
+### `RPL_SASLMECHS (908)`
+
+      "<client> <mechanisms> :are available SASL mechanisms"
+
+This numeric specifies the mechanisms supported for [SASL authentication](#authenticate-message). `<mechanisms>` is a list of SASL mechanisms, delimited by a comma `(',', 0x2C)`. For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+
+IRCv3.2 also specifies this information in the `sasl` client capability value. For more information on this, see the IRCv3 [`sasl-3.2`](http://ircv3.net/specs/extensions/sasl-3.2.html#mechanism-list-in-cap-ls) extension.
+
+The text used in the last param of this message varies wildly.
 
 
 ---
@@ -860,9 +950,9 @@ Examples:
 
       Format: TARGMAX=[<command>:[limit]{,<command>:[limit]}]
 
-Certain client commands MAY contain multiple targets, delimited by a comma `(',',` `0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets.
+Certain client commands MAY contain multiple targets, delimited by a comma `(',', 0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets.
 
-The value is OPTIONAL and is a set of `<command>:<limit>` pairs, delimited by a comma `(',',` `0x2C)`. `<command>` is the name of a client command. `<limit>` is the maximum number of targets which that command accepts. If `<limit>` is specified, it is a positive integer. If `<limit>` is not specified, then there is no maximum number of targets for that command. Clients MUST treat `<command>` as case-insensitive.
+The value is OPTIONAL and is a set of `<command>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<command>` is the name of a client command. `<limit>` is the maximum number of targets which that command accepts. If `<limit>` is specified, it is a positive integer. If `<limit>` is not specified, then there is no maximum number of targets for that command. Clients MUST treat `<command>` as case-insensitive.
 
 Examples:
 
