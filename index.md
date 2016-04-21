@@ -15,13 +15,13 @@ copyrights:
 
 <div class="warning">
     <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is NOT a concrete specification and does not specify brand new stuff &ndash; only existing behaviour and what we consider best-practices for new software.</p>
-    <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/DanielOaks/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
+    <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
 
 <div class="warning">
     <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
-    <p>You can contribute by sending pull requests to our <a href="https://github.com/DanielOaks/modern-irc">Github repository</a>!</p>
+    <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">Github repository</a>!</p>
 </div>
 
 <div id="printable-toc" style="display: none"></div>
