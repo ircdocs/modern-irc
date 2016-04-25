@@ -1,8 +1,11 @@
-# Modern IRC Documents
+---
+title: About
+layout: default
+---
 
 This site contains documents describing the IRC protocol and related technologies. The documents hosted here are intended to be useful to software developers working with IRC.
 
-* [Modern IRC Client Protocol](http://modern.ircdocs.horse/) document
+* [Modern IRC Client Protocol](./index.html) document.
 
 For suggestions of other documents to create / maintain, please [create an issue](https://github.com/ircdocs/modern-irc/issues) or [send me an email](mailto:daniel@danieloaks.net)!
 
@@ -16,10 +19,8 @@ If something written in these documents isn't correct for or interoperable with 
 
 ---
 
-## Modern IRC Client Protocol
+## Living Specification
 
-This is an attempt to create an updated document about how the IRC client protocol works these days.
+We consider the documents on this site to be 'living specifications'. This means they are updated as feedback is received for them and as the protocol is extended and grows. Bugs can be fixed, incorrect behaviours in the specifications can be corrected, and they can be extended as new behaviour becomes widespread.
 
-We specify commands, messages and numerics as SHOULD and MUST based on how much of the IRC software out there today uses them (as well as the guidance of the RFCs and common-sense). Someone writing a client or server based off this document SHOULD end up with an implementation that interacts nicely with most IRC software and networks out there today.
-
-This ignores the S2S protocol. The reasons for this are discussed in the document. This document includes bits and pieces cherry-picked from the RFCs, [IRCv3](http://ircv3.net/), Internet-Drafts, and commands/replies that have generally been accepted by the IRC community.
+This term and our use of it is based on the WHATWG definition of a ['living standard'](https://wiki.whatwg.org/wiki/FAQ#What_does_.22Living_Standard.22_mean.3F).

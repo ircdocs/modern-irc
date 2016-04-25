@@ -1,20 +1,23 @@
 ---
-title: Modern IRC
+title: Modern IRC Client Protocol
 layout: default
 copyrights:
   -
     name: "Jack Allnutt"
     org: "Kiwi IRC"
+    org_link: "https://kiwiirc.com/"
     email: "jack@allnutt.eu"
   -
     name: "Daniel Oaks"
+    org: "ircdocs"
+    org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
 ---
 
 {% include copyrights.html %}
 
 <div class="warning">
-    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is NOT a concrete specification and does not specify brand new stuff &ndash; only existing behaviour and what we consider best-practices for new software.</p>
+    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is a <a href="./about.html#living-specification">living specification</a> which is updated in response to feedback and implementations. This document describes existing behaviour and what we consider best practices for new software.</p>
     <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
@@ -1262,7 +1265,7 @@ Users with this mode may send messages to a channel that is [moderated](#moderat
 
 <div id="appendixes">
 
-{% capture appendixes %}{% include appendixes.md %}{% endcapture %}
+{% capture appendixes %}{% include modern-appendix.md %}{% endcapture %}
 {{ appendixes | markdownify }}
 
 </div>
