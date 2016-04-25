@@ -1127,7 +1127,7 @@ If a user has this mode, this indicates that they are a network [operator](#oper
 
 This mode is standard, and the mode letter used for it is `"+O"`.
 
-If a user has this mode, this indicates that they are a server [operator](#operators). A local operator only has [operator](#operators) priveleges for their server, and not for the rest of the network.
+If a user has this mode, this indicates that they are a server [operator](#operators). A local operator has [operator](#operators) priveleges for their server, and not for the rest of the network.
 
 ### Registered User Mode
 
