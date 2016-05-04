@@ -621,12 +621,16 @@ The specified casemappings are as follows:
 
 * **`ascii`**: Defines the characters `a` to be considered the lower-case equivalents of the characters `A` to `Z` only.
 * **`rfc1459`**: Defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively.
-* **`rfc3454`**: Proposed casemapping which defines that strings are to be compared using the nameprep method described in [`RFC3454`](http://tools.ietf.org/html/rfc3454) and [`RFC3491`](https://tools.ietf.org/html/rfc3491).
+* **`rfc3454`**: Proposed casemapping which defines that strings are to be compared using the `nameprep` method described in [`RFC3454`](http://tools.ietf.org/html/rfc3454) and [`RFC3491`](https://tools.ietf.org/html/rfc3491) (NOTE: An alternate unicode-based casemapping is being created, and this entry will be replaced with that one when it comes about).
 
 The value MUST be specified and is a string. Servers MAY advertise alternate casemappings to those above, but clients MAY NOT be able to understand or perform them.
 
+Servers SHOULD NOT use the `rfc1459` casemapping unless explicitly required for compatibility reasons or for linking with servers using it. There are issues with it as described below, and the equivalency of the extra characters is not necessary with the global usage of the IRC protocol today.
+
 <div class="warning">
-      We should see whether the <code>rfc1459/strict-rfc1459</code> difference and warning at the end of <a href="https://tools.ietf.org/html/draft-hardy-irc-isupport-00#section-4.1">this section</a> is still applicable these days.
+    <p>Some implementations of **`rfc1459`** casemapping consider the `'~'` character to be treated as the lower-case equivalent of the `'^'` character, and some do not. Implementations that follow this rule consider the exact casemapping rules as specified above to belong to the **`rfc1459-strict`** casemapping instead, and for implementations following the rule in this bubble to be considered **`rfc1459`**.</p>
+
+    <p>This is a fault with **`rfc1459`** casemapping, and is one reason it should not be used by new installations.</p>
 </div>
 
 Examples:
