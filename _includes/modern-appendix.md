@@ -295,6 +295,18 @@ Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the 
 
 Sent as a reply to the [`VERSION`](#version-message) command, this numeric indicates information about the desired server. `<version>` is the name and version of the software being used (including any revision information). `<server>` is the name of the server. `<comments>` may contain any further comments or details about the specific version of the server.
 
+### `RPL_NAMREPLY (353)`
+
+      "<client> <channel> :[prefix]<nick>{ [prefix]<nick>}
+
+Sent as a reply to the [`NAMES`](#names-message) command, this numeric lists the clients that are joined to `<channel>` and their status in that channel. `<nick>` is the nickname of a client joined to that channel, and `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that client has in that channel, if they have one. The last parameter of this numeric is a list of `[prefix]<nick>` pairs, delimited by a SPACE character `(' ', 0x20)`.
+
+### `RPL_ENDOFNAMES (366)`
+
+      "<client> <channel> :End of /NAMES list"
+
+Sent as a reply to the [`NAMES`](#names-message) command, this numeric specifies the end of a list of channel member names.
+
 ### `RPL_ENDOFWHOWAS (369)`
 
       "<client> <nick> :End of WHOWAS"

@@ -104,7 +104,9 @@ Along with various channel types, there are also channel modes that can alter th
 
 To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
-A user may be a part of several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
+Channels also contain a [topic](#topic-message). The topic is a line shown to all users when they join the channel, and all users in the channel are notified when the topic of a channel is changed. Channel topics commonly state channel rules, links, quotes from channel members, a general description of the channel, or whatever the [channel operators](#channel-operators) want to share with the clients in their channel.
+
+A user may be joined to several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
 If the IRC network becomes disjoint because of a split between servers, the channel on either side is composed of only those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
@@ -732,6 +734,62 @@ Command Examples:
 Message Examples:
 
       :dan-!d@localhost PART #test    ; dan- is leaving the channel #test
+
+### TOPIC message
+
+         Command: TOPIC
+      Parameters: <channel> [<topic>]
+
+The `TOPIC` command is used to change or view the topic of the given channel. If `<topic>` is not given, either the `RPL_TOPIC` or `RPL_NOTOPIC` numeric is returned specifying the current channel topic or lack of one. If `<topic>` is an empty string, the topic for the channel will be cleared.
+
+If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail.
+
+If the topic of a channel is changed or cleared, every client in that channel will receive either a `RPL_TOPIC` or `RPL_NOTOPIC` numeric alerting them to how the topic has changed.
+
+Numeric Replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
+* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
+* [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
+* [`RPL_TOPIC`](#rpltopic-332) `(332)`
+
+Command Examples:
+
+      TOPIC #test :New topic          ; Setting the topic on "#test" to
+                                      "New topic".
+
+      TOPIC #test :                   ; Clearing the topic on "#test"
+
+      TOPIC #test                     ; Checking the topic for "#test"
+
+### NAMES message
+
+         Command: NAMES
+      Parameters: [<channel>{,<channel>}]
+
+The `NAMES` command is used to view the nicknames joined to a channel and their [channel membership prefixes](#channel-membership-prefixes). The param of this command is a list of channel names, delimited by a comma `(",", 0x2C)` character.
+
+The channel names are evaluated one-by-one. For each channel that exists and they are able to see the users in, the server returns one of more `RPL_NAMREPLY` numerics containing the users joined to the channel and a single `RPL_ENDOFNAMES` numeric. If the channel name is invalid or the channel does not exist, one `RPL_ENDOFNAMES` numeric containing the given channel name should be returned. If the given channel has the [secret](#secret-channel-mode) channel mode set and the user is not joined to that channel, one `RPL_ENDOFNAMES` numeric is returned. Users with the [invisible](#invisible-user-mode) user mode set are not shown in channel responses unless the requesting client is also joined to that channel.
+
+Servers MAY only return information about the first `<channel>` and silently ignore the others. This seems to be an attempt to reduce possible abuse. Due to this, clients SHOULD only query information about one channel when using the `NAMES` command.
+
+If no parameter is given for this command, servers SHOULD return one `RPL_ENDOFNAMES` numeric with the `<channel>` parameter set to an asterix character `('*', 0x2A)`. Servers MAY also choose to return information about every single channel and every single user on the network in response to this command being given without a parameter, but most servers these days return nothing.
+
+Numeric Replies:
+
+* [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
+* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
+* [`RPL_ENDOFNAMES`](#rplendofnames-366) `(366)`
+
+Command Examples:
+
+      NAMES #twilight_zone,#42        ; List all visible users on
+                                      "#twilight_zone" and "#42".
+
+      NAMES                           ; Attempt to list all visible users on
+                                      the network, which SHOULD be responded to
+                                      as specified above.
 
 
 ## Server Queries and Commands
