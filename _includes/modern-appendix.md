@@ -737,7 +737,7 @@ The following search extensions are defined:
 * **M**: Searching based on a mask.
 * **N**: Searching based on a non-matching mask. i.e., the opposite of `M`.
 * **T**: Searching based on topic set time, via the `"T<val"` and `"T>val"` modifiers to search for a topic time that is higher or lower than `val`.
-* **U**: Searching based on user count within the channel, via the `"U<val"` and `"U>val"` modifiers to search for a channel that has less or more user than `val`.
+* **U**: Searching based on user count within the channel, via the `"<val"` and `">val"` modifiers to search for a channel that has less or more than `val` users, respectively.
 
 Examples:
 
