@@ -810,6 +810,16 @@ Numeric Replies:
 * [`RPL_LIST`](#rpllist-322) `(322)`
 * [`RPL_LISTEND`](#rpllistend-323) `(323)`
 
+Command Examples:
+
+      LIST                            ; Command to list all channels
+
+      LIST #twilight_zone,#42         ; Command to list the channels
+                                      "#twilight_zone" and "#42".
+
+      LIST >3                         ; Command to list all channels with
+                                      more than three users.
+
 
 ## Server Queries and Commands
 
