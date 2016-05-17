@@ -640,9 +640,9 @@ The value MUST be specified and is a string. Servers MAY advertise alternate cas
 Servers SHOULD NOT use the `rfc1459` casemapping unless explicitly required for compatibility reasons or for linking with servers using it. There are issues with it as described below, and the equivalency of the extra characters is not necessary with the global usage of the IRC protocol today.
 
 <div class="warning">
-    <p>Some implementations of **`rfc1459`** casemapping consider the `'~'` character to be treated as the lower-case equivalent of the `'^'` character, and some do not. Implementations that follow this rule consider the exact casemapping rules as specified above to belong to the **`rfc1459-strict`** casemapping instead, and for implementations following the rule in this bubble to be considered **`rfc1459`**.</p>
+    <p>Some implementations of the <tt>rfc1459</tt> casemapping consider the <tt>'~'</tt> character to be treated as the lower-case equivalent of the <tt>'^'</tt> character, and some do not. Implementations that follow this rule consider the exact casemapping rules as specified above to belong to the <tt>'rfc1459-strict'</tt> casemapping instead, and for implementations following the rule in this bubble to be considered <tt>'rfc1459'</tt>.</p>
 
-    <p>This is a fault with **`rfc1459`** casemapping, and is one reason it should not be used by new installations.</p>
+    <p>This is a fault with <tt>'rfc1459'</tt> casemapping, and one reason it should not be used by new installations.</p>
 </div>
 
 Examples:
