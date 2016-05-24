@@ -4,8 +4,8 @@
 // variables
 //
 $spec-width: 57rem
-$standard_font_family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif
-$content_font_family: "Helvetica Neue", Helvetica, Arial, sans-serif
+$standard_font_family: "Open Sans", sans-serif
+$content_font_family: "Open Sans", sans-serif
 $mono_font_family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace
 
 // // Media queries
@@ -139,17 +139,11 @@ li
         &:last-child
             margin-bottom: 0
 
-.warning
+.warning, .note
     color: #fff
-    @media screen
-        background: #d54
-    @media print
-        background: #666
-        border: 0.5rem #000 dashed
     border-radius: 1rem
     margin: 1.55rem auto
     padding: 1.2rem 1.3rem
-    font-weight: bold
     a
         color: #abf
         @media print
@@ -161,6 +155,18 @@ li
             margin-top: 0
         &:last-child
             margin-bottom: 0
+.note
+    @media screen
+        background: #4f5dc9
+    @media print
+        background: #444
+        border: 0.5rem #222 dotted
+.warning
+    @media screen
+        background: #d54
+    @media print
+        background: #666
+        border: 0.5rem #000 dashed
 
 .anchor
     color: #f53
