@@ -193,7 +193,7 @@ If the text immediately following a code setting a foreground color consists of 
 This formatting character switches the foreground and background colors of the following text. It can act similarly to a toggle, in that every time it is used it switches the colors for the text following it.
 
 <div class="warning">
-    WARNING: As noted in the title of this section, this code may also represent italics in clients (and instead represent Reverse Color with the `(0x12)`). Honestly, it's probably about half-half (two of the major clients I checked both handled this differently), so I'd recommend not using this code.
+    WARNING: As noted in the title of this section, <tt>(0x16)</tt> may also represent italics in some clients (those clients that do usually represent Reverse Color with the character <tt>(0x12)</tt> instead). Honestly, it's probably about half-half (two of the major clients I checked both handled this differently), so I'd recommend not using this code.
 </div>
 
 
