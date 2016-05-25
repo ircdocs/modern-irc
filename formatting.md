@@ -172,13 +172,12 @@ The following colors are defined for use with this formatting character:
 * <tt><span class="ircb-13">&nbsp;&nbsp;</span> - 13</tt> - Pink.
 * <tt><span class="ircb-14">&nbsp;&nbsp;</span> - 14</tt> - Grey.
 * <tt><span class="ircb-15">&nbsp;&nbsp;</span> - 15</tt> - Light Grey.
-* <tt><span class="ircb-99">&nbsp;&nbsp;</span> - 99</tt> - Default Foreground/Background color for the client, depending on whether this code is used as the first (foreground) or last (background) <tt>&lt;COLOR&gt;</tt>. <strong>NOTE:</strong> Support for this specific color may not be widely available at this point in time, so we recommend not sending it.
 
 <div class="note">
     NOTE: The colors displayed here are simply a guide. The actual RGB values used for these codes will depend on what the client author has defined, and are often defined by the terminal color scheme for terminal-based clients.
 </div>
 
-If a color code is between `16` and `98`, the client SHOULD subtract 16 from the code until it falls within the range `00-15` and then display that code. However, this is not implemented by all clients, so clients SHOULD only send `<COLOR>` codes that fall within the above ranges.
+Clients SHOULD NOT send color codes `16`-`99`. They will be interpreted different ways by different clients, and we do not recommend using them.
 
 ### Mistaken Eating of Text
 
@@ -187,11 +186,15 @@ When sending color codes `0-9`, clients may use either the one-digit `(3)` or tw
 If the text immediately following a code setting a foreground color consists of something like `",13"`, it will get interpreted as setting the background rather than text. In this example, clients can put the color code either after the comma character or before the character in front of the comma character to avoid this. They can also put a different formatting code after the comma to ensure that the number does not get interpreted as part of the color code (for instance, two bold characters in a row, which will cancel each other out as they are toggles).
 
 
-## Reverse Color
+## Reverse Color (/ or Italics)
 
     ASCII 0x16
 
 This formatting character switches the foreground and background colors of the following text. It can act similarly to a toggle, in that every time it is used it switches the colors for the text following it.
+
+<div class="warning">
+    WARNING: As noted in the title of this section, this code may also represent italics in clients (and instead represent Reverse Color with the `(0x12)`). Honestly, it's probably about half-half (two of the major clients I checked both handled this differently), so I'd recommend not using this code.
+</div>
 
 
 ## Reset
@@ -212,6 +215,6 @@ Each example displays both the raw IRC code sent, and then a formatted version o
 
 * <div><tt>Code: &nbsp; I love <span class="reverse">C</span>3IRC! <span class="reverse">C</span>It is the <span class="reverse">C</span>7best protocol ever!</tt><br/><tt>Output: I love <span class="ircf-3">IRC! </span>It is the <span class="ircf-7">best protocol ever!</span></tt></div>
 * <div><tt>Code: &nbsp; This is a <span class="reverse">I</span><span class="reverse">C</span>13,9cool <span class="reverse">C</span>message</tt><br/><tt>Output: This is a <span class="irci"><span class="ircf-13 ircb-9">cool </span>message</span></tt></div>
-* <div><tt>Code: &nbsp; IRC <span class="reverse">B</span>is <span class="reverse">C</span>4,12so <span class="reverse">R</span>great<span class="reverse">O</span>!</tt><br/><tt>Output: IRC <span class="ircb">is <span class="ircf-4 ircb-12">so </span><span class="ircf-12 ircb-4">great</span></span>!</tt></div>
+* <div><tt>Code: &nbsp; IRC <span class="reverse">B</span>is <span class="reverse">C</span>4,12so <span class="reverse">C</span>great<span class="reverse">O</span>!</tt><br/><tt>Output: IRC <span class="ircb">is <span class="ircf-4 ircb-12">so </span>great</span>!</tt></div>
 * <div><tt>Code: &nbsp; Rules: Don't spam 5<span class="reverse">C</span>13,8,6<span class="reverse">C</span>,7,8, and especially not <span class="reverse">B</span>9<span class="reverse">B</span><span class="reverse">I</span>!</tt><br/><tt>Output: Don't spam 5<span class="ircf-13 ircb-8">,6</span>,7,8, and especially not <span class="ircb">9</span><span class="irci">!</span></tt></div>
 
