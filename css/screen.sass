@@ -4,19 +4,24 @@
 // variables
 //
 $spec-width: 57rem
+$desktop-width: 57rem
+$mobile-width: 30rem
 $standard_font_family: "Open Sans", sans-serif
 $content_font_family: "Open Sans", sans-serif
 $mono_font_family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace
 
-// // Media queries
-// //
-// @mixin respond-to($media)
-//     @if $media == desktop
-//         @media only screen and (min-width: $mobile-width)
-//             @content
-//     @else if $media == mobile
-//         @media only screen and (max-width: $mobile-width)
-//             @content
+// Media queries
+//
+@mixin respond-to($media)
+    @if $media == wide
+        @media only screen and (min-width: $desktop-width)
+            @content
+    @else if $media == desktop
+        @media only screen and (min-width: $mobile-width) and (max-width: $desktop-width)
+            @content
+    @else if $media == mobile
+        @media only screen and (max-width: $mobile-width)
+            @content
 
 // styling
 //
@@ -44,6 +49,51 @@ html, body
     #footer
         padding-top: 0
         padding-bottom: 2.5rem  // for ToC button
+
+#nav
+    width: 100%
+    background: #334
+    color: #f7f7fa
+    @media print
+        display: none
+    > div
+        @include respond-to(wide)
+            max-width: $desktop-width - 2rem
+            margin: 0 auto
+            padding: 0.25rem 0 0.2rem
+        @include respond-to(desktop)
+            margin: 0 1rem
+            padding: 0.25rem 0 0.2rem
+        @include respond-to(mobile)
+            padding: 0.25rem 0.3rem 0.2rem
+        a
+            text-decoration: none
+            color: #e7e7ff
+            &:hover
+                color: #ccf
+
+        nav > a
+            margin-left: 1.5rem
+            &:first-child
+                margin-left: 0
+                @include respond-to(wide)
+                    margin-right: 2.75rem
+                @include respond-to(desktop)
+                    margin-right: 2.75rem
+                @include respond-to(mobile)
+                    display: block
+            @include respond-to(mobile)
+                &:nth-child(2)
+                    margin-left: 0
+            i
+                font-size: 0.9rem
+                vertical-align: baseline
+
+        .wordmark
+            font-style: normal
+
+#content > h1:first-child
+    margin-top: 0.5rem
 
 #spec
     h1
@@ -190,6 +240,11 @@ pre
     font-family: $mono_font_family
 tt
     font-family: $mono_font_family
+.reverse
+    font-family: $mono_font_family
+    background: #000
+    color: #fff
+    font-weight: bold
 
 body
     counter-reset: figure
@@ -202,6 +257,82 @@ body
     &::before
         counter-increment: figure
         content: "Figure " counter(figure) ": "
+
+// irc colors
+.ircf-0
+    color: #ffffff
+.ircf-1
+    color: #000000
+.ircf-2
+    color: #00007f
+.ircf-3
+    color: #009300
+.ircf-4
+    color: #ff0000
+.ircf-5
+    color: #7f0000
+.ircf-6
+    color: #9c009c
+.ircf-7
+    color: #fc7f00
+.ircf-8
+    color: #ffff00
+.ircf-9
+    color: #00fc00
+.ircf-10
+    color: #009393
+.ircf-11
+    color: #00ffff
+.ircf-12
+    color: #0000fc
+.ircf-13
+    color: #ff00ff
+.ircf-14
+    color: #7f7f7f
+.ircf-15
+    color: #d2d2d2
+.ircf-99
+    color: #000000
+
+.ircb-0
+    background: #ffffff
+.ircb-1
+    background: #000000
+.ircb-2
+    background: #00007f
+.ircb-3
+    background: #009300
+.ircb-4
+    background: #ff0000
+.ircb-5
+    background: #7f0000
+.ircb-6
+    background: #9c009c
+.ircb-7
+    background: #fc7f00
+.ircb-8
+    background: #ffff00
+.ircb-9
+    background: #00fc00
+.ircb-10
+    background: #009393
+.ircb-11
+    background: #00ffff
+.ircb-12
+    background: #0000fc
+.ircb-13
+    background: #ff00ff
+.ircb-14
+    background: #7f7f7f
+.ircb-15
+    background: #d2d2d2
+.ircb-99
+    background: #ffffff
+
+.ircb
+    font-weight: bold
+.irci
+    font-style: italic
 
 @media print
     #printable-toc

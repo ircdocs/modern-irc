@@ -17,7 +17,7 @@ copyrights:
 {% include copyrights.html %}
 
 <div class="note">
-    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is a <a href="./about.html#living-specification">living specification</a> which is updated in response to feedback and implementations. This document describes existing behaviour and what we consider best practices for new software.</p>
+    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is a <a href="./about.html#living-specification">living specification</a> which is updated in response to feedback and implementations as they change. This document describes existing behaviour and what we consider best practices for new software.</p>
     <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
     <p>For something which aims to be an RFC, please see the <a href="https://github.com/kaniini/ircv3-harmony">ircv3-harmony</a> project.</p>
 </div>
