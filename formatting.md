@@ -50,6 +50,7 @@ These are some of the messages and features formatting codes are normally used w
 * [`NOTICE`](/index.html#notice-message)
 * [`TOPIC`](/index.html#topic-message)
 * [`AWAY`](/index.html#away-message)
+* [`USER`](/index.html#user-message) (allowed in realnames, <strong>not</strong> in usernames)
 * The [Message of the Day](/index.html#motd-message)
 
 And the numerics containing content associated with these messages and features.
@@ -57,9 +58,13 @@ And the numerics containing content associated with these messages and features.
 
 ## Names
 
+Formatting is allowed and commonly used in realnames (set with the [`USER`](/index.html#user-message) command when the client joins the network).
+
 On some networks and with some server software, vhosts (vanity hostnames) may contain formatting characters and codes. Hostnames sent to clients MAY contain formatting, and clients SHOULD display them with this in mind.
 
-The use of formatting MUST NOT be allowed in nicknames or channel names. This is to avoid confusion and prevent issues, particularly with clients that have disabled the rendering of colors / formatting or cannot display certain types of formatting.
+The use of formatting MUST NOT be allowed in nicknames, user names or channel names. This is to avoid confusion and prevent issues, particularly with clients that have disabled the rendering of colors / formatting or cannot display certain types of formatting.
+
+If a client sends a [`USER`](/index.html#user-message) command with any formatting codes in the first parameter (in the username) during registration, the server SHOULD send the client an [`ERROR`](/index.html#error-message) message and close the connection.
 
 
 ---
