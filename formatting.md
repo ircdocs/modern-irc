@@ -136,7 +136,7 @@ With this formatting code, colors are represented as ASCII digits.
 
 ### Forms of Color Codes
 
-In the following list, `<CODE>` represents the color formatting character `(0x03)`, `<COLOR>` represents one or two ASCII digits (either `0-9` or `00-99`).
+In the following list, `<CODE>` represents the color formatting character `(0x03)`, `<COLOR>` represents one or two ASCII digits (either `0-9` or `00-15`).
 
 The use of this code can take on the following forms:
 
@@ -150,7 +150,11 @@ The foreground color is the first `<COLOR>`, and the background color is the sec
 
 If only the foreground color is set, the background color stays the same.
 
-Where there are two ASCII digits available where a `<COLOR>` is allowed, two characters will always be read for it.
+<div class="warning">
+    <p>If there are two ASCII digits available where a <tt>&lt;COLOR&gt;</tt> is allowed, if the two characters are in the range <tt>00-15</tt> then two characters MUST always be read for it. If they are in the range <tt>16-99</tt>, the client MAY unconditionally read and process the two characters, or the client MAY read just the first digit and display the second digit.</p>
+
+    <p>Clients SHOULD NOT send the digits <tt>16-99</tt> where a <tt>&lt;COLOR&gt;</tt> is allowed, as clients will interpret it differently.</p>
+</div>
 
 ### Colors
 
@@ -177,7 +181,9 @@ The following colors are defined for use with this formatting character:
     NOTE: The colors displayed here are simply a guide. The actual RGB values used for these codes will depend on what the client author has defined, and are often defined by the terminal color scheme for terminal-based clients.
 </div>
 
-Clients SHOULD NOT send color codes `16`-`99`. They will be interpreted different ways by different clients, and we do not recommend using them.
+<div class="warning">
+    WARNING: Clients SHOULD NOT send color codes <tt>16-99</tt>. They will be interpreted different ways by different clients as noted above, and we do not recommend using them.
+</div>
 
 ### Mistaken Eating of Text
 
@@ -209,7 +215,7 @@ This formatting character resets all formatting. It removes the bold, italics, a
 
 # Examples
 
-In this section, the color formatting character `(0x03)` is displayed as <span class="reverse">C</span>, the reverse color character `(0x16)` is displayed as <span class="reverse">R</span>, the bold character `(0x02)` is displayed as <span class="reverse">B</span>, the italics character `(0x1D)` is displayed as <span class="reverse">I</span>, and the reset character `(0x0F)` is displayed as <span class="reverse">O</span>.
+In this section, the color formatting character `(0x03)` is displayed as <span class="reverse">C</span>, the bold character `(0x02)` is displayed as <span class="reverse">B</span>, the italics character `(0x1D)` is displayed as <span class="reverse">I</span>, and the reset character `(0x0F)` is displayed as <span class="reverse">O</span>.
 
 Each example displays both the raw IRC code sent, and then a formatted version of the output.
 
