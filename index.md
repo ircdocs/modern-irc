@@ -622,7 +622,7 @@ Command Example:
         Command: QUIT
      Parameters: [<reason>]
 
-The `QUIT` command is used to terminate a client's connection to the server. The server acknowledges this by replying with an [`ERROR` message](#error-message) and closing the connection to the client.
+The `QUIT` command is used to terminate a client's connection to the server. The server acknowledges this by replying with an [`ERROR`](#error-message) message and closing the connection to the client.
 
 This message may also be sent from the server to a client to show that a client has exited from the network. This is typically only dispatched to clients that share a channel with the exiting user. When the `QUIT` message is sent to clients, `<source>` represents the client that has exited the network.
 
