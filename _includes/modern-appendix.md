@@ -283,6 +283,12 @@ Sent as a reply to the [`TOPIC`](#topic-message) command, this numeric indicates
 
 Sent to a client to inform them of the current [topic](#topic-message) of the channel.
 
+### `RPL_TOPICTIME (333)`
+
+      "<client> <channel> <nick> <setat>"
+
+Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPICTIME`](#rpltopictime-333).
+
 ### `RPL_INVITING (341)`
 
       "<client> <channel> <nick>"

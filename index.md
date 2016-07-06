@@ -710,13 +710,13 @@ Message Examples:
 ### PART message
 
          Command: PART
-      Parameters: <channel>{,<channel>}
+      Parameters: <channel>{,<channel>} [<reason>]
 
-The `PART` command removes the client from the given channel(s). On sending a successful `PART` command, the user will receive a `PART` message from the server for each channel they have been removed from.
+The `PART` command removes the client from the given channel(s). On sending a successful `PART` command, the user will receive a `PART` message from the server for each channel they have been removed from. `<reason>` is the reason that the client has left the channel(s).
 
 For each channel in the parameter of this command command, if the channel exists and the client is not joined to it, they will receive an [`ERR_NOTONCHANNEL`](#errnotonchannel-442) reply and that channel will be ignored. If the channel does not exist, the client will receive an [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) reply and that channel will be ignored.
 
-This message may be sent from a server to a client to notify the client that someone has been removed from a channel. In this case, the message `<source>` will be the client who is being removed, and `<channel>` will be the channel which that client has been removed from. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `PART` messages as a series of messages with a single channel name on each.
+This message may be sent from a server to a client to notify the client that someone has been removed from a channel. In this case, the message `<source>` will be the client who is being removed, and `<channel>` will be the channel which that client has been removed from. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `PART` messages as a series of messages with a single channel name on each. If a `PART` message is distributed in this way, `<reason>` (if it exists) should be on each of these messages.
 
 Numeric Replies:
 
@@ -740,7 +740,9 @@ Message Examples:
          Command: TOPIC
       Parameters: <channel> [<topic>]
 
-The `TOPIC` command is used to change or view the topic of the given channel. If `<topic>` is not given, either the `RPL_TOPIC` or `RPL_NOTOPIC` numeric is returned specifying the current channel topic or lack of one. If `<topic>` is an empty string, the topic for the channel will be cleared.
+The `TOPIC` command is used to change or view the topic of the given channel. If `<topic>` is not given, either `RPL_TOPIC` or `RPL_NOTOPIC` is returned specifying the current channel topic or lack of one. If `<topic>` is an empty string, the topic for the channel will be cleared.
+
+If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICTIME` SHOULD also be sent to that client.
 
 If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail.
 
@@ -753,6 +755,7 @@ Numeric Replies:
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
 * [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_TOPIC`](#rpltopic-332) `(332)`
+* [`RPL_TOPICTIME`](#rpltopic-333) `(333)`
 
 Command Examples:
 
