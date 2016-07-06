@@ -287,7 +287,7 @@ Sent to a client to inform them of the current [topic](#topic-message) of the ch
 
       "<client> <channel> <nick> <setat>"
 
-Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPICTIME`](#rpltopictime-333).
+Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPIC`](#rpltopic-332).
 
 ### `RPL_INVITING (341)`
 
