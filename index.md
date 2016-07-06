@@ -755,7 +755,7 @@ Numeric Replies:
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
 * [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_TOPICTIME`](#rpltopic-333) `(333)`
+* [`RPL_TOPICTIME`](#rpltopictime-333) `(333)`
 
 Command Examples:
 
