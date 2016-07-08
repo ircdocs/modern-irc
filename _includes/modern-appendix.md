@@ -46,20 +46,34 @@ Part of the post-registration greeting. Clients SHOULD discover available featur
 
 The ABNF representation for an `RPL_ISUPPORT` token is:
 
-      token      =  parameter *1( "=" value )
+      token      =  *1"-" parameter / parameter *1( "=" value )
       parameter  =  1*20 letter
       value      =  * letpun
       letter     =  ALPHA / DIGIT
       punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
       letpun     =  letter / punct
 
-As the maximum number of parameters to any reply is 15, the maximum number of   `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
+As the maximum number of message parameters to any reply is 15, the maximum number of `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
 As with other local numerics, when `RPL_ISUPPORT` is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
 
-A token is of the form `PARAMETER` or `PARAMETER=VALUE`. A server MAY send an empty value field, and a parameter MAY have a default value. A server MUST send the parameter as upper-case text. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields MUST be delimited with a comma character (`,`).
+A token is of the form `PARAMETER[=VALUE]` or `-PARAMETER`. Servers MUST send the parameter as upper-case text.
 
-See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
+Tokens of the form `PARAMATER[=VALUE]` are used to advertise features or information to clients. A server MAY send an empty value field with these tokens, and a parameter MAY have a default value. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields SHOULD be delimited with a comma character `(",", 0x2C)`.
+
+Tokens of the form `-PARAMETER` are used to negate a previously specified parameter. If the client receives a token like this, the client MUST consider that parameter to be removed and revert to the behaviour that would occur if the parameter was not specified. The client MUST act as though the paramater is no longer advertised to it. These tokens are intended to allow servers to change their features without disconnecting clients. Tokens of this form MUST NOT contain a value field.
+
+It is not required for the server to negate a parameter in order to change its value -- the server should simply re-advertise the parameter with the new value.
+
+The server MAY negate parameters which have not been previously advertised; in this case, the client MUST ignore the token.
+
+The server MUST NOT contain the same parameter multiple times nor advertise and negate the same parameter in a single `RPL_ISUPPORT` reply. However, the server is free to advertise or negate the same parameters in separate replies.
+
+<div class="note">
+    <p>Note: Implementations often change the value of parameters (for example, <tt>CHANLIMIT</tt>) upon certain events such as a successful <a href="#oper-message"><tt>OPER</tt></a> command from a client. It is important that any relevant parameters be (re)advertised when this occurs.</p>
+</div>
+
+See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 ### `RPL_BOUNCE (010)`
 
