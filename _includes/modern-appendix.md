@@ -123,9 +123,11 @@ Sent as a reply to the [`LUSER`](#luser-message) command. `<c>` and `<s>` are no
 
 ### `RPL_ADMINME (256)`
 
-      "<client> <server> :Administrative info"
+      "<client> [<server>] :Administrative info"
 
 Sent as a reply to an [`ADMIN`](#admin-message) command, this numeric establishes the name of the server whose administrative info is being provided. The text used in the last param of this message may vary.
+
+`<server>` is optional and MAY be included in responses, the server can also be gained from the `<source>` of this message.
 
 ### `RPL_ADMINLOC1 (257)`
 
