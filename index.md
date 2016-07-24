@@ -1367,6 +1367,10 @@ Users with this mode may send messages to a channel that is [moderated](#moderat
 
 # Acknowledgements
 
-This document draws from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) IRC protocol specifications.
+This document draws heavily from the original [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) IRC protocol specifications.
 
 Parts of this document come from the "IRC `RPL_ISUPPORT` Numeric Definition" Internet Draft authored by L. Hardy, E. Brocklesby, and K. Mitchell. Parts of this document come from the "IRC Client Capabilities Extension" Internet Draft authored by K. Mitchell, P. Lorier, L. Hardy, and P. Kucharski. Parts of this document come from the [IRCv3 Working Group](http://ircv3.net) specifications.
+
+Thanks to the following people for contributing to this document, or to helping with IRC specification efforts:
+
+Simon Butcher, dx, James Wheare, Stephanie Daugherty, and all the IRC developers and documentation writers throughout the years.
