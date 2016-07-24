@@ -67,7 +67,7 @@ Tokens of the form `-PARAMETER` are used to negate a previously specified parame
 
 The server MAY negate parameters which have not been previously advertised; in this case, the client MUST ignore the token.
 
-The server MUST NOT contain the same parameter multiple times nor advertise and negate the same parameter in a single `RPL_ISUPPORT` reply. However, the server is free to advertise or negate the same parameters in separate replies.
+A single `RPL_ISUPPORT` reply MUST NOT contain the same parameter multiple times nor advertise and negate the same parameter. However, the server is free to advertise or negate the same parameter in separate replies.
 
 See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
