@@ -361,6 +361,22 @@ Sent to a client which has just successfully issued an [`OPER`](#oper-message) c
 
 Sent to an [operator](#operators) which has just successfully issued a [`REHASH`](#rehash-message) command. The text used in the last param of this message may vary.
 
+### `ERR_UNKNOWNERROR (400)`
+
+      "<client> <command>{ <subcommand>} :<info>"
+
+Indicates that the given command/subcommand could not be processed. `<subcommand>` may repeat for more specific subcommands.
+
+For example, for an issue with a hypothetical command `PACK`, this may be returned:
+
+      :example.com 400 dan!~d@n PACK :Could not process multiple invalid parameters
+
+For an issue with a hypothetical command `PACK` with the subcommand `BOX`, this may be returned:
+
+      :example.com 400 dan!~d@n PACK BOX :Could not find box to pack
+
+This numeric indicates a very generalised error (which `<info>` should further explain). If there is another more specific numeric which represents the error occuring, that should be used instead.
+
 ### `ERR_NOSUCHNICK (401)`
 
       "<client> <nickname> :No such nick/channel"
