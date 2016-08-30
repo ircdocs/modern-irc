@@ -28,3 +28,13 @@ These document are not RFCs. Writing an RFC and putting it through the IETF proc
 We consider the documents on this site to be 'living specifications'. This means they are updated as feedback is received for them and as the protocol is extended and grows. Bugs can be fixed, incorrect behaviours in the specifications can be corrected, and they can be extended as new behaviour becomes widespread.
 
 This term and our use of it is based on the WHATWG definition of a ['living standard'](https://wiki.whatwg.org/wiki/FAQ#What_does_.22Living_Standard.22_mean.3F).
+
+---
+
+## Are these documents standards or signed off by multiple vendors?
+
+These documents are explicitly not standards and not signed off by a collection of vendors. These documents are edited and signed off by myself (though I gladly accept contributors and PRs).
+
+The reason for this is that these documents are at an early state. At this point, having a sort of process that involves getting changes signed-off by multiple people/groups before being introduced would be more harmful than helpful.
+
+Regardless, I hope you find these documents useful and investigate protocol extensions with the [IRCv3 Working Group](http://ircv3.net).
