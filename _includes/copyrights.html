@@ -1,7 +1,7 @@
 <div class="pure-g copyright">
 {% for copyright in page.copyrights %}
     <div class="pure-u-1-{{ page.copyrights | size }}">
-        <span class="line">{{ copyright.name }}</span>
+        <span class="line">{{ copyright.name }}{% if copyright.editor %} <span class="edmark">[Editor]</span>{% endif %}</span>
         {% if copyright contains "org" %}
             {% if copyright contains "org_link" %}
                 <a href="{{ copyright.org_link }}" class="line">{{ copyright.org }}</a>

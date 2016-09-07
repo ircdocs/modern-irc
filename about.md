@@ -33,7 +33,7 @@ This term and our use of it is based on the WHATWG definition of a ['living stan
 
 ## Are these documents standards or signed off by multiple vendors?
 
-These documents are explicitly not standards and not signed off by a collection of vendors. These documents are edited and signed off by myself (though I gladly accept contributors and PRs).
+These documents are explicitly not standards and not signed off by a collection of vendors. These documents are signed off by the editor of that document (though we gladly accept contributors and PRs).
 
 The reason for this is that these documents are at an early state. At this point, having a sort of process that involves getting changes signed-off by multiple people/groups before being introduced would be more harmful than helpful.
 

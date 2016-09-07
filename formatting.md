@@ -7,6 +7,7 @@ copyrights:
     org: "ircdocs"
     org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
+    editor: true
 ---
 
 {% include copyrights.html %}
