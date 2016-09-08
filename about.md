@@ -35,6 +35,6 @@ This term and our use of it is based on the WHATWG definition of a ['living stan
 
 These documents are explicitly not standards and not signed off by a collection of vendors. These documents are signed off by the editor of that document (though we gladly accept contributors and PRs).
 
-The reason for this is that these documents are at an early state. At this point, having a sort of process that involves getting changes signed-off by multiple people/groups before being introduced would be more harmful than helpful.
+The reason for this is that these documents are at an early state, and that they intend to describe already existing behaviour (rather than standardise new behaviour). At this point, having a sort of process that involves getting changes signed-off by multiple people/groups before being introduced would be more harmful than helpful.
 
 Regardless, I hope you find these documents useful and investigate protocol extensions with the [IRCv3 Working Group](http://ircv3.net).
