@@ -15,6 +15,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     </head>
     <body>
+        {% if page.wip %}
+        <div id="wiptag">
+            <span class="detail">This document is a heavy work in progress<br/>and should not be considered complete</span>
+        </div>
+        {% endif %}
         <div id="show-toc" onclick=""><div onclick="">Table of Contents</div></div>
         <div id="toc-popup" style="display: none"><div onclick="">
             <h2>Table of Contents</h2>

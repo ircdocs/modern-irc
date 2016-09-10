@@ -1,6 +1,7 @@
 ---
 title: Modern IRC Client Protocol
 layout: default
+wip: true
 copyrights:
   -
     name: "Jack Allnutt"

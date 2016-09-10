@@ -264,6 +264,37 @@ body
     font-size: 0.7rem
     vertical-align: 0.125rem
 
+#wiptag
+    @media print
+        display: none
+    position: fixed
+    bottom: 1rem
+    right: 1rem
+    padding: 0.3rem 0.6rem
+    background: #d54
+    border-radius: 0.36rem
+    color: #fdfbfb
+    font-family: $mono_font_family
+    .detail
+        display: none
+    &::before
+        content: "WIP"
+    &:hover .detail, &:focus .detail
+        display: block
+        @media print
+            display: none
+        position: fixed
+        bottom: 1rem
+        @media only screen and (max-width: 60rem)
+            bottom: 3rem
+        right: 1rem
+        padding: 0.3rem 0.6rem
+        color: #222
+        border-radius: 0.36rem
+        background: rgba(250, 250, 250, 0.95)
+        text-align: center
+        font-family: $standard_font_family
+
 // irc colors
 .ircf-0
     color: #ffffff
