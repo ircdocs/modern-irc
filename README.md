@@ -32,3 +32,9 @@ This ignores the S2S protocol. The reasons for this are discussed in the documen
 Describes what I consider to be the formatting characters and methods understood by basically everything. This includes colors, bold, italics, formatting reset codes, etc.
 
 In this document, I describe what I think is the most sane way to interpret them. This includes the edge-cases that aren't normally explored in similar documents, based on what clients tend to do today.
+
+---
+
+## Client-to-Client Protocol (CTCP)
+
+Describes a subset of CTCP that is sane and lets software interoperate with most of the other IRC software out there today. Leaves out quoting mechanisms defined by earlier specifications that have not been widely implemented nor followed today, and defines the messages that most clients implementing CTCP should be aware of.
