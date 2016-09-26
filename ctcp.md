@@ -59,7 +59,7 @@ CTCP queries are sent with `PRIVMSG`, and replies are sent with `NOTICE`. In add
 Here are two examples of CTCP queries and replies:
 
       :dx PRIVMSG SaberUK :\x01VERSION\x01
-      :SaberUK NOTICE dx :\x01VERSION Your Mother 6.9\x01
+      :SaberUK NOTICE dx :\x01VERSION Snak for Macintosh 4.13 English\x01
 
       :mt PRIVMSG #ircv3 :\x01PING 1473523796 918320\x01
       :Jobe NOTICE mt :\x01PING 1473523796 918320\x01
