@@ -94,7 +94,7 @@ These CTCP messages are sent as a [`PRIVMSG`](/index.html#privmsg-message) and g
 
 **Example:**
 
-      :dan- PRIVMSG #ircv3 :\x01ACTION is now away (BX-MsgLog:ON)\x01
+      :dan- PRIVMSG #ircv3 :\x01ACTION writes the best specifications!\x01
 
 
 ## Metadata Query
