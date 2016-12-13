@@ -4,6 +4,7 @@ This site contains documents describing the IRC protocol and related technologie
 
 * [Modern IRC Client Protocol](http://modern.ircdocs.horse/) document
 * [IRC Formatting](http://modern.ircdocs.horse/formatting.html) document
+* [Client-to-Client Protocol (CTCP)](http://modern.ircdocs.horse/ctcp.html) document
 
 For suggestions of other documents to create / maintain, please [create an issue](https://github.com/ircdocs/modern-irc/issues) or [send me an email](mailto:daniel@danieloaks.net)!
 
@@ -17,6 +18,7 @@ If something written in these documents isn't correct for or interoperable with 
 
 ---
 
+
 ## Modern IRC Client Protocol
 
 This is an attempt to create an updated document about how the IRC client protocol works these days.
@@ -25,7 +27,6 @@ We specify commands, messages and numerics as SHOULD and MUST based on how much 
 
 This ignores the S2S protocol. The reasons for this are discussed in the document. This document includes bits and pieces cherry-picked from the RFCs, [IRCv3](http://ircv3.net/), Internet-Drafts, and commands/replies that have generally been accepted by the IRC community.
 
----
 
 ## IRC Formatting
 
@@ -33,7 +34,6 @@ Describes what I consider to be the formatting characters and methods understood
 
 In this document, I describe what I think is the most sane way to interpret them. This includes the edge-cases that aren't normally explored in similar documents, based on what clients tend to do today.
 
----
 
 ## Client-to-Client Protocol (CTCP)
 
