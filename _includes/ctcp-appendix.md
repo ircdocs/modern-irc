@@ -30,7 +30,7 @@ This extended formatting message shows that `<text>` should be displayed as a th
 
 This metadata query returns a list of the CTCP messages that this client supports and implements.
 
-`CLIENTINFO` is widely implemented. Clients `SHOULD` implement this CTCP message.
+`CLIENTINFO` is widely implemented. Clients SHOULD implement this CTCP message.
 
 *Example:*
 
@@ -46,7 +46,7 @@ DCC (Direct Client-to-Client) is used to setup and control connections that go d
 
 Properly implementing the various DCC types requires a document all of its own, and are not described here.
 
-`DCC` is widely implemented. Clients `SHOULD` implement this CTCP message.
+`DCC` is widely implemented. Clients SHOULD implement this CTCP message.
 
 ### FINGER
 
@@ -71,7 +71,7 @@ However, some implementations return the client name and version instead.
 
 This extended query is used to confirm reachability with other clients and to check latency. When receiving a CTCP PING, the reply must contain exactly the same parameters as the original query.
 
-`PING` is universally implemented. Clients `MUST` implement this CTCP message.
+`PING` is universally implemented. Clients MUST implement this CTCP message.
 
 *Example:*
 
