@@ -1,3 +1,167 @@
+# Modes
+
+Modes affect the behaviour and reflect details about targets -- clients and channels. The modes listed here are the ones that have been adopted and are used by the IRC community at large. If we say a mode is 'standard', that means it is defined in the official IRC specification documents.
+
+The status and letter used for each mode is defined in the description of that mode.
+
+We only cover modes that are widely-used by IRC software today and whose meanings should stay consistent between different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
+
+
+## User Modes
+
+### Invisible User Mode
+
+This mode is standard, and the mode letter used for it is `"+i"`.
+
+If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) unless they share a channel with the user that submitted the command. In addition, the only channels that will show up in a [`WHOIS`](#whois-command) of an invisible user will be those they share with the user that submitted the command.
+
+### Oper User Mode
+
+This mode is standard, and the mode letter used for is it `"+o"`.
+
+If a user has this mode, this indicates that they are a network [operator](#operators).
+
+### Local Oper User Mode
+
+This mode is standard, and the mode letter used for it is `"+O"`.
+
+If a user has this mode, this indicates that they are a server [operator](#operators). A local operator has [operator](#operators) priveleges for their server, and not for the rest of the network.
+
+### Registered User Mode
+
+This mode is widely-used, and the mode letter used for it is typically `"+r"`. The character used for this mode, and whether it exists at all, may vary depending on server software and configuration.
+
+If a user has this mode, this indicates that they have logged into a user account.
+
+IRCv3 extensions such as [`account-notify`](http://ircv3.net/specs/extensions/account-notify-3.1.html), [`account-tag`](http://ircv3.net/specs/extensions/account-tag-3.2.html), and [`extended-join`](http://ircv3.net/specs/extensions/extended-join-3.1.html) provide the account name of logged-in users, and are more accurate than trying to detect this user mode due to the capability name remaining consistent.
+
+### `WALLOPS` User Mode
+
+This mode is standard, and the mode letter used for it is `"+w"`.
+
+If a user has this mode, this indicates that they will receive [`WALLOPS`](#wallops-message) messages from the server.
+
+
+## Channel Modes
+
+### Ban Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+b"`.
+
+This channel mode controls a list of client masks that are 'banned' from joining or speaking in the channel. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
+
+### Ban Exemption Channel Mode
+
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-parameter) `RPL_ISUPPORT` parameter on connection.
+
+This channel mode controls a list of client masks that are exempt from the ['ban'](#ban-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and their nickmask also matches any one of the masks set by the [ban](#ban-channel-mode) channel mode, they will not be blocked from joining due to the [ban](#ban-channel-mode) mode.
+
+### Client Limit Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+l"`.
+
+This channel mode controls whether new users may join based on the number of users who already exist in the channel. If this mode is set, its value is an integer and defines the limit of how many clients may be joined to the channel.
+
+If this mode is set on a channel, and the number of users joined to that channel matches or exceeds the value of this mode, new users cannot join that channel. If a client sends a `JOIN` request for this channel, they will receive an [`ERR_CHANNELISFULL`](#errchannelisfull-471) reply and the command will fail.
+
+### Invite-Only Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+i"`.
+
+This channel mode controls whether new users need to be invited to the channel before being able to join.
+
+If this mode is set on a channel, a user must have received an [`INVITE`](#invite-message) for this channel before being allowed to join it. If they have not received an invite, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
+
+### Invite Exemption Channel Mode
+
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-parameter) `RPL_ISUPPORT` parameter on connection.
+
+This channel mode controls a list of channel masks that are exempt from the [invite-only](#invite-only-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for that channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and the channel is in [invite-only](#invite-only-channel-mode) mode, they do not need to require an `INVITE` in order to join the channel.
+
+### Key Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+k"`.
+
+This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
+
+If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
+
+### Moderated Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+m"`.
+
+This channel mode controls whether users may freely talk on the channel, and does not have any value.
+
+If this mode is set on a channel, only users who have channel privileges may send messages to that channel. The [voice](#voice-prefix) channel mode is designed to let a user talk in a moderated channel without giving them other channel moderation abilities, and users of higher privileges (such as [halfops](#halfop-prefix) or [chanops](#operator-prefix)) may also speak in moderated channels.
+
+### Secret Channel Mode
+
+This mode is standard, and the mode letter used for it is `"+s"`.
+
+This channel mode controls whether the channel is 'secret', and does not have any value.
+
+A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
+
+### Protected Topic Mode
+
+This mode is standard, and the mode letter used for it is `"+t"`.
+
+This channel mode controls whether channel priveleges are required to set the topic, and does not have any value.
+
+If this mode is enabled, users must have channel priveledges such as [halfop](#halfop-prefix) or [operator](#operator-prefix) status in order to change the topic of a channel. In a channel that does not have this mode enabled, anyone may set the topic of the channel using the [`TOPIC`](#topic-message) command.
+
+### No External Messages Mode
+
+This mode is standard, and the mode letter used for it is `"+n"`.
+
+This channel mode controls whether users who are not joined to the channel can send messages to it, and does not have any value.
+
+If this mode is enabled, users MUST be joined to the channel in order to send [private messages](#privmsg-message) and [notices](#notice-message) to the channel. If this mode is enabled and they try to send one of these to a channel they are not joined to, they will receive an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric and the message will not be sent to that channel.
+
+## Channel Membership Prefixes
+
+Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in [`NAMES`](#names-message), [`WHO`](#who-message) and [`WHOIS`](#whois-message) messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter on connection.
+
+### Founder Prefix
+
+This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"~"` and `"+q"`.
+
+This prefix shows that the given user is the 'founder' of the current channel and has full moderation control over it -- ie, they are considered to 'own' that channel by the network. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
+
+### Protected Prefix
+
+This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"&"` and `"+a"`.
+
+Users with this mode cannot be kicked and cannot have this mode removed by other protected users. In some software, they may perform actions that operators can, but at a higher privilege level than operators. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
+
+### Operator Prefix
+
+This mode is standard. The prefix and mode letter used for it, respectively, are `"@"` and `"+o"`.
+
+Users with this mode may perform channel moderation tasks such as kicking users, applying channel modes, and set other users to operator (or lower) status.
+
+### Halfop Prefix
+
+This mode is widely used in networks today. The prefix and mode letter used for it, respectively, are `"%"` and `"+h"`.
+
+Users with this mode may perform channel moderation tasks, but at a lower privilege level than operators. Which channel moderation tasks they can and cannot perform varies with server software and configuration.
+
+### Voice Prefix
+
+This mode is standard. The prefix and mode letter used for it, respectively, are `"+"` and `"+v"`.
+
+Users with this mode may send messages to a channel that is [moderated](#moderated-channel-mode).
+
+
+---
+
+
 # Numerics
 
 As mentioned in the [numeric replies](#numeric-replies) section, the first parameter of most numerics is the target of that numeric (the nickname of the client that is receiving it). Underneath the name and numeric of each reply, we list the parameters sent by this message.

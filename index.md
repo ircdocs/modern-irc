@@ -43,7 +43,19 @@ IRC is a text-based chat protocol which has proven itself valuable and useful. I
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
 
-## Servers
+---
+
+
+# IRC Concepts
+
+This section describes concepts behind the implementation and organisation of the IRC protocol, which are useful to understanding how it works.
+
+
+## Architectural
+
+A typical IRC network consists of servers and clients connected to those servers, with a good mix of IRC operators and channels. This section goes through each of those, what they are and a brief overview of them.
+
+### Servers
 
 Servers form the backbone of IRC, providing a point to which clients may connect and talk to each other, and a point for other servers to connect to, forming an IRC network.
 
@@ -82,12 +94,11 @@ A trend these days is to hide the real structure of a network from regular users
 
 These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the servers they run and their roles.
 
-
-## Clients
+### Clients
 
 A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. See the protocol grammar rules for what may and may not be used in a nickname. In addition to the nickname, all servers must have the following information about all clients: The real name/address of the host that the client is connecting from, the username of the client on that host, and the server to which the client is connected.
 
-### Operators
+#### Operators
 
 To allow a reasonable amount of order to be kept within the IRC network, a special class of clients (operators) are allowed to perform general maintenance functions on the network. Although the powers granted to an operator can be considered as 'dangerous', they are nonetheless required.
 
@@ -95,8 +106,7 @@ The tasks operators can perform vary with different server software and the spec
 
 The justification for operators being able to remove users from the network is delicate since its abuse is both destructive and annoying. However, IRC network policies and administrators handle operators who abuse their privileges, and what is considered abuse by that network.
 
-
-## Channels
+### Channels
 
 A channel is a named group of one or more clients. All clients in the channel will receive all messages addressed to that channel. The channel is created implicitly when the first client joins it, and the channel ceases to exist when the last client leaves it. While the channel exists, any client can reference the channel using the name of the channel. Networks that support the concept of 'channel ownership' may persist specific channels in some way while no clients are connected to them.
 
@@ -114,7 +124,7 @@ A user may be joined to several channels at once, but a limit may be imposed by 
 
 If the IRC network becomes disjoint because of a split between servers, the channel on either side is composed of only those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
-### Channel Operators
+#### Channel Operators
 
 Channel operators (or "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
@@ -134,12 +144,9 @@ Channel moderators are identified by the channel member prefix (`'@'` for standa
 Specific prefixes and moderation levels are covered in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
 
 
----
+## Communication Types
 
-
-# IRC Concepts
-
-This section is devoted to describing the concepts behind the organisation of the IRC protocol and how current implementations deliver different classes of messages.
+This section describebs how current implementations deliver different classes of messages.
 
 This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by networks.
 
@@ -154,8 +161,7 @@ This section ONLY deals with the spanning-tree topology, shown in the figure bel
 
 <p class="figure">Sample small IRC network.</p>
 
-
-## One-to-one communication
+### One-to-one communication
 
 Communication on a one-to-one basis is usually only performed by clients, since most server-server traffic is not a result of servers talking only to each other.
 
@@ -169,12 +175,11 @@ The following examples all refer to the figure above.
 
 3. A message between clients 2 and 4 is seen by servers A, B, C, D, and client 4 only.
 
-
-## One-to-many communication
+### One-to-many communication
 
 The main goal of IRC is to provide a forum which allows easy and efficient conferencing (one to many conversations). IRC offers several means to achieve this, each serving its own purpose.
 
-### To A Channel
+#### To A Channel
 
 In IRC, the channel has a role equivalent to that of the multicast group; their existence is dynamic and the actual conversation carried out on a channel MUST only be sent to servers which are supporting users on a given channel. Moreover, the message SHALL only be sent once to every local link as each server is responsible for fanning the original message to ensure it will reach all recipients.
 
@@ -186,51 +191,43 @@ The following examples all refer to the above figure:
 
 6. Clients 1, 2, and 3 are in a channel. All messages to this channel are sent to all clients and only those servers which must be traversed by the message if it were a private message to a single client. If client 1 sends a message, it goes back to client 2 and then via server B to client 3.
 
-### To A Host/Server Mask
+#### To A Host/Server Mask
 
 To provide with some mechanism to send messages to a large body of related users, host and server mask messages are available. These messages are sent to users whose host or server information match that of the given mask. The messages are only sent to locations where the users are, in a fashion similar to that of channels.
 
-### To A List
+#### To A List
 
 The least efficient style of one-to-many conversation is through clients talking to a 'list' of targets (client, channel, ask). How this is done is almost self-explanatory: the client gives a list of destinations to which the message is to be delivered and the server breaks it up and dispatches a separate copy of the message to each given destination.
 
 This is not as efficient as using a channel since the destination list MAY be broken up and the dispatch sent without checking to make sure duplicates aren't sent down each path.
 
-
-## One-To-All
+### One-To-All
 
 The one-to-all type of message is better described as a broadcast message, sent to all clients or servers or both. On a large network of users and servers, a single message can result in a lot of traffic being sent over the network in an effort to reach all of the desired destinations.
 
 For some class of messages, there is no option but to broadcast it to all servers to that the state information held by each server is consistent between them.
 
-### Client-to-Client
+#### Client-to-Client
 
 IRC Operators may be able to send a message to every client currently connected to the network. This depends on the specific features and commands implemented in the server software.
 
-### Client-to-Server
+#### Client-to-Server
 
 Most of the commands which result in a change of state information (such as channel membership, channel modes, user status, etc.) MUST be sent to all servers by default, and this distribution SHALL NOT be changed by the client.
 
-### Server-to-Server
+#### Server-to-Server
 
 While most messages between servers are distributed to all 'other' servers, this is only required for any message that affects a user, channel, or server. Since these are the basic items found in IRC, nearly all messages originating from a server are broadcast to all other connected servers.
 
 
-## Current Architectural Problems
+---
 
-There are a number of recognized problems with this protocol. This section only addresses the problems related to the architecture of the protocol.
 
-### Scalability
+# Connection Setup
 
-It is widely recognized that this protocol may not scale sufficiently well when used in a very large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
+IRC client-server connections work over TCP/IP. Unix sockets MAY be allowed by some servers, but are not recommended for most connections.
 
-Some server-to-server protocols may attempt to alleviate this by, as an example, only sending necessary state information to leaf servers. These sort of optimisations are implementation-specific and are not covered in this document. However, server authors should take great care in their protocols to ensure race conditions and other network instability does not happen as a result of these attempts to improve the scalability of their protocol.
-
-### Reliability
-
-As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
-
-Various software authors are experimenting with alternative topologies such as mesh networks, but there is not yet a production implementation or specification of any topology other than the standard spanning-tree configuration.
+The standard ports for client-server connections are TCP/6667 for plaintext, and TCP/6697 for TLS connections.
 
 
 ---
@@ -1191,171 +1188,6 @@ Reply Examples:
       :ircd.stealth.net 302 yournick :syrk=+syrk@millennium.stealth.net
                                       ; Reply for user syrk
 
-
----
-
-
-# Modes
-
-Modes affect the behaviour and reflect details about targets -- clients and channels. The modes listed here are the ones that have been adopted and are used by the IRC community at large. If we say a mode is 'standard', that means it is defined in the official IRC specification documents.
-
-The status and letter used for each mode is defined in the description of that mode.
-
-We only cover modes that are widely-used by IRC software today and whose meanings should stay consistent between different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
-
-
-## User Modes
-
-### Invisible User Mode
-
-This mode is standard, and the mode letter used for it is `"+i"`.
-
-If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) unless they share a channel with the user that submitted the command. In addition, the only channels that will show up in a [`WHOIS`](#whois-command) of an invisible user will be those they share with the user that submitted the command.
-
-### Oper User Mode
-
-This mode is standard, and the mode letter used for is it `"+o"`.
-
-If a user has this mode, this indicates that they are a network [operator](#operators).
-
-### Local Oper User Mode
-
-This mode is standard, and the mode letter used for it is `"+O"`.
-
-If a user has this mode, this indicates that they are a server [operator](#operators). A local operator has [operator](#operators) priveleges for their server, and not for the rest of the network.
-
-### Registered User Mode
-
-This mode is widely-used, and the mode letter used for it is typically `"+r"`. The character used for this mode, and whether it exists at all, may vary depending on server software and configuration.
-
-If a user has this mode, this indicates that they have logged into a user account.
-
-IRCv3 extensions such as [`account-notify`](http://ircv3.net/specs/extensions/account-notify-3.1.html), [`account-tag`](http://ircv3.net/specs/extensions/account-tag-3.2.html), and [`extended-join`](http://ircv3.net/specs/extensions/extended-join-3.1.html) provide the account name of logged-in users, and are more accurate than trying to detect this user mode due to the capability name remaining consistent.
-
-### `WALLOPS` User Mode
-
-This mode is standard, and the mode letter used for it is `"+w"`.
-
-If a user has this mode, this indicates that they will receive [`WALLOPS`](#wallops-message) messages from the server.
-
-
-## Channel Modes
-
-### Ban Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+b"`.
-
-This channel mode controls a list of client masks that are 'banned' from joining or speaking in the channel. If this mode has values, each of these values should be a client mask.
-
-If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
-
-### Ban Exemption Channel Mode
-
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-parameter) `RPL_ISUPPORT` parameter on connection.
-
-This channel mode controls a list of client masks that are exempt from the ['ban'](#ban-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
-
-If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and their nickmask also matches any one of the masks set by the [ban](#ban-channel-mode) channel mode, they will not be blocked from joining due to the [ban](#ban-channel-mode) mode.
-
-### Client Limit Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+l"`.
-
-This channel mode controls whether new users may join based on the number of users who already exist in the channel. If this mode is set, its value is an integer and defines the limit of how many clients may be joined to the channel.
-
-If this mode is set on a channel, and the number of users joined to that channel matches or exceeds the value of this mode, new users cannot join that channel. If a client sends a `JOIN` request for this channel, they will receive an [`ERR_CHANNELISFULL`](#errchannelisfull-471) reply and the command will fail.
-
-### Invite-Only Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+i"`.
-
-This channel mode controls whether new users need to be invited to the channel before being able to join.
-
-If this mode is set on a channel, a user must have received an [`INVITE`](#invite-message) for this channel before being allowed to join it. If they have not received an invite, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
-
-### Invite Exemption Channel Mode
-
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-parameter) `RPL_ISUPPORT` parameter on connection.
-
-This channel mode controls a list of channel masks that are exempt from the [invite-only](#invite-only-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
-
-If this mode is set on a channel, and a client sends a `JOIN` request for that channel, their nickmask is compared with each 'exempted' client mask. If their nickmask matches any one of the masks set by this mode, and the channel is in [invite-only](#invite-only-channel-mode) mode, they do not need to require an `INVITE` in order to join the channel.
-
-### Key Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+k"`.
-
-This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
-
-If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
-
-### Moderated Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+m"`.
-
-This channel mode controls whether users may freely talk on the channel, and does not have any value.
-
-If this mode is set on a channel, only users who have channel privileges may send messages to that channel. The [voice](#voice-prefix) channel mode is designed to let a user talk in a moderated channel without giving them other channel moderation abilities, and users of higher privileges (such as [halfops](#halfop-prefix) or [chanops](#operator-prefix)) may also speak in moderated channels.
-
-### Secret Channel Mode
-
-This mode is standard, and the mode letter used for it is `"+s"`.
-
-This channel mode controls whether the channel is 'secret', and does not have any value.
-
-A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
-
-### Protected Topic Mode
-
-This mode is standard, and the mode letter used for it is `"+t"`.
-
-This channel mode controls whether channel priveleges are required to set the topic, and does not have any value.
-
-If this mode is enabled, users must have channel priveledges such as [halfop](#halfop-prefix) or [operator](#operator-prefix) status in order to change the topic of a channel. In a channel that does not have this mode enabled, anyone may set the topic of the channel using the [`TOPIC`](#topic-message) command.
-
-### No External Messages Mode
-
-This mode is standard, and the mode letter used for it is `"+n"`.
-
-This channel mode controls whether users who are not joined to the channel can send messages to it, and does not have any value.
-
-If this mode is enabled, users MUST be joined to the channel in order to send [private messages](#privmsg-message) and [notices](#notice-message) to the channel. If this mode is enabled and they try to send one of these to a channel they are not joined to, they will receive an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric and the message will not be sent to that channel.
-
-## Channel Membership Prefixes
-
-Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in [`NAMES`](#names-message), [`WHO`](#who-message) and [`WHOIS`](#whois-message) messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter on connection.
-
-### Founder Prefix
-
-This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"~"` and `"+q"`.
-
-This prefix shows that the given user is the 'founder' of the current channel and has full moderation control over it -- ie, they are considered to 'own' that channel by the network. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
-
-### Protected Prefix
-
-This mode is used in a large number of networks. The prefix and mode letter typically used for it, respectively, are `"&"` and `"+a"`.
-
-Users with this mode cannot be kicked and cannot have this mode removed by other protected users. In some software, they may perform actions that operators can, but at a higher privilege level than operators. This prefix is typically only used on networks that have the concept of client accounts, and ownership of channels by those accounts.
-
-### Operator Prefix
-
-This mode is standard. The prefix and mode letter used for it, respectively, are `"@"` and `"+o"`.
-
-Users with this mode may perform channel moderation tasks such as kicking users, applying channel modes, and set other users to operator (or lower) status.
-
-### Halfop Prefix
-
-This mode is widely used in networks today. The prefix and mode letter used for it, respectively, are `"%"` and `"+h"`.
-
-Users with this mode may perform channel moderation tasks, but at a lower privilege level than operators. Which channel moderation tasks they can and cannot perform varies with server software and configuration.
-
-### Voice Prefix
-
-This mode is standard. The prefix and mode letter used for it, respectively, are `"+"` and `"+v"`.
-
-Users with this mode may send messages to a channel that is [moderated](#moderated-channel-mode).
-
-
 ---
 
 <div id="appendixes">
@@ -1364,6 +1196,26 @@ Users with this mode may send messages to a channel that is [moderated](#moderat
 {{ appendixes | markdownify }}
 
 </div>
+
+---
+
+
+# Current Architectural Problems
+
+There are a number of recognized problems with the current IRC protocol. This section only addresses the problems related to the architecture of the protocol.
+
+## Scalability
+
+It is widely recognized that this protocol may not scale sufficiently well when used in a very large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
+
+Some server-to-server protocols may attempt to alleviate this by, as an example, only sending necessary state information to leaf servers. These sort of optimisations are implementation-specific and are not covered in this document. However, server authors should take great care in their protocols to ensure race conditions and other network instability does not happen as a result of these attempts to improve the scalability of their protocol.
+
+## Reliability
+
+As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
+
+Various software authors are experimenting with alternative topologies such as mesh networks, but there is not yet a production implementation or specification of any topology other than the standard spanning-tree configuration.
+
 
 ---
 
