@@ -91,31 +91,31 @@ Sent to a client to inform that client of their currently-set user modes.
 
       "<client> :There are <u> users and <i> invisible on <s> servers"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<u>`, `<i>`, and `<s>` are non-negative integers, and represent the number of total users, invisible users, and other servers connected to this server.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<u>`, `<i>`, and `<s>` are non-negative integers, and represent the number of total users, invisible users, and other servers connected to this server.
 
 ### `RPL_LUSEROP (252)`
 
       "<client> <ops> :operator(s) online"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<ops>` is a positive integer and represents the number of [IRC operators](#operators) connected to this server. The text used in the last param of this message may vary.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<ops>` is a positive integer and represents the number of [IRC operators](#operators) connected to this server. The text used in the last param of this message may vary.
 
 ### `RPL_LUSERUNKNOWN (253)`
 
       "<client> <connections> :unknown connection(s)"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<connections>` is a positive integer and represents the number of connections to this server that are currently in an unknown state. The text used in the last param of this message may vary.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<connections>` is a positive integer and represents the number of connections to this server that are currently in an unknown state. The text used in the last param of this message may vary.
 
 ### `RPL_LUSERCHANNELS (254)`
 
       "<client> <channels> :channels formed"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<channels>` is a positive integer and represents the number of channels that currently exist on this server. The text used in the last param of this message may vary.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<channels>` is a positive integer and represents the number of channels that currently exist on this server. The text used in the last param of this message may vary.
 
 ### `RPL_LUSERME (255)`
 
       "<client> :I have <c> clients and <s> servers"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<c>` and `<s>` are non-negative integers and represent the number of clients and other servers connected to this server, respectively.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<c>` and `<s>` are non-negative integers and represent the number of clients and other servers connected to this server, respectively.
 
 ### `RPL_ADMINME (256)`
 
@@ -153,7 +153,7 @@ When a server drops a command without processing it, this numeric MUST be sent t
 
       "<client> [<u> <m>] :Current local users <u>, max <m>"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are non-negative integers and represent the number of clients currently and the maximum number of clients that have been connected directly to this server at one time, respectively.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<u>` and `<m>` are non-negative integers and represent the number of clients currently and the maximum number of clients that have been connected directly to this server at one time, respectively.
 
 The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
 
@@ -161,7 +161,7 @@ The two optional parameters SHOULD be supplied to allow clients to better extrac
 
       "<client> [<u> <m>] :Current global users <u>, max <m>"
 
-Sent as a reply to the [`LUSER`](#luser-message) command. `<u>` and `<m>` are non-negative integers. `<u>` represents the number of clients currently connected to this server, globally (directly and through other server links). `<m>` represents the maximum number of clients that have been connected to this server at one time, globally.
+Sent as a reply to the [`LUSERS`](#lusers-message) command. `<u>` and `<m>` are non-negative integers. `<u>` represents the number of clients currently connected to this server, globally (directly and through other server links). `<m>` represents the maximum number of clients that have been connected to this server at one time, globally.
 
 The two optional parameters SHOULD be supplied to allow clients to better extract these numbers.
 
