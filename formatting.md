@@ -177,13 +177,14 @@ The following colors are defined for use with this formatting character:
 * <tt><span class="ircb-13">&nbsp;&nbsp;</span> - 13</tt> - Pink.
 * <tt><span class="ircb-14">&nbsp;&nbsp;</span> - 14</tt> - Grey.
 * <tt><span class="ircb-15">&nbsp;&nbsp;</span> - 15</tt> - Light Grey.
+* <tt><span class="ircb-1">&nbsp;</span><span class="ircb-0">&nbsp;</span> - 99</tt> - Default Foreground/Background - Not universally supported.
 
 <div class="note">
     NOTE: The colors displayed here are simply a guide. The actual RGB values used for these codes will depend on what the client author has defined, and are often defined by the terminal color scheme for terminal-based clients.
 </div>
 
 <div class="warning">
-    WARNING: Clients SHOULD NOT send color codes <tt>16-99</tt>. They will be interpreted different ways by different clients as noted above, and we do not recommend using them.
+    WARNING: Clients SHOULD NOT send color codes <tt>16-99</tt>. As noted above, they will be interpreted different ways by different clients and we do not recommend using them.
 </div>
 
 ### Mistaken Eating of Text
