@@ -35,13 +35,13 @@ copyrights:
 
 # Introduction
 
-Internet Relay Chat (IRC) is a text-based chat protocol which has been used for many years to provide real-time chat services to thousands of users across the globe. IRC is used for many different purposes such as software support, business communications, and just for casual conversations.
+Internet Relay Chat (IRC) is a text-based chat protocol which has been used for many years to provide real-time chat services to thousands of users across the globe. IRC is used for many different purposes such as software support, business communications, and casual conversations.
 
 A Uniform Resource Locator (URL) scheme for the IRC protocol has been in use for years. This document describes the format of the IRC URL scheme and how they are processed by client software. Applications for an IRC URL scheme range quite widely, including IRC network's server lists on their website, technical support contact details, or even a meeting location within an e-mail, giving a specific IRC channel or client to contact.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
-In this document, the term "client" is defined as the IRC client software, and the term "user" is the end-user of that software. The term "entity" refers to an addressable IRC entity such as a client or channel.
+In this document, the term "client" is defined as the IRC client software, and the term "user" is the end-user of that software. The term "entity" refers to an addressable IRC entity such as a client or a channel.
 
 
 ---
@@ -49,9 +49,9 @@ In this document, the term "client" is defined as the IRC client software, and t
 
 # URL Definition
 
-An IRC URL begins with either the Uniform Resource Identifier (URI) `"irc"`, or `"ircs"`, denoting plaintext and secured connections respectively. Plaintext sessions use a plaintext transport and are considered insecure. Secured sessions are much the same, but use a [TLS transport](https://tools.ietf.org/html/rfc7194#section-2) to connect to the IRC server.
+An IRC URL begins with either the Uniform Resource Identifier (URI) `"irc"` or `"ircs"`, denoting plaintext and secured connections respectively. Plaintext sessions connect to the IRC server with a plaintext transport and are considered insecure. Secured sessions connect with a [TLS transport](https://tools.ietf.org/html/rfc7194#section-2).
 
-The URL schemes for IRC conform to the Generic URL Syntax defined in [RFC2396](https://tools.ietf.org/html/rfc2396).
+The URL schemes for IRC conform to the Generic URL Syntax defined in [RFC3986](https://tools.ietf.org/html/rfc3986).
 
 The action that an IRC URL instigates is to open a connection to the specified IRC server using the specified transport, and make contact with the given client or channel if also requested.
 
@@ -68,9 +68,8 @@ The ABNF representation for the IRC URL scheme is:
                     ; See the URL Definition section, above, for details.
 
       location = [ authinfo "@" ] hostport
-                  ; See Section 3.2.2 of RFC2396 for the definition of
-                    ; 'hostport'.
-                    ; https://tools.ietf.org/html/rfc2396#section-3.2.2
+                    ; See Section 3.2 RFC3986 for the definition of 'hostport'.
+                    ; https://tools.ietf.org/html/rfc3986#section-3.2
 
       authinfo = [ username ] [ ":" password ]
                     ; See the Authentication section for details.
@@ -82,8 +81,8 @@ The ABNF representation for the IRC URL scheme is:
       passtype = *( escaped / unreserved )
 
       entity   = [ "#" ] *( escaped / unreserved )
-                    ; Note the prefix, "#", may be used for channel names
-                    ; without escapes. See the Channel Names section.
+                    ; Note the prefix, "#", may be used for channel names without
+                    ; the usual URL escapes. See the Channel Names section.
 
       flags    = ( [ "," enttype ] [ "," hosttype ] )
               /= ( [ "," hosttype ] [ "," enttype ] )
@@ -103,7 +102,7 @@ The ABNF representation for the IRC URL scheme is:
 
       optparam = *( escaped / unreserved )
 
-The definition of "escaped" and "unreserved" is in sections [2.4.1](https://tools.ietf.org/html/rfc2396#section-2.4.1) and [2.3](https://tools.ietf.org/html/rfc2396#section-2.3) of [RFC2396](https://tools.ietf.org/html/rfc2396) respectively. Clients MUST be aware of protocol limitations. For example, the [IRC protocol](./index.html) does not allow the SPACE `(' ', 0x20)` character inside nicknames or channel names.
+The definition of "escaped" and "unreserved" is in section [2.1 of RFC3986](https://tools.ietf.org/html/rfc3986#section-2.1). Clients MUST be aware of protocol limitations. For example, the [IRC protocol](./index.html) does not allow the SPACE `(' ', 0x20)` character inside nicknames or channel names.
 
 
 ## Authentication
