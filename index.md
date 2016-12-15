@@ -1235,25 +1235,6 @@ Numeric Replies:
 
 </div>
 
----
-
-
-# Current Architectural Problems
-
-There are a number of recognized problems with the current IRC protocol. This section only addresses the problems related to the architecture of the protocol.
-
-## Scalability
-
-It is widely recognized that this protocol may not scale sufficiently well when used in a very large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
-
-Some server-to-server protocols may attempt to alleviate this by, as an example, only sending necessary state information to leaf servers. These sort of optimisations are implementation-specific and are not covered in this document. However, server authors should take great care in their protocols to ensure race conditions and other network instability does not happen as a result of these attempts to improve the scalability of their protocol.
-
-## Reliability
-
-As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
-
-Various software authors are experimenting with alternative topologies such as mesh networks, but there is not yet a production implementation or specification of any topology other than the standard spanning-tree configuration.
-
 
 ---
 

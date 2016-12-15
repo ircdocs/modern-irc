@@ -1194,6 +1194,60 @@ Examples:
 ---
 
 
+# Current Architectural Problems
+
+There are a number of recognized problems with the IRC protocol. This section only addresses the problems related to the architecture of the protocol.
+
+
+## Scalability
+
+It is widely recognized that this protocol may not scale sufficiently well when used in a very large arena. The main problem comes from the requirement that all servers know about all other servers, clients, and channels, and that information regarding them be updated as soon as it changes.
+
+Server-to-server protocols can attempt to alleviate this by, for example, only sending 'necessary' state information to leaf servers. These sort of optimisations are implementation-specific and are not covered in this document. However, server authors should take great care in their protocols to ensure race conditions and other network instability does not result from these attempts to improve the scalability of their protocol.
+
+
+## Reliability
+
+As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
+
+Software authors are experimenting and have experimented with alternative topologies such as mesh networks. However, there is not yet a production implementation or specification of any topology other than spanning-tree.
+
+
+---
+
+
+# Implementation Notes
+
+The IRC protocol is reasonably complex, and there are areas where incorrectly-implemented behaviour can't be detected. This section is non-normative, providing questions and recommendations to assist implementors.
+
+
+## Message Parsing and Assembly
+
+Message parsing/assembly is one area where implementations can differ wildly, and is a common vector for both security issues and general runtime problems.
+
+Message Parsing is turning raw IRC messages into the various message parts (tags, prefix, command, parameters). Message Assembly is the opposite – taking the various message parts and creating an IRC line to be sent over the wire.
+
+Implementors should ensure that their message parsing and assembly responds in expected ways, by running their software through test cases. I recommend these public-domain [irc-parser-tests](https://github.com/DanielOaks/irc-parser-tests), which are reasonably extensive.
+
+
+## Casemapping
+
+Casemapping, at least right now, is a topic where implementations differ greatly.
+
+### Servers
+
+* Does your server use `"rfc1459"` or `"rfc1459-strict"` casemapping? If so, can you use a casemapping with less ambiguity such as `"ascii"`?
+* Does your server store state using nicks/channel names as keys? If so, is your server written in such a way that keys are casefolded automatically, or that ensures keys are casefolded before using them in this way?
+
+### Clients
+
+* Does your client store state using nicks/channel names as keys, and if so do you casefold those keys appropriately?
+* Does your client discover the casemapping to use from the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter on connection? If so, does your client use the appropriate casemapping based on it?
+
+
+---
+
+
 # Obsolete Numerics
 
 These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) that are not contained in this document or that should be considered obsolete.
