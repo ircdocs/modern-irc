@@ -23,7 +23,7 @@ These document are not RFCs. Writing an RFC and putting it through the IETF proc
 
 ---
 
-## Living Specification
+## Living Specifications
 
 We consider the documents on this site to be 'living specifications'. This means they are updated as feedback is received for them and as the protocol is extended and grows. Bugs can be fixed, incorrect behaviours in the specifications can be corrected, and they can be extended as new behaviour becomes widespread.
 
@@ -35,6 +35,14 @@ This term and our use of it is based on the WHATWG definition of a ['living stan
 
 These documents are explicitly not standards and not signed off by a collection of vendors. These documents are signed off by the editor of that document (though we gladly accept contributors and PRs).
 
-These documents intend to describe already existing behaviour (rather than standardise or propose new behaviour). Because of that, signing them off by multiple vendors doesn't make sense at this point.
+Regardless, I hope you find these documents useful and investigate protocol extensions with the [IRCv3 Working Group](http://ircv3.net).
 
-Regardless, I hope you find these documents useful. Protocol extensions should be worked on with the [IRCv3 Working Group](http://ircv3.net) and the IRC community as a whole.
+---
+
+## What are your plans for these documents?
+
+There have been questions about doing this work with IRCv3, the IETF, etc. I'm keeping it separate for now, and this section explains why.
+
+I started writing the Modern doc on my own site because I like being able to work at my own pace. When you introduce standards orgs like IRCv3 and the IETF, changes end up having to get signed-off by multiple people. This slows things down, and as a result I lose interest and stop putting time into it. Having the documents here lets me (and any other editors) work at their own pace, and put changes online without needing to worry about getting them approved or having to argue for them.
+
+That slower, multiple-people signoff process is necessary for new standards, and those other standards groups are great. However, I feel like they don't work as well for these documents in particular. This work will probably be integrated into one of those groups down the line, but for now I'm pretty happy working on them here with this process.
