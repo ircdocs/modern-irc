@@ -128,7 +128,7 @@ If the IRC network becomes disjoint because of a split between servers, the chan
 
 Channel operators (or "chanops") on a given channel are considered to 'run' or 'own' that channel. In recognition of this status, channel operators are endowed with certain powers which let them moderate and keep control of their channel.
 
-As owners of a channel, chanops are **not** required to have reasons for their actions in the management of their channel. Most IRC operators do not concern themselves with 'channel politics', and try to not interfere with the management of specific channels. Most IRC networks consider the management of specific channels, and/or 'abusive' channel operators to be outside their domain. However, for specific details it is best to consult the network policy (usually presented on connection with the Message of the Day \[[`MOTD`](#motd-message)\]).
+Most IRC operators do not concern themselves with 'channel politics'. In addition, a large number of networks leave the management of specific channels up to chanops where possible, and try not to interfere themselves. However, this is a matter of network policy, and it's best to consult the [Message of the Day](#motd-message) when looking at channel management.
 
 IRC servers may also define other levels of channel moderation. These can include 'halfop' (half operator), 'protected' (protected user/operator), 'founder' (channel founder), and any other positions the server wishes to define. These moderation levels have varying privileges and can execute, and not execute, various channel management commands based on what the server defines.
 
