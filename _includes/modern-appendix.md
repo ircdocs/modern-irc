@@ -1229,6 +1229,57 @@ Message Parsing is turning raw IRC messages into the various message parts (tags
 
 Implementors should ensure that their message parsing and assembly responds in expected ways, by running their software through test cases. I recommend these public-domain [irc-parser-tests](https://github.com/DanielOaks/irc-parser-tests), which are reasonably extensive.
 
+### Trailing
+
+Trailing is _a completely regular parameter_, escept for the fact that it can contain spaces. When parsing messages, the 'regular params' and trailing should be appended and returned as a single list containing all the message params.
+
+This is an example of an incorrect parser, that specifically separates regular params and trailing. When returning messages after parsing, **don't return this:**
+
+      Message
+          .Tags
+          .Source
+          .Verb
+          .Params (containing all but the trailing param)
+          .Trailing (containing just the trailing param)
+
+Trailing _is a regular parameter_. Separating the parameter types in this way _will cause many breakages and weird issues_, as message parsing will depend on the final param being in either `.Params` or `.Trailing`, when the simple fact is that it can explicitly be in either. Make sure that your message parser instead outputs parsed messages more like this:
+
+      Message
+          .Tags
+          .Source
+          .Verb
+          .Params (including all 'regular' params, and the trailing param if it exists)
+
+This will make sure that you don't run into silly trailing parameter errors.
+
+### Direct Sting Comparisons on IRC Lines
+
+Some software decides that the best way to process incoming lines is with something along the lines of this:
+
+      Line = NewIRCLineFromSocket()
+      If Line.StartsWith("PART") {
+          Part(...etc...)
+      } Else If Line.StartsWith("QUIT") {
+          Quit(...etc...)
+      }
+
+This is bad. This will break. Here's why: _Any IRC message can choose to include or not include the `source`_.
+
+If you directly compare the beginning of lines like this, then you will break when servers decide to start including sources on messages (for example, some newer IRCds decide to include the source on all messages that they output). This results in clients that break and don't correctly parse incoming messages.
+
+Instead, you should make sure that you send incoming lines through a message parser, and then do things based on what's output by that parser. For instance:
+
+      Message = IRCMessageParser(Line)
+      If Message.Verb == "PART" {
+            Part(...etc...)
+      } Else If Message.Verb == "QUIT" {
+            Quit(...etc...)
+      }
+
+This will ensure that your software doesn't break when clients or servers send extra, or omit unnecessary, message elements.
+
+Something to keep in mind is that the message verb is always case insensitive, so you should casemap it appropriately before doing comparisons similar to the above. In my own IRC libraries, I tend to convert the verb to uppercase before returning the message.
+
 
 ## Casemapping
 
