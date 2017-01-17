@@ -1231,9 +1231,9 @@ Implementors should ensure that their message parsing and assembly responds in e
 
 ### Trailing
 
-Trailing is _a completely regular parameter_, escept for the fact that it can contain spaces. When parsing messages, the 'regular params' and trailing should be appended and returned as a single list containing all the message params.
+Trailing is _a completely normal parameter_, eccept for the fact that it can contain spaces. When parsing messages, the 'normal params' and trailing should be appended and returned as a single list containing all the message params.
 
-This is an example of an incorrect parser, that specifically separates regular params and trailing. When returning messages after parsing, **don't return this:**
+This is an example of an incorrect parser, that specifically separates normal params and trailing. When returning messages after parsing, **don't return a struct/object containing these variables:**
 
       Message
           .Tags
@@ -1242,17 +1242,17 @@ This is an example of an incorrect parser, that specifically separates regular p
           .Params (containing all but the trailing param)
           .Trailing (containing just the trailing param)
 
-Trailing _is a regular parameter_. Separating the parameter types in this way _will cause many breakages and weird issues_, as logic code will depend on the final param being in either `.Params` or `.Trailing`, when the simple fact is that it can be in either. Make sure that your message parser instead outputs parsed messages more like this:
+Trailing _is a normal parameter_. Separating the parameter types in this way _will cause many breakages and weird issues_, as logic code will depend on the final param being in either `.Params` or `.Trailing`, when the simple fact is that it can be in either. Make sure that your message parser instead outputs parsed messages more like this:
 
       Message
           .Tags
           .Source
           .Verb
-          .Params (including all 'regular' params, and the trailing param if it exists)
+          .Params (including all normal params, and the trailing param if it exists)
 
 This will make sure that you don't run into silly trailing parameter errors.
 
-### Direct Sting Comparisons on IRC Lines
+### Direct String Comparisons on IRC Lines
 
 Some software decides that the best way to process incoming lines is with something along the lines of this:
 
