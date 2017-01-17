@@ -1242,7 +1242,7 @@ This is an example of an incorrect parser, that specifically separates regular p
           .Params (containing all but the trailing param)
           .Trailing (containing just the trailing param)
 
-Trailing _is a regular parameter_. Separating the parameter types in this way _will cause many breakages and weird issues_, as message parsing will depend on the final param being in either `.Params` or `.Trailing`, when the simple fact is that it can explicitly be in either. Make sure that your message parser instead outputs parsed messages more like this:
+Trailing _is a regular parameter_. Separating the parameter types in this way _will cause many breakages and weird issues_, as logic code will depend on the final param being in either `.Params` or `.Trailing`, when the simple fact is that it can be in either. Make sure that your message parser instead outputs parsed messages more like this:
 
       Message
           .Tags
