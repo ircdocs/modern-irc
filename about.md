@@ -45,6 +45,6 @@ There have been questions about doing this work with IRCv3, the IETF, etc. I'm k
 
 I started writing the Modern doc on my own site because I like being able to work at my own pace. When you introduce standards orgs like IRCv3 and the IETF, changes end up having to get signed-off by multiple people. This slows things down, and as a result I lose interest and stop putting time into it. Having the documents here lets me (and any other editors) work at their own pace, and put changes online without needing to worry about getting them approved or having to argue for them.
 
-That slower, multiple-people signoff process is necessary for new standards, and those other standards groups are great. However, I feel like those processes don't work as well for these documents in particular.
+That slower, multiple-people signoff process is necessary for new standards, and those other standards groups are great. However, I feel like those processes don't work as well for these documents in particular, with where they are right now and their aim.
 
-This work will probably be integrated into one of those groups down the line (and an RFC may end up being made from the content here), but for now I'm happy working on them here with this editor-focused process instead.
+This work will probably end up being integrated into one of those groups down the line, and be submitted as some sort of RFC. However, for now I'm happy working on them, productively, with this sort of editor-focused process.
