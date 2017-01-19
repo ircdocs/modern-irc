@@ -12,7 +12,7 @@ The behaviour and constants described in these documents SHOULD converge, and/or
 
 These documents contain existing behaviour and what we consider best-practices for new software. Where external, up-to-date and authoritative specifications exist for commands/messages/behaviours, we prefer to link to those rather than needlessly rewrite them (see the Client Protocol's [`CAP`](http://modern.ircdocs.horse/#cap-message) message for an example of this).
 
-These document are not RFCs. Writing an RFC and putting it through the IETF process is the job of someone else, and whoever does it is free to use anything from these documents. Just respect the authors section at the top of the document if a decent amount of text is used from it. Look at [ircv3-harmony](https://github.com/kaniini/ircv3-harmony) for something which aims to be an RFC.
+These documents aren't RFCs. I can see the content from them being used in RFCs in the future, but right now I'm just concerned with creating good documents that help push IRC forward. If someone is making up a proper RFC, feel free to use anything from these documents -- Just respect the authors section at the top of the document if a decent amount of text/structure is used from it.
 
 If something written in these documents isn't correct for or interoperable with an IRC client / server / network you know of, please open an issue or send me an [email](mailto:daniel@danieloaks.net). Pull requests are appreciated.
 
