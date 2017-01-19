@@ -257,6 +257,8 @@ Servers and clients send each other messages which may or may not generate a rep
 
 Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters (of which there may be up to 15).
 
+Clients MAY include a prefix of their nickname on messages they send (after connection registration has been completed). However, I'd avoid doing so as it makes the protocol more fragile and makes messages more likely to be misinterpreted by the server.
+
 Servers may supply tags (when negotiated) and a prefix on any or all messages they send to clients.
 
 Information on standard client messages are available in the [Client Messages](#client-messages) and [Numerics](#numerics) sections.
