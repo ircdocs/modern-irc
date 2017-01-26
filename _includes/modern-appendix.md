@@ -479,15 +479,17 @@ Sent as a reply to the [`VERSION`](#version-message) command, this numeric indic
 
 ### `RPL_NAMREPLY (353)`
 
-      "<client> [<symbol>] <channel> :[prefix]<nick>{ [prefix]<nick>}
+      "<client> <symbol> <channel> :[prefix]<nick>{ [prefix]<nick>}
 
-Sent as a reply to the [`NAMES`](#names-message) command, this numeric lists the clients that are joined to `<channel>` and their status in that channel. `<nick>` is the nickname of a client joined to that channel, and `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that client has in that channel, if they have one. The last parameter of this numeric is a list of `[prefix]<nick>` pairs, delimited by a SPACE character `(' ', 0x20)`.
+Sent as a reply to the [`NAMES`](#names-message) command, this numeric lists the clients that are joined to `<channel>` and their status in that channel.
 
-`<symbol>`, if it exists, notes the status of the channel. It can be one of the following:
+`<symbol>` notes the status of the channel. It can be one of the following:
 
 * `("=", 0x3D)` - Public channel.
 * `("@", 0x40)` - Secret channel ([secret channel mode](#secret-channel-mode) `"+s"`).
 * `("*", 0x2A)` - Private channel (was `"+p"`, no longer widely used today).
+
+`<nick>` is the nickname of a client joined to that channel, and `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that client has in the channel, if they have one. The last parameter of this numeric is a list of `[prefix]<nick>` pairs, delimited by a SPACE character `(' ', 0x20)`.
 
 ### `RPL_ENDOFNAMES (366)`
 
@@ -1216,7 +1218,7 @@ Server-to-server protocols can attempt to alleviate this by, for example, only s
 
 As the only network configuration used for IRC servers is that of a spanning tree, each link between two servers is an obvious and serious point of failure.
 
-Software authors are experimenting and have experimented with alternative topologies such as mesh networks. However, there is not yet a production implementation or specification of any topology other than spanning-tree.
+Software authors are and have been experimenting with alternative topologies such as mesh networks. However, there is not yet a production implementation or specification of any topology other than spanning-tree.
 
 
 ---
@@ -1237,7 +1239,7 @@ Implementors should ensure that their message parsing and assembly responds in e
 
 ### Trailing
 
-Trailing is _a completely normal parameter_, eccept for the fact that it can contain spaces. When parsing messages, the 'normal params' and trailing should be appended and returned as a single list containing all the message params.
+Trailing is _a completely normal parameter_, except for the fact that it can contain spaces. When parsing messages, the 'normal params' and trailing should be appended and returned as a single list containing all the message params.
 
 This is an example of an incorrect parser, that specifically separates normal params and trailing. When returning messages after parsing, **don't return a struct/object containing these variables:**
 
@@ -1271,7 +1273,7 @@ Some software decides that the best way to process incoming lines is with someth
 
 This is bad. This will break. Here's why: _Any IRC message can choose to include or not include the `source`_.
 
-If you directly compare the beginning of lines like this, then you will break when servers decide to start including sources on messages (for example, some newer IRCds decide to include the source on all messages that they output). This results in clients that break and don't correctly parse incoming messages.
+If you directly compare the beginning of lines like this, then you will break when servers decide to start including sources on messages (for example, some newer IRCds decide to include the source on all messages that they output). This results in clients that don't correctly parse incoming messages and break as a result.
 
 Instead, you should make sure that you send incoming lines through a message parser, and then do things based on what's output by that parser. For instance:
 
@@ -1284,7 +1286,7 @@ Instead, you should make sure that you send incoming lines through a message par
 
 This will ensure that your software doesn't break when clients or servers send extra, or omit unnecessary, message elements.
 
-Something to keep in mind is that the message verb is always case insensitive, so you should casemap it appropriately before doing comparisons similar to the above. In my own IRC libraries, I tend to convert the verb to uppercase before returning the message.
+Something to keep in mind is that the message verb is always case insensitive, so you should casemap it appropriately before doing comparisons similar to the above. In my own IRC libraries, I convert the verb to uppercase before returning the message.
 
 
 ## Casemapping
