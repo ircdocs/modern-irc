@@ -479,9 +479,15 @@ Sent as a reply to the [`VERSION`](#version-message) command, this numeric indic
 
 ### `RPL_NAMREPLY (353)`
 
-      "<client> <channel> :[prefix]<nick>{ [prefix]<nick>}
+      "<client> [<symbol>] <channel> :[prefix]<nick>{ [prefix]<nick>}
 
 Sent as a reply to the [`NAMES`](#names-message) command, this numeric lists the clients that are joined to `<channel>` and their status in that channel. `<nick>` is the nickname of a client joined to that channel, and `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that client has in that channel, if they have one. The last parameter of this numeric is a list of `[prefix]<nick>` pairs, delimited by a SPACE character `(' ', 0x20)`.
+
+`<symbol>`, if it exists, notes the status of the channel. It can be one of the following:
+
+* `("=", 0x3D)` - Public channel.
+* `("@", 0x40)` - Secret channel ([secret channel mode](#secret-channel-mode) `"+s"`).
+* `("*", 0x2A)` - Private channel (was `"+p"`, no longer widely used today).
 
 ### `RPL_ENDOFNAMES (366)`
 
