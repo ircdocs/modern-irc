@@ -7,9 +7,9 @@ While examples of every situation cannot be shown here, the following examples p
 The above URL is used to direct a client to connect to a specific IRC server, which in this case is `"irc.undernet.org"`. The client should use default port settings.
 
       <irc://irc.ircnet.net/#worldchat,ischannel>
-      <irc://irc.ircnet.net/%23worldchat,ischannel>
+      <irc://irc.ircnet.net/worldchat,ischannel>
       <irc://irc.ircnet.net/#worldchat>
-      <irc://irc.ircnet.net:6667/%23worldchat>
+      <irc://irc.ircnet.net:6667/worldchat>
 
 All of these URLs connect to the IRCnet network, and will join the client to the channel `"#worldchat"` upon connection. The four URLs listed above are considered identical.
 
