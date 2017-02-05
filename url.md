@@ -35,9 +35,9 @@ copyrights:
 
 # Introduction
 
-Internet Relay Chat (IRC) is a text-based chat protocol which has been used for many years to provide real-time chat services to thousands of users across the globe. IRC is used for many different purposes such as software support, business communications, and casual conversations.
+Internet Relay Chat (IRC) is a text-based chat protocol which provides real-time chat services to thousands of users across the globe. IRC is used for many different purposes such as software support, business communications, and casual conversations.
 
-A Uniform Resource Locator (URL) scheme for the IRC protocol has been in use for years. This document describes the format of the IRC URL scheme and how they are processed by client software. Applications for an IRC URL scheme range quite widely, including IRC network's server lists on their website, technical support contact details, or even a meeting location within an e-mail, giving a specific IRC channel or client to contact.
+A URL scheme for the IRC protocol has been in use for years. This document describes the formats of the IRC URL schemes and how clients should process these links. Applications for IRC URL schemes range widely, from server lists on an IRC network's site, technical support contact details, to being able to link meeting places in emails.
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
@@ -49,7 +49,7 @@ In this document, the term "client" is defined as the IRC client software, and t
 
 # URL Definition
 
-An IRC URL begins with either the Uniform Resource Identifier (URI) `"irc"` or `"ircs"`, denoting plaintext and secured connections respectively. Plaintext sessions connect to the IRC server with a plaintext transport and are considered insecure. Secured sessions connect with a [TLS transport](https://tools.ietf.org/html/rfc7194#section-2).
+An IRC URL begins with either the scheme `"irc"` or `"ircs"`, denoting plaintext and secured connections respectively. Plaintext sessions connect to the IRC server with a plaintext transport and are considered insecure. Secured sessions connect with a [TLS transport](https://tools.ietf.org/html/rfc7194#section-2).
 
 The URL schemes for IRC conform to the Generic URL Syntax defined in [RFC3986](https://tools.ietf.org/html/rfc3986).
 
@@ -62,10 +62,10 @@ Client software handling one of the `"irc"` or `"ircs"` schemes SHOULD also supp
 The ABNF representation for the IRC URL scheme is:
 
 
-      ircURL   = ircURI "://" location "/" [ entity ] [ flags ] [ options ]
+      ircURL   = scheme "://" location "/" [ entity ] [ flags ] [ options ]
 
-      ircURI   = "irc" / "ircs"
-                    ; See the URL Definition section, above, for details.
+      scheme   = "irc" / "ircs"
+                    ; Plaintext or Secured (TLS) connection.
 
       location = [ authinfo "@" ] hostport
                     ; See Section 3.2 RFC3986 for the definition of 'hostport'.
@@ -73,12 +73,6 @@ The ABNF representation for the IRC URL scheme is:
 
       authinfo = [ username ] [ ":" password ]
                     ; See the Authentication section for details.
-
-      username = *( escaped / unreserved )
-
-      password = *( escaped / unreserved ) [ ";" passtype ]
-
-      passtype = *( escaped / unreserved )
 
       entity   = [ "#" ] *( escaped / unreserved )
                     ; Note the prefix, "#", may be used for channel names without
@@ -107,6 +101,10 @@ The definition of "escaped" and "unreserved" is in section [2.1 of RFC3986](http
 
 ## Authentication
 
+<div class="warning">
+    <p>Is this section (Authentication) actually followed or implemented in practice?</p>
+</div>
+
 To allow for complete authentication of a session, a username MAY be provided with the password. The username MUST NOT be passed to the server as a nickname. While registering a connection using the [IRC client protocol](./index.html), the username would be passed as the first parameter of the [`USER`](./index.html#user-message) command.
 
 The characters available for use in a username may be restricted by the protocol and IRC server software used.
@@ -133,7 +131,7 @@ Special consideration must be given to URLs without ports specified. Almost all 
 
 ### `irc` Ports
 
-The client SHOULD attempt connection to the port `6667`, and MAY attempt connection to the ports `6665`, `6666`, `6668`, and `6669`. Port `194` is the original IRC port as defined by the early RFCs, but servers these days most often use ports `6665`--`6669`.
+The client SHOULD attempt connection to the port `6667`.
 
 ### `ircs` Ports
 
@@ -143,7 +141,7 @@ The client SHOULD attempt connection to the port `6697` as specified by [RFC7194
 
 Port numbers shown are in decimal, and have been assigned by the IANA. The [Port section (3.2.3) of RFC3986](https://tools.ietf.org/html/rfc3986#section-3.2.3) suggests that only one port may be used as a default port. Port hunting for the `"irc"` scheme when no port is specified is optional and implementing it is left up to the discretion of client authors.
 
-When testing for URL equivalency, clients SHOULD consider default ports without considering port-hunting. For example, `<irc://some.server/>` and `<irc://some.server:6667/>` should be considered equivalent, as should `<ircs://some.server/>` and `<ircs://some.server:6697/>`, but `<irc://some.server/>` and `<irc://some.server:6665/>` SHOUD NOT be considered equivalent.
+When testing for URL equivalency, clients SHOULD consider default ports without considering port-hunting. For example, `<irc://some.server/>` and `<irc://some.server:6667/>` should be considered equivalent, as should `<ircs://some.server/>` and `<ircs://some.server:6697/>`. However, `<irc://some.server/>` and `<irc://some.server:6665/>` SHOUD NOT be considered equivalent.
 
 
 ## Entity Names
@@ -154,13 +152,17 @@ Any automated message MUST NOT be sent to the addressed entity.
 
 ### Channel Names
 
-When "enttype" contains "ischannel", or "enttype" is omitted completely, the entity name provided is a channel name.
+When "enttype" contains `"ischannel"`, or "enttype" is omitted completely, the entity name provided is a channel name.
 
-While it is discouraged, channel names prefixed with the "#" (U+0023) character may be specified without encoding the character (as ther literal ASCII string `"%23"`) in the URL. IRC clients MAY accept this, despite it being an exception to [Section 2.4.3 of RFC2396](https://tools.ietf.org/html/rfc2396#section-2.4.3), as channels of this type are very common and will remain so in the foreseeable future.
+Channel names prefixed with the `('#', 0x23)` character SHOULD leave this character out of created IRC URLs. This is due to how clients interpret incoming URLs which include channel names. However, if the channel name starts with more than a single `('#', 0x23)` character, then all of these MUST be included in created URLs. This is an exception to [Section 2.4.3 of RFC2396](https://tools.ietf.org/html/rfc2396#section-2.4.3) which specifies that this character should be encoded as the literal ASCII string `"%23"`, but this is ignored as it is not followed in practice.
 
-Clients SHOULD attempt to determine valid channel name prefix characters from the server it has connected to via the [`CHANTYPES`](./index.html#chantypes-parameter) parameter of the [`RPL_ISUPPORT`](./index.html#rplisupport-005) `(005)` numeric presented on connection. If the client discovers the channel name given is considered invalid or it is missing a valid channel prefix character, the client SHOULD prepend the default prefix character `('#', 0x23)` to the name and try to join the channel again.
+Clients SHOULD attempt to determine valid channel name prefix characters from the server it has connected to via the [`CHANTYPES`](./index.html#chantypes-parameter) parameter of the [`RPL_ISUPPORT`](./index.html#rplisupport-005) `(005)` numeric presented on connection. If the client discovers the channel name given is missing a valid channel prefix character, the client SHOULD prepend the default prefix character `('#', 0x23)` to the name before attempting to join the channel.
 
 ### Nicknames
+
+<div class="warning">
+    <p>Is this section (Nicknames), and particularly the section below about usernames and hostnames, actually followed or implemented in practice?</p>
+</div>
 
 When the `"enttype"` flag/options contains the flag/option `"isuser"`, the entity given refers to a client. The given entity name may just be a nickname or it may contain more specific information such as the user's hostname or username.
 
@@ -193,9 +195,11 @@ See the [Security Considerations](#security-considerations) section of this docu
 
 # Internationalisation Considerations
 
-IRC URLs MUST be encoded using the [UTF-8](https://tools.ietf.org/html/rfc2279) character set, with (potentially) unsafe octets encoded using the `%HH` notation (where `HH` is a hexadecimal value) as per the [Percent-Encoding section (2.1) of RFC3986](https://tools.ietf.org/html/rfc3986#section-2.1). An example of this can be found in the [Examples](#examples) appendix.
+<div class="warning">
+    <p>Is this actually done in practice?</p>
+</div>
 
-Some IRC servers use alternate character sets such as US-ASCII and KOI-8. Discovering the [character encoding](./index.html#character-codes) in use on the server is left up to the client. It is also left to the client to convert entity names from UTF-8 into the appropriate character set. If no other character encoding can be discovered or it is not otherwise specified, clients SHOULD assume that UTF-8 is in use.
+IRC URLs MUST be encoded using the [UTF-8](https://tools.ietf.org/html/rfc2279) character set, with unsafe octets encoded using the `%HH` notation (where `HH` is a hexadecimal value) as per the [Percent-Encoding section (2.1) of RFC3986](https://tools.ietf.org/html/rfc3986#section-2.1). An example of this can be found in the [Examples](#examples) appendix.
 
 
 ---
@@ -203,11 +207,13 @@ Some IRC servers use alternate character sets such as US-ASCII and KOI-8. Discov
 
 # Interoperability Considerations
 
-Some current implementations will need slight modification to accept the format defined in this document, but most implementations which parse the URL in a standard form should parse most IRC URLs created using this document.
+Not all clients can parse everything in this document. However, if you parse everything in here then you should be able to correctly parse any URLs that come your way.
 
-The presumption of a channel name without explicitly specifying the entity type is designed to maintain compatibility with existing implementations.  The practise of omitting the channel prefix character, or not encoding it, is included for compatibility reasons, but using this syntax when creating IRL URLs is STRONGLY DISCOURAGED.
+Some IRC clients always prepend a `('#', 0x23)` character before joining the given channel. This is why we note both forms as acceptable, and recommend leaving out the leading `('#', 0x23)` when creating these URLs.
 
-There are interoperability issues with existing IRC servers as a result of the restricted characters available for channel names and nicknames. The restriction of acceptable characters is left to IRC server authors and not the URL scheme.
+<div class="warning">
+    <p>Is this following paragraph actually followed?</p>
+</div>
 
 Some existing IRC servers will accept nickname/password pairs, however at the time of writing these servers do not use this for actually authenticating the session, but instead identifying nicknames to nickname registration services. The use of username/password pairs is used for actual authentication, and has been included.
 
