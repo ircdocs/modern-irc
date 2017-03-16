@@ -40,13 +40,13 @@ This metadata query returns a list of the CTCP messages that this client support
 ### DCC
 
       Type:    Extended Query
-      Params:  DCC <type> [varies]
+      Params:  DCC <type> <argument> <address> <port>
 
 DCC (Direct Client-to-Client) is used to setup and control connections that go directly between clients, bypassing the IRC server. This is typically used for features that require a large amount of traffic between clients or simply wish to bypass the server itself such as file transfer, direct chat, and voice messages.
 
-Properly implementing the various DCC types requires a document all of its own, and are not described here.
+Properly implementing the various DCC types requires a document all of its own, and are not described here. <!--Check the [`DCC`](/dcc.html) document for more information on how to use DCC.-->
 
-`DCC` is widely implemented. Clients SHOULD implement this CTCP message.
+`DCC` is widely implemented. Clients MAY implement this CTCP message.
 
 ### FINGER
 
