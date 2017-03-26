@@ -1074,6 +1074,18 @@ Channel mode letters, along with their types, are defined in the [`CHANMODES`](#
 
 The meaning of standard (and/or well-used) channel and user mode letters can be found in the [Channel Modes](#channel-modes) and [User Modes](#user-modes) sections. The meaning of any mode letters not in this list are defined by the server software and configuration.
 
+---
+
+Type A modes are lists that can be viewed. The method of viewing these lists is not standardised across modes and different numerics are used for each. The specific numerics used for these are outlined here:
+
+* **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more [`RPL_BANLIST`](#rplbanlist-367) numerics, followed by one [`RPL_ENDOFBANLIST`](#rplendofbanlist-368) numeric.
+* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more [`RPL_EXCEPTLIST`](#rplexceptlist-348) numerics, followed by one [`RPL_ENDOFEXCEPTLIST`](#rplendofexceptlist-349) numeric.
+* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more [`RPL_INVITELIST`](#rplinvitelist-346) numerics, followed by one [`RPL_ENDOFINVITELIST`](#rplendofinvitelist-347) numeric.
+
+After the initial `MODE` command is sent to the server, the client receives the above numerics detailing the entries that appear on the given list. Servers MAY choose to restrict the above information to channel operators, or to only those clients who have permissions to change the given list.
+
+---
+
 Command Examples:
 
       MODE dan +i                     ; Setting the "invisible" user mode on dan.

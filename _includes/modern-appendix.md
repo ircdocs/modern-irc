@@ -52,7 +52,7 @@ This channel mode controls a list of client masks that are 'banned' from joining
 
 If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
 
-### Ban Exemption Channel Mode
+### Exception Channel Mode
 
 This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-parameter) `RPL_ISUPPORT` parameter on connection.
 
@@ -76,7 +76,7 @@ This channel mode controls whether new users need to be invited to the channel b
 
 If this mode is set on a channel, a user must have received an [`INVITE`](#invite-message) for this channel before being allowed to join it. If they have not received an invite, they will receive an [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) reply and the command will fail.
 
-### Invite Exemption Channel Mode
+### Invite-Exception Channel Mode
 
 This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-parameter) `RPL_ISUPPORT` parameter on connection.
 
@@ -471,6 +471,30 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
 
 Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the attempt was successful and the client with the nickname `<nick>` has been invited to `<channel>`.
 
+### `RPL_INVITELIST (348)`
+
+      "<client> <channel> <mask>"
+
+Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [invite-exception list](#invite-exception-channel-mode). `<mask>` is the given mask on the invite-exception list.
+
+### `RPL_ENDOFINVITELIST (349)`
+
+      "<client> <channel> :End of channel invite list"
+
+Sent as a reply to the [`MODE`](#mode-message) command, this numeric indicates the end of a channel's [invite-exception list](#invite-exception-channel-mode).
+
+### `RPL_EXCEPTLIST (348)`
+
+      "<client> <channel> <mask>"
+
+Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [exception list](#exception-channel-mode). `<mask>` is the given mask on the exception list.
+
+### `RPL_ENDOFEXCEPTLIST (349)`
+
+      "<client> <channel> :End of channel exception list"
+
+Sent as a reply to the [`MODE`](#mode-message) command, this numeric indicates the end of a channel's [exception list](#exception-channel-mode).
+
 ### `RPL_VERSION (351)`
 
       "<client> <version> <server> :<comments>"
@@ -496,6 +520,18 @@ Sent as a reply to the [`NAMES`](#names-message) command, this numeric lists the
       "<client> <channel> :End of /NAMES list"
 
 Sent as a reply to the [`NAMES`](#names-message) command, this numeric specifies the end of a list of channel member names.
+
+### `RPL_BANLIST (367)`
+
+      "<client> <channel> <mask>"
+
+Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [ban list](#ban-channel-mode). `<mask>` is the given mask on the ban list.
+
+### `RPL_ENDOFBANLIST (368)`
+
+      "<client> <channel> :End of channel ban list"
+
+Sent as a reply to the [`MODE`](#mode-message) command, this numeric indicates the end of a channel's [ban list](#ban-channel-mode).
 
 ### `RPL_ENDOFWHOWAS (369)`
 
