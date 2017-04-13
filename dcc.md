@@ -127,6 +127,20 @@ To accept a given chat request, open a TCP connection to the given port. To reje
 
 After opening the direct TCP connection, the sending client sends the raw bytes of the file over the newly-established connection.
 
+### Resuming The Send
+
+This section is not yet written.
+
+
+## DCC RESUME
+
+This section is not yet written.
+
+
+## DCC ACCEPT
+
+This section is not yet written.
+
 
 ---
 
