@@ -18,6 +18,12 @@ copyrights:
     <p>If something written in here isn't interoperable with an IRC client you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a>.</p>
 </div>
 
+<div class="warning">
+    <p>NOTE: This is NOWHERE NEAR FINISHED and may be ENTIRELY INACCURATE. Dragons be here, insane stuff be here.</p>
+    <p>Regardless of the accuracy of this specification, DCC in general is not encrypted (apart from the SDCC extension which is not widely-supported and does not verify any certificate details). I don't particularly like where DCC is at the moment, but with this document I'm hoping to start the discussion around properly encrypting direct connections, and/or building something that does so with the knowledge of what's currently out there.</p>
+    <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">Github repository</a>!</p>
+</div>
+
 <div id="printable-toc" style="display: none"></div>
 
 
