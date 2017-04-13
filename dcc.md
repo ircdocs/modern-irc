@@ -1,6 +1,7 @@
 ---
 title: Direct Client-to-Client Protocol (DCC)
 layout: default
+wip: true
 copyrights:
   -
     name: "Daniel Oaks"
@@ -48,11 +49,19 @@ The initial CTCP `DCC` query message has this format:
 
     DCC <type> <argument> <host> <port>
 
-`<type>` contains the type of DCC being initiated, such as `CHAT` or `SEND`. `<argument>` refers to a type-specific kind of argument, such as a filename. `<host>` represents to the IP address which should be connected to, and `<port>` refers to the port on which the connection should be established.
+`<type>` contains the type of DCC being initiated, such as `CHAT` or `SEND`. `<argument>` refers to a type-specific kind of argument, such as a filename. `<host>` represents to the IP address which should be connected to, and `<port>` refers to a valid port on which the connection should be established (the value of this parameter can also be `0`, in which case the rules below apply.
 
 `<host>`, for legacy reasons, uses a 'fun' mixture of representations. For IPv4 hosts, this parameter is the string representation of the positive integer that is the IP address in network byte order (e.g. `127.0.0.1` is represented as `2130706433` in this param). For IPv6 hosts, clients instead support the standard, widely-implemented IPv6 hex representation separated by colons (e.g. `::1`).
 
 Note that for DCC queries to work, the querying client MUST know its' own public host address, or the address that the other client can use to access it. Clients have discovered this in various ways through the years, and this section doesn't yet describe how to do so. However, clients `MUST NOT` try to discover this through the [`RPL_WELCOME`](/index.html#rpl_welcome-001) numeric, as the prevelance of spoofed hostnames used today makes this infeasible on most public networks and introduces issues.
+
+### Port 0
+
+When port 0 is advertised on a DCC query, it signals that the sending client wishes to open a connection but cannot (or does not wish to) explicitly offer a listening port. This is commnly called Reverse DCC or Firewall-bypassing DCC (we refer to it as Reverse DCC in this document).
+
+When a client receives a reverse DCC query, it means that the sending client wants the receiving client to establish the connection instead (with a valid port number in the `<port>` parameter). If the receiving client wishes to continue, they'll send a request back to the client that originally sent them the query.
+
+Reverse DCC interacts a bit strangely with the `RESUME` type, and is outlined below in the specific section.
 
 
 ## DCC CHAT
@@ -110,42 +119,32 @@ To accept a given chat request, open a TCP connection to the given port. To reje
 
 ### Sending The File
 
-After opening the direct TCP connection, the sending client sends the raw bytes of the file over the connection.
-
-
-
-
-
-
-
-
-
+After opening the direct TCP connection, the sending client sends the raw bytes of the file over the newly-established connection.
 
 
 ---
 
----
 
----
+# Extensions
 
----
-
----
-
----
-
----
+These are various extensions that change how DCC connections are established and used. These are detailed here.
 
 
-# DCC Sessions
+## Secure DCC (SDCC)
 
-[CTCP](/ctcp.html) messages are used to initiate DCC sessions. Specifically, the [`DCC`](/ctcp.html#dcc) message is used to start and control DCC sessions.
+In this method, the verb `SCHAT` is used instead of `CHAT` and `SSEND` is used instead of `SEND`. When using secure DCC, the direct TCP connection uses TLS rather than plaintext.
 
-To open a DCC session 
+Although it uses TLS, the certificate on either side is not verified in any way, which means this is still not secure by today's standards. However, it can help protect against dragnet data collection so it's still a definite step up from regular plaintext DCC.
 
 
-# Explain XDCC, SDCC, etc
+## Reverse / Firewall-bypassing DCC
+
+This type of DCC request (that we call Reverse DCC) is used to bypass NAT and similar issues. What happens with this is that
 
 
 
 
+
+## Extended DCC (XDCC)
+
+XDCC (originally an acronym for Xabi's DCC) is a set of additional commands to allow clients to list files available for download. As well, XDCC allows clients to request downloading a particular advertised file -- upon which a `DCC SEND` session will be established by the side advertising the file.
