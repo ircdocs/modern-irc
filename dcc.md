@@ -139,10 +139,7 @@ Although it uses TLS, the certificate on either side is not verified in any way,
 
 ## Reverse / Firewall-bypassing DCC
 
-This type of DCC request (that we call Reverse DCC) is used to bypass NAT and similar issues. What happens with this is that
-
-
-
+This type of DCC request (that we call Reverse DCC) is used to bypass NAT and similar issues. The functionality is described above in the [Port 0](#port-0) section and relevant part of the [DCC RESUME](#dcc-resume) section.
 
 
 ## Extended DCC (XDCC)
