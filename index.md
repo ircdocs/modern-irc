@@ -430,7 +430,7 @@ If the server is waiting to complete a lookup of client information (such as hos
 
 Additionally, some servers also send a [`PING`](#ping-message) and require a matching [`PONG`](#pong-message) from the client before continuing. This exchange may happen immediately on connection and at any time during connection registration, so clients MUST respond correctly to it.
 
-Upon successful completion of the registration process, the server MUST send, in this order, the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD then respond as though the client sent the [`LUSERS`](#lusers-message) command and return the appropriate numerics. If the user has client modes set on them automatically upon joining the network, the server SHOULD send the client the [`RPL_UMODEIS`](#rplumodeis-221) `(221)` reply. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
+Upon successful completion of the registration process, the server MUST send, in this order, the [`RPL_WELCOME`](#rpl_welcome-001) `(001)`, [`RPL_YOURHOST`](#rpl_yourhost-002) `(002)`, [`RPL_CREATED`](#rpl_created-003) `(003)`, [`RPL_MYINFO`](#rpl_myinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rpl_isupport-005) `(005)` numeric to the client. The server SHOULD then respond as though the client sent the [`LUSERS`](#lusers-message) command and return the appropriate numerics. If the user has client modes set on them automatically upon joining the network, the server SHOULD send the client the [`RPL_UMODEIS`](#rpl_umodeis-221) `(221)` reply. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
 
 
 ---
@@ -438,15 +438,15 @@ Upon successful completion of the registration process, the server MUST send, in
 
 # Feature Advertisement
 
-IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
+IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rpl_isupport-005) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
 
 Once client registration is complete, the server MUST send at least one `RPL_ISUPPORT` numeric to the client. The server MAY send more than one `RPL_ISUPPORT` numeric and consecutive `RPL_ISUPPORT` numerics SHOULD be sent adjacent to each other.
 
 Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not specify the `RPL_ISUPPORT` numeric and servers that do not advertise those specific tokens.
 
-For more information and specific details on tokens, see the [`RPL_ISUPPORT`](#rplisupport-005) reply.
+For more information and specific details on tokens, see the [`RPL_ISUPPORT`](#rpl_isupport-005) reply.
 
-A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
+A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rpl_isupport-parameters) section.
 
 
 ---
@@ -669,7 +669,7 @@ The `JOIN` command indicates that the client wants to join the given channel(s),
 
 While a client is joined to a channel, they receive all relevant information about that channel including the `JOIN`, `PART`, `KICK`, and `MODE` messages affecting the channel. They receive all `PRIVMSG` and `NOTICE` messages sent to the channel, and they also receive `QUIT` messages from other clients joined to the same channel (to let them know those users have left the channel and the network). This allows them to keep track of other channel members and channel modes.
 
-If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332)), and no message if the channel does not have a topic. They are also sent a list of users currently joined to the channel (with one or more [`RPL_NAMREPLY`](#rplnamreply-353) numerics). These `RPL_NAMREPLY` messages sent by the server MUST include the requesting client that has just joined the channel.
+If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpl_topic-332)), and no message if the channel does not have a topic. They are also sent a list of users currently joined to the channel (with one or more [`RPL_NAMREPLY`](#rpl_namreply-353) numerics). These `RPL_NAMREPLY` messages sent by the server MUST include the requesting client that has just joined the channel.
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
@@ -688,8 +688,8 @@ Numeric Replies:
 * [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) `(474)`
 * [`ERR_CHANNELISFULL`](#errchannelisfull-471) `(471)`
 * [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) `(473)`
-* [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
+* [`RPL_TOPIC`](#rpl_topic-332) `(332)`
+* [`RPL_NAMREPLY`](#rpl_namreply-353) `(353)`
 
 Command Examples:
 
@@ -758,9 +758,9 @@ Numeric Replies:
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
-* [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
-* [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_TOPICTIME`](#rpltopictime-333) `(333)`
+* [`RPL_NOTOPIC`](#rpl_notopic-331) `(331)`
+* [`RPL_TOPIC`](#rpl_topic-332) `(332)`
+* [`RPL_TOPICTIME`](#rpl_topictime-333) `(333)`
 
 Command Examples:
 
@@ -787,8 +787,8 @@ If no parameter is given for this command, servers SHOULD return one `RPL_ENDOFN
 Numeric Replies:
 
 * [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
-* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
-* [`RPL_ENDOFNAMES`](#rplendofnames-366) `(366)`
+* [`RPL_NAMREPLY`](#rpl_namreply-353) `(353)`
+* [`RPL_ENDOFNAMES`](#rpl_endofnames-366) `(366)`
 
 Command Examples:
 
@@ -814,9 +814,9 @@ In response to a successful `LIST` command, the server MAY send one `RPL_LISTSTA
 
 Numeric Replies:
 
-* [`RPL_LISTSTART`](#rplliststart-321) `(321)`
-* [`RPL_LIST`](#rpllist-322) `(322)`
-* [`RPL_LISTEND`](#rpllistend-323) `(323)`
+* [`RPL_LISTSTART`](#rpl_liststart-321) `(321)`
+* [`RPL_LIST`](#rpl_list-322) `(322)`
+* [`RPL_LISTEND`](#rpl_listend-323) `(323)`
 
 Command Examples:
 
@@ -848,16 +848,16 @@ Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
 * [`ERR_NOMOTD`](#errnomotd-422) `(422)`
-* [`RPL_MOTDSTART`](#rplmotdstart-375) `(375)`
-* [`RPL_MOTD`](#rplmotd-372) `(372)`
-* [`RPL_ENDOFMOTD`](#rplendofmotd-376) `(376)`
+* [`RPL_MOTDSTART`](#rpl_motdstart-375) `(375)`
+* [`RPL_MOTD`](#rpl_motd-372) `(372)`
+* [`RPL_ENDOFMOTD`](#rpl_endofmotd-376) `(376)`
 
 ### VERSION message
 
          Command: VERSION
       Parameters: [<target>]
 
-The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT`](#rplisupport-parameters) parameters of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
+The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT`](#rpl_isupport-parameters) parameters of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
 
 If `<target>` is a server, the information for that server is requested. If `<target>` is a client, the information for the server that client is connected to is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
 
@@ -868,8 +868,8 @@ Upon receiving a `VERSION` command, the given server SHOULD respond with one `RP
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_ISUPPORT`](#rplisupport-005) `(005)`
-* [`RPL_VERSION`](#rplversion-351) `(351)`
+* [`RPL_ISUPPORT`](#rpl_isupport-005) `(005)`
+* [`RPL_VERSION`](#rpl_version-351) `(351)`
 
 Command Examples:
 
@@ -895,10 +895,10 @@ Upon receiving an `ADMIN` command, the given server SHOULD respond with the `RPL
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_ADMINME`](#rpladminme-256) `(256)`
-* [`RPL_ADMINLOC1`](#rpladminloc1-257) `(257)`
-* [`RPL_ADMINLOC2`](#rpladminloc2-258) `(258)`
-* [`RPL_ADMINEMAIL`](#rpladminemail-259) `(259)`
+* [`RPL_ADMINME`](#rpl_adminme-256) `(256)`
+* [`RPL_ADMINLOC1`](#rpl_adminloc1-257) `(257)`
+* [`RPL_ADMINLOC2`](#rpl_adminloc2-258) `(258)`
+* [`RPL_ADMINEMAIL`](#rpl_adminemail-259) `(259)`
 
 Command Examples:
 
@@ -940,7 +940,7 @@ The `TIME` command is used to query local time from the specified server. If the
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_TIME`](#rpltime-391) `(391)`
+* [`RPL_TIME`](#rpl_time-391) `(391)`
 
 Command Examples:
 
@@ -989,10 +989,10 @@ Numeric Replies:
 * [`RPL_STATSKLINE`](#statskline-216) `(216)`
 * [`RPL_STATSLLINE`](#statslline-241) `(241)`
 * [`RPL_STATSOLINE`](#statsoline-243) `(243)`
-* [`RPL_STATSLINKINFO`](#rplstatslinkinfo-211) `(211)`
-* [`RPL_STATSUPTIME`](#rplstatsuptime-242) `(242)`
-* [`RPL_STATSCOMMANDS`](#rplstatscommands-212) `(212)`
-* [`RPL_ENDOFSTATS`](#rplendofstats-219) `(219)`
+* [`RPL_STATSLINKINFO`](#rpl_statslinkinfo-211) `(211)`
+* [`RPL_STATSUPTIME`](#rpl_statsuptime-242) `(242)`
+* [`RPL_STATSCOMMANDS`](#rpl_statscommands-212) `(212)`
+* [`RPL_ENDOFSTATS`](#rpl_endofstats-219) `(219)`
 
 Command Examples:
 
@@ -1016,8 +1016,8 @@ Upon receiving an `INFO` command, the given server will respond with zero or mor
 Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_INFO`](#rplinfo-371) `(371)`
-* [`RPL_ENDOFINFO`](#rplendofinfo-374) `(374)`
+* [`RPL_INFO`](#rpl_info-371) `(371)`
+* [`RPL_ENDOFINFO`](#rpl_endofinfo-374) `(374)`
 
 Command Examples:
 
@@ -1041,7 +1041,7 @@ If `<target>` is a nickname, it MUST be the same nickname as the user who sent t
 
 If `<target>` is a channel, the user sending the command MUST have appropriate channel priveleges to change modes (as well as to change the specific modes it is requesting), such as [halfop](#halfop-prefix) or [chanop](#operator-prefix). If a user does not have permission to change modes on the target channel, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail. Servers MAY check permissions once at the start of processing the `MODE` command, or may check it on setting each mode character.
 
-If `<target>` is a nickname and `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric will be sent back containing the current modes of the target user. If `<target>` is a channel and `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric will be sent back containing the current modes of the target channel.
+If `<target>` is a nickname and `<modestring>` is not given, the [`RPL_UMODEIS`](#rpl_umodeis-221) numeric will be sent back containing the current modes of the target user. If `<target>` is a channel and `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rpl_channelmodeis-324) numeric will be sent back containing the current modes of the target channel.
 
 If `<modestring>` is given and the user has permission to change modes on the target, the supplied modes will be applied and a `MODE` message will be returned containing the mode changes that were applied. For type A, B, and C modes, arguments will be obtained from `<mode arguments>`, sequentially, as required. If a type B or C mode cannot be acted upon as it requires a argument and one has not been supplied, that mode will be silently ignored. If a type A mode has been sent without an argument (i.e., listing the contents of that mode's list), servers SHOULD only send the list for that mode to the client once, regardless of how many times that type A mode is contained in the `<modestring>`.
 
@@ -1078,9 +1078,9 @@ The meaning of standard (and/or well-used) channel and user mode letters can be 
 
 Type A modes are lists that can be viewed. The method of viewing these lists is not standardised across modes and different numerics are used for each. The specific numerics used for these are outlined here:
 
-* **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more [`RPL_BANLIST`](#rplbanlist-367) numerics, followed by one [`RPL_ENDOFBANLIST`](#rplendofbanlist-368) numeric.
-* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more [`RPL_EXCEPTLIST`](#rplexceptlist-348) numerics, followed by one [`RPL_ENDOFEXCEPTLIST`](#rplendofexceptlist-349) numeric.
-* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more [`RPL_INVITELIST`](#rplinvitelist-346) numerics, followed by one [`RPL_ENDOFINVITELIST`](#rplendofinvitelist-347) numeric.
+* **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more [`RPL_BANLIST`](#rpl_banlist-367) numerics, followed by one [`RPL_ENDOFBANLIST`](#rpl_endofbanlist-368) numeric.
+* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more [`RPL_EXCEPTLIST`](#rpl_exceptlist-348) numerics, followed by one [`RPL_ENDOFEXCEPTLIST`](#rpl_endofexceptlist-349) numeric.
+* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more [`RPL_INVITELIST`](#rpl_invitelist-346) numerics, followed by one [`RPL_ENDOFINVITELIST`](#rpl_endofinvitelist-347) numeric.
 
 After the initial `MODE` command is sent to the server, the client receives the above numerics detailing the entries that appear on the given list. Servers MAY choose to restrict the above information to channel operators, or to only those clients who have permissions to change the given list.
 
@@ -1121,7 +1121,7 @@ If a message cannot be delivered to a channel, the server SHOULD respond with an
 
 If `<target>` is a channel name, it may be prefixed with one or more [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
 
-If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rplaway-301) numeric and the command will continue.
+If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rpl_away-301) numeric and the command will continue.
 
 The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<prefix>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
 
@@ -1135,7 +1135,7 @@ Numeric Replies:
 * [`ERR_NOTEXTTOSEND`](#errnotexttosend-412) `(412)`
 * [`ERR_NOTOPLEVEL`](#errnotoplevel-413) `(413)`
 * [`ERR_WILDTOPLEVEL`](#errwildtoplevel-414) `(414)`
-* [`RPL_AWAY`](#rplaway-301) `(301)`
+* [`RPL_AWAY`](#rpl_away-301) `(301)`
 
 <div class="warning">
     There are strange "X@Y" target rules and such which are noted in the examples of the original PRIVMSG RFC section. We need to check to make sure modern servers actually process them properly, and if so then specify them.
@@ -1186,12 +1186,12 @@ These messages are not required for a server implementation to work, but SHOULD 
          Command: USERHOST
       Parameters: <nickname>{ <nickname>}
 
-The `USERHOST` command is used to return information about users with the given nicknames. The `USERHOST` command takes up to five nicknames, each a separate parameters. The nicknames are returned in [`RPL_USERHOST`](#rpluserhost-302) numerics.
+The `USERHOST` command is used to return information about users with the given nicknames. The `USERHOST` command takes up to five nicknames, each a separate parameters. The nicknames are returned in [`RPL_USERHOST`](#rpl_userhost-302) numerics.
 
 Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`RPL_USERHOST`](#rpluserhost-302) `(302)`
+* [`RPL_USERHOST`](#rpl_userhost-302) `(302)`
 
 Command Examples:
 
