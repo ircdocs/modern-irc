@@ -4,7 +4,7 @@ Modes affect the behaviour and reflect details about targets -- clients and chan
 
 The status and letter used for each mode is defined in the description of that mode.
 
-We only cover modes that are widely-used by IRC software today and whose meanings should stay consistent between different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](http://defs.ircdocs.horse/defs/usermodes.html) and [channel](http://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
+We only cover modes that are widely-used by IRC software today and whose meanings should stay consistent between different server software. For more extensive lists (including conflicting and obsolete modes), see the external `irc-defs` [client](https://defs.ircdocs.horse/defs/usermodes.html) and [channel](https://defs.ircdocs.horse/defs/chanmodes.html) mode lists.
 
 
 ## User Modes
@@ -845,7 +845,7 @@ The text used in the last param of this message varies wildly.
 
 Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPPORT`](#rpl_isupport-005) numeric lists parameters that let the client know which features are active and their value, if any.
 
-The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more extensive list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](http://defs.ircdocs.horse/defs/isupport.html).
+The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more extensive list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](https://defs.ircdocs.horse/defs/isupport.html).
 
 If a 'default value' is listed for a parameter, this is the assumed value of the parameter until and unless it is advertised by the server. This is primarily to interoperate with servers that don't advertise particular well-known and well-used parameters. If an 'empty value' is listed for a parameter, this is the assumed value of the parameter if it is advertised without a value.
 

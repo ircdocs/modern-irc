@@ -6,7 +6,7 @@ _Metadata queries_ do not have any parameters, but expect a reply with parameter
 
 _Extended queries_ and replies may have parameters.
 
-We only cover messages that are widely-used by IRC software today. For more extensive lists, see the external `irc-defs` [ctcp messages](http://defs.ircdocs.horse/defs/ctcp.html) list.
+We only cover messages that are widely-used by IRC software today. For more extensive lists, see the external `irc-defs` [ctcp messages](https://defs.ircdocs.horse/defs/ctcp.html) list.
 
 ### ACTION
 
