@@ -194,6 +194,19 @@ When sending color codes `0-9`, clients may use either the one-digit `(3)` or tw
 If the text immediately following a code setting a foreground color consists of something like `",13"`, it will get interpreted as setting the background rather than text. In this example, clients can put the color code either after the comma character or before the character in front of the comma character to avoid this. They can also put a different formatting code after the comma to ensure that the number does not get interpreted as part of the color code (for instance, two bold characters in a row, which will cancel each other out as they are toggles).
 
 
+## Hex Color
+
+    ASCII 0x04
+
+Some clients support an alternate form of conveying colours using hex codes.
+
+Following this character are six hex digits representing the Red, Green and Blue values of the colour to display (e.g. `FF0000` means <span style="color:#ff0000">bright red</span>).
+
+Keep the [Forms of Color Codes](#forms-of-color-codes) section above in mind, as this method of formatting keeps these same rules – the exceptions being that `<CODE>` represents the hex color character `(0x03)` and `<COLOR>` represents a six-digit hex value as `RRGGBB`.
+
+This method of formatting is not as widely-supported as the colors above, but clients are fine to implement it without any issues.
+
+
 ## Reverse Color (/ or Italics)
 
     ASCII 0x16
