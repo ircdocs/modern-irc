@@ -202,9 +202,9 @@ Some clients support an alternate form of conveying colours using hex codes.
 
 Following this character are six hex digits representing the Red, Green and Blue values of the colour to display (e.g. `FF0000` means <span style="color:#ff0000">bright red</span>).
 
-Keep the [Forms of Color Codes](#forms-of-color-codes) section above in mind, as this method of formatting keeps these same rules – the exceptions being that `<CODE>` represents the hex color character `(0x03)` and `<COLOR>` represents a six-digit hex value as `RRGGBB`.
+Keep the [Forms of Color Codes](#forms-of-color-codes) section above in mind, as this method of formatting keeps these same rules – the exceptions being that `<CODE>` represents the hex color character `(0x04)` and `<COLOR>` represents a six-digit hex value as `RRGGBB`.
 
-This method of formatting is not as widely-supported as the colors above, but clients are fine to implement it without any issues.
+This method of formatting is not as widely-supported as the colors above, but clients are fine to parse them without any negative effects.
 
 
 ## Reverse Color (/ or Italics)
