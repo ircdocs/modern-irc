@@ -1176,6 +1176,69 @@ The `NOTICE` message is used similarly to [`PRIVMSG`](#privmsg-message). The dif
 
 One thing for bot authors to note is that the `NOTICE` message may be interpreted differently by various clients. Some clients highlight or interpret any `NOTICE` sent to a channel in the same way that a `PRIVMSG` with their nickname gets interpreted. This means that users may be irritated by the use of `NOTICE` messages rather than `PRIVMSG` messages by clients or bots, and they are not commonly used by client bots for this reason.
 
+## User-based Queries
+
+These commands return information about particular clients.
+
+### WHO message
+
+         Command: WHO
+      Parameters: <query> [<options> [<longquery>]]
+
+The `WHO` command is used to return information about the clients on the network. `<query>`/`<longquery>` is a string using standard glob syntax that is used to search various attributes of connected clients. `<options>`, if it exists, notes which attributes are searched and which are displayed.
+
+Servers that do not support the extended command attributes only support the `<options>` string `"o"`, which indicates that only IRC operators should be displayed. When these servers perform this command, `<query>` is matched against the nickname, hostname, and realname of the user, as well as the name of the server that they're connected to.
+
+These servers return results using the [`RPL_WHOREPLY`](#rpl_whoreply-352) and [`RPL_ENDOFWHO`](#rpl_endofwho-315) numerics.
+
+---
+
+Servers that support the extended `WHO` command attributes `<options>` and `<longquery>` advertise this support with the [`WHOX`](#whox-parameter) `RPL_ISUPPORT` token.
+
+`<longquery>` is simply a replacement of `<query>` that can include spaces. If `<longquery>` is passed, it is used for matching – otherwise, `<query>` is used for matching. For the rest of this description, the search query used is referred to as `<query>`.
+
+The format of `<options>` is: `[<flags>][%[<fields>][,<queryid>]]`
+
+`<flags>` is a collection of field-matching, mode-matching and special flags that affect how the matching is performed. These flags are case-insensitive. These are the widely-supported flags:
+
+- **a** - Match against clients' account names.
+- **h** - Match against clients' hostnames.
+- **i** - Match against clients' IP addresses (commonly restricted to IRC operators).
+- **n** - Match against clients' nicknames.
+- **o** - Only match IRC operators.
+- **r** - Match against clients' realnames.
+- **s** - Match against the names of the servers clients are connected to.
+- **u** - Match against clients' usernames.
+- **x** - On certain implementations, this means match clients who have made themselves [invisible](#invisible-user-mode) (if the user running this command is not an IRC operator, this flag is ignored).
+
+When the only specified match flags are the hostname / IP matches, clients are able to use these syntaxes for `<query>`:
+
+- Standard glob syntax.
+- Single IP address, e.g. `203.0.113.254` or `198.51.100.25`.
+- Standard CIDR notation to match a network, e.g. `203.0.113.0/24` or `198.51.100.0/27`. Some implementations support leaving off trailing `.0` arguments in IPv4 addresses, e.g. `203.0.113/24` for `203.0.113.0/24` and `8/8` for `8.0.0.0/8`.
+- IP/Subnet notation to match a network, e.g. `203.0.113.0/255.255.255.0` or `198.51.100.0/255.255.255.220`.
+
+If no matching flags are defined, `<query>` is matched against the nickname, hostname, and realname of the user, as well as the name of the server that they're connected to.
+
+`<fields>` represents the information about the client to include in the response. These fields are case-insensitive. These are the widely-supported fields:
+
+- **a** - Show the name of the client's account in the response (`"*"` if the client is not logged in).
+- **c** - Show the channels the client's joined to, separated by commas.
+- **d** - Show the number of 'server hops' between the user who's running this command and the matched client.
+- **h** - Show the hostname of the client.
+- **i** - Show the IP address of the client (commonly restricted to IRC operators).
+- **l** - Show the idle time of the client in seconds.
+- **n** - Show the nickname of the client.
+- **r** - Show the realname of the client.
+- **s** - Show the name of the server the client's connected to.
+- **t** - Show `<queryid>` (described below).
+- **u** - Show the username of the client.
+
+If no fields are specified, the results are sent using the [`RPL_WHOREPLY`](#rpl_whoreply-352) numeric (containing the standard fields), and are otherwise sent with the [`RPL_WHOXREPLY`](#rpl_whoxreply-354) numeric (with the selected fields).
+
+`<queryid>` is an optional argument that acts as an identifier for a particular query. If the `"t"` field is specified above, this identifier is included in the response and allows clients to track the query they sent with the response they receive.
+
+
 
 ## Optional Messages
 

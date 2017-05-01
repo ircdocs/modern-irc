@@ -1234,6 +1234,12 @@ Examples:
 
       TOPICLEN=390
 
+### `WHOX` Parameter
+
+      Format: WHOX
+
+The `WHOX` parameter indicates support for an extended syntax of the [`WHO` command](#who-message).
+
 
 ---
 
