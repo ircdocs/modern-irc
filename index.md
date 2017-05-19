@@ -401,7 +401,7 @@ Examples:
 
 Immediately upon establishing a connection the client must attempt registration, without waiting for any banner message from the server.
 
-Until registration is complete, only a limited subset of commands may be accepted by the server.
+Until registration is complete, only a limited subset of commands SHOULD be accepted by the server. This is because it makes sense to require a registered (fully connected) client connection before allowing commands such as [`JOIN`](#join-message), [`PRIVMSG`](#privmsg-message) and others.
 
 The recommended order of commands during registration is as follows:
 
