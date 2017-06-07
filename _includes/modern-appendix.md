@@ -471,7 +471,7 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
 
 Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the attempt was successful and the client with the nickname `<nick>` has been invited to `<channel>`.
 
-### `RPL_INVITELIST (348)`
+### `RPL_INVITELIST (346)`
 
       "<client> <channel> <mask>"
 
