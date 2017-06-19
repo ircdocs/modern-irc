@@ -266,7 +266,7 @@ body
     font-size: 0.7rem
     vertical-align: 0.125rem
 
-#wiptag
+#wiptag, #ietftag
     @media print
         display: none
     position: fixed
@@ -279,8 +279,6 @@ body
     font-family: $mono_font_family
     .detail
         display: none
-    &::before
-        content: "WIP"
     &:hover .detail, &:focus .detail
         display: block
         @media print
@@ -296,6 +294,10 @@ body
         background: rgba(250, 250, 250, 0.95)
         text-align: center
         font-family: $standard_font_family
+#wiptag::before
+    content: "WIP"
+#ietftag::before
+    content: "IETF"
 
 // irc colors
 .ircf-0
