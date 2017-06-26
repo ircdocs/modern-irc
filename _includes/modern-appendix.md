@@ -1039,11 +1039,11 @@ Examples:
 
 ### `EXTBAN` Parameter
 
-      Format: EXTBAN=<prefix>,<types>
+      Format: EXTBAN=[<prefix>],<types>
 
 The `EXTBAN` parameter indicates the types of "extended ban masks" that the server supports.
 
-`<prefix>` denotes the character that indicates an extban to the server and `<types>` is a list of characters indicating the types of extended bans the server supports.
+`<prefix>` denotes the character that indicates an extban to the server and `<types>` is a list of characters indicating the types of extended bans the server supports. If `<prefix>` does not exist then the server does not require a prefix for extbans, and they should be sent with no prefix.
 
 Extbans may allow clients to issue bans based on account name, SSL certificate fingerprints and other attributes, based on what the server supports.
 
@@ -1060,6 +1060,8 @@ Examples:
       EXTBAN=~,cqnr
 
       EXTBAN=~,qjncrRa
+
+      EXTBAN=,ABCNOQRSTUcjmprsz
 
 ### `INVEX` Parameter
 
