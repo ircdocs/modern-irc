@@ -1,3 +1,36 @@
+# Channel Types
+
+IRC has various types of channels that act in different ways. What differentiates these channels is the character the channel name starts with. For instance, channels starting with `#` are regular channels, and channels starting with `&` are local channels.
+
+Upon joining, clients are shown which types of channels the server supports with the [`CHANTYPES`](#chantypes-parameter) parameter.
+
+Here, we go through the different types of channels that exist and are widely-used these days.
+
+### Regular Channels (`#`)
+
+The prefix character for this type of channel is `('#', 0x23)`.
+
+This channel is what's referred to as a normal channel. Clients can join this channel, and the first client who joins a normal channel is made a [channel operator](#channel-operators), along with the appropriate channel membership prefix. On most servers, newly-created channels have then [protected topic `"+t"`](#protected-topic-mode) and [no external messages `"+n"`](#no-external-messages-mode) modes enabled, but exactly what modes new channels are given is up to the server.
+
+Regular channels are persisted across the network. If two clients on different servers join the same regular channel, they'll be able to see that each other are joined, and will see messages sent to the channel by the other client.
+
+On servers that support the concept of 'channel ownership' (a client being able to own a channel and retain control of it with their account), clients may not receive channel operator priveledges on joining an otherwise empty channel.
+
+### Local Channels (`&`)
+
+The prefix character for this type of channel is `('&', 0x26)`.
+
+This channel is what's referred to as a local channel. Clients can join this channel as normal, and the first client who joins a normal channel is made a [channel operator](#channel-operators), but the channel is not persisted across the network. In other words, each server has its own set of local channels that the other servers on the network don't see.
+
+If a client on server A and a client on server B join the channel `&info`, they will not be able to see each other or the messages each posts to their server's local channel `&info`. However, if a client on server A and another client on server A join the channel `&info`, they will be able to see each other and the messages the other posts to that local channel.
+
+Generally, the concept of channel ownership is not supported for local channels. Local channels also aren't as widely available as regular channels. As well, some networks disable or disallow local channels as opers across the network can't see nor administrate them.
+
+
+---
+
+
+
 # Modes
 
 Modes affect the behaviour and reflect details about targets -- clients and channels. The modes listed here are the ones that have been adopted and are used by the IRC community at large. If we say a mode is 'standard', that means it is defined in the official IRC specification documents.
@@ -875,7 +908,7 @@ The specified casemappings are as follows:
 
 * **`ascii`**: Defines the characters `a` to be considered the lower-case equivalents of the characters `A` to `Z` only.
 * **`rfc1459`**: Defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively.
-* **`rfc3454`**: Proposed casemapping which defines that strings are to be compared using the `nameprep` method described in [`RFC3454`](http://tools.ietf.org/html/rfc3454) and [`RFC3491`](https://tools.ietf.org/html/rfc3491) (NOTE: An alternate unicode-based casemapping is being created, and this entry will be replaced with that one when it comes about).
+* **`rfc7613`**: Proposed casemapping which defines a method based on PRECIS, allowing additional Unicode characters to be correctly casemapped <sup><a href="https://github.com/ircv3/ircv3-specifications/pull/272">[link]</a></sup>.
 
 The value MUST be specified and is a string. Servers MAY advertise alternate casemappings to those above, but clients MAY NOT be able to understand or perform them.
 
