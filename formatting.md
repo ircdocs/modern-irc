@@ -207,7 +207,7 @@ Keep the [Forms of Color Codes](#forms-of-color-codes) section above in mind, as
 This method of formatting is not as widely-supported as the colors above, but clients are fine to parse them without any negative effects.
 
 
-## Reverse Color (/ or Italics)
+## Reverse Color
 
     ASCII 0x16
 
