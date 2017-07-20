@@ -646,7 +646,7 @@ Command Example:
 
 Message Example:
 
-      dan-!d@localhost QUIT :Quit: Bye for now!
+      :dan-!d@localhost QUIT :Quit: Bye for now!
                                        ; dan- is exiting the network with
                                        the message: "Quit: Bye for now!"
 
