@@ -145,7 +145,7 @@ Specific prefixes and moderation levels are covered in the [Channel Membership P
 
 ## Communication Types
 
-This section describebs how current implementations deliver different classes of messages.
+This section describes how current implementations deliver different classes of messages.
 
 This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by networks.
 
