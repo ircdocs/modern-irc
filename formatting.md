@@ -113,19 +113,35 @@ These formatting characters are the ones all IRC clients should understand.
 
     ASCII 0x02
 
-This formatting character works as a toggle. It enables bold text (i.e. <strong>bold text</strong>).
+This formatting character works as a toggle. It enables bold text (e.g. <strong>bold text</strong>).
 
 ## Italics
 
     ASCII 0x1D
 
-This formatting character works as a toggle. It enables italicized text (i.e. <em>italicised text</em>).
+This formatting character works as a toggle. It enables italicized text (e.g. <em>italicised text</em>).
 
 ## Underline
 
     ASCII 0x1F
 
-This formatting character works as a toggle. It enables underlined text (i.e. <u>underlined text</u>).
+This formatting character works as a toggle. It enables underlined text (e.g. <u>underlined text</u>).
+
+## Strikethrough
+
+    ASCII 0x1E
+
+This formatting character works as a toggle. It enables strikethrough'd text (e.g. <span style="text-decoration: line-through">strokethrough text</span>).
+
+This character is a relatively new addition, and was defined by Textual (as of right now, Textual's the only client that understands this character). However, if you do add strikethrough capabilities within your client, please use this character as it is already defined and in use.
+
+## Monospace
+
+    ASCII 0x11
+
+This formatting character works as a toggle. It enables monospace'd text (e.g. <tt>monospace text</tt>).
+
+This character is a relatively new addition, and was defined by IRCCloud (as of right now, IRCCloud's the only client that understands this character). However, if you do add monospace capabilities within your client, please use this character as it is already defined and in use.
 
 ## Color
 
@@ -236,4 +252,3 @@ Each example displays both the raw IRC code sent, and then a formatted version o
 * <div><tt>Code: &nbsp; This is a <span class="reverse">I</span><span class="reverse">C</span>13,9cool <span class="reverse">C</span>message</tt><br/><tt>Output: This is a <span class="irci"><span class="ircf-13 ircb-9">cool </span>message</span></tt></div>
 * <div><tt>Code: &nbsp; IRC <span class="reverse">B</span>is <span class="reverse">C</span>4,12so <span class="reverse">C</span>great<span class="reverse">O</span>!</tt><br/><tt>Output: IRC <span class="ircb">is <span class="ircf-4 ircb-12">so </span>great</span>!</tt></div>
 * <div><tt>Code: &nbsp; Rules: Don't spam 5<span class="reverse">C</span>13,8,6<span class="reverse">C</span>,7,8, and especially not <span class="reverse">B</span>9<span class="reverse">B</span><span class="reverse">I</span>!</tt><br/><tt>Output: Don't spam 5<span class="ircf-13 ircb-8">,6</span>,7,8, and especially not <span class="ircb">9</span><span class="irci">!</span></tt></div>
-
