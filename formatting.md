@@ -227,7 +227,7 @@ This method of formatting is not as widely-supported as the colors above, but cl
 
     ASCII 0x16
 
-This formatting character switches the foreground and background colors of the following text. It can act similarly to a toggle, in that every time it is used it switches the colors for the text following it.
+This formatting character works as a toggle. When reverse color is enabled, the foreground and background text colors are reversed. For instance, if you enable reverse color and then send the line "<span class="reverse">C</span>3,13Test!", you will end up with pink foreground text and green background text while the reverse color is in effect.
 
 This code isn't super well-supported, and mIRC seems to always treat it as applying the reverse of the default foreground and background characters, rather than the current fore/background as set by prior mIRC color codes in the message.
 
