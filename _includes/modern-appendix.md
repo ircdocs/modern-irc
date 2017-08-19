@@ -1297,7 +1297,9 @@ Software authors are and have been experimenting with alternative topologies suc
 
 # Implementation Notes
 
-The IRC protocol is reasonably complex, and there are areas where incorrectly-implemented behaviour can't be detected. This section is non-normative, providing questions and recommendations to assist implementors.
+The IRC protocol is reasonably complex. When writing software that interacts with it, there are certain choices that are implementation-defined, as well as certain areas that are commonly incorrectly implemented.
+
+This section raises discussion, questions, and recommendations intended to help implementors. In particular, the advice/discussion here may be sloppy compared to the above, and the questions may be less well-defined or without strict answers, but regardless should help you when writing software that interacts with the IRC protocol.
 
 
 ## Character Encodings
