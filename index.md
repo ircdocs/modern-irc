@@ -278,7 +278,7 @@ Both clients and servers MAY parse supplied tags without any capabilities being 
 
 Clients that enable message tags MUST NOT fail to parse any message because of the presence of tags on that message. In other words, clients that enable message tags MUST assume that any message from the server may contain message tags, and must handle this correctly.
 
-More information on the naming and registration of tags can be found in the [Message Tags](#message-tags) section.
+More information on the naming and registration of tags, including how to escape values, can be found in the IRCv3 [Message Tags specification](http://ircv3.net/specs/core/message-tags-3.2.html).
 
 ### Prefix
 
