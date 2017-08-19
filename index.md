@@ -243,7 +243,7 @@ Various server to server protocols have been defined over the years, with [TS6](
 
 ### Character Codes
 
-Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients MUST be able to handle incoming messages encoded with alternative encodings, and lines they cannot decode correctly with any of their standard encodings.
+Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients SHOULD try decoding incoming messages as UTF-8. Today, the generally-recommended way of decoding incoming messages is to try UTF-8 before falling back to [Latin-1/ISO-8859-1(5)/CP1252](https://en.wikipedia.org/wiki/Windows-1252) (though this fallback encoding is often configurable by the user). Implementors should be aware their software may receive messages that cannot correctly decoded with any of their encodings.
 
 The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter.
 
@@ -351,6 +351,8 @@ NOTES:
 5. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
 
 Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. As an example, for many server commands, the first parameter of that message is a list of targets.
+
+Please also see our [Message Parsing and Assembly](#message-parsing-and-assembly) implementation considerations, for things you should keep in mind while writing software that parses or assembles IRC messages.
 
 <div class="warning">
     TODO: This section is unfinished. Defining the various names (nickname, username, hostname) and such are likely to require quite a bit of thought. This is to cater for how software can let IRC operators use almost anything in them including formatting characters, etc. We should also make sure that the ABNF block above is correct and defined properly.
