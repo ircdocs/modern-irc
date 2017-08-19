@@ -1300,6 +1300,21 @@ Software authors are and have been experimenting with alternative topologies suc
 The IRC protocol is reasonably complex, and there are areas where incorrectly-implemented behaviour can't be detected. This section is non-normative, providing questions and recommendations to assist implementors.
 
 
+## Character Encodings
+
+Character encodings in IRC are hard. [UTF-8](http://tools.ietf.org/html/rfc3629) is recommended, the mess of [Latin-1/ISO-8859-1(5)/CP1252](https://en.wikipedia.org/wiki/Windows-1252) also seems common, but all sorts of other encodings are also used in practice. Particularly on networks that support other languages, and were created before UTF-8 became as widespread as it has.
+
+When sending, we always recommend UTF-8. When decoding, we generally recommend trying UTF-8 and falling back to Latin-1 (what has been called the Hybrid encoding).
+
+For clients, this is fine. Even if they incorrectly decode a private message, the user should see that the message has been decoded incorrectly and be able to resolve the issue (hopefully by telling the sending user to use UTF-8).
+
+However, servers are in a trickier position (especially for PRIVMSG/NOTICE or any other command that takes arbitrary user input such as USER, TOPIC, etc). Servers in C/C++ or similar languages can simply treat this input from the user as a character array they accept and then spit out again, no trouble. However, servers implemented in higher-level languages may wish to treat IRC lines and messages as Unicode text internally. For servers to treat messages in this way, they need to decode lines as they're received and later encode the lines before they're sent out.
+
+This presents an issue. What if the line from the user is decoded incorrectly, and then this modified line is sent out? (see also: [Mojibake](https://en.wikipedia.org/wiki/Mojibake)). What these servers may instead do is either follow the lead of the lower-level servers and treat these parameters as byte arrays not to be parsed or decoded in any way. These servers may also simply attempt to decode all incoming lines as UTF-8, and if the line cannot be decoded it is ignored. The former ensures all messages are sent correctly, and the latter vastly simplifies server implementations in these higher-level languages.
+
+For what it's worth, the servers I've worked on have done the latter of the two options, discarding any lines that cannot be decoded as UTF-8. It's not a great solution, but it's a difficult issue to deal with. If anyone has a better way to deal with this, please feel free to <a href="mailto:daniel@danieloaks.net">contact me</a> so I can update this section.
+
+
 ## Message Parsing and Assembly
 
 Message parsing/assembly is one area where implementations can differ wildly, and is a common vector for both security issues and general runtime problems.
