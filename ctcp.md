@@ -11,7 +11,7 @@ copyrights:
     org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
     editor: true
-ietf: https://tools.ietf.org/html/draft-oakley-irc-ctcp-00
+ietf: https://tools.ietf.org/html/draft-oakley-irc-ctcp-01
 ietf-editors-copy: https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html
 ---
 
@@ -25,7 +25,7 @@ ietf-editors-copy: https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakl
 <div class="warning">
     <p>NOTE: This document is being persued as an Internet Draft for standardisation with the IETF.</p>
     <p>This page is out of date, and you should look here for the new document I'm working on:</p>
-    <p><a href="https://github.com/DanielOaks/irc-rfcs">[Github]</a> - <a href="https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html">[Editor's HTML Draft]</a> - <a href="https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt">[Editor's TXT Draft]</a> - <a href="https://tools.ietf.org/html/draft-oakley-irc-ctcp-00">[Internet-Draft]</a></p>
+    <p><a href="https://github.com/DanielOaks/irc-rfcs">[Github]</a> - <a href="https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html">[Editor's HTML Draft]</a> - <a href="https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt">[Editor's TXT Draft]</a> - <a href="https://tools.ietf.org/html/draft-oakley-irc-ctcp-01">[Internet-Draft]</a></p>
 </div>
 
 <div id="printable-toc" style="display: none"></div>
