@@ -19,7 +19,7 @@ The behaviour and constants described in these documents SHOULD converge, and/or
 
 Where external, up-to-date and authoritative specifications exist for commands/messages/behaviours, we prefer to link to those rather than needlessly rewrite them (see the Client Protocol's [`CAP`](http://modern.ircdocs.horse/#cap-message) message for an example of this).
 
-These document are not RFCs. Writing an RFC and putting it through the IETF process is the job of someone else, and whoever does it is free to use anything from these documents. Just respect the authors section at the top of the document if a decent amount of text is used from it. Look at [ircv3-harmony](https://github.com/kaniini/ircv3-harmony) for something which aims to be an RFC.
+These document are not RFCs. Writing an RFC and putting it through the IETF process is a long slog that's probably going to be completed by someone else if at all, and whoever does it is free to use anything from these documents. Just respect the authors section at the top of the document if a decent amount of text is used from it.
 
 ---
 
