@@ -492,7 +492,7 @@ Sent as a reply to the [`TOPIC`](#topic-message) command, this numeric indicates
 
 Sent to a client to inform them of the current [topic](#topic-message) of the channel.
 
-### `RPL_TOPICTIME (333)`
+### `RPL_TOPICWHOTIME (333)`
 
       "<client> <channel> <nick> <setat>"
 
