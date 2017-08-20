@@ -906,7 +906,7 @@ The value MUST be specified and MUST be a string representing the method that th
 
 The specified casemappings are as follows:
 
-* **`ascii`**: Defines the characters `a` to be considered the lower-case equivalents of the characters `A` to `Z` only.
+* **`ascii`**: Defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only.
 * **`rfc1459`**: Defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively.
 * **`rfc7613`**: Proposed casemapping which defines a method based on PRECIS, allowing additional Unicode characters to be correctly casemapped <sup><a href="https://github.com/ircv3/ircv3-specifications/pull/272">[link]</a></sup>.
 
