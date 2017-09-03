@@ -101,7 +101,7 @@ A client is anything connecting to a server that is not another server. Each cli
 
 To allow a reasonable amount of order to be kept within the IRC network, a special class of clients (operators) are allowed to perform general maintenance functions on the network. Although the powers granted to an operator can be considered as 'dangerous', they are nonetheless required.
 
-The tasks operators can perform vary with different server software and the specific privileges granted to each operator. Some can perform network maintenence tasks, such as disconnecting and reconnecting servers as needed to prevent long-term use of bad network routing. Some operators can also remove a user from their server or the IRC network by 'force', i.e. the operator is able to close the connection between a client and server.
+The tasks operators can perform vary with different server software and the specific privileges granted to each operator. Some can perform network maintenance tasks, such as disconnecting and reconnecting servers as needed to prevent long-term use of bad network routing. Some operators can also remove a user from their server or the IRC network by 'force', i.e. the operator is able to close the connection between a client and server.
 
 The justification for operators being able to remove users from the network is delicate since its abuse is both destructive and annoying. However, IRC network policies and administrators handle operators who abuse their privileges, and what is considered abuse by that network.
 
@@ -305,7 +305,7 @@ The protocol messages are extracted from a contiguous stream of octets. A pair o
 
 The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(' ', 0x20)`.
 
-The presense of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
+The presence of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
 
 The presence of a prefix is indicated with a single leading colon character `(':', 0x3b)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
 
@@ -636,7 +636,7 @@ When connections are terminated by a client-sent `QUIT` command, servers SHOULD 
 
 When a netsplit (the disconnecting of two servers) occurs, a `QUIT` message is generated for each client that has exited the network, distributed in the same way as ordinary `QUIT` messages. The `<reason>` on these `QUIT` messages SHOULD be composed of the names of the two servers involved, separated by a SPACE `(' ', 0x20)`. The first name is that of the server which is still connected and the second name is that of the server which has become disconnected. If servers wish to hide or obscure the names of the servers involved, the `<reason>` on these messages MAY also be the literal ascii string `"*.net *.split"` (i.e. the two server names are replaced with `"*.net"` and `"*.split"`). Software that implements the IRCv3 [`batch` Extension](http://ircv3.net/specs/extensions/batch-3.2.html) should also look at the [`netsplit` and `netjoin`](http://ircv3.net/specs/extensions/batch/netsplit-3.2.html) batch types.
 
-If a client connection is closed without the client issuing a `QUIT` command to the server, the server MUST distribute a `QUIT` message to other clients informing them of this, distributed in the same was an an ordinary `QUIT` message. Servers MUST fill `<reason>` with a message reflecting the nature of the event which caused it to happen. For instance, `"Ping timeout: 120 seconds"`, `"Excess Flood"`, and `"Too many connections from this IP"` are examples of relevant reasons for closing or for a connection with a client to have been closed.
+If a client connection is closed without the client issuing a `QUIT` command to the server, the server MUST distribute a `QUIT` message to other clients informing them of this, distributed in the same was an ordinary `QUIT` message. Servers MUST fill `<reason>` with a message reflecting the nature of the event which caused it to happen. For instance, `"Ping timeout: 120 seconds"`, `"Excess Flood"`, and `"Too many connections from this IP"` are examples of relevant reasons for closing or for a connection with a client to have been closed.
 
 Numeric Replies:
 
@@ -721,7 +721,7 @@ Message Examples:
 
 The `PART` command removes the client from the given channel(s). On sending a successful `PART` command, the user will receive a `PART` message from the server for each channel they have been removed from. `<reason>` is the reason that the client has left the channel(s).
 
-For each channel in the parameter of this command command, if the channel exists and the client is not joined to it, they will receive an [`ERR_NOTONCHANNEL`](#errnotonchannel-442) reply and that channel will be ignored. If the channel does not exist, the client will receive an [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) reply and that channel will be ignored.
+For each channel in the parameter of this command, if the channel exists and the client is not joined to it, they will receive an [`ERR_NOTONCHANNEL`](#errnotonchannel-442) reply and that channel will be ignored. If the channel does not exist, the client will receive an [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) reply and that channel will be ignored.
 
 This message may be sent from a server to a client to notify the client that someone has been removed from a channel. In this case, the message `<source>` will be the client who is being removed, and `<channel>` will be the channel which that client has been removed from. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `PART` messages as a series of messages with a single channel name on each. If a `PART` message is distributed in this way, `<reason>` (if it exists) should be on each of these messages.
 
@@ -1041,11 +1041,11 @@ The `MODE` command is used to set or remove options (or *modes*) from a given ta
 
 If `<target>` is a nickname, it MUST be the same nickname as the user who sent the command. If a client is trying to set modes for a different user, the [`ERR_USERSDONTMATCH`](#errusersdontmatch-502) numeric is returned and the command will fail.
 
-If `<target>` is a channel, the user sending the command MUST have appropriate channel priveleges to change modes (as well as to change the specific modes it is requesting), such as [halfop](#halfop-prefix) or [chanop](#operator-prefix). If a user does not have permission to change modes on the target channel, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail. Servers MAY check permissions once at the start of processing the `MODE` command, or may check it on setting each mode character.
+If `<target>` is a channel, the user sending the command MUST have appropriate channel privileges to change modes (as well as to change the specific modes it is requesting), such as [halfop](#halfop-prefix) or [chanop](#operator-prefix). If a user does not have permission to change modes on the target channel, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail. Servers MAY check permissions once at the start of processing the `MODE` command, or may check it on setting each mode character.
 
 If `<target>` is a nickname and `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric will be sent back containing the current modes of the target user. If `<target>` is a channel and `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric will be sent back containing the current modes of the target channel.
 
-If `<modestring>` is given and the user has permission to change modes on the target, the supplied modes will be applied and a `MODE` message will be returned containing the mode changes that were applied. For type A, B, and C modes, arguments will be obtained from `<mode arguments>`, sequentially, as required. If a type B or C mode cannot be acted upon as it requires a argument and one has not been supplied, that mode will be silently ignored. If a type A mode has been sent without an argument (i.e., listing the contents of that mode's list), servers SHOULD only send the list for that mode to the client once, regardless of how many times that type A mode is contained in the `<modestring>`.
+If `<modestring>` is given and the user has permission to change modes on the target, the supplied modes will be applied and a `MODE` message will be returned containing the mode changes that were applied. For type A, B, and C modes, arguments will be obtained from `<mode arguments>`, sequentially, as required. If a type B or C mode cannot be acted upon as it requires an argument and one has not been supplied, that mode will be silently ignored. If a type A mode has been sent without an argument (i.e., listing the contents of that mode's list), servers SHOULD only send the list for that mode to the client once, regardless of how many times that type A mode is contained in the `<modestring>`.
 
 The `MODE` message is sent from the server to a client to show that the `<target>`'s modes have changed. Mode changes are only sent to clients for channels they are joined to and their own user modes. When the `MODE` message is sent to clients, `<source>` represents the client or server that changed the modes.
 
@@ -1105,7 +1105,7 @@ Message Examples:
 
       :irc.example.com MODE #foobar +o bunny
                                       ; The irc.example.com server gave channel
-                                      operator priveleges to bunny on #foobar.
+                                      operator privileges to bunny on #foobar.
 
 
 ## Sending Messages
@@ -1225,7 +1225,7 @@ Clients can rejoin instantly after this command is performed on them. However, i
 
 As nicknames across an IRC network MUST be unique, if duplicates are found when servers join, one or both of the clients MAY be `KILL`ed and removed from the network. Servers may also handle this case in alternate ways that don't involve removing users from the network.
 
-Servers MAY restrict whether specific operators can remove users on other servers (remote users). If the operator tries to remove a remote user but is not priveleged to, they should receive the [`ERR_NOPRIVS`](#errnoprivs-723) numeric.
+Servers MAY restrict whether specific operators can remove users on other servers (remote users). If the operator tries to remove a remote user but is not privileged to, they should receive the [`ERR_NOPRIVS`](#errnoprivs-723) numeric.
 
 `<comment>` SHOULD reflect why the `KILL` was performed. For user-generated KILLs, it is up to the user to provide an adequate reason.
 
