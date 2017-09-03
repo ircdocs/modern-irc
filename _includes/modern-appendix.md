@@ -58,7 +58,7 @@ If a user has this mode, this indicates that they are a network [operator](#oper
 
 This mode is standard, and the mode letter used for it is `"+O"`.
 
-If a user has this mode, this indicates that they are a server [operator](#operators). A local operator has [operator](#operators) priveleges for their server, and not for the rest of the network.
+If a user has this mode, this indicates that they are a server [operator](#operators). A local operator has [operator](#operators) privileges for their server, and not for the rest of the network.
 
 ### Registered User Mode
 
@@ -145,9 +145,9 @@ A channel that is set to secret will not show up in responses to the [`LIST`](#l
 
 This mode is standard, and the mode letter used for it is `"+t"`.
 
-This channel mode controls whether channel priveleges are required to set the topic, and does not have any value.
+This channel mode controls whether channel privileges are required to set the topic, and does not have any value.
 
-If this mode is enabled, users must have channel priveledges such as [halfop](#halfop-prefix) or [operator](#operator-prefix) status in order to change the topic of a channel. In a channel that does not have this mode enabled, anyone may set the topic of the channel using the [`TOPIC`](#topic-message) command.
+If this mode is enabled, users must have channel privileges such as [halfop](#halfop-prefix) or [operator](#operator-prefix) status in order to change the topic of a channel. In a channel that does not have this mode enabled, anyone may set the topic of the channel using the [`TOPIC`](#topic-message) command.
 
 ### No External Messages Mode
 
@@ -744,7 +744,7 @@ Indicates that the command failed because the user is not an [IRC operator](#ope
 
       "<client> <channel> :You're not channel operator"
 
-Indicates that a command failed because the client does not have the appropriate [channel priveleges](#channel-operators). This numeric can apply for different prefixes such as [halfop](#halfop-prefix), [operator](#operator-prefix), etc. The text used in the last param of this message may vary.
+Indicates that a command failed because the client does not have the appropriate [channel privileges](#channel-operators). This numeric can apply for different prefixes such as [halfop](#halfop-prefix), [operator](#operator-prefix), etc. The text used in the last param of this message may vary.
 
 ### `ERR_CANTKILLSERVER (483)`
 

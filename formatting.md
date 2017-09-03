@@ -88,7 +88,7 @@ One way some clients represent formatting characters they cannot display is usin
 
 ## Preventing Display of Formatting
 
-Clients may allow users to prevent all or just specified formatting from displaying. This can help users that are colorblind or are visually impared, and should be considered by client authors.
+Clients may allow users to prevent all or just specified formatting from displaying. This can help users that are colorblind or are visually impaired, and should be considered by client authors.
 
 
 ## ANSI Escape Code Support
