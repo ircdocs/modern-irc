@@ -15,6 +15,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     </head>
     <body>
+        <script>
+            // enable dark mode
+            if (document.cookie == "darkmode=true") {
+                document.body.classList.add("dark");
+            }
+        </script>
         {% if page.wip %}
         <div id="wiptag">
             <span class="detail">This document is a heavy work in progress<br/>and should not be considered complete</span>
@@ -25,6 +31,7 @@
             <span class="detail">This document is now being worked on as an<br/>Internet-Draft which you can find <a href="{{ page.ietf }}">here</a> and <a href="{{ page.ietf-editors-copy }}">here</a></span>
         </div>
         {% endif %}
+        <a onclick="toggledarkmode()" id="darkmodebtn"><i class="fa fa-sun-o show-when-dark"></i><i class="fa fa-moon-o show-when-light"></i></a>
         <div id="show-toc" onclick=""><div onclick="">Table of Contents</div></div>
         <div id="toc-popup" style="display: none"><div onclick="">
             <h2>Table of Contents</h2>
@@ -62,5 +69,14 @@
             class: 'anchor',
         };
         anchors.add('#spec h1, #spec h2, #spec h3, #spec h4, #spec h5, #spec .figure');
+
+        function toggledarkmode() {
+            document.body.classList.toggle("dark");
+            if (document.body.classList.contains("dark")) {
+                document.cookie = "darkmode=true";
+            } else {
+                document.cookie = "";
+            }
+        }
     </script>
 </html>

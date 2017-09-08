@@ -228,6 +228,7 @@ li
 hr
     @media screen
         border: #99b 0.2rem solid
+        background: #99b
         border-radius: 2rem
         margin: 1.55rem auto
     @media print
@@ -376,6 +377,8 @@ body
     font-style: italic
 
 @media print
+    #darkmodebtn
+        display: none
     #printable-toc
         display: block !important
         page-break-before: always
@@ -467,3 +470,60 @@ body
             &::before
                 content: ""
                 padding-right: 0
+
+#darkmodebtn
+    display: block
+    position: fixed
+    left: 0
+    bottom: 0
+    padding: 0.5rem
+    font-size: 1.7rem
+
+// dark theme
+body:not(.dark)
+    .show-when-dark
+        display: none
+body.dark
+    background: #334
+    color: #dddde3
+
+    .show-when-light
+        display: none
+
+    .copyright .line
+        color: #ccc
+    
+    .warning
+        background: #63261e
+        color: #efe9e9
+    .note
+        background: #1e2963
+        color: #e9ebef
+
+    .figure
+        color: #d2dde3
+
+    a
+        color: #7a7aff
+        &:visited, &:active
+            color: #c194e6
+
+    h1
+        color: #ceceda
+    h2
+        color: #dadae1
+    h3
+        color: #c6c6d2
+    h4
+        color: #b7b7c3
+    
+    pre
+        background: #282831
+
+    #show-toc > div
+        background: rgba(187, 187, 187, 0.925)
+        color: #333
+    #toc-popup > div
+        background: #334
+        a
+            color: #bcbcff
