@@ -479,6 +479,16 @@ body
     padding: 0.5rem
     font-size: 1.7rem
 
+// dark theme color changing transitions
+body, .warning, .note, #show-toc > div
+    transition: background 0.2s, color 0.2s
+
+pre
+    transition: background 0.2s
+
+.copyright .line, .figure, a, h1, h2, h3, h4
+    transition: color 0.2s
+
 // dark theme
 body:not(.dark)
     .show-when-dark
