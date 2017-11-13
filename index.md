@@ -749,6 +749,8 @@ Message Examples:
 
 The `TOPIC` command is used to change or view the topic of the given channel. If `<topic>` is not given, either `RPL_TOPIC` or `RPL_NOTOPIC` is returned specifying the current channel topic or lack of one. If `<topic>` is an empty string, the topic for the channel will be cleared.
 
+If the client sending this command is not joined to the given channel, and tries to view its' topic, the server MAY return the [`ERR_NOTONCHANNEL`](#errnotonchannel-442) numeric and have the command fail.
+
 If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICTIME` SHOULD also be sent to that client.
 
 If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail.
@@ -759,6 +761,7 @@ Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
+* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
 * [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_TOPIC`](#rpltopic-332) `(332)`

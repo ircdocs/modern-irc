@@ -674,6 +674,24 @@ Returned when a [`NICK`](#nick-message) command cannot be successfully completed
 
 Returned when a [`NICK`](#nick-message) command cannot be successfully completed as the desired nickname is already in use on the network. The text used in the last param of this message may vary.
 
+### `ERR_USERNOTINCHANNEL (441)`
+
+      "<client> <nick> <channel> :They aren't on that channel"
+
+Returned when a client tries to perform a channel+nick affecting command, when the nick isn't joined to the channel (for example, `MODE #channel +o nick`).
+
+### `ERR_NOTONCHANNEL (442)`
+
+      "<client> <channel> :You're not on that channel"
+
+Returned when a client tries to perform a channel-affecting command on a channel which the client isn't a part of.
+
+### `ERR_USERONCHANNEL (443)`
+
+      "<client> <nick> <channel> :is already on channel"
+
+Returned when a client tries to invite `<nick>` to a channel they're already joined to.
+
 ### `ERR_NOTREGISTERED (451)`
 
       "<client> :You have not registered"
