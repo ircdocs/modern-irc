@@ -585,12 +585,12 @@ Numeric Replies:
 
 Command Examples:
 
-      USER guest tolmoon tolsun :Ronnie Reagan
+      USER guest 0 * :Ronnie Reagan
                                   ; No ident server
                                   ; User gets registered with username
                                   "~guest" and real name "Ronnie Reagan"
 
-      USER guest tolmoon tolsun :Ronnie Reagan
+      USER guest 0 * :Ronnie Reagan
                                   ; Ident server gets contacted and
                                   returns the name "danp"
                                   ; User gets registered with username
