@@ -1265,4 +1265,4 @@ Parts of this document come from the "IRC `RPL_ISUPPORT` Numeric Definition" Int
 
 Thanks to the following people for contributing to this document, or to helping with IRC specification efforts:
 
-Simon Butcher, dx, James Wheare, Stephanie Daugherty, and all the IRC developers and documentation writers throughout the years.
+Simon Butcher, dx, James Wheare, Stephanie Daugherty, Sadie, and all the IRC developers and documentation writers throughout the years.
