@@ -1,5 +1,5 @@
 ---
-title: Modern IRC Client Protocol
+title: IRC Client Protocol
 layout: default
 wip: true
 copyrights:
