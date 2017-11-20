@@ -1,5 +1,6 @@
 ---
-title: IRC Client Protocol
+title: Modern IRC Client Protocol
+html_title: IRC Client Protocol Specification
 layout: default
 wip: true
 copyrights:

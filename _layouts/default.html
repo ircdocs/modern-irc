@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
     <head>
-        <title>{{ page.title }}</title>
+        <title>{% if page.html_title %}{{ page.html_title }}{% else %}{{ page.title }}{% endif %}</title>
         
         <link href="/css/open-sans.css" rel="stylesheet" type="text/css" />
         <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
