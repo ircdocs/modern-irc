@@ -3,7 +3,7 @@ title: About
 layout: default
 ---
 
-This site contains documents describing the IRC protocol and related technologies. The documents hosted here are intended to be useful to software developers working with IRC. They contain existing behaviour and what we consider best-practices for new software.
+This site contains documents describing the IRC protocol and related technologies (affectionately called the 'Modern docs'). The documents hosted here are intended to be useful to software developers working with IRC. They contain existing behaviour and what we consider best-practices for new software.
 
 If something written in these documents isn't correct for or interoperable with an IRC client / server / network you know of, please open an issue or send me an [email](mailto:daniel@danieloaks.net). Pull requests are appreciated.
 
@@ -26,6 +26,8 @@ These document are not RFCs. Writing an RFC and putting it through the IETF proc
 ## Living Specifications
 
 We consider the documents on this site to be 'living specifications'. This means they are updated as feedback is received for them and as the protocol is extended and grows. Bugs can be fixed, incorrect behaviours in the specifications can be corrected, and they can be extended as new behaviour becomes widespread.
+
+These documents are called 'specifications' rather than standards because they're descriptive, not prescriptive. These specifications are written in response to observed behaviour, rather than changing already-widespread behaviour to match what's written here.
 
 This term and our use of it is based on the WHATWG definition of a ['living standard'](https://wiki.whatwg.org/wiki/FAQ#What_does_.22Living_Standard.22_mean.3F).
 
