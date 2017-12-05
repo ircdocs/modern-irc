@@ -898,6 +898,8 @@ Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPP
 
 The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more extensive list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](https://defs.ircdocs.horse/defs/isupport.html).
 
+Certain parameters described here may not be standardised nor widely-advertised. These parameters are noted with the descriptor `"Status: Proposed"`. However, we try to be conservative with the parameters we're proposing, both in terms of having a small number of them and them being fairly understandable extensions to the current widely-used parameters.
+
 If a 'default value' is listed for a parameter, this is the assumed value of the parameter until and unless it is advertised by the server. This is primarily to interoperate with servers that don't advertise particular well-known and well-used parameters. If an 'empty value' is listed for a parameter, this is the assumed value of the parameter if it is advertised without a value.
 
 ### `AWAYLEN` Parameter
@@ -1080,6 +1082,22 @@ Examples:
       EXTBAN=~,qjncrRa
 
       EXTBAN=,ABCNOQRSTUcjmprsz
+
+### `HOSTLEN` Parameter
+
+      Format: HOSTLEN=<number>
+      Status: Proposed
+
+The `HOSTLEN` parameter indicates the maximum length that a hostname may be on the server (whether cloaked, spoofed, or a looked-up domain name). Networks SHOULD be consistent with this value across different servers.
+
+If a looked-up domain name is longer than this length, the server SHOULD opt to use the IP address instead, so that the hostname is underneath this length.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      HOSTLEN=63
+      HOSTLEN=64
 
 ### `INVEX` Parameter
 
@@ -1286,6 +1304,20 @@ Examples:
       TOPICLEN=307
 
       TOPICLEN=390
+
+### `USERLEN` Parameter
+
+      Format: USERLEN=<number>
+      Status: Proposed
+
+The `USERLEN` parameter indicates the maximum length that a username may be on the server. Networks SHOULD be consistent with this value across different servers. As noted in the [`USER`](#user-message) message, the tilde prefix (`"~"`), if it exists, contributes to the length of the username and would be included in this parameter.
+
+The value MUST be specified and MUST be a positive integer.
+
+Examples:
+
+      USERLEN=12
+      USERLEN=18
 
 
 ---
