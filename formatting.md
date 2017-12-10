@@ -153,7 +153,7 @@ With this formatting code, colors are represented as ASCII digits.
 
 ### Forms of Color Codes
 
-In the following list, `<CODE>` represents the color formatting character `(0x03)`, `<COLOR>` represents one or two ASCII digits (either `0-9` or `00-15`).
+In the following list, `<CODE>` represents the color formatting character `(0x03)`, `<COLOR>` represents one or two ASCII digits (either `0-9` or `00-99`).
 
 The use of this code can take on the following forms:
 
@@ -168,9 +168,7 @@ The foreground color is the first `<COLOR>`, and the background color is the sec
 If only the foreground color is set, the background color stays the same.
 
 <div class="warning">
-    <p>If there are two ASCII digits available where a <tt>&lt;COLOR&gt;</tt> is allowed, if the two characters are in the range <tt>00-15</tt> then two characters MUST always be read for it. If they are in the range <tt>16-99</tt>, the client MAY unconditionally read and process the two characters, or the client MAY read just the first digit and display the second digit.</p>
-
-    <p>Clients SHOULD NOT send the digits <tt>16-99</tt> where a <tt>&lt;COLOR&gt;</tt> is allowed, as clients will interpret it differently.</p>
+    <p>If there are two ASCII digits available where a <tt>&lt;COLOR&gt;</tt> is allowed, then two characters MUST always be read for it and displayed as described below.</p>
 </div>
 
 ### Colors
@@ -195,19 +193,760 @@ The following colors are defined for use with this formatting character:
 * <tt><span class="ircb-15">&nbsp;&nbsp;</span> - 15</tt> - Light Grey.
 * <tt><span class="ircb-1">&nbsp;</span><span class="ircb-0">&nbsp;</span> - 99</tt> - Default Foreground/Background - Not universally supported.
 
+In addition, the table below describes the commonly-used colors for codes 16-98.
+
 <div class="note">
     NOTE: The colors displayed here are simply a guide. The actual RGB values used for these codes will depend on what the client author has defined, and are often defined by the terminal color scheme for terminal-based clients.
 </div>
 
-<div class="warning">
-    WARNING: Clients SHOULD NOT send color codes <tt>16-99</tt>. As noted above, they will be interpreted different ways by different clients and we do not recommend using them.
-</div>
 
 ### Mistaken Eating of Text
 
 When sending color codes `0-9`, clients may use either the one-digit `(3)` or two-digit `(03)` versions of it. However, since two digits are always used if available, if the text following the color code starts with a digit, the last `<COLOR>` MUST use the two-digit version to be displayed correctly. This ensures that the first character of the text does not get interpreted as part of the formatting code.
 
 If the text immediately following a code setting a foreground color consists of something like `",13"`, it will get interpreted as setting the background rather than text. In this example, clients can put the color code either after the comma character or before the character in front of the comma character to avoid this. They can also put a different formatting code after the comma to ensure that the number does not get interpreted as part of the color code (for instance, two bold characters in a row, which will cancel each other out as they are toggles).
+
+
+### Colors 16-98
+
+When you receive the color codes 16-98, you should display them using the RGB values in this table:
+
+<style>
+    .colorcode {
+        display: block;
+        font-size: 1.1em;
+    }
+    .hexcode {
+        font-size: 0.8em;
+    }
+    .rgb-table .hexcode::before {
+        content: "#";
+    }
+    .ansi-table .hexcode::before {
+        content: "ANSI ";
+    }
+    .ondark .hexcode::before {
+        color: rgba(245, 245, 245, 0.73);
+    }
+    .onlight .hexcode::before {
+        color: rgba(10, 10, 10, 0.73);
+    }
+    .ondark {
+        color: #f7f7f7;
+    }
+    .onlight {
+        color: #131313;
+    }
+    .color-table {
+        text-align: center;
+        width: 100%;
+    }
+    .color-table td {
+        padding: 0.2em 0.6em;
+    }
+</style>
+
+<table class="rgb-table color-table pure-table">
+    <tr>
+        <td class="ondark" style="background:#470000">
+            <span class="colorcode">16</span>
+            <span class="hexcode">470000</span>
+        </td>
+        <td class="ondark" style="background:#472100">
+            <span class="colorcode">17</span>
+            <span class="hexcode">472100</span>
+        </td>
+        <td class="ondark" style="background:#474700">
+            <span class="colorcode">18</span>
+            <span class="hexcode">474700</span>
+        </td>
+        <td class="ondark" style="background:#324700">
+            <span class="colorcode">19</span>
+            <span class="hexcode">324700</span>
+        </td>
+        <td class="ondark" style="background:#004700">
+            <span class="colorcode">20</span>
+            <span class="hexcode">004700</span>
+        </td>
+        <td class="ondark" style="background:#00472c">
+            <span class="colorcode">21</span>
+            <span class="hexcode">00472c</span>
+        </td>
+        <td class="ondark" style="background:#004747">
+            <span class="colorcode">22</span>
+            <span class="hexcode">004747</span>
+        </td>
+        <td class="ondark" style="background:#002747">
+            <span class="colorcode">23</span>
+            <span class="hexcode">002747</span>
+        </td>
+        <td class="ondark" style="background:#000047">
+            <span class="colorcode">24</span>
+            <span class="hexcode">000047</span>
+        </td>
+        <td class="ondark" style="background:#2e0047">
+            <span class="colorcode">25</span>
+            <span class="hexcode">2e0047</span>
+        </td>
+        <td class="ondark" style="background:#470047">
+            <span class="colorcode">26</span>
+            <span class="hexcode">470047</span>
+        </td>
+        <td class="ondark" style="background:#47002a">
+            <span class="colorcode">27</span>
+            <span class="hexcode">47002a</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#740000">
+            <span class="colorcode">28</span>
+            <span class="hexcode">740000</span>
+        </td>
+        <td class="ondark" style="background:#743a00">
+            <span class="colorcode">29</span>
+            <span class="hexcode">743a00</span>
+        </td>
+        <td class="ondark" style="background:#747400">
+            <span class="colorcode">30</span>
+            <span class="hexcode">747400</span>
+        </td>
+        <td class="ondark" style="background:#517400">
+            <span class="colorcode">31</span>
+            <span class="hexcode">517400</span>
+        </td>
+        <td class="ondark" style="background:#007400">
+            <span class="colorcode">32</span>
+            <span class="hexcode">007400</span>
+        </td>
+        <td class="ondark" style="background:#007449">
+            <span class="colorcode">33</span>
+            <span class="hexcode">007449</span>
+        </td>
+        <td class="ondark" style="background:#007474">
+            <span class="colorcode">34</span>
+            <span class="hexcode">007474</span>
+        </td>
+        <td class="ondark" style="background:#004074">
+            <span class="colorcode">35</span>
+            <span class="hexcode">004074</span>
+        </td>
+        <td class="ondark" style="background:#000074">
+            <span class="colorcode">36</span>
+            <span class="hexcode">000074</span>
+        </td>
+        <td class="ondark" style="background:#4b0074">
+            <span class="colorcode">37</span>
+            <span class="hexcode">4b0074</span>
+        </td>
+        <td class="ondark" style="background:#740074">
+            <span class="colorcode">38</span>
+            <span class="hexcode">740074</span>
+        </td>
+        <td class="ondark" style="background:#740045">
+            <span class="colorcode">39</span>
+            <span class="hexcode">740045</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#b50000">
+            <span class="colorcode">40</span>
+            <span class="hexcode">b50000</span>
+        </td>
+        <td class="ondark" style="background:#b56300">
+            <span class="colorcode">41</span>
+            <span class="hexcode">b56300</span>
+        </td>
+        <td class="ondark" style="background:#b5b500">
+            <span class="colorcode">42</span>
+            <span class="hexcode">b5b500</span>
+        </td>
+        <td class="ondark" style="background:#7db500">
+            <span class="colorcode">43</span>
+            <span class="hexcode">7db500</span>
+        </td>
+        <td class="ondark" style="background:#00b500">
+            <span class="colorcode">44</span>
+            <span class="hexcode">00b500</span>
+        </td>
+        <td class="ondark" style="background:#00b571">
+            <span class="colorcode">45</span>
+            <span class="hexcode">00b571</span>
+        </td>
+        <td class="ondark" style="background:#00b5b5">
+            <span class="colorcode">46</span>
+            <span class="hexcode">00b5b5</span>
+        </td>
+        <td class="ondark" style="background:#0063b5">
+            <span class="colorcode">47</span>
+            <span class="hexcode">0063b5</span>
+        </td>
+        <td class="ondark" style="background:#0000b5">
+            <span class="colorcode">48</span>
+            <span class="hexcode">0000b5</span>
+        </td>
+        <td class="ondark" style="background:#7500b5">
+            <span class="colorcode">49</span>
+            <span class="hexcode">7500b5</span>
+        </td>
+        <td class="ondark" style="background:#b500b5">
+            <span class="colorcode">50</span>
+            <span class="hexcode">b500b5</span>
+        </td>
+        <td class="ondark" style="background:#b5006b">
+            <span class="colorcode">51</span>
+            <span class="hexcode">b5006b</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#ff0000">
+            <span class="colorcode">52</span>
+            <span class="hexcode">ff0000</span>
+        </td>
+        <td class="ondark" style="background:#ff8c00">
+            <span class="colorcode">53</span>
+            <span class="hexcode">ff8c00</span>
+        </td>
+        <td class="onlight" style="background:#ffff00">
+            <span class="colorcode">54</span>
+            <span class="hexcode">ffff00</span>
+        </td>
+        <td class="onlight" style="background:#b2ff00">
+            <span class="colorcode">55</span>
+            <span class="hexcode">b2ff00</span>
+        </td>
+        <td class="onlight" style="background:#00ff00">
+            <span class="colorcode">56</span>
+            <span class="hexcode">00ff00</span>
+        </td>
+        <td class="onlight" style="background:#00ffa0">
+            <span class="colorcode">57</span>
+            <span class="hexcode">00ffa0</span>
+        </td>
+        <td class="onlight" style="background:#00ffff">
+            <span class="colorcode">58</span>
+            <span class="hexcode">00ffff</span>
+        </td>
+        <td class="ondark" style="background:#008cff">
+            <span class="colorcode">59</span>
+            <span class="hexcode">008cff</span>
+        </td>
+        <td class="ondark" style="background:#0000ff">
+            <span class="colorcode">60</span>
+            <span class="hexcode">0000ff</span>
+        </td>
+        <td class="ondark" style="background:#a500ff">
+            <span class="colorcode">61</span>
+            <span class="hexcode">a500ff</span>
+        </td>
+        <td class="ondark" style="background:#ff00ff">
+            <span class="colorcode">62</span>
+            <span class="hexcode">ff00ff</span>
+        </td>
+        <td class="ondark" style="background:#ff0098">
+            <span class="colorcode">63</span>
+            <span class="hexcode">ff0098</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#ff5959">
+            <span class="colorcode">64</span>
+            <span class="hexcode">ff5959</span>
+        </td>
+        <td class="onlight" style="background:#ffb459">
+            <span class="colorcode">65</span>
+            <span class="hexcode">ffb459</span>
+        </td>
+        <td class="onlight" style="background:#ffff71">
+            <span class="colorcode">66</span>
+            <span class="hexcode">ffff71</span>
+        </td>
+        <td class="onlight" style="background:#cfff60">
+            <span class="colorcode">67</span>
+            <span class="hexcode">cfff60</span>
+        </td>
+        <td class="onlight" style="background:#6fff6f">
+            <span class="colorcode">68</span>
+            <span class="hexcode">6fff6f</span>
+        </td>
+        <td class="onlight" style="background:#65ffc9">
+            <span class="colorcode">69</span>
+            <span class="hexcode">65ffc9</span>
+        </td>
+        <td class="onlight" style="background:#6dffff">
+            <span class="colorcode">70</span>
+            <span class="hexcode">6dffff</span>
+        </td>
+        <td class="onlight" style="background:#59b4ff">
+            <span class="colorcode">71</span>
+            <span class="hexcode">59b4ff</span>
+        </td>
+        <td class="ondark" style="background:#5959ff">
+            <span class="colorcode">72</span>
+            <span class="hexcode">5959ff</span>
+        </td>
+        <td class="ondark" style="background:#c459ff">
+            <span class="colorcode">73</span>
+            <span class="hexcode">c459ff</span>
+        </td>
+        <td class="ondark" style="background:#ff66ff">
+            <span class="colorcode">74</span>
+            <span class="hexcode">ff66ff</span>
+        </td>
+        <td class="ondark" style="background:#ff59bc">
+            <span class="colorcode">75</span>
+            <span class="hexcode">ff59bc</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="onlight" style="background:#ff9c9c">
+            <span class="colorcode">76</span>
+            <span class="hexcode">ff9c9c</span>
+        </td>
+        <td class="onlight" style="background:#ffd39c">
+            <span class="colorcode">77</span>
+            <span class="hexcode">ffd39c</span>
+        </td>
+        <td class="onlight" style="background:#ffff9c">
+            <span class="colorcode">78</span>
+            <span class="hexcode">ffff9c</span>
+        </td>
+        <td class="onlight" style="background:#e2ff9c">
+            <span class="colorcode">79</span>
+            <span class="hexcode">e2ff9c</span>
+        </td>
+        <td class="onlight" style="background:#9cff9c">
+            <span class="colorcode">80</span>
+            <span class="hexcode">9cff9c</span>
+        </td>
+        <td class="onlight" style="background:#9cffdb">
+            <span class="colorcode">81</span>
+            <span class="hexcode">9cffdb</span>
+        </td>
+        <td class="onlight" style="background:#9cffff">
+            <span class="colorcode">82</span>
+            <span class="hexcode">9cffff</span>
+        </td>
+        <td class="onlight" style="background:#9cd3ff">
+            <span class="colorcode">83</span>
+            <span class="hexcode">9cd3ff</span>
+        </td>
+        <td class="onlight" style="background:#9c9cff">
+            <span class="colorcode">84</span>
+            <span class="hexcode">9c9cff</span>
+        </td>
+        <td class="onlight" style="background:#dc9cff">
+            <span class="colorcode">85</span>
+            <span class="hexcode">dc9cff</span>
+        </td>
+        <td class="onlight" style="background:#ff9cff">
+            <span class="colorcode">86</span>
+            <span class="hexcode">ff9cff</span>
+        </td>
+        <td class="onlight" style="background:#ff94d3">
+            <span class="colorcode">87</span>
+            <span class="hexcode">ff94d3</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#000000">
+            <span class="colorcode">88</span>
+            <span class="hexcode">000000</span>
+        </td>
+        <td class="ondark" style="background:#131313">
+            <span class="colorcode">89</span>
+            <span class="hexcode">131313</span>
+        </td>
+        <td class="ondark" style="background:#282828">
+            <span class="colorcode">90</span>
+            <span class="hexcode">282828</span>
+        </td>
+        <td class="ondark" style="background:#363636">
+            <span class="colorcode">91</span>
+            <span class="hexcode">363636</span>
+        </td>
+        <td class="ondark" style="background:#4d4d4d">
+            <span class="colorcode">92</span>
+            <span class="hexcode">4d4d4d</span>
+        </td>
+        <td class="ondark" style="background:#656565">
+            <span class="colorcode">93</span>
+            <span class="hexcode">656565</span>
+        </td>
+        <td class="ondark" style="background:#818181">
+            <span class="colorcode">94</span>
+            <span class="hexcode">818181</span>
+        </td>
+        <td class="ondark" style="background:#9f9f9f">
+            <span class="colorcode">95</span>
+            <span class="hexcode">9f9f9f</span>
+        </td>
+        <td class="onlight" style="background:#bcbcbc">
+            <span class="colorcode">96</span>
+            <span class="hexcode">bcbcbc</span>
+        </td>
+        <td class="onlight" style="background:#e2e2e2">
+            <span class="colorcode">97</span>
+            <span class="hexcode">e2e2e2</span>
+        </td>
+        <td class="onlight" style="background:#ffffff">
+            <span class="colorcode">98</span>
+            <span class="hexcode">ffffff</span>
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+If displaying this on an ANSI terminal, these ANSI color codes should be used:
+
+<table class="ansi-table color-table pure-table">
+    <tr>
+        <td class="ondark" style="background:#470000">
+            <span class="colorcode">16</span>
+            <span class="hexcode">52</span>
+        </td>
+        <td class="ondark" style="background:#472100">
+            <span class="colorcode">17</span>
+            <span class="hexcode">94</span>
+        </td>
+        <td class="ondark" style="background:#474700">
+            <span class="colorcode">18</span>
+            <span class="hexcode">100</span>
+        </td>
+        <td class="ondark" style="background:#324700">
+            <span class="colorcode">19</span>
+            <span class="hexcode">58</span>
+        </td>
+        <td class="ondark" style="background:#004700">
+            <span class="colorcode">20</span>
+            <span class="hexcode">22</span>
+        </td>
+        <td class="ondark" style="background:#00472c">
+            <span class="colorcode">21</span>
+            <span class="hexcode">29</span>
+        </td>
+        <td class="ondark" style="background:#004747">
+            <span class="colorcode">22</span>
+            <span class="hexcode">23</span>
+        </td>
+        <td class="ondark" style="background:#002747">
+            <span class="colorcode">23</span>
+            <span class="hexcode">24</span>
+        </td>
+        <td class="ondark" style="background:#000047">
+            <span class="colorcode">24</span>
+            <span class="hexcode">17</span>
+        </td>
+        <td class="ondark" style="background:#2e0047">
+            <span class="colorcode">25</span>
+            <span class="hexcode">54</span>
+        </td>
+        <td class="ondark" style="background:#470047">
+            <span class="colorcode">26</span>
+            <span class="hexcode">53</span>
+        </td>
+        <td class="ondark" style="background:#47002a">
+            <span class="colorcode">27</span>
+            <span class="hexcode">89</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#740000">
+            <span class="colorcode">28</span>
+            <span class="hexcode">88</span>
+        </td>
+        <td class="ondark" style="background:#743a00">
+            <span class="colorcode">29</span>
+            <span class="hexcode">130</span>
+        </td>
+        <td class="ondark" style="background:#747400">
+            <span class="colorcode">30</span>
+            <span class="hexcode">142</span>
+        </td>
+        <td class="ondark" style="background:#517400">
+            <span class="colorcode">31</span>
+            <span class="hexcode">64</span>
+        </td>
+        <td class="ondark" style="background:#007400">
+            <span class="colorcode">32</span>
+            <span class="hexcode">28</span>
+        </td>
+        <td class="ondark" style="background:#007449">
+            <span class="colorcode">33</span>
+            <span class="hexcode">35</span>
+        </td>
+        <td class="ondark" style="background:#007474">
+            <span class="colorcode">34</span>
+            <span class="hexcode">30</span>
+        </td>
+        <td class="ondark" style="background:#004074">
+            <span class="colorcode">35</span>
+            <span class="hexcode">25</span>
+        </td>
+        <td class="ondark" style="background:#000074">
+            <span class="colorcode">36</span>
+            <span class="hexcode">18</span>
+        </td>
+        <td class="ondark" style="background:#4b0074">
+            <span class="colorcode">37</span>
+            <span class="hexcode">91</span>
+        </td>
+        <td class="ondark" style="background:#740074">
+            <span class="colorcode">38</span>
+            <span class="hexcode">90</span>
+        </td>
+        <td class="ondark" style="background:#740045">
+            <span class="colorcode">39</span>
+            <span class="hexcode">125</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#b50000">
+            <span class="colorcode">40</span>
+            <span class="hexcode">124</span>
+        </td>
+        <td class="ondark" style="background:#b56300">
+            <span class="colorcode">41</span>
+            <span class="hexcode">166</span>
+        </td>
+        <td class="ondark" style="background:#b5b500">
+            <span class="colorcode">42</span>
+            <span class="hexcode">184</span>
+        </td>
+        <td class="ondark" style="background:#7db500">
+            <span class="colorcode">43</span>
+            <span class="hexcode">106</span>
+        </td>
+        <td class="ondark" style="background:#00b500">
+            <span class="colorcode">44</span>
+            <span class="hexcode">34</span>
+        </td>
+        <td class="ondark" style="background:#00b571">
+            <span class="colorcode">45</span>
+            <span class="hexcode">49</span>
+        </td>
+        <td class="ondark" style="background:#00b5b5">
+            <span class="colorcode">46</span>
+            <span class="hexcode">37</span>
+        </td>
+        <td class="ondark" style="background:#0063b5">
+            <span class="colorcode">47</span>
+            <span class="hexcode">33</span>
+        </td>
+        <td class="ondark" style="background:#0000b5">
+            <span class="colorcode">48</span>
+            <span class="hexcode">19</span>
+        </td>
+        <td class="ondark" style="background:#7500b5">
+            <span class="colorcode">49</span>
+            <span class="hexcode">129</span>
+        </td>
+        <td class="ondark" style="background:#b500b5">
+            <span class="colorcode">50</span>
+            <span class="hexcode">127</span>
+        </td>
+        <td class="ondark" style="background:#b5006b">
+            <span class="colorcode">51</span>
+            <span class="hexcode">161</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#ff0000">
+            <span class="colorcode">52</span>
+            <span class="hexcode">196</span>
+        </td>
+        <td class="ondark" style="background:#ff8c00">
+            <span class="colorcode">53</span>
+            <span class="hexcode">208</span>
+        </td>
+        <td class="onlight" style="background:#ffff00">
+            <span class="colorcode">54</span>
+            <span class="hexcode">226</span>
+        </td>
+        <td class="onlight" style="background:#b2ff00">
+            <span class="colorcode">55</span>
+            <span class="hexcode">154</span>
+        </td>
+        <td class="onlight" style="background:#00ff00">
+            <span class="colorcode">56</span>
+            <span class="hexcode">46</span>
+        </td>
+        <td class="onlight" style="background:#00ffa0">
+            <span class="colorcode">57</span>
+            <span class="hexcode">86</span>
+        </td>
+        <td class="onlight" style="background:#00ffff">
+            <span class="colorcode">58</span>
+            <span class="hexcode">51</span>
+        </td>
+        <td class="ondark" style="background:#008cff">
+            <span class="colorcode">59</span>
+            <span class="hexcode">75</span>
+        </td>
+        <td class="ondark" style="background:#0000ff">
+            <span class="colorcode">60</span>
+            <span class="hexcode">21</span>
+        </td>
+        <td class="ondark" style="background:#a500ff">
+            <span class="colorcode">61</span>
+            <span class="hexcode">171</span>
+        </td>
+        <td class="ondark" style="background:#ff00ff">
+            <span class="colorcode">62</span>
+            <span class="hexcode">201</span>
+        </td>
+        <td class="ondark" style="background:#ff0098">
+            <span class="colorcode">63</span>
+            <span class="hexcode">198</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#ff5959">
+            <span class="colorcode">64</span>
+            <span class="hexcode">203</span>
+        </td>
+        <td class="onlight" style="background:#ffb459">
+            <span class="colorcode">65</span>
+            <span class="hexcode">215</span>
+        </td>
+        <td class="onlight" style="background:#ffff71">
+            <span class="colorcode">66</span>
+            <span class="hexcode">227</span>
+        </td>
+        <td class="onlight" style="background:#cfff60">
+            <span class="colorcode">67</span>
+            <span class="hexcode">191</span>
+        </td>
+        <td class="onlight" style="background:#6fff6f">
+            <span class="colorcode">68</span>
+            <span class="hexcode">83</span>
+        </td>
+        <td class="onlight" style="background:#65ffc9">
+            <span class="colorcode">69</span>
+            <span class="hexcode">122</span>
+        </td>
+        <td class="onlight" style="background:#6dffff">
+            <span class="colorcode">70</span>
+            <span class="hexcode">87</span>
+        </td>
+        <td class="onlight" style="background:#59b4ff">
+            <span class="colorcode">71</span>
+            <span class="hexcode">111</span>
+        </td>
+        <td class="ondark" style="background:#5959ff">
+            <span class="colorcode">72</span>
+            <span class="hexcode">63</span>
+        </td>
+        <td class="ondark" style="background:#c459ff">
+            <span class="colorcode">73</span>
+            <span class="hexcode">177</span>
+        </td>
+        <td class="ondark" style="background:#ff66ff">
+            <span class="colorcode">74</span>
+            <span class="hexcode">207</span>
+        </td>
+        <td class="ondark" style="background:#ff59bc">
+            <span class="colorcode">75</span>
+            <span class="hexcode">205</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="onlight" style="background:#ff9c9c">
+            <span class="colorcode">76</span>
+            <span class="hexcode">217</span>
+        </td>
+        <td class="onlight" style="background:#ffd39c">
+            <span class="colorcode">77</span>
+            <span class="hexcode">223</span>
+        </td>
+        <td class="onlight" style="background:#ffff9c">
+            <span class="colorcode">78</span>
+            <span class="hexcode">229</span>
+        </td>
+        <td class="onlight" style="background:#e2ff9c">
+            <span class="colorcode">79</span>
+            <span class="hexcode">193</span>
+        </td>
+        <td class="onlight" style="background:#9cff9c">
+            <span class="colorcode">80</span>
+            <span class="hexcode">157</span>
+        </td>
+        <td class="onlight" style="background:#9cffdb">
+            <span class="colorcode">81</span>
+            <span class="hexcode">158</span>
+        </td>
+        <td class="onlight" style="background:#9cffff">
+            <span class="colorcode">82</span>
+            <span class="hexcode">159</span>
+        </td>
+        <td class="onlight" style="background:#9cd3ff">
+            <span class="colorcode">83</span>
+            <span class="hexcode">153</span>
+        </td>
+        <td class="onlight" style="background:#9c9cff">
+            <span class="colorcode">84</span>
+            <span class="hexcode">147</span>
+        </td>
+        <td class="onlight" style="background:#dc9cff">
+            <span class="colorcode">85</span>
+            <span class="hexcode">183</span>
+        </td>
+        <td class="onlight" style="background:#ff9cff">
+            <span class="colorcode">86</span>
+            <span class="hexcode">219</span>
+        </td>
+        <td class="onlight" style="background:#ff94d3">
+            <span class="colorcode">87</span>
+            <span class="hexcode">212</span>
+        </td>
+    </tr>
+    <tr>
+        <td class="ondark" style="background:#000000">
+            <span class="colorcode">88</span>
+            <span class="hexcode">16</span>
+        </td>
+        <td class="ondark" style="background:#131313">
+            <span class="colorcode">89</span>
+            <span class="hexcode">233</span>
+        </td>
+        <td class="ondark" style="background:#282828">
+            <span class="colorcode">90</span>
+            <span class="hexcode">235</span>
+        </td>
+        <td class="ondark" style="background:#363636">
+            <span class="colorcode">91</span>
+            <span class="hexcode">237</span>
+        </td>
+        <td class="ondark" style="background:#4d4d4d">
+            <span class="colorcode">92</span>
+            <span class="hexcode">239</span>
+        </td>
+        <td class="ondark" style="background:#656565">
+            <span class="colorcode">93</span>
+            <span class="hexcode">241</span>
+        </td>
+        <td class="ondark" style="background:#818181">
+            <span class="colorcode">94</span>
+            <span class="hexcode">244</span>
+        </td>
+        <td class="ondark" style="background:#9f9f9f">
+            <span class="colorcode">95</span>
+            <span class="hexcode">247</span>
+        </td>
+        <td class="onlight" style="background:#bcbcbc">
+            <span class="colorcode">96</span>
+            <span class="hexcode">250</span>
+        </td>
+        <td class="onlight" style="background:#e2e2e2">
+            <span class="colorcode">97</span>
+            <span class="hexcode">254</span>
+        </td>
+        <td class="onlight" style="background:#ffffff">
+            <span class="colorcode">98</span>
+            <span class="hexcode">231</span>
+        </td>
+        <td></td>
+    </tr>
+</table>
 
 
 ## Hex Color
@@ -252,3 +991,11 @@ Each example displays both the raw IRC code sent, and then a formatted version o
 * <div><tt>Code: &nbsp; This is a <span class="reverse">I</span><span class="reverse">C</span>13,9cool <span class="reverse">C</span>message</tt><br/><tt>Output: This is a <span class="irci"><span class="ircf-13 ircb-9">cool </span>message</span></tt></div>
 * <div><tt>Code: &nbsp; IRC <span class="reverse">B</span>is <span class="reverse">C</span>4,12so <span class="reverse">C</span>great<span class="reverse">O</span>!</tt><br/><tt>Output: IRC <span class="ircb">is <span class="ircf-4 ircb-12">so </span>great</span>!</tt></div>
 * <div><tt>Code: &nbsp; Rules: Don't spam 5<span class="reverse">C</span>13,8,6<span class="reverse">C</span>,7,8, and especially not <span class="reverse">B</span>9<span class="reverse">B</span><span class="reverse">I</span>!</tt><br/><tt>Output: Don't spam 5<span class="ircf-13 ircb-8">,6</span>,7,8, and especially not <span class="ircb">9</span><span class="irci">!</span></tt></div>
+
+
+---
+
+
+# Acknowledgements
+
+Thanks to [Nei](http://anti.teamidiot.de/static/nei/*/extended_mirc_color_proposal.html) for some guidance on the extended color codes!
