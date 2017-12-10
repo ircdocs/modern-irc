@@ -1116,6 +1116,8 @@ Examples:
 
 ### `KICKLEN` Parameter
 
+      Format: KICKLEN=<length>
+
 The `KICKLEN` parameter indicates the maximum length for the `<reason>` of a [`KICK`](#kick-message) command. If a [`KICK`](#kick-message) `<reason>` has more characters than this parameter, it may be silently truncated by the server before being passed on to other clients. Clients MAY receive a [`KICK`](#kick-message) `<reason>` that has more characters than this parameter.
 
 The value MUST be specified and MUST be a positive integer.
