@@ -252,7 +252,7 @@ The ABNF representation for an `RPL_ISUPPORT` token is:
 
 As the maximum number of message parameters to any reply is 15, the maximum number of `RPL_ISUPPORT` tokens that can be advertised is 13. To counter this, a server MAY issue multiple `RPL_ISUPPORT` numerics. A server MUST issue at least one `RPL_ISUPPORT` numeric after client registration has completed. It MUST be issued before further commands from the client are processed.
 
-As with other local numerics, when `RPL_ISUPPORT` is delivered remotely, it MUST be converted into a `105` numeric before delivery to the client.
+When clients send a [`VERSION`](#version-message) command to an external server (i.e. not the one they're currently connected to), they receive the appropriate information from that server. That external server's `ISUPPORT` tokens are sent to the client using the `105` (`RPL_REMOTEISUPPORT`) numeric instead of `005`, to ensure that clients don't process and start using these tokens sent by an external server. The format of the `105` message is exactly the same as `RPL_ISUPPORT` – the numeric itself is the only difference.
 
 A token is of the form `PARAMETER`, `PARAMETER=VALUE` or `-PARAMETER`. Servers MUST send the parameter as upper-case text.
 
