@@ -257,7 +257,7 @@ Servers MUST specify the casemapping they use in the [`RPL_ISUPPORT`](#feature-a
 
 Servers and clients send each other messages which may or may not generate a reply; client to server communication is essentially asynchronous in nature.
 
-Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters (of which there may be up to 15).
+Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters.
 
 Clients MAY include a prefix of their nickname on messages they send (after connection registration has been completed). However, I'd avoid doing so as it makes the protocol more fragile and makes messages more likely to be misinterpreted by the server.
 
@@ -300,6 +300,8 @@ Information on specific commands can be found in the [Client Messages](#client-m
 ### Parameters
 
 Parameters (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. The meaning of specific parameters changes for every single message.
+
+Older IRC protocol specifications explicitly limited the number of parameters to 15. However, today some clients and servers may return as many parameters as can fit in the message length limit. When sending parameters, try to send a max of 15 to not break older software. When receiving parameters (especially for clients), try not to place a limit on the number of incoming parameters you'll parse.
 
 
 ## Wire Format
