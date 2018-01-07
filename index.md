@@ -335,8 +335,7 @@ The ABNF representation for this is:
       vendor      =  hostname
       prefix      =  servername / ( nickname [ [ "!" user ] "@" host ] )
       command     =  1*letter / 3digit
-      params      =  *13( SPACE middle ) [ SPACE ":" trailing ]
-                  =/ 14( SPACE middle ) [ SPACE [ ":" ] trailing ]
+      params      =  *( SPACE middle ) [ SPACE ":" trailing ]
 
       nospcrlfcl  =  %x01-09 / %x0B-0C / %x0E-1F / %x21-39 / %x3B-FF
                        ; any octet except NUL, CR, LF, " " and ":"
@@ -354,6 +353,7 @@ NOTES:
 3. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
 4. The last parameter may be an empty string.
 5. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
+6. Software SHOULD AVOID sending messages with more than 14 `<middle>` parts, but MUST parse incoming messages with any number of them as in the ABNF above.
 
 Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. As an example, for many server commands, the first parameter of that message is a list of targets.
 
