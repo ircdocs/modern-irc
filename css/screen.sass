@@ -99,6 +99,21 @@ html, body
     h1
         page-break-before: always
 
+#hovering-ietf-warning
+    background: rgba(20,20,20,0.75)
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    > div
+        max-width: calc(100% - 2rem)
+        width: 37rem
+        background: #fbfbfb
+        margin: 7rem auto 1rem
+        padding: 1.5rem 1.85rem
+        border-radius: 1.5rem
+
 #toc-popup
     background: rgba(20,20,20,0.75)
     position: fixed
@@ -190,6 +205,9 @@ li
             margin-top: 0
         &:last-child
             margin-bottom: 0
+
+.displaynone
+    display: none
 
 .warning, .note
     color: #fff

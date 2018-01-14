@@ -28,15 +28,28 @@
         {% endif %}
         {% if page.ietf %}
         <div id="ietftag">
-            <span class="detail">This document is now being worked on as an<br/>Internet-Draft which you can find <a href="{{ page.ietf }}">here</a> and <a href="{{ page.ietf-editors-copy }}">here</a></span>
+            <span class="detail">This document is now being worked on as an<br/>Internet-Draft which you can find <a href="{{ page.ietf }}">here</a> and <a href="{{ page.ietf-html-editors-copy }}">here</a></span>
         </div>
         {% endif %}
+
         <a onclick="toggledarkmode()" id="darkmodebtn"><i class="fa fa-sun-o show-when-dark"></i><i class="fa fa-moon-o show-when-light"></i></a>
         <div id="show-toc" onclick=""><div onclick="">Table of Contents</div></div>
         <div id="toc-popup" style="display: none"><div onclick="">
             <h2>Table of Contents</h2>
             <div onclick="" id="table-of-contents"></div>
         </div></div>
+        
+        {% if page.ietf %}
+        <div id="hovering-ietf-warning" onclick="disableietf();"><div>
+            <p>This document is <strong style="color: #441f00;">out of date</strong> and is now being persued as an Internet-Draft for standardisation with the IETF. You should look here for the document that replaces this:</p>
+            <p>
+                <a href="{{ page.ietf }}">[Internet-Draft]</a> -
+                <a href="{{ page.ietf-html-editors-copy }}">[Editor's HTML Draft]</a> -
+                <a href="{{ page.ietf-txt-editors-copy }}">[Editor's TXT Draft]</a> -
+                <a href="https://github.com/DanielOaks/irc-rfcs">[Github]</a>
+            </p>
+        </div></div>
+        {% endif %}
 
             <div id="nav"><div>
                 <nav>
@@ -77,6 +90,10 @@
             } else {
                 document.cookie = "darkmode=false";
             }
+        }
+
+        function disableietf() {
+            document.getElementById('hovering-ietf-warning').classList.add('displaynone');
         }
     </script>
 </html>
