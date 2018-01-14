@@ -339,11 +339,15 @@ This is the format of the **parameters** part, as rough ABNF:
 
 Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, to allow a value itself to contain spaces, the final parameter can be prepended by a `(':', 0x3a)` character. If the final parameter is prefixed with a colon `':'`, the prefix is stripped and the rest of the message is treated as the final parameter, no matter what characters it contains.
 
+Software SHOULD AVOID sending more than 15 parameters, but MUST parse messages with any number of them as described above.
+
 Here are some examples of parameters sections and how they could be represented as [JSON](https://www.json.org/) lists:
 
       dan LS * :multi-prefix sasl  ->  ["dan", "LS", "*", "multi-prefix sasl"]
 
       REQ :sasl message-tags foo   ->  ["REQ", "sasl message-tags foo"]
+
+      dan LIST :                   ->  ["dan", "LIST", ""]
 
       #chan :Hey!                  ->  ["#chan", "Hey!"]
 
@@ -464,7 +468,7 @@ The rough ABNF representation for an IRC message is:
 
 NOTES:
 
-1. `<SPACE>` consists only of ASCII SPACE character(s) `(' ', 0x20)`. Specifically notice that TABULATION, and all other control characters are not considered a part of `<SPACE>`.
+1. `<SPACE>` consists only of ASCII SPACE character(s) `(' ', 0x20)`. Specifically notice that TABULATION, control characters, and any other whitespace (including Unicode whitespace characters) are not considered a part of `<SPACE>`.
 2. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(0x20)` characters within a parameter.
 3. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
 4. The last parameter may be an empty string.
