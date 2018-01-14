@@ -243,7 +243,7 @@ Various server to server (S2S) protocols have been defined over the years, with 
 
 # Client-to-Server Protocol Structure
 
-While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, and encoded using [UTF-8 or some other text encoding](#character-encoding) described below. These messages may be sent at any time from either side, and may generate zero or more reply messages.
+While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`. These messages may be sent at any time from either side, and may generate zero or more reply messages.
 
 Software SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding to encode and decode messages, with fallbacks as described in the [Character Encodings](#character-encodings) implementation considerations appendix.
 
