@@ -227,29 +227,39 @@ While most messages between servers are distributed to all 'other' servers, this
 
 # Connection Setup
 
-IRC client-server connections work over TCP/IP. Unix sockets MAY be allowed by some servers, but are not recommended for most connections.
-
-The standard ports for client-server connections are TCP/6667 for plaintext, and TCP/6697 for TLS connections.
+IRC client-server connections work over TCP/IP. The standard ports for client-server connections are TCP/6667 for plaintext, and TCP/6697 for TLS connections.
 
 
 ---
 
 
-# Protocol Structure
+# Server-to-Server Protocol Structure
+
+Various server to server (S2S) protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) among the most popular (both based on the client-server protocol as described below). However, with the fragmented nature of server implementations, features, network designs and S2S protocols, right now it is impossible to define a single standard server to server protocol.
 
 
-## Overview
+---
 
-While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, and encoded using [UTF-8 or some other text encoding](#character-codes). These messages may be sent at any time from either side, and may generate zero or more reply messages. How specific messages are created and parsed is described below.
 
-Various server to server protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) among the most popular (both based on the client-server protocol as described). However, with the fragmented nature of IRC server to server protocols and differences in server implementations, features and network designs, right now it is impossible to define a single standard server to server protocol.
+# Client-to-Server Protocol Structure
+
+While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, and encoded using [UTF-8 or some other text encoding](#character-encoding) described below. These messages may be sent at any time from either side, and may generate zero or more reply messages.
+
+Software SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding to encode and decode messages, with fallbacks as described in the [Character Encodings](#character-encodings) implementation considerations appendix.
+
+Names of IRC entities (clients, servers, channels) are casemapped. This prevents, for example, someone having the nickname `'Dan'` and someone else having the nickname `'dan'`, confusing other users. Servers MUST advertise the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric that's sent when connection registration has completed.
 
 
 ## Messages
 
-IRC messages are extracted from a contiguous stream of bytes. A pair of characters, `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, act as message separators (however, software SHOULD split on any `('\n', 0x10)` character), and empty messages are silently ignored.
+An IRC message is a single line, delimited by with a pair of `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)` characters.
 
-Messages use ASCII/UTF-8 or some other character code as [described below](#character-codes), and have this format:
+- When reading messages from a stream, read the incoming data into a buffer. Only parse and process a message once you encounter the `\r\n` at the end of it. If you encounter an empty message, silently ignore it.
+- When sending messages, ensure that a pair of `\r\n` characters follows every single message your software sends out.
+
+---
+
+Messages have this format:
 
       [@tags] [:source] <command> <parameters>
 
@@ -260,19 +270,19 @@ The specific parts of an IRC message are:
 - **command**: The specific command this message represents.
 - **parameters**: If it exists, data relevant to this specific command.
 
-These message parts, and parameters, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
+These message parts, and parameters themselves, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
 
 Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the **tags** section of a message, including the leading `'@'` and trailing space character(s). There is no provision for continuation messages at this time.
 
-In the following sections we'll run through how to process each part, but here are a few complete example messages:
+---
+
+The following sections describe how to process each part, but here are a few complete example messages:
 
       :irc.example.com CAP LS * :multi-prefix extended-join sasl
 
       @id=234AB :dan!d@localhost PRIVMSG #chan :Hey what's up!
 
       CAP REQ :sasl
-
-Let's go over how to process each message part!
 
 
 ### Tags
@@ -304,7 +314,7 @@ The **source** is options and starts with a `(':', 0x3a)` character (which is st
 
 The source indicates the true origin of a message. If the source is missing from a message, it's is assumed to have originated from the client/server on the other end of the connection the message was received on.
 
-Clients SHOULD NOT include a source when sending a message. If they do include one, the only valid source is the current nickname of the client. If the provided nickname cannot be found by the server, or if the provided nickname does not match the sending client's nickname, the server MUST ignore the message silently.
+Clients SHOULD NOT include a source when sending a message. If they do include one, the only valid source is the current nickname of the client.
 
 Servers MAY include a source on any message, and MAY leave a source off of any message. Clients MUST be able to process any given message the same way whether it contains a source or does not contain one.
 
@@ -327,9 +337,7 @@ This is the format of the **parameters** part, as rough ABNF:
       middle      =  nospcrlfcl *( ":" / nospcrlfcl )
       trailing    =  *( ":" / " " / nospcrlfcl )
 
-In other words, parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, the final parameter is called the 'trailing' parameter, begins with a `(':', 0x3a)` character (which is stripped from the value).
-
-The 'middle' and 'trailing' parts are both regular parameters – 'trailing' is just a syntactic trick to allow spaces in the final parameter on a message.
+Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, to allow a value itself to contain spaces, the final parameter can be prepended by a `(':', 0x3a)` character. If the final parameter is prefixed with a colon `':'`, the prefix is stripped and the rest of the message is treated as the final parameter, no matter what characters it contains.
 
 Here are some examples of parameters sections and how they could be represented as [JSON](https://www.json.org/) lists:
 
@@ -341,16 +349,9 @@ Here are some examples of parameters sections and how they could be represented 
 
       #chan Hey!                   ->  ["#chan", "Hey!"]
 
-As you can see in the last two examples, a trailing parameter should be represented and treated as just another regular parameter.
+As the last two examples show, a trailing parameter (a parameter prefixed with `':'`) is another regular parameter. Once the `':'` is stripped, software MUST just treat it as another param.
 
 
-### Character Codes
-
-Clients SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding on outgoing messages. Clients SHOULD try decoding incoming messages as UTF-8. Today, the generally-recommended way of decoding incoming messages is to try UTF-8 before falling back to [Latin-1/ISO-8859-1(5)/CP1252](https://en.wikipedia.org/wiki/Windows-1252) (though this fallback encoding is often configurable by the user). Implementors should be aware their software may receive messages that cannot correctly decoded with any of their encodings. The [Character Encodings](#character-encodings) implementation considerations section has further discussion.
-
-The `'ascii'` casemapping defines the characters `a` to `z` to be considered the lower-case equivalents of the characters `A` to `Z` only. The `'rfc1459'` casemapping defines the same casemapping as `'ascii'`, with the addition of the characters `'{'`, `'}'`, and `'|'` being considered the lower-case equivalents of the characters `'['`, `']'`, and `'\'` respectively. For other casemappings used by servers, see the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter.
-
-Servers MUST specify the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric sent on completion of client registration.
 
 
 <!-- ### Parameters
