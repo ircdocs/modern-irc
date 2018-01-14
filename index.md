@@ -240,16 +240,14 @@ The standard ports for client-server connections are TCP/6667 for plaintext, and
 
 ## Overview
 
-The protocol described here is used for client-server connections. While connected, clients and servers send a stream of characters to each other, [generally](#character-codes) in ASCII/UTF-8. This stream of characters contains a series of messages, separated by the pair of characters `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`.
+While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, and encoded using [UTF-8 or some other text encoding](#character-codes). These messages may be sent at any time from either side, and may generate zero or more reply messages. How specific messages are created and parsed is described below.
 
 Various server to server protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) among the most popular (both based on the client-server protocol as described). However, with the fragmented nature of IRC server to server protocols and differences in server implementations, features and network designs, right now it is impossible to define a single standard server to server protocol.
 
 
 ## Messages
 
-Clients and servers communicate by exchanging messages with each other. These messages may or may not generate a reply and may be sent at any time from either side.  Empty messages are silently ignored.
-
-The protocol messages are extracted from a contiguous stream of bytes. A pair of characters, `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, act as message separators (however, software SHOULD split on any `('\n', 0x10)` character). Empty messages are silently ignored.
+IRC messages are extracted from a contiguous stream of bytes. A pair of characters, `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, act as message separators (however, software SHOULD split on any `('\n', 0x10)` character), and empty messages are silently ignored.
 
 Messages use ASCII/UTF-8 or some other character code as [described below](#character-codes), and have this format:
 
