@@ -310,7 +310,7 @@ For more information on processing tags – including the naming and registratio
 
 ### Source
 
-The **source** is options and starts with a `(':', 0x3a)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
+The **source** is optional and starts with a `(':', 0x3a)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
 
 The source indicates the true origin of a message. If the source is missing from a message, it's is assumed to have originated from the client/server on the other end of the connection the message was received on.
 
