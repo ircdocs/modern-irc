@@ -139,7 +139,7 @@ This mode is standard, and the mode letter used for it is `"+s"`.
 
 This channel mode controls whether the channel is 'secret', and does not have any value.
 
-A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rpl_whoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
+A channel that is set to secret will not show up in responses to the [`LIST`](#list-message) or [`NAMES`](#names-message) command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) numeric unless the user the numeric is being sent to is joined to that channel.
 
 ### Protected Topic Mode
 
@@ -266,7 +266,7 @@ The server MAY negate parameters which have not been previously advertised; in t
 
 A single `RPL_ISUPPORT` reply MUST NOT contain the same parameter multiple times nor advertise and negate the same parameter. However, the server is free to advertise or negate the same parameter in separate replies.
 
-See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rpl_isupport-parameters) section.
+See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 ### `RPL_SNOMASK (008)`
 
@@ -440,7 +440,7 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates
 
       "<client> <nick> <username> <host> * :<realname>"
 
-Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric shows details about the last client that used the nickname `<nick>`. The purpose of each argument is the same as with the [`RPL_WHOISUSER`](#rpl_whoisuser-311) numeric.
+Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric shows details about the last client that used the nickname `<nick>`. The purpose of each argument is the same as with the [`RPL_WHOISUSER`](#rplwhoisuser-311) numeric.
 
 ### `RPL_WHOISIDLE (317)`
 
@@ -502,7 +502,7 @@ Sent to a client to inform them of the current [topic](#topic-message) of the ch
 
       "<client> <channel> <nick> <setat>"
 
-Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPIC`](#rpl_topic-332).
+Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPIC`](#rpltopic-332).
 
 ### `RPL_INVITING (341)`
 
@@ -854,7 +854,7 @@ The text used in the last param of this message varies wildly.
 
       "<client> :SASL authentication successful"
 
-This numeric indicates that [SASL authentication](#authenticate-message) was completed successfully, and is normally sent along with [`RPL_LOGGEDIN`](#rpl_loggedin-900). For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
+This numeric indicates that [SASL authentication](#authenticate-message) was completed successfully, and is normally sent along with [`RPL_LOGGEDIN`](#rplloggedin-900). For more information on this numeric, see the IRCv3 [`sasl-3.1`](http://ircv3.net/specs/extensions/sasl-3.1.html) extension.
 
 The text used in the last param of this message varies wildly.
 
@@ -906,7 +906,7 @@ The text used in the last param of this message varies wildly.
 
 # `RPL_ISUPPORT` Parameters
 
-Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPPORT`](#rpl_isupport-005) numeric lists parameters that let the client know which features are active and their value, if any.
+Used to [advertise features](#feature-advertisement) to clients, the [`RPL_ISUPPORT`](#rplisupport-005) numeric lists parameters that let the client know which features are active and their value, if any.
 
 The parameters listed here are standardised and/or widely-advertised by IRC servers today and do not include deprecated parameters. Servers SHOULD support at least the following parameters where appropriate, and may advertise any others. For a more extensive list of parameters advertised by this numeric, see the `irc-defs` [`RPL_ISUPPORT` list](https://defs.ircdocs.horse/defs/isupport.html).
 
@@ -1463,5 +1463,5 @@ Casemapping, at least right now, is a topic where implementations differ greatly
 
 These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) that are not contained in this document or that should be considered obsolete.
 
-* **`RPL_BOUNCE (005)`**: `005` is now used for [`RPL_ISUPPORT`](#rpl_isupport-005). `RPL_BOUNCE` was moved to [`010`](#rpl_bounce-010).
+* **`RPL_BOUNCE (005)`**: `005` is now used for [`RPL_ISUPPORT`](#rplisupport-005). `RPL_BOUNCE` was moved to [`010`](#rplbounce-010).
 * **`RPL_SUMMONING (342)`**: No. Just, no. The `SUMMON` command isn't used, don't implement this.
