@@ -268,12 +268,6 @@ A single `RPL_ISUPPORT` reply MUST NOT contain the same parameter multiple times
 
 See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
-### `RPL_SNOMASK (008)`
-
-      "<client> <snomask> :Server notice mask"
-
-Sent to the client to inform them of their current snomask.
-
 ### `RPL_BOUNCE (010)`
 
       "<client> <hostname> <port> :<info>"
@@ -819,12 +813,6 @@ Sent by a server to alert an IRC [operator](#operators) that they they do not ha
 `<priv>` is a string that has meaning in the server software, and allows an operator the privileges to perform certain commands or actions. These strings are server-defined and may refer to one or multiple commands or actions that may be performed by IRC operators.
 
 Examples of the sorts of privilege strings used by server software today include: `kline`, `dline`, `unkline`, `kill`, `kill:remote`, `die`, `remoteban`, `connect`, `connect:remote`, `rehash`.
-
-### `ERR_MLOCKRESTRICTED (742)`
-
-      "<channel> <modechar> <mlock> :MODE cannot be set due to channel having an active MLOCK restriction policy"
-
-Sent by a server when a client attempts to change an MLOCKed channel mode
 
 ### `RPL_LOGGEDIN (900)`
 
