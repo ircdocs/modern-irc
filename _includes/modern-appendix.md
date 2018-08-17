@@ -510,7 +510,7 @@ Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the 
 
 Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [invite-exception list](#invite-exception-channel-mode). `<mask>` is the given mask on the invite-exception list.
 
-### `RPL_ENDOFINVITELIST (349)`
+### `RPL_ENDOFINVITELIST (347)`
 
       "<client> <channel> :End of channel invite list"
 
