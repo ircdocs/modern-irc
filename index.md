@@ -1169,15 +1169,25 @@ Command Examples:
 
 The `MODE` command is used to set or remove options (or *modes*) from a given target.
 
-If `<target>` is a nickname, it MUST be the same nickname as the user who sent the command. If a client is trying to set modes for a different user, the [`ERR_USERSDONTMATCH`](#errusersdontmatch-502) numeric is returned and the command will fail.
+#### User mode
 
-If `<target>` is a channel, the user sending the command MUST have appropriate channel privileges to change modes (as well as to change the specific modes it is requesting), such as [halfop](#halfop-prefix) or [chanop](#operator-prefix). If a user does not have permission to change modes on the target channel, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail. Servers MAY check permissions once at the start of processing the `MODE` command, or may check it on setting each mode character.
+If `<target>` is a nickname that does not exist on the network, the [`ERR_NOSUCHNICK`](#errnosuchnick-401) numeric is returned. If `<target>` is a different nick than the user who sent the command, the [`ERR_USERSDONTMATCH`](#errusersdontmatch-502) numeric is returned.
 
-If `<target>` is a nickname and `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric will be sent back containing the current modes of the target user. If `<target>` is a channel and `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric will be sent back containing the current modes of the target channel.
+If `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric is sent back containing the current modes of the target user.
 
-If `<modestring>` is given and the user has permission to change modes on the target, the supplied modes will be applied and a `MODE` message will be returned containing the mode changes that were applied. For type A, B, and C modes, arguments will be obtained from `<mode arguments>`, sequentially, as required. If a type B or C mode cannot be acted upon as it requires an argument and one has not been supplied, that mode will be silently ignored. If a type A mode has been sent without an argument (i.e., listing the contents of that mode's list), servers SHOULD only send the list for that mode to the client once, regardless of how many times that type A mode is contained in the `<modestring>`.
+If `<modestring>` is given, the supplied modes will be applied, and a `MODE` message will be sent to the user containing the changed modes. If one or more modes sent are not implemented on the server, the server MUST apply the modes that are implemented, and then send the [`ERR_UMODEUNKNOWNFLAG`](#errumodeunknownflag-501) in reply along with the `MODE` message.
 
-The `MODE` message is sent from the server to a client to show that the `<target>`'s modes have changed. Mode changes are only sent to clients for channels they are joined to and their own user modes. When the `MODE` message is sent to clients, `<source>` represents the client or server that changed the modes.
+#### Channel mode
+
+If `<target>` is a channel that does not exist on the network, the [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) numeric is returned.
+
+If `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes.
+
+If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST not process the message, and [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned.
+If the user has permission to change modes on the target, the supplied modes will be applied based on the type of the mode (see below).
+For type A, B, and C modes, arguments will be sequentially obtained from `<mode arguments>`. If a type B or C mode does not have a parameter when being set, the server MUST ignore that mode.
+If a type A mode has been sent without an argument, the contents of the list MUST be sent to the user, unless it contains sensitive information the user is not allowed to access.
+When the server is done processing the modes, a `MODE` command is sent to all members of the channel containing the mode changes. Servers MAY choose to hide sensitive information when sending the mode changes.
 
 ---
 
