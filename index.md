@@ -28,7 +28,7 @@ copyrights:
 
 <div class="warning">
     <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
-    <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">Github repository</a>!</p>
+    <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">GitHub repository</a>!</p>
 </div>
 
 <div id="printable-toc" style="display: none"></div>
@@ -878,7 +878,7 @@ The `TOPIC` command is used to change or view the topic of the given channel. If
 
 If the client sending this command is not joined to the given channel, and tries to view its' topic, the server MAY return the [`ERR_NOTONCHANNEL`](#errnotonchannel-442) numeric and have the command fail.
 
-If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICTIME` SHOULD also be sent to that client.
+If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICWHOTIME` SHOULD also be sent to that client.
 
 If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail.
 
@@ -892,7 +892,7 @@ Numeric Replies:
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
 * [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
 * [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_TOPICTIME`](#rpltopictime-333) `(333)`
+* [`RPL_TOPICWHOTIME`](#rpltopicwhotime-333) `(333)`
 
 Command Examples:
 
