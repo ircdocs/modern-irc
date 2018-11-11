@@ -215,12 +215,14 @@ If the background and foreground colors are the same for a section of text, on '
     .spoiler {
         background: #222;
         color: #222;
+        font-size: 1.1em;
+        padding: 0.2em 0.25em;
     }
     .spoiler:hover {
         color: #f7f7f7;
     }
 </style>
-<span class="colorcode spoiler"><tt>this is spoilered text</tt></span>
+<span class="spoiler"><tt>this is spoilered text</tt></span>
 
 
 ### Colors 16-98
