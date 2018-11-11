@@ -207,6 +207,22 @@ When sending color codes `0-9`, clients may use either the one-digit `(3)` or tw
 If the text immediately following a code setting a foreground color consists of something like `",13"`, it will get interpreted as setting the background rather than text. In this example, clients can put the color code either after the comma character or before the character in front of the comma character to avoid this. They can also put a different formatting code after the comma to ensure that the number does not get interpreted as part of the color code (for instance, two bold characters in a row, which will cancel each other out as they are toggles).
 
 
+### 'Spoilers'
+
+If the background and foreground colors are the same for a section of text, on 'hovering over' or selecting this text these colours should be replaced with readable alternatives. For example:
+
+<style>
+    .spoiler {
+        background: #222;
+        color: #222;
+    }
+    .spoiler:hover {
+        color: #f7f7f7;
+    }
+</style>
+<span class="colorcode spoiler"><tt>this is spoilered text</tt></span>
+
+
 ### Colors 16-98
 
 When you receive the color codes 16-98, you should display them using the RGB values in this table:
