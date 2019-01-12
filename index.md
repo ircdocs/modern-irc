@@ -20,7 +20,7 @@ copyrights:
 {% include copyrights.html %}
 
 <div class="note">
-    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is a <a href="./about.html#living-specification">living specification</a> which is updated in response to feedback and implementations as they change. This document describes existing behaviour and what I consider best practices for new software.</p>
+    <p>This document intends to be a useful overview and reference of the IRC client protocol as it is implemented today. It is a <a href="./about.html#living-specifications">living specification</a> which is updated in response to feedback and implementations as they change. This document describes existing behaviour and what I consider best practices for new software.</p>
     <p>This <strong>is not a new protocol</strong> &ndash; it is the standard IRC protocol, just described in a single document with some already widely-implemented/accepted features and capabilities. Clients written to this spec will work with old and new servers, and servers written this way will service old and new clients.</p>
     <p>tl;dr if a new RFC was released today describing how IRC works, this is what I think it would look like.</p>
     <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
