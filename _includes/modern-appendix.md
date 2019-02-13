@@ -480,6 +480,12 @@ Sent as a reply to the [`LIST`](#list-message) command, this numeric indicates t
 
 Sent to a client to inform them of the currently-set modes of a channel. `<channel>` is the name of the channel. `<modestring>` and `<mode arguments>` are a mode string and the mode arguments (delimited as separate parameters) as defined in the [`MODE`](#mode-message) message description.
 
+### `RPL_CREATIONTIME (329)`
+
+      "<client> <channel> <creationtime>"
+
+Sent to a client to inform them of the creation time of a channel. `<channel>` is the name of the channel. `<creationtime>` is a unix timestamp representing when the channel was created on the network.
+
 ### `RPL_NOTOPIC (331)`
 
       "<client> <channel> :No topic is set"
