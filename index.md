@@ -699,7 +699,7 @@ Since it is easy for a client to lie about its username by relying solely on the
 
 The maximum length of `<username>` may be specified by the [`USERLEN`](#userlen-parameter) `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
 
-The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterix character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
+The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterisk character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
 If a client tries to send the `USER` command after they have already completed registration with the server, the `ERR_ALREADYREGISTERED` reply should be sent and the attempt should fail.
 
