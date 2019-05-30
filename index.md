@@ -244,7 +244,9 @@ IRC client-server connections work over TCP/IP. The standard ports for client-se
 
 # Server-to-Server Protocol Structure
 
-Various server to server (S2S) protocols have been defined over the years, with [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html) among the most popular (both based on the client-server protocol as described below). However, with the fragmented nature of server implementations, features, network designs and S2S protocols, right now it is impossible to define a single standard server to server protocol.
+Both [RFC1459](https://tools.ietf.org/html/rfc1459.html) and [RFC2813](https://tools.ietf.org/html/rfc2813.html) define a Server-to-Server protocol. But in the decades since, implementations have extended this protocol and diverged (see [TS6](https://github.com/grawity/irc-docs/blob/725a1f05b85d7a935986ae4f49b058e9b67e7ce9/server/ts6.txt) and [P10](http://web.mit.edu/klmitch/Sipb/devel/src/ircu2.10.11/doc/p10.html)), and servers have created entirely new protocols (see [InspIRCd](https://github.com/inspircd/inspircd)). The days where there was one Server-to-Server Protocol that everyone uses hasn't existed for a long time now.
+
+However, different IRC implementations don't _need_ to interact with each other. Networks generally run one server software across their entire network, and use the S2S protocol implemented by that server. The client protocol is important, but how servers on the network talk to each other is considered an implementation detail.
 
 
 ---
