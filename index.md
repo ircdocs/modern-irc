@@ -960,6 +960,41 @@ Command Examples:
       LIST >3                         ; Command to list all channels with
                                       more than three users.
 
+### INVITE message
+
+         Command: INVITE
+      Parameters: <nickname> <channel>
+      Alt Params: 0
+
+The INVITE command is used to invite a user to a channel.  The parameter `<nickname>` is the nickname of the person to be invited to the target channel `<channel>`.
+
+The target channel SHOULD exist (at least one user is on it).  Otherwise, the server SHOULD reject the command with the `ERR_NOSUCHCHANNEL` numeric.
+
+Only members of the channel are allowed to invite other users.  Otherwise, the server MUST reject the command with the `ERR_NOTONCHANNEL` numeric.
+
+When the channel has [invite-only](#invite-only-channel-mode) mode set, only channel operators may issue INVITE command.  Otherwise, the server MUST reject the command with the `ERR_CHANOPRIVSNEEDED` numeric.
+
+If the user is already on the target channel, the server MUST reject the command with the `ERR_USERONCHANNEL` numeric.
+
+When the invite is successful, the server MUST send a `RPL_INVITING` numeric to the command issuer, and an `INVITE` message, with the issuer as prefix, to the target user.  Other channel members SHOULD NOT be notified.
+
+Numeric Replies:
+
+* [`RPL_INVITING`](#rplinviting-341) `(341)`
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
+* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
+* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
+* [`ERR_USERONCHANNEL`](#erruseronchannel-443) `(443)`
+
+Command Examples:
+
+      INVITE Wiz #foo_bar    ; Invite Wiz to #foo_bar
+
+Message Examples:
+
+      :dan-!d@localhost INVITE Wiz #test    ; dan- has invited Wiz
+                                            to the channel #test
 
 ## Server Queries and Commands
 
