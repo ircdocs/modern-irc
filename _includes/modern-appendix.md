@@ -506,7 +506,7 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
 
 ### `RPL_INVITING (341)`
 
-      "<client> <channel> <nick>"
+      "<client> <nick> <channel>"
 
 Sent as a reply to the [`INVITE`](#invite-message) command to indicate that the attempt was successful and the client with the nickname `<nick>` has been invited to `<channel>`.
 
