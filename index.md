@@ -495,22 +495,7 @@ In all other respects, a numeric reply is just like a normal message. A list of 
 
 When wildcards are allowed in a string, it is referred to as a "mask".
 
-For string matching purposes, the protocol allows the use of two special characters: `('?', 0x3F)` to match one and only one character, and `('*', 0x2A)` to match any number of any characters. These two characters can be escaped using the `('\', 0x5C)` character.
-
-The ABNF syntax for this is:
-
-      mask        =  *( nowild / noesc wildone / noesc wildmany )
-      wildone     =  %x3F
-      wildmany    =  %x2A
-      nowild      =  %x01-29 / %x2B-3E / %x40-FF
-                       ; any octet except NUL, "*", "?"
-      noesc       =  %x01-5B / %x5D-FF
-                       ; any octet except NUL and "\"
-
-      matchone    =  %x01-FF
-                       ; matches wildone
-      matchmany   =  *matchone
-                       ; matches wildmany
+For string matching purposes, the protocol allows the use of two special characters: `('?', 0x3F)` to match one and only one character, and `('*', 0x2A)` to match any number of any characters.
 
 Examples:
 
