@@ -243,7 +243,7 @@ Various server to server (S2S) protocols have been defined over the years, with 
 
 # Client-to-Server Protocol Structure
 
-While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`. These messages may be sent at any time from either side, and may generate zero or more reply messages.
+While a client is connected to a server, they send a stream of bytes to each other. This stream contains messages separated by `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)`. These messages may be sent at any time from either side, and may generate zero or more reply messages.
 
 Software SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character encoding to encode and decode messages, with fallbacks as described in the [Character Encodings](#character-encodings) implementation considerations appendix.
 
@@ -252,7 +252,7 @@ Names of IRC entities (clients, servers, channels) are casemapped. This prevents
 
 ## Messages
 
-An IRC message is a single line, delimited by with a pair of `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)` characters.
+An IRC message is a single line, delimited by with a pair of `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)` characters.
 
 - When reading messages from a stream, read the incoming data into a buffer. Only parse and process a message once you encounter the `\r\n` at the end of it. If you encounter an empty message, silently ignore it.
 - When sending messages, ensure that a pair of `\r\n` characters follows every single message your software sends out.
@@ -266,7 +266,7 @@ Messages have this format:
 The specific parts of an IRC message are:
 
 - **tags**: Optional metadata on a message, starting with `('@', 0x40)`.
-- **source**: Optional note of where the message came from, starting with `(':', 0x3a)`. Also called the **prefix**.
+- **source**: Optional note of where the message came from, starting with `(':', 0x3A)`. Also called the **prefix**.
 - **command**: The specific command this message represents.
 - **parameters**: If it exists, data relevant to this specific command.
 
@@ -297,7 +297,7 @@ This is the format of the **tags** part, as rough ABNF:
       <escaped value> ::= <sequence of any characters except NUL, CR, LF, semicolon (`;`) and SPACE>
       <vendor>        ::= <host>
 
-Basically, a series of `<key>[=<value>]` segments, separated by `(';', 0x3b)`.
+Basically, a series of `<key>[=<value>]` segments, separated by `(';', 0x3B)`.
 
 Here are some examples of tags sections and how they could be represented as [JSON](https://www.json.org/) objects:
 
@@ -310,7 +310,7 @@ For more information on processing tags – including the naming and registratio
 
 ### Source
 
-The **source** is optional and starts with a `(':', 0x3a)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
+The **source** is optional and starts with a `(':', 0x3A)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
 
 The source indicates the true origin of a message. If the source is missing from a message, it's is assumed to have originated from the client/server on the other end of the connection the message was received on.
 
@@ -337,7 +337,7 @@ This is the format of the **parameters** part, as rough ABNF:
       middle      =  nospcrlfcl *( ":" / nospcrlfcl )
       trailing    =  *( ":" / " " / nospcrlfcl )
 
-Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, to allow a value itself to contain spaces, the final parameter can be prepended by a `(':', 0x3a)` character. If the final parameter is prefixed with a colon `':'`, the prefix is stripped and the rest of the message is treated as the final parameter, no matter what characters it contains.
+Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, to allow a value itself to contain spaces, the final parameter can be prepended by a `(':', 0x3A)` character. If the final parameter is prefixed with a colon `':'`, the prefix is stripped and the rest of the message is treated as the final parameter, no matter what characters it contains.
 
 Software SHOULD AVOID sending more than 15 parameters, as older client protocol documents specified this was the maximum and some clients may have trouble reading more than this. However, clients MUST parse incoming messages with any number of them.
 
@@ -425,13 +425,13 @@ Older IRC protocol specifications explicitly limited the number of parameters to
 
 <!-- ## Wire Format
 
-The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
+The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
 
 The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(' ', 0x20)`.
 
 The presence of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
 
-The presence of a prefix is indicated with a single leading colon character `(':', 0x3a)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
+The presence of a prefix is indicated with a single leading colon character `(':', 0x3A)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
 
 Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
 
@@ -695,7 +695,7 @@ The `USER` command is used at the beginning of a connection to specify the usern
 
 It must be noted that `<realname>` must be the last parameter because it may contain SPACE `(' ',` `0x20)` characters, and should be prefixed with a colon (`:`) if required.
 
-Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7F)` to show that this value is user-set.
+Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7E)` to show that this value is user-set.
 
 The maximum length of `<username>` may be specified by the [`USERLEN`](#userlen-parameter) `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
 
@@ -1191,7 +1191,7 @@ When the server is done processing the modes, a `MODE` command is sent to all me
 
 ---
 
-`<modestring>` starts with a plus `('+',` `0x53)` or minus `('-',` `0x55)` character, and is made up of the following characters:
+`<modestring>` starts with a plus `('+',` `0x2B)` or minus `('-',` `0x2D)` character, and is made up of the following characters:
 
 * **`'+'`**: Adds the following mode(s).
 * **`'-'`**: Removes the following mode(s).
@@ -1201,7 +1201,7 @@ The ABNF representation for `<modestring>` is:
 
       modestring  =  1*( modeset )
       modeset     =  plusminus *( modechar )
-      plusminus   =  %x53 / %x55
+      plusminus   =  %x2B / %x2D
                        ; + or -
       modechar    =  ALPHA
 
