@@ -648,6 +648,7 @@ Numeric replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462) `(462)`
+* [`ERR_PASSWDMISMATCH`](#errpasswdmismatch-464) `(464)`
 
 Command Example:
 
