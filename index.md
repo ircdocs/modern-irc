@@ -924,7 +924,6 @@ If no parameter is given for this command, servers SHOULD return one `RPL_ENDOFN
 
 Numeric Replies:
 
-* [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
 * [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
 * [`RPL_ENDOFNAMES`](#rplendofnames-366) `(366)`
 
