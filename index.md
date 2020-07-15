@@ -61,7 +61,7 @@ A typical IRC network consists of servers and clients connected to those servers
 
 Servers form the backbone of IRC, providing a point to which clients may connect and talk to each other, and a point for other servers to connect to, forming an IRC network.
 
-The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the network it sees. Other topologies are being experimented with, but right there are no others widely used in production.
+The most common network configuration for IRC servers is that of a spanning tree [see the figure below], where each server acts as a central node for the rest of the network it sees. Other topologies are being experimented with, but right now there are none widely used in production.
 
                                [ Server 15 ]  [ Server 13 ] [ Server 14 ]
                                      /                \         /
