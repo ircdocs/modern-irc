@@ -464,9 +464,9 @@ Sent as a reply to the [`LIST`](#list-message) command, this numeric marks the s
 
 ### `RPL_LIST (322)`
 
-      "<client> <channel> <visible clients> :<topic>"
+      "<client> <channel> <client count> :<topic>"
 
-Sent as a reply to the [`LIST`](#list-message) command, this numeric sends information about a channel to the client. `<channel>` is the name of the channel. `<visible clients>` is an integer indicating how many clients are joined to that channel (following the rules of the [invisible](#invisible-user-mode) user mode, i.e. invisible users do not show up in the count unless the requesting client is also joined to that channel). `<topic>` is the channel's topic (as set by the [`TOPIC`](#topic-message) command).
+Sent as a reply to the [`LIST`](#list-message) command, this numeric sends information about a channel to the client. `<channel>` is the name of the channel. `<client count>` is an integer indicating how many clients are joined to that channel. `<topic>` is the channel's topic (as set by the [`TOPIC`](#topic-message) command).
 
 ### `RPL_LISTEND (323)`
 
