@@ -541,7 +541,7 @@ The recommended order of commands during registration is as follows:
 
 The commands specified in steps 1-3 should be sent on connection. If the server supports [capability negotiation](#capability-negotiation) then registration will be suspended and the client can negotiate client capabilities (steps 4-6). If the server does not support capability negotiation then registration will continue immediately without steps 4-6.
 
-1. If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The capability negotiation process is resumed when the client sends `CAP END` to the server.
+1. If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
 
 2. The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
