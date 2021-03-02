@@ -272,7 +272,7 @@ The specific parts of an IRC message are:
 
 These message parts, and parameters themselves, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
 
-Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the **tags** section of a message, including the leading `'@'` and trailing space character(s). There is no provision for continuation messages at this time.
+Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes. There is no ratified provision for continuation messages at this time.
 
 ---
 
@@ -433,9 +433,7 @@ The presence of tags is indicated with a single leading 'at sign' character `('@
 
 The presence of a prefix is indicated with a single leading colon character `(':', 0x3a)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
 
-Most IRC servers limit lines to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include message tags allow an additional 512 bytes for the tags section of a message, including the leading `'@'` and trailing space character. There is no provision for continuation message lines.
-
-The proposed [`LINELEN`](#linelen-parameter) `RPL_ISUPPORT` parameter lets a server specify the maximum allowed length of IRC lines, comprising of both the tags section and the rest of the message. However, use of this token is not widespread and is only used in an experimental server right now. -->
+Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes. There is no ratified provision for continuation messages at this time.
 
 ### Wire format in ABNF
 
