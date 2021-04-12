@@ -61,7 +61,7 @@ The list of parameters that your IRC software uses and passes around should cont
 
 ### Ways To Ensure This Doesn't Happen
 
-You can test your message parser against the [parser-tests](https://github.com/ircdocs/parser-tests/tree/master/tests) repo – specifically the [`msg-split` test file](https://github.com/ircdocs/parser-tests/blob/master/tests/msg-split.yaml) – which includes tests for this specific issue.
+You can test your message parser against the [parser-tests](https://github.com/ircdocs/parser-tests/tree/master/tests) repo. Specifically the [`msg-split` test file](https://github.com/ircdocs/parser-tests/blob/master/tests/msg-split.yaml), which includes tests for this specific issue.
 
 
 
