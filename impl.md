@@ -57,6 +57,7 @@ The list of parameters that your IRC software uses and passes around should cont
 - ["PR: Rework MODE/RPL_CHANMODEIS handling for trailing args"](https://github.com/znc/znc/pull/1661)
 - ["PR: Moving away from Event.Trailing"](https://github.com/lrstanley/girc/pull/36)
 - ["PR: strip colon, if present, from ACCOUNT value"](https://github.com/weechat/weechat/pull/1525)
+- ["PR: Remove Trailing param"](https://github.com/khlieng/dispatch/pull/4)
 
 ### Ways To Ensure This Doesn't Happen
 
