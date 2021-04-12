@@ -67,6 +67,7 @@ You can test your message parser against the [parser-tests](https://github.com/i
 
 <!-- 
 - trailing params being separated from normal params.
+- server-time and unexpected tags (re: the lots of software that has broken after enabling server-time and getting authenticate, cap, etc lines with tags on 'em)
 - nuh length and privmsg truncation.
 - **ERR_NOMOTD** also being valid as the final numeric after connection reg.
 - So You Want To Deal With The F*cking Encoding Mess? (or: Just Use UTF-8).
