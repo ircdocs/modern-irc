@@ -70,7 +70,7 @@ You can test your message parser against the [parser-tests](https://github.com/i
 - nuh length and privmsg truncation.
 - **ERR_NOMOTD** also being valid as the final numeric after connection reg.
 - So You Want To Deal With The F*cking Encoding Mess? (or: Just Use UTF-8).
-- validating that a last param can be sent as a non-final one, and irc framing generally.
+- validating that a last param can be sent as a non-final one, and irc framing generally (maybe include a link to that insp issue where an ISP was including a space or a newline or something in their reverse-lookup hostname and MAJORLY breaking assumptions. it happened in the s2s, but exactly the same could happen with s2c/c2s irc framing so, yeah, worth including as an example that impacts security).
 - clients don't send \r\n\0, servers don't relay \r\n\0.
 - clients may want to include a way for users to see raw protocol lines if their architecture allows it, ala /server raw
 -->
