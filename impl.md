@@ -59,9 +59,24 @@ The list of parameters that your IRC software uses and passes around should cont
 - ["PR: strip colon, if present, from ACCOUNT value"](https://github.com/weechat/weechat/pull/1525)
 - ["PR: Remove Trailing param"](https://github.com/khlieng/dispatch/pull/4)
 
+
 ### Ways To Ensure This Doesn't Happen
 
 You can test your message parser against the [parser-tests](https://github.com/ircdocs/parser-tests/tree/master/tests) repo. Specifically the [`msg-split` test file](https://github.com/ircdocs/parser-tests/blob/master/tests/msg-split.yaml), which includes tests for this specific issue.
+
+
+---
+
+
+# Tags/Prefixes Can Exist On Any Message
+
+A good practice for IRC software is to parse incoming IRC lines into a data structure, and then use that data structure everywhere. If your software, instead, just passes the raw line and then matches bytes and strings from the line, you're probably going to run into this issue.
+
+The gist is that if you enable a capability like [`server-time`](https://ircv3.net/specs/extensions/server-time-3.2.html), then ANY line from the server can contain a `@time` tag. You need to make sure that every command handler including `CAP`, `AUTHENTICATE`, `JOIN`, `PRIVMSG`, etc, can handle having a tag on the message. Along the same lines, any message can contain a `:server.example.com` prefix.
+
+### Examples In The Wild
+
+- ["SASL AUTHENTICATE does not work with a prefix"](https://github.com/znc/znc/issues/1212)
 
 
 
