@@ -667,7 +667,7 @@ If the server does not accept the new nickname supplied by the client as valid (
 
 If the server does not receive the `<nickname>` parameter with the `NICK` command, it should issue an `ERR_NONICKNAMEGIVEN` numeric and ignore the `NICK` command.
 
-The `NICK` message may be sent from the server to clients to acknowledge their `NICK` command was successful, and to inform other clients about the change of nickname. In these cases, the `<source>` of the message will be the user who is changing their nickname, using their old nick.
+The `NICK` message may be sent from the server to clients to acknowledge their `NICK` command was successful, and to inform other clients about the change of nickname. In these cases, the `<source>` of the message will be the old `nickname [ [ "!" user ] "@" host ]` of the user who is changing their nickname.
 
 Numeric Replies:
 
