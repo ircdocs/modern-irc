@@ -732,6 +732,8 @@ Command Examples:
 
 The `PING` command is sent by either clients or servers to check the other side of the connection is still connected and/or to check for connection latency, at the application layer.
 
+The `<token>` may be any non-empty string.
+
 When receiving a `PING` message, clients or servers must reply to it with a [`PONG`](#pong-message) message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
 
 Clients should not send `PING` during connection registration, though servers may accept it.
@@ -739,14 +741,14 @@ Servers may send `PING` during connection registration and clients must reply to
 
 Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>`should be treated as an opaque value by the receiver.
 
-Numeric Reply:
+Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOORIGIN`](#errnooring-409) `(409)`
 
-Deprecated Numeric Replies:
+Deprecated Numeric Reply:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NOORIGIN`](#errnooring-409) `(409)`
 
 
 ### PONG message

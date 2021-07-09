@@ -660,8 +660,8 @@ Indicates that the `JOIN` command failed because the client has joined their max
 
       ":No origin specified"
 
-Indicates a PING or PONG message missing the originator parameter which is required by deprecated IRC servers.
-This should not be used anymore.
+Indicates a PING or PONG message missing the originator parameter which is required by old IRC servers.
+Nowadays, this may be used by some servers when the PING `<token>` is empty.
 
 ### `ERR_UNKNOWNCOMMAND (421)`
 
