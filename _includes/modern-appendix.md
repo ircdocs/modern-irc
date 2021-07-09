@@ -656,6 +656,13 @@ This is generally sent in response to channel modes, such as a channel being [mo
 
 Indicates that the `JOIN` command failed because the client has joined their maximum number of channels. The text used in the last param of this message may vary.
 
+### `ERR_NOORIGIN (409)`
+
+      ":No origin specified"
+
+Indicates a PING or PONG message missing the originator parameter which is required by deprecated IRC servers.
+This should not be used anymore.
+
 ### `ERR_UNKNOWNCOMMAND (421)`
 
       "<client> <command> :Unknown command"
