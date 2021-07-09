@@ -724,7 +724,8 @@ Command Examples:
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
 
-### PING and PONG messages
+
+### PING and PONG messages<a name="ping-message"></a><a name="pong-message"></a>
 
          Command: PING
       Parameters: <token>
