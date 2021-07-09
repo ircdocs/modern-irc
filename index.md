@@ -1324,6 +1324,27 @@ One thing for bot authors to note is that the `NOTICE` message may be interprete
 
 These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the [`ERR_UNKNOWNCOMMAND`](#errunknowncommand-421) numeric.
 
+### AWAY message
+
+         Command: AWAY
+      Parameters: [ <text> ]
+
+With the AWAY command, clients can indicate their user is away, with a message.
+The AWAY command is used either with one parameter, to set an AWAY message, or with no parameters, to remove the AWAY message.
+
+The server acknowledges the change in away status with `RPL_UNAWAY` or `RPL_NOWAWAY`.
+
+This away status or message can be sent by servers to clients when relevant, including:
+
+1. [`RPL_AWAY`](#rplaway-301), with the away message, as automatic reply string for any PRIVMSG commands directed at the away user (not to a channel they are on).
+2. [`RPL_AWAY`](#rplaway-301), with the away message, in replies to [`WHOIS`](#whois-message) messages.
+3. [`RPL_USERHOST`](#rpluserhost-302), as the `+` or `-` character
+
+Numeric Replies:
+
+* [`RPL_UNAWAY`](#rplaway-305) `(305)`
+* [`RPL_NOWAWAY`](#rplaway-306) `(306)`
+
 ### USERHOST message
 
          Command: USERHOST
