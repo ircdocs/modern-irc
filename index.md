@@ -725,29 +725,42 @@ Command Examples:
                                   "danp" and real name "Ronnie Reagan"
 
 
-### PING and PONG messages<a name="ping-message"></a><a name="pong-message"></a>
+### PING message
 
          Command: PING
       Parameters: <token>
 
 The `PING` command is sent by either clients or servers to check the other side of the connection is still connected and/or to check for connection latency, at the application layer.
 
-         Command: PONG
-      Parameters: <token>
-
-The `PONG` command is used as a reply to `PING` commands, by both clients and servers.
-
-When receiving a `PING` message, clients or servers must reply to it with a `PONG` message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
+When receiving a `PING` message, clients or servers must reply to it with a [`PONG`](#pong-message) message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
 
 Clients should not send `PING` during connection registration, though servers may accept it.
 Servers may send `PING` during connection registration and clients must reply to them.
 
-Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>` of `PING` messages should be treated as an opaque value by the receiver.
+Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>`should be treated as an opaque value by the receiver.
+
+Numeric Reply:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 
 Deprecated Numeric Replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
 * [`ERR_NOORIGIN`](#errnooring-409) `(409)`
+
+
+### PONG message
+
+         Command: PONG
+      Parameters: <token>
+
+The `PONG` command is used as a reply to [`PING`](#ping-message) commands, by both clients and servers.
+The `<token>` should be the same as the one in the `PING` message that triggered this `PONG`.
+
+Numeric Replies:
+
+* None
+
 
 ### OPER message
 
