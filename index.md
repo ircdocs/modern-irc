@@ -1018,7 +1018,7 @@ If a "comment" is given, this will be sent instead of the default message, the n
 For the message to be syntactically correct, there MUST be either one channel parameter and multiple user parameter, or as many channel parameters as there are user parameters.  
 
 The server MUST NOT send KICK messages with multiple channels or users to clients.
-This is necessarily to maintain backward compatibility with existing client software.
+This is necessary to maintain backward compatibility with existing client software.
 
 Servers MAY limit the number of target users per `KICK` command via the [`TARGMAX` parameter of `RPL_ISUPPORT`](#targmax-parameter), and silently drop targets if the number of targets exceeds the limit.
 
