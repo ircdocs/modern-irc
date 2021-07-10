@@ -1026,7 +1026,7 @@ Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
 * [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* ERR_BADCHANMASK ???
+* [`ERR_BADCHANMASK `](#errbadchanmask-476) `(476)`
 * [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
 * [`ERR_USERNOTINCHANNEL`](#errusernotinchannel-441) `(441)`
 * [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
