@@ -490,13 +490,13 @@ Sent to a client to inform them of the creation time of a channel. `<channel>` i
 
       "<client> <channel> :No topic is set"
 
-Sent as a reply to the [`TOPIC`](#topic-message) command, this numeric indicates that the channel with the name `<channel>` does not have any topic set.
+Sent to a client when joining a channel to inform them that the channel with the name `<channel>` does not have any topic set.
 
 ### `RPL_TOPIC (332)`
 
       "<client> <channel> :<topic>"
 
-Sent to a client to inform them of the current [topic](#topic-message) of the channel.
+Sent to a client when joining the `<channel>` to inform them of the current [topic](#topic-message) of the channel.
 
 ### `RPL_TOPICWHOTIME (333)`
 
