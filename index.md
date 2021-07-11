@@ -739,7 +739,7 @@ When receiving a `PING` message, clients or servers must reply to it with a [`PO
 Clients should not send `PING` during connection registration, though servers may accept it.
 Servers may send `PING` during connection registration and clients must reply to them.
 
-Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>`should be treated as an opaque value by the receiver.
+Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>` should be treated as an opaque value by the receiver.
 
 Numeric Replies:
 
