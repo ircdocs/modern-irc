@@ -141,7 +141,7 @@ This character is a relatively new addition, and was defined by Textual (as of r
 
 This formatting character works as a toggle. It enables monospace'd text (e.g. <tt>monospace text</tt>).
 
-This character is a relatively new addition, and was defined by IRCCloud (as of right now, IRCCloud's the only client that understands this character). However, if you do add monospace capabilities within your client, please use this character as it is already defined and in use.
+This character is a relatively new addition, and was defined by IRCCloud. However, a number of other clients including TheLounge and Textual now support this as well, and it's now the defacto formatting character for monospace text.
 
 ## Color
 
