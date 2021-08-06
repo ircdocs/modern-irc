@@ -14,6 +14,10 @@ copyrights:
     org: "ircdocs"
     org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
+  -
+    name: "Val Lorentz"
+    org: "Limnoria"
+    org_link: "https://limnoria.net"
     editor: true
 ---
 
