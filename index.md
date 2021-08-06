@@ -18,6 +18,7 @@ copyrights:
     name: "Val Lorentz"
     org: "Limnoria"
     org_link: "https://limnoria.net"
+    email: "vlorentz.ircdocs@isometry.eu"
     editor: true
 ---
 
