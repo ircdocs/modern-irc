@@ -13,9 +13,9 @@ For suggestions of other documents to create / maintain, please [create an issue
 
 ## Guidelines
 
-These documents SHOULD NOT describe brand new behaviour, but existing behaviour present in IRC software and/or networks. These documents should be useful to IRC developers today, not in 10 years time.
+These documents SHOULD NOT describe brand new behaviour, but existing behaviour present in IRC software and/or networks (new extensions are IRCv3's area). These documents should be useful to IRC developers **today**, not in 10 years time.
 
-The behaviour and constants described in these documents SHOULD converge, and/or be interoperable with the majority of IRC software. These documents should allow a client or server author to build software which can communicate with almost any other piece of IRC software it interacts with.
+The behaviour and constants described in these documents SHOULD converge, and/or be interoperable with the majority of IRC software. These documents should let a client or server author build software which can communicate with almost any other piece of IRC software it interacts with.
 
 Where external, up-to-date and authoritative specifications exist for commands/messages/behaviours, we prefer to link to those rather than needlessly rewrite them (see the Client Protocol's [`CAP`](http://modern.ircdocs.horse/#cap-message) message for an example of this).
 
