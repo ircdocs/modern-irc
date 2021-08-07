@@ -416,7 +416,7 @@ Sent as a reply to the [`AWAY`](#away-message) command, this lets the client kno
 
       "<client> <nick> <username> <host> * :<realname>"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). `<host>` CANNOT start with a colon `(':', 0x3b)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this. The second-last parameter is a literal asterisk character `('*', 0x2A)` and does not mean anything.
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this. The second-last parameter is a literal asterisk character `('*', 0x2A)` and does not mean anything.
 
 ### `RPL_WHOISSERVER (312)`
 
@@ -953,7 +953,7 @@ Examples:
 
 The `CHANLIMIT` parameter indicates the number of channels a client may join.
 
-The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',',` `0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
+The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',', 0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
 
 Clients should not assume other clients are limited to what is specified in the `CHANLIMIT` parameter.
 
@@ -972,9 +972,9 @@ Examples:
 
 The `CHANMODES` parameter specifies the channel modes available and which types of arguments they do or do not take when using them with the [`MODE`](#mode-message) command.
 
-The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**, respectively, delimited by a comma `(',',` `0x2C)`. The channel mode types are defined in the the [`MODE`](#mode-message) message description.
+The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**, respectively, delimited by a comma `(',', 0x2C)`. The channel mode types are defined in the the [`MODE`](#mode-message) message description.
 
-To allow for future extensions, a server MAY send additional types, delimited by a comma `(',',` `0x2C)`. However, server authors SHOULD NOT extend this parameter without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
+To allow for future extensions, a server MAY send additional types, delimited by a comma `(',', 0x2C)`. However, server authors SHOULD NOT extend this parameter without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
 
 Server MUST NOT list modes in this parameter that are also advertised in the [`PREFIX`](#prefix-parameter) parameter. However, modes within the [`PREFIX`](#prefix-parameter) parameter may be treated as type B modes.
 
@@ -1135,7 +1135,7 @@ Examples:
 
 The `MAXLIST` parameter specifies how many "variable" modes of type A that have been defined in the [`CHANMODES`](#chanmodes-parameter) parameter that a client may set in total on a channel.
 
-The value MUST be specified and is a list of `<modes>:<limit>` pairs, delimited by a comma `(',',` `0x2C)`. `<modes>` is a list of type A modes defined in [`CHANMODES`](#chanmodes-parameter). `<limit>` is a positive integer specifying the maximum number of entries that all of the modes in `<modes>`, combined, may set on a channel.
+The value MUST be specified and is a list of `<modes>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<modes>` is a list of type A modes defined in [`CHANMODES`](#chanmodes-parameter). `<limit>` is a positive integer specifying the maximum number of entries that all of the modes in `<modes>`, combined, may set on a channel.
 
 A client MUST NOT make any assumptions on how many mode entries may actually exist on any given channel. This limit only applies to the client setting new modes of the given types, and other clients may have different limits.
 
