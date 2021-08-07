@@ -892,7 +892,7 @@ If the [protected topic](#protected-topic-mode) mode is set on a channel, then c
 
 If the topic of a channel is changed or cleared, every client in that channel (including the author of the topic change) will receive a `TOPIC` command with the new topic as argument (or an empty argument if the topic was cleared) alerting them to how the topic has changed.
 
-Clients joining the channel in the future with receive a `RPL_TOPIC` numeric (or lack thereof) accordingly.
+Clients joining the channel in the future will receive a `RPL_TOPIC` numeric (or lack thereof) accordingly.
 
 Numeric Replies:
 
