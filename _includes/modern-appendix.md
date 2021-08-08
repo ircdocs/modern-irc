@@ -759,6 +759,8 @@ Returned to indicate that a [`JOIN`](#join-message) command failed because the c
 
 Returned to indicate that a [`JOIN`](#join-message) command failed because the channel requires a [key](#key-channel-mode) and the key was either incorrect or not supplied. The text used in the last param of this message may vary.
 
+Not to be confused with [`ERR_INVALIDKEY`](#errinvalidkey-525), which may be returned when setting a key.
+
 ### `ERR_BADCHANMASK (476)`
 
       "<channel> :Bad Channel Mask"
@@ -810,6 +812,8 @@ Indicates that a [`MODE`](#mode-message) command affecting a user failed because
     "<client> <target chan> :Key is not well-formed"
 
 Indicates the value of a key channel mode change (`+k`) was rejected.
+
+Not to be confused with [`ERR_BADCHANNELKEY`](#errbadchannelkey-475), which is returned when someone tries to join a channel.
 
 ### `RPL_STARTTLS (670)`
 
