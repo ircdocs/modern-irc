@@ -1033,6 +1033,9 @@ Numeric Replies:
 
 Examples:
 
+       KICK #Finnish Matthew           ; Command to kick Matthew from
+                                       #Finnish
+
        KICK &Melbourne Matthew         ; Command to kick Matthew from
                                        &Melbourne
 
