@@ -1329,10 +1329,11 @@ These messages are not required for a server implementation to work, but SHOULD 
          Command: AWAY
       Parameters: [ <text> ]
 
-With the AWAY command, clients can indicate their user is away, with a message.
-The AWAY command is used either with one parameter, to set an AWAY message, or with no parameters, to remove the AWAY message.
+With the `AWAY` command, clients can indicate their user is away, with a message.
+The `AWAY` command is used either with one parameter, to set an `AWAY` message, or with no parameters, to remove the AWAY message.
 
 The server acknowledges the change in away status with `RPL_UNAWAY` or `RPL_NOWAWAY`.
+The server MAY forward the `AWAY` message to other clients, according to the [IRCv3 `away-notify` Extension](https://ircv3.net/specs/extensions/away-notify.html).
 
 This away status or message SHOULD be sent by servers to clients when relevant, including:
 
