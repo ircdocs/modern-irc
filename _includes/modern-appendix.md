@@ -122,6 +122,7 @@ If this mode is set on a channel, and a client sends a `JOIN` request for that c
 This mode is standard, and the mode letter used for it is `"+k"`.
 
 This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
+Servers may validate the value (eg. to forbid spaces, as they make it harder to use the key in `JOIN` messages). If the value is invalid, they SHOULD return [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696) or [`ERR_INVALIDKEY`](#errinvalidkey-525), preferably the former.
 
 If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
 
@@ -794,6 +795,12 @@ Indicates that a [`MODE`](#mode-message) command affecting a user contained a `M
 
 Indicates that a [`MODE`](#mode-message) command affecting a user failed because they were trying to set or view modes for other users. The text used in the last param of this message varies, for instance when trying to view modes for another user, a server may send: `"Can't view modes for other users"`.
 
+### `ERR_INVALIDKEY (525)`
+
+    "<client> <target chan> :Key is not well-formed"
+
+Indicates the value of a key channel mode change (`+k`) was rejected.
+
 ### `RPL_STARTTLS (670)`
 
       "<client> :STARTTLS successful, proceed with TLS handshake"
@@ -809,6 +816,12 @@ The text used in the last param of this message varies wildly.
 This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-3.1.html) extension and indicates that a server-side error occured and the `STARTTLS` command failed. For more information on this numeric, see the linked IRCv3 specification.
 
 The text used in the last param of this message varies wildly.
+
+### `ERR_INVALIDMODEPARAM (696)`
+
+    " <client> <target chan/user> <mode char> <parameter> :<description>"
+
+Indicates that there was a problem with a mode parameter. Replaces various implementation-specific mode-specific numerics.
 
 ### `ERR_NOPRIVS (723)`
 
