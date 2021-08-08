@@ -1334,7 +1334,7 @@ The AWAY command is used either with one parameter, to set an AWAY message, or w
 
 The server acknowledges the change in away status with `RPL_UNAWAY` or `RPL_NOWAWAY`.
 
-This away status or message can be sent by servers to clients when relevant, including:
+This away status or message SHOULD be sent by servers to clients when relevant, including:
 
 1. [`RPL_AWAY`](#rplaway-301), with the away message, as automatic reply string for any PRIVMSG commands directed at the away user (not to a channel they are on).
 2. [`RPL_AWAY`](#rplaway-301), with the away message, in replies to [`WHOIS`](#whois-message) messages.
