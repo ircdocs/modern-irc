@@ -261,7 +261,7 @@ Names of IRC entities (clients, servers, channels) are casemapped. This prevents
 
 ## Messages
 
-An IRC message is a single line, delimited by with a pair of `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)` characters.
+An IRC message is a single line, delimited by a pair of `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)` characters.
 
 - When reading messages from a stream, read the incoming data into a buffer. Only parse and process a message once you encounter the `\r\n` at the end of it. If you encounter an empty message, silently ignore it.
 - When sending messages, ensure that a pair of `\r\n` characters follows every single message your software sends out.
@@ -981,7 +981,7 @@ The `MOTD` command is used to get the "Message of the Day" of the given server. 
 
 If `<target>` is a server, the MOTD for that server is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
 
-If the MOTD can be found, one `RPL_MOTDSTART` numeric is returned, followed by one or more `RPL_MOTD` numeric, then one `RPM_ENDOFMOTD` numeric.
+If the MOTD can be found, one `RPL_MOTDSTART` numeric is returned, followed by one or more `RPL_MOTD` numeric, then one `RPL_ENDOFMOTD` numeric.
 
 If the MOTD does not exist or could not be found, the `ERR_NOMOTD` numeric is returned.
 
