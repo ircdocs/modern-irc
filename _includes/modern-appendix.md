@@ -122,7 +122,13 @@ If this mode is set on a channel, and a client sends a `JOIN` request for that c
 This mode is standard, and the mode letter used for it is `"+k"`.
 
 This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
-Servers may validate the value (eg. to forbid spaces, as they make it harder to use the key in `JOIN` messages). If the value is invalid, they SHOULD return [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696) or [`ERR_INVALIDKEY`](#errinvalidkey-525), preferably the former.
+Servers may validate the value (eg. to forbid spaces, as they make it harder to use the key in `JOIN` messages). If the value is invalid, they SHOULD return [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696).
+However, clients MUST be able to handle any of the following:
+
+* [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696)
+* [`ERR_INVALIDKEY`](#errinvalidkey-525)
+* `MODE` echoed with a different key (eg. truncated or stripped of invalid characters)
+* the key changed ignored, and no `MODE` echoed if no other mode change was valid.
 
 If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) reply and the command will fail.
 
