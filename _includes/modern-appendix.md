@@ -839,7 +839,7 @@ The text used in the last param of this message varies wildly.
 
 ### `ERR_INVALIDMODEPARAM (696)`
 
-    " <client> <target chan/user> <mode char> <parameter> :<description>"
+    "<client> <target chan/user> <mode char> <parameter> :<description>"
 
 Indicates that there was a problem with a mode parameter. Replaces various implementation-specific mode-specific numerics.
 
