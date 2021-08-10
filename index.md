@@ -490,6 +490,8 @@ Please also see our [Message Parsing and Assembly](#message-parsing-and-assembly
     TODO: This section is unfinished. Defining the various names (nickname, username, hostname) and such are likely to require quite a bit of thought. This is to cater for how software can let IRC operators use almost anything in them including formatting characters, etc. We should also make sure that the ABNF block above is correct and defined properly.
 </div>
 
+-->
+
 
 ## Numeric Replies
 
