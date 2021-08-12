@@ -972,7 +972,7 @@ The target channel SHOULD exist (at least one user is on it).  Otherwise, the se
 
 Only members of the channel are allowed to invite other users.  Otherwise, the server MUST reject the command with the `ERR_NOTONCHANNEL` numeric.
 
-When the channel has [invite-only](#invite-only-channel-mode) mode set, only channel operators may issue INVITE command.  Otherwise, the server MUST reject the command with the `ERR_CHANOPRIVSNEEDED` numeric.
+Servers MAY reject the command with the `ERR_CHANOPRIVSNEEDED` numeric. In particular, they SHOULD reject it when the channel has [invite-only](#invite-only-channel-mode) mode set, and the user is not a channel operator.
 
 If the user is already on the target channel, the server MUST reject the command with the `ERR_USERONCHANNEL` numeric.
 
