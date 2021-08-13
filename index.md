@@ -1013,7 +1013,7 @@ Message Examples:
 
 The KICK command can be used to request the forced removal of a user from a channel.
 It causes the `<user>` to be removed from the `<channel>` by force.
-If a comment is given, this will be sent instead of the default message, the nickname of the user targeted by the KICK.
+If no comment is given, the server SHOULD use a default message instead.
 
 For the message to be syntactically correct, there MUST be either one channel parameter and multiple user parameter, or as many channel parameters as there are user parameters.  
 
