@@ -1286,6 +1286,9 @@ Certain client commands MAY contain multiple targets, delimited by a comma `(','
 
 The value is OPTIONAL and is a set of `<command>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<command>` is the name of a client command. `<limit>` is the maximum number of targets which that command accepts. If `<limit>` is specified, it is a positive integer. If `<limit>` is not specified, then there is no maximum number of targets for that command. Clients MUST treat `<command>` as case-insensitive.
 
+If a command is not advertised then a client SHOULD consider a default value of 1, meaning that the server does not accept multiple targets.
+If the "TARGMAX" parameter is not advertised, then a client SHOULD assume its value is empty, meaning that that no commands accept multiple targets.
+
 Examples:
 
       TARGMAX=PRIVMSG:3,WHOIS:1,JOIN:
