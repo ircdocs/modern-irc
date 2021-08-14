@@ -536,10 +536,14 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
 ### `RPL_WHOISACTUALLY (338)`
 
       "<client> <nick> :is actually ...
-      "<client> <nick> <host> :Is actually using host"
-      "<client> <nick> <username>@<host> <ip> :Is actually using host"
+      "<client> <nick> <host|ip> :Is actually using host"
+      "<client> <nick> <username>@<hostname> <ip> :Is actually using host"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this.
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`.
+
+`<username>` represents the name set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways).
+
+`<host>` and `<ip>` represent the real host and IP address the client is connecting from. `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this.
 
 See also: [`RPL_WHOISHOST`](#rplwhoishost-378), for similar semantics on other servers.
 
