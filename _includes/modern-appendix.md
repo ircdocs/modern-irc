@@ -412,6 +412,14 @@ Sent as a reply to the [`AWAY`](#away-message) command, this lets the client kno
 
 Sent as a reply to the [`AWAY`](#away-message) command, this lets the client know that they are set as being away. The text used in the last param of this message may vary.
 
+### `RPL_WHOISREGNICK (307)`
+
+      "<client> <nick> :has identified for this nick"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of this nick on the network.
+
+See also [`RPL_WHOISACCOUNT`](#rplwhoisaccount-330), for information on the account name of the user.
+
 ### `RPL_WHOISUSER (311)`
 
       "<client> <nick> <username> <host> * :<realname>"
@@ -438,7 +446,7 @@ Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric shows d
 
 ### `RPL_WHOISIDLE (317)`
 
-      "<client> <nick> <secs> [<signon>] :seconds idle, signon time
+      "<client> <nick> <secs> <signon> :seconds idle, signon time
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates how long the client with the nickname `<nick>` has been idle. `<secs>` is the number of seconds since the client has been active. Servers generally denote specific commands (for instance, perhaps [`JOIN`](#join-message), [`PRIVMSG`](#privmsg-message), [`NOTICE`](#notice-message), etc) as updating the 'idle time', and calculate this off when the idle time was last updated. `<signon>` is a unix timestamp representing when the user joined the network. The text used in the last param of this message may vary.
 
@@ -446,7 +454,12 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates
 
       "<client> <nick> :End of /WHOIS list"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates the end of a `WHOIS` response for the client with the nickname `<nick>`. This numeric is sent after all other `WHOIS` response numerics have been sent to the client.
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates the end of a `WHOIS` response for the client with the nickname `<nick>`.
+
+`<nick>` MUST be exactly the `<nick>` parameter sent by the client in its `WHOIS` message.
+This means the case MUST be preserved, and if the client sent multiple nicks, this MUST be the comma-separated list of nicks, even if some of them were dropped.
+
+This numeric is sent after all other `WHOIS` response numerics have been sent to the client.
 
 ### `RPL_WHOISCHANNELS (319)`
 
@@ -454,7 +467,15 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric lists the channels that the client with the nickname `<nick>` is joined to and their status in these channels. `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that the client has in that channel, if the client has one. `<channel>` is the name of a channel that the client is joined to. The last parameter of this numeric is a list of `[prefix]<channel>` pairs, delimited by a SPACE character `(' ', 0x20)`.
 
+`RPL_WHOISCHANNELS` can be sent multiple times in the same whois reply, if the target is too many channels to fit in a single message.
+
 The channels in this response are affected by the [secret](#secret-channel-mode) channel mode and the [invisible](#invisible-user-mode) user mode, and may be affected by other modes depending on server software and configuration.
+
+### `RPL_WHOISSPECIAL (320)`
+
+      "<client> <nick> :blah blah blah
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric is used for extra information on the client with nickname `<nick>`. This should only be used for nonessential information that does not need to be machine-readable.
 
 ### `RPL_LISTSTART (321)`
 
@@ -486,6 +507,14 @@ Sent to a client to inform them of the currently-set modes of a channel. `<chann
 
 Sent to a client to inform them of the creation time of a channel. `<channel>` is the name of the channel. `<creationtime>` is a unix timestamp representing when the channel was created on the network.
 
+### `RPL_WHOISACCOUNT (330)`
+
+      "<client> <nick> <account> :is logged in as"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of the `<account>`.
+
+This does not necessarily mean the user owns their current nickname; which is covered by[`RPL_WHOISREGNICK`](#rplwhoisregnick-307).
+
 ### `RPL_NOTOPIC (331)`
 
       "<client> <channel> :No topic is set"
@@ -503,6 +532,16 @@ Sent to a client when joining the `<channel>` to inform them of the current [top
       "<client> <channel> <nick> <setat>"
 
 Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after [`RPL_TOPIC`](#rpltopic-332).
+
+### `RPL_WHOISACTUALLY (338)`
+
+      "<client> <nick> :is actually ...
+      "<client> <nick> <host> :Is actually using host"
+      "<client> <nick> <username>@<host> <ip> :Is actually using host"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this.
+
+See also: [`RPL_WHOISHOST`](#rplwhoishost-378), for similar semantics on other servers.
 
 ### `RPL_INVITING (341)`
 
@@ -595,6 +634,20 @@ When sending the [`Message of the Day`](#motd-message) to the client, servers re
       "<client> :End of /MOTD command."
 
 Indicates the end of the [Message of the Day](#motd-message) to the client. The text used in the last param of this message may vary.
+
+### `RPL_WHOISHOST (378)`
+
+      "<client> <nick> :is connecting from *@localhost 127.0.0.1
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about where the client with nickname `<nick>` is connecting from.
+
+See also: [`RPL_WHOISACTUALLY`](#rplwhoisactually-338), for similar semantics on other servers.
+
+### `RPL_WHOISMODES (379)`
+
+      "<client> <nick> :is using modes +ailosw"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client what user modes the target users has.
 
 ### `RPL_YOUREOPER (381)`
 
@@ -801,6 +854,12 @@ Indicates that a [`MODE`](#mode-message) command affecting a user failed because
 This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-3.1.html) extension and indicates that the client may begin a TLS handshake. For more information on this numeric, see the linked IRCv3 specification.
 
 The text used in the last param of this message varies wildly.
+
+### `RPL_WHOISSECURE (671)`
+
+      "<client> <nick> :is using a secure connection"
+
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client is using a connection to the server, considered to be reasonably safe from eavesdropping by the server (eg. connecting from localhost, using TLS, or Tor).
 
 ### `ERR_STARTTLS (691)`
 
