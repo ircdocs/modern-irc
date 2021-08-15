@@ -362,7 +362,7 @@ Here are some examples of messages and how the parameters would be represented a
 
       :dan!d@localhost PRIVMSG #chan Hey!   ->  ["#chan", "Hey!"]
 
-      :dan!d@localhost PRIVMSG #chan ::-)!  ->  ["#chan", ":-)"]
+      :dan!d@localhost PRIVMSG #chan ::-)   ->  ["#chan", ":-)"]
 
 As the last three examples show, a trailing parameter (a parameter prefixed with `':'`) has the same semantics as any other parameter, and MUST NOT be treated specially once the `':'` is stripped.
 
