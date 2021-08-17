@@ -475,7 +475,7 @@ The channels in this response are affected by the [secret](#secret-channel-mode)
 
       "<client> <nick> :blah blah blah
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric is used for extra information on the client with nickname `<nick>`. This should only be used for nonessential information that does not need to be machine-readable.
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric is used for extra human-readable information on the client with nickname `<nick>`. This should only be used for non-essential information that does not need to be machine-readable or understood by client software.
 
 ### `RPL_LISTSTART (321)`
 
