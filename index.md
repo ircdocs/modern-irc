@@ -1346,7 +1346,7 @@ Servers MUST end their reply to `WHOIS` messages with one of these numerics:
 * [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431) `(431)`
 * [`RPL_ENDOFWHOIS`](#rplendofwhois-318) otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
 
-Client MUST NOT not assume all numerics messages are sent at once, so server can interleave other messages before the end of the WHOIS response.
+Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
 
 If the `<target>` parameter is specified, it SHOULD be a server name or the nick of a user. Servers SHOULD send the query to a specific server with that name, or to the server `<target>` is connected to, respectively.
 
