@@ -1329,17 +1329,17 @@ These messages are not required for a server implementation to work, but SHOULD 
          Command: AWAY
       Parameters: [ <text> ]
 
-With the `AWAY` command, clients can indicate their user is away, with a message.
-The `AWAY` command is used either with one parameter, to set an `AWAY` message, or with no parameters, to remove the AWAY message.
+The `AWAY` command lets clients indicate that their user is away.
+If this command is sent with a parameter (the 'away message') then the user is set to be away. If this command is sent with no parameters, the user is no longer away.
 
-The server acknowledges the change in away status with `RPL_UNAWAY` or `RPL_NOWAWAY`.
-The server MAY forward the `AWAY` message to other clients, according to the [IRCv3 `away-notify` Extension](https://ircv3.net/specs/extensions/away-notify.html).
+The server acknowledges the change in away status by returning the `RPL_NOWAWAY` and `RPL_UNAWAY` numerics.
+If the [IRCv3 `away-notify` capability](https://ircv3.net/specs/extensions/away-notify.html) has been requested by a client, the server MAY also send that client `AWAY` messages to tell them how the away status of other users has changed.
 
-This away status or message SHOULD be sent by servers to clients when relevant, including:
+Servers SHOULD notify clients when a user they're interacting with is away when relevant, including sending these numerics:
 
-1. [`RPL_AWAY`](#rplaway-301), with the away message, as automatic reply string for any PRIVMSG commands directed at the away user (not to a channel they are on).
+1. [`RPL_AWAY`](#rplaway-301), with the away message, when a PRIVMSG command is directed at the away user (not to a channel they are on).
 2. [`RPL_AWAY`](#rplaway-301), with the away message, in replies to [`WHOIS`](#whois-message) messages.
-3. [`RPL_USERHOST`](#rpluserhost-302), as the `+` or `-` character
+3. In the [`RPL_USERHOST`](#rpluserhost-302) numeric, as the `+` or `-` character.
 
 Numeric Replies:
 
