@@ -1349,8 +1349,7 @@ Servers MUST end their reply to `WHOIS` messages with one of these numerics:
 Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
 
 If the `<target>` parameter is specified, it SHOULD be a server name or the nick of a user. Servers SHOULD send the query to a specific server with that name, or to the server `<target>` is connected to, respectively.
-
-Typically, it is useful to client who want to know how long the user in question has been idle as only local server (i.e., the server the user is directly connected to) knows that information, while everything else is globally known.
+Typically, it is used by clients who want to know how long the user in question has been idle (as typically only the server the user is directly connected to knows that information, while everything else this command returns is globally known).
 
 The following numerics MAY be returned as part of the whois reply:
 
