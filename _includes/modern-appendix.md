@@ -511,9 +511,9 @@ Sent to a client to inform them of the creation time of a channel. `<channel>` i
 
       "<client> <nick> <account> :is logged in as"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of the `<account>`.
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of `<account>`.
 
-This does not necessarily mean the user owns their current nickname; which is covered by[`RPL_WHOISREGNICK`](#rplwhoisregnick-307).
+This does not necessarily mean the user owns their current nickname, which is covered by[`RPL_WHOISREGNICK`](#rplwhoisregnick-307).
 
 ### `RPL_NOTOPIC (331)`
 
