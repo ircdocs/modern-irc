@@ -863,7 +863,7 @@ The text used in the last param of this message varies wildly.
 
       "<client> <nick> :is using a secure connection"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client is using a connection to the server, considered to be reasonably safe from eavesdropping by the server (eg. connecting from localhost, using TLS, or Tor).
+Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client is connecting to the server in a way the server considers reasonably safe from eavesdropping (e.g. connecting from localhost, using TLS, using Tor).
 
 ### `ERR_STARTTLS (691)`
 
