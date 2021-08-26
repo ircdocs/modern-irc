@@ -1006,6 +1006,50 @@ Message Examples:
 
       :dan-!d@localhost INVITE Wiz #test    ; dan- has invited Wiz
                                             to the channel #test
+### KICK message
+
+          Command: KICK
+       Parameters: <channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
+
+The KICK command can be used to request the forced removal of a user from a channel.
+It causes the `<user>` to be removed from the `<channel>` by force.
+If no comment is given, the server SHOULD use a default message instead.
+
+For the message to be syntactically correct, there MUST be either one channel parameter and multiple user parameter, or as many channel parameters as there are user parameters.  
+
+The server MUST NOT send KICK messages with multiple channels or users to clients.
+This is necessary to maintain backward compatibility with existing client software.
+
+Servers MAY limit the number of target users per `KICK` command via the [`TARGMAX` parameter of `RPL_ISUPPORT`](#targmax-parameter), and silently drop targets if the number of targets exceeds the limit.
+
+Numeric Replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
+* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
+* [`ERR_USERNOTINCHANNEL`](#errusernotinchannel-441) `(441)`
+* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
+
+Deprecated Numeric Reply:
+
+* [`ERR_BADCHANMASK`](#errbadchanmask-476) `(476)`
+
+Examples:
+
+       KICK #Finnish Matthew           ; Command to kick Matthew from
+                                       #Finnish
+
+       KICK &Melbourne Matthew         ; Command to kick Matthew from
+                                       &Melbourne
+
+       KICK #Finnish John :Speaking English
+                                       ; Command to kick John from #Finnish
+                                       using "Speaking English" as the
+                                       reason (comment).
+
+       :WiZ!jto@tolsun.oulu.fi KICK #Finnish John
+                                       ; KICK message on channel #Finnish
+                                       from WiZ to remove John from channel
 
 ## Server Queries and Commands
 

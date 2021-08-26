@@ -758,6 +758,16 @@ Returned to indicate that a [`JOIN`](#join-message) command failed because the c
 
 Returned to indicate that a [`JOIN`](#join-message) command failed because the channel requires a [key](#key-channel-mode) and the key was either incorrect or not supplied. The text used in the last param of this message may vary.
 
+### `ERR_BADCHANMASK (476)`
+
+      "<channel> :Bad Channel Mask"
+
+Indicates the supplied channel name is not a valid.
+
+This is similar to, but stronger than, [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403), which indicates that the channel does not exist, but that it may be a valid name.
+
+The text used in the last param of this message may vary.
+
 ### `ERR_NOPRIVILEGES (481)`
 
       "<client> :Permission Denied- You're not an IRC operator"
