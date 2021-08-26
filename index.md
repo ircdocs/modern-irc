@@ -1006,6 +1006,7 @@ Message Examples:
 
       :dan-!d@localhost INVITE Wiz #test    ; dan- has invited Wiz
                                             to the channel #test
+
 ### KICK message
 
           Command: KICK
