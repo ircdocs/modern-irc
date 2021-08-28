@@ -1292,7 +1292,7 @@ Examples:
 
       Format: TARGMAX=[<command>:[limit]{,<command>:[limit]}]
 
-Certain client commands MAY contain multiple targets, delimited by a comma `(',', 0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets.
+Certain client commands MAY contain multiple targets, delimited by a comma `(',', 0x2C)`. The `TARGMAX` parameter defines the maximum number of targets allowed for commands which accept multiple targets. If this parameter is not advertised or a value is not sent then a client SHOULD assume that no commands except the `JOIN` and `PART` commands accept multiple parameters.
 
 The value is OPTIONAL and is a set of `<command>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<command>` is the name of a client command. `<limit>` is the maximum number of targets which that command accepts. If `<limit>` is specified, it is a positive integer. If `<limit>` is not specified, then there is no maximum number of targets for that command. Clients MUST treat `<command>` as case-insensitive.
 
