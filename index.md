@@ -1365,6 +1365,8 @@ The following numerics MAY be returned as part of the whois reply:
 * [`RPL_WHOISACTUALLY`](#rplwhoisactually-338) `(338)`
 * [`RPL_WHOISSECURE`](#rplwhoissecure-671) `(671)`
 
+Servers typically send some of these numerics only to the client itself and to servers operators, as they contain privacy-sensitive information that should not be revealed to other users.
+
 Server implementers wishing to send information not covered by these numerics may send other vendor-specific numerics, such that:
 
 * the first and second parameters MUST be the client's nick, and the target nick, and
