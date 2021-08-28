@@ -543,7 +543,7 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows det
 
 `<username>` represents the name set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways).
 
-`<host>` and `<ip>` represent the real host and IP address the client is connecting from. `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this.
+`<host>` and `<ip>` represent the real host and IP address the client is connecting from. `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this. The resulting IPv6 is equivalent, as this is a partial expansion of the `::` shorthand.
 
 See also: [`RPL_WHOISHOST`](#rplwhoishost-378), for similar semantics on other servers.
 
