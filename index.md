@@ -1449,9 +1449,9 @@ Numeric Replies:
          Command: SQUIT
       Parameters: <server> <comment>
 
-The SQUIT command is available only to operators.  It is used to disconnect server links.
+The `SQUIT` command disconnects a server from the network. `SQUIT` is a privileged command and is only available to IRC Operators. `<comment>` is the reason why the server link is being disconnected.
 
-The `<comment>` SHOULD be supplied by all operators who execute a SQUIT for a remote server.
+In a traditional spanning-tree topology, the command gets forwarded to the specified server. And the link between the specified server and the last server to propagate the command gets broken.
 
 Numeric replies:
 
