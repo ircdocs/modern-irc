@@ -1453,8 +1453,6 @@ The SQUIT command is available only to operators.  It is used to disconnect serv
 
 The `<comment>` SHOULD be supplied by all operators who execute a SQUIT for a remote server.
 
-The server ordered to disconnect its peer generates a [`WALLOPS` message ](#wallops-message) with `<comment>` included, so that other users may be aware of the reason of this action.
-
 Numeric replies:
 
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
