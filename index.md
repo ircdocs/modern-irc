@@ -1498,6 +1498,7 @@ Reply Examples:
       Parameters: <Text to be sent>
 
 The WALLOPS command is used to send a message to all currently connected users who have set the 'w' user mode for themselves.
+The `<Text to be sent>` SHOULD be non-empty.
 
 Servers MAY echo WALLOPS messages to their sender even if they don't have the 'w' user mode.
 
