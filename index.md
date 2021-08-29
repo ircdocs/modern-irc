@@ -277,7 +277,7 @@ Messages have this format, as rough ABNF:
 The specific parts of an IRC message are:
 
 - **tags**: Optional metadata on a message, starting with `('@', 0x40)`.
-- **source**: Optional note of where the message came from, starting with `(':', 0x3A)`. Also called the **prefix**.
+- **source**: Optional note of where the message came from, starting with `(':', 0x3A)`.
 - **command**: The specific command this message represents.
 - **parameters**: If it exists, data relevant to this specific command.
 
@@ -375,7 +375,7 @@ As these examples show, a trailing parameter (a final parameter with a preceding
 
 ## Numeric Replies
 
-Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. Distinct from a normal message, a numeric reply MUST contain the sender prefix and use a three-digit numeric as the command. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
+Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. Distinct from a normal message, a numeric reply MUST contain a `<source>` and use a three-digit numeric as the command. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
 
 In all other respects, a numeric reply is just like a normal message. A list of numeric replies is supplied in the [Numerics](#numerics) section.
 
@@ -868,7 +868,7 @@ Servers MAY reject the command with the `ERR_CHANOPRIVSNEEDED` numeric. In parti
 
 If the user is already on the target channel, the server MUST reject the command with the `ERR_USERONCHANNEL` numeric.
 
-When the invite is successful, the server MUST send a `RPL_INVITING` numeric to the command issuer, and an `INVITE` message, with the issuer as prefix, to the target user.  Other channel members SHOULD NOT be notified.
+When the invite is successful, the server MUST send a `RPL_INVITING` numeric to the command issuer, and an `INVITE` message, with the issuer as `<source>`, to the target user.  Other channel members SHOULD NOT be notified.
 
 Numeric Replies:
 
@@ -1237,7 +1237,7 @@ If `<target>` is a channel name, it may be prefixed with one or more [channel me
 
 If `<target>` is a user and that user has been set as away, the server may reply with an {% numeric RPL_AWAY %} numeric and the command will continue.
 
-The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<prefix>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
+The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<source>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
 
 Numeric Replies:
 
