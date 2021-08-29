@@ -1444,6 +1444,30 @@ Numeric Replies:
     <p>NOTE: The <tt>KILL</tt> message is weird, and I need to look at it more closely, add some examples, etc.</p>
 </div>
 
+### SQUIT message
+
+         Command: SQUIT
+      Parameters: <server> <comment>
+
+The SQUIT command is available only to operators.  It is used to disconnect server links.
+
+The `<comment>` SHOULD be supplied by all operators who execute a SQUIT for a remote server.
+
+The server ordered to disconnect its peer generates a [`WALLOPS` message ](#wallops-message) with `<comment>` included, so that other users may be aware of the reason of this action.
+
+Numeric replies:
+
+* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
+* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+
+Examples:
+
+     SQUIT tolsun.oulu.fi :Bad Link ?  ; Command to uplink of the server
+                                     tolson.oulu.fi to terminate its
+                                     connection with comment "Bad Link".
+
 ## Optional Messages
 
 These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the [`ERR_UNKNOWNCOMMAND`](#errunknowncommand-421) numeric.
