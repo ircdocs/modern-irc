@@ -327,7 +327,7 @@ The **source** (formerly known as **prefix**) is optional and starts with a `(':
 
 The source indicates the true origin of a message. If the source is missing from a message, it's is assumed to have originated from the client/server on the other end of the connection the message was received on.
 
-Clients SHOULD NOT include a source when sending a message. If they do include one, the only valid source is the current nickname of the client.
+Clients MUST NOT include a source when sending a message.
 
 Servers MAY include a source on any message, and MAY leave a source off of any message. Clients MUST be able to process any given message the same way whether it contains a source or does not contain one.
 
