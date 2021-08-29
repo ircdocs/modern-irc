@@ -705,7 +705,7 @@ The `USER` command is used at the beginning of a connection to specify the usern
 
 It must be noted that `<realname>` must be the last parameter because it may contain SPACE `(' ',` `0x20)` characters, and should be prefixed with a colon (`:`) if required.
 
-Since it is easy for a client to lie about its username by relying solely on the `USER` command, servers MAY use an "Identity Server". This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7E)` to show that this value is user-set.
+Since it is easy for a client to lie about its username, servers MAY use the [Ident Protocol](http://tools.ietf.org/html/rfc1413) to look up the real username of clients. If username lookups are enabled and a client does not have an Identity Server enabled, the username provided by the client SHOULD be prefixed by a tilde `('~', 0x7E)` to show that this value is user-set.
 
 The maximum length of `<username>` may be specified by the [`USERLEN`](#userlen-parameter) `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
 
