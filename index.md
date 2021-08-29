@@ -1492,6 +1492,27 @@ Reply Examples:
       :ircd.stealth.net 302 yournick :syrk=+syrk@millennium.stealth.net
                                       ; Reply for user syrk
 
+### WALLOPS message
+
+         Command: WALLOPS
+      Parameters: <Text to be sent>
+
+The WALLOPS command is used to send a message to all currently connected users who have set the 'w' user mode for themselves.
+
+Servers may generate it themselves, and MAY allow operators to send them.
+
+Numeric replies:
+
+* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
+* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
+* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+
+Examples:
+
+     :csd.bu.edu WALLOPS :Connect '*.uiuc.edu 6667' from Joshua; WALLOPS
+                                     message from csd.bu.edu announcing a
+                                     CONNECT message it received and acted
+                                     upon from Joshua.
 <!--
 ## Miscellaneous Messages
 
