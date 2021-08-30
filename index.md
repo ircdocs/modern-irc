@@ -127,7 +127,7 @@ There are several types of channels used in the IRC protocol. The first standard
 
 Along with various channel types, there are also channel modes that can alter the characteristics and behaviour of individual channels. See the [Channel Modes](#channel-modes) section for more information on these.
 
-To create a new channel or become part of an existing channel, a user is required to join the channel using the [`JOIN`](#join-message) command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
+To create a new channel or become part of an existing channel, a user is required to join the channel using the {% message JOIN %} command. If the channel doesn't exist prior to joining, the channel is created and the creating user becomes a channel operator. If the channel already exists, whether or not the client successfully joins that channel depends on the modes currently set on the channel. For example, if the channel is set to `invite-only` mode (`+i`), the client only joins the channel if they have been invited by another user or they have been exempted from requiring an invite by the channel operators.
 
 Channels also contain a [topic](#topic-message). The topic is a line shown to all users when they join the channel, and all users in the channel are notified when the topic of a channel is changed. Channel topics commonly state channel rules, links, quotes from channel members, a general description of the channel, or whatever the [channel operators](#channel-operators) want to share with the clients in their channel.
 
@@ -145,12 +145,12 @@ IRC servers may also define other levels of channel moderation. These can includ
 
 The commands which may only be used by channel moderators include:
 
-- [`KICK`](#kick-message): Eject a client from the channel
-- [`MODE`](#mode-message): Change the channel's modes
-- [`INVITE`](#invite-message): Invite a client to an invite-only channel (mode +i)
-- [`TOPIC`](#topic-message): Change the channel topic in a mode +t channel
+- {% command KICK %}: Eject a client from the channel
+- {% command MODE %}: Change the channel's modes
+- {% command INVITE %}: Invite a client to an invite-only channel (mode +i)
+- {% command TOPIC %}: Change the channel topic in a mode +t channel
 
-Channel moderators are identified by the channel member prefix (`'@'` for standard channel operators, `'%'` for halfops) next to their nickname whenever it is associated with a channel (ie: replies to the `NAMES`, `WHO`, and `WHOIS` commands).
+Channel moderators are identified by the channel member prefix (`'@'` for standard channel operators, `'%'` for halfops) next to their nickname whenever it is associated with a channel (e.g. replies to the {% command NAMES %}, {% command WHO %}, and {% command WHOIS %} commands).
 
 Specific prefixes and moderation levels are covered in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
 
@@ -539,7 +539,7 @@ Examples:
 
 Immediately upon establishing a connection the client must attempt registration, without waiting for any banner message from the server.
 
-Until registration is complete, only a limited subset of commands SHOULD be accepted by the server. This is because it makes sense to require a registered (fully connected) client connection before allowing commands such as [`JOIN`](#join-message), [`PRIVMSG`](#privmsg-message) and others.
+Until registration is complete, only a limited subset of commands SHOULD be accepted by the server. This is because it makes sense to require a registered (fully connected) client connection before allowing commands such as {% command JOIN %}, {% command PRIVMSG %} and others.
 
 The recommended order of commands during registration is as follows:
 
@@ -552,11 +552,11 @@ The recommended order of commands during registration is as follows:
 
 The commands specified in steps 1-3 should be sent on connection. If the server supports [capability negotiation](#capability-negotiation) then registration will be suspended and the client can negotiate client capabilities (steps 4-6). If the server does not support capability negotiation then registration will continue immediately without steps 4-6.
 
-1. If the server supports capability negotiation, the [`CAP`](#cap-message) command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
+1. If the server supports capability negotiation, the {% command CAP %} command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
 
-2. The [`PASS`](#pass-message) command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
+2. The {% command PASS %} command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
 
-3. The [`NICK`](#nick-message) and [`USER`](#user-message) commands are used to set the user's nickname, username and "real name". Unless the registration is suspended by a `CAP` negotiation, these commands will end the registration process.
+3. The {% command NICK %} and {% command USER %} commands are used to set the user's nickname, username and "real name". Unless the registration is suspended by a {% command CAP %} negotiation, these commands will end the registration process.
 
 4. The client should request advertised capabilities it wishes to enable here.
 
@@ -566,7 +566,7 @@ The commands specified in steps 1-3 should be sent on connection. If the server 
 
 If the server is waiting to complete a lookup of client information (such as hostname or ident for a username), there may be an arbitrary wait at some point during registration. Servers SHOULD set a reasonable timeout for these lookups.
 
-Additionally, some servers also send a [`PING`](#ping-message) and require a matching [`PONG`](#pong-message) from the client before continuing. This exchange may happen immediately on connection and at any time during connection registration, so clients MUST respond correctly to it.
+Additionally, some servers also send a {% message PING %} and require a matching {% command PONG %} from the client before continuing. This exchange may happen immediately on connection and at any time during connection registration, so clients MUST respond correctly to it.
 
 Upon successful completion of the registration process, the server MUST send, in this order, the [`RPL_WELCOME`](#rplwelcome-001) `(001)`, [`RPL_YOURHOST`](#rplyourhost-002) `(002)`, [`RPL_CREATED`](#rplcreated-003) `(003)`, [`RPL_MYINFO`](#rplmyinfo-004) `(004)`, and at least one [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric to the client. The server SHOULD then respond as though the client sent the [`LUSERS`](#lusers-message) command and return the appropriate numerics. If the user has client modes set on them automatically upon joining the network, the server SHOULD send the client the [`RPL_UMODEIS`](#rplumodeis-221) `(221)` reply. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the [`MOTD`](#motd-message) command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the [`ERR_NOMOTD`](#errnomotd-422) numeric.
 
@@ -1077,7 +1077,7 @@ Numeric Replies:
 * [`RPL_MOTD`](#rplmotd-372) `(372)`
 * [`RPL_ENDOFMOTD`](#rplendofmotd-376) `(376)`
 
-{% h3 message-VERSION %}VERSION message{% endh3 %}
+{% messageheader VERSION %}
 
          Command: VERSION
       Parameters: [<target>]
