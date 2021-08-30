@@ -1077,7 +1077,7 @@ Numeric Replies:
 * [`RPL_MOTD`](#rplmotd-372) `(372)`
 * [`RPL_ENDOFMOTD`](#rplendofmotd-376) `(376)`
 
-{% h3 message-VERSION %}_VERSION_ message{% endh3 %}
+{% h3 message-VERSION %}VERSION message{% endh3 %}
 
          Command: VERSION
       Parameters: [<target>]
