@@ -7,13 +7,23 @@
 #   - create the WHO message header, with an appropriate ID
 #
 # {% command WHO %} and {% message WHO %}
-#   - link to the WHO message.
+#   - link to the WHO message
+#
+# {% numericheader RPL_WELCOME %}
+#   - create the RPL_WELCOME numeric header
+#
+# {% numeric RPL_WELCOME %}
+#   - link to the RPL_WELCOME numeric
 
 def slug(input)
-  input.strip.gsub(/\s+/, " ")
+  input.strip.gsub(/\s+/, ' ')
 end
 
-module Jekyll
+def numericAnchor(name, numeric)
+  "#{name.gsub(/_/, '').downcase}-#{numeric}"
+end
+
+module IRCdocsPlugin
   class MessageHeaderTag < Liquid::Tag
     def initialize(name, params, tokens)
       super
@@ -39,9 +49,47 @@ module Jekyll
       "<a href=\"##{@id}-message\"><code>#{@id}</code></a>"
     end
   end
+
+  class NumericHeaderTag < Liquid::Tag
+    def initialize(name, params, tokens)
+      super
+      @id = slug(params)
+    end
+
+    def render(context)
+      super
+
+      info = context.registers[:site].data['modern']['numerics'][@id]
+      if info == nil
+        raise "Numeric [#{@id}] is not defined in modern.yml"
+      end
+
+      "<h3 id=\"#{numericAnchor(@id, info['numeric'])}\"><code>#{@id} (#{info['numeric']})</code></a>"
+    end
+  end
+
+  class NumericTag < Liquid::Tag
+    def initialize(name, params, tokens)
+      super
+      @id = slug(params)
+    end
+
+    def render(context)
+      super
+
+      info = context.registers[:site].data['modern']['numerics'][@id]
+      if info == nil
+        raise "Numeric [#{@id}] is not defined in modern.yml"
+      end
+
+      "<a href=\"##{numericAnchor(@id, info['numeric'])}\"><code>#{@id}</code></a> <code>(#{info['numeric']})</code>"
+    end
+  end
 end
 
-Liquid::Template.register_tag('messageheader', Jekyll::MessageHeaderTag)
-Liquid::Template.register_tag('commandheader', Jekyll::MessageHeaderTag)
-Liquid::Template.register_tag('message', Jekyll::MessageTag)
-Liquid::Template.register_tag('command', Jekyll::MessageTag)
+Liquid::Template.register_tag('messageheader', IRCdocsPlugin::MessageHeaderTag)
+Liquid::Template.register_tag('commandheader', IRCdocsPlugin::MessageHeaderTag)
+Liquid::Template.register_tag('message', IRCdocsPlugin::MessageTag)
+Liquid::Template.register_tag('command', IRCdocsPlugin::MessageTag)
+Liquid::Template.register_tag('numericheader', IRCdocsPlugin::NumericHeaderTag)
+Liquid::Template.register_tag('numeric', IRCdocsPlugin::NumericTag)
