@@ -744,7 +744,7 @@ Older versions of the protocol gave specific semantics to the `<token>` and allo
 Numeric Replies:
 
 * [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOORIGIN`](#errnooring-409) `(409)`
+* [`ERR_NOORIGIN`](#errnoorigin-409) `(409)`
 
 Deprecated Numeric Reply:
 
