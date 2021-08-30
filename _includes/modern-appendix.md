@@ -208,7 +208,7 @@ Server authors that wish to extend one of the numerics listed here SHOULD make t
 Note that for numerics with "human-readable" informational strings for the last parameter which are not designed to be parsed, such as in `RPL_WELCOME`, servers commonly change this last-param text. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
 We do try to note numerics where this is the case with a message like *"The text used in the last param of this message varies wildly"*.
 
-### `RPL_WELCOME (001)`
+{% numericheader RPL_WELCOME %}
 
       "<client> :Welcome to the <networkname> Network, <nick>[!<user>@<host>]"
 

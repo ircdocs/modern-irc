@@ -64,7 +64,7 @@ module IRCdocsPlugin
         raise "Numeric [#{@id}] is not defined in modern.yml"
       end
 
-      "<h3 id=\"#{numericAnchor(@id, info['numeric'])}\"><code>#{@id} (#{info['numeric']})</code></a>"
+      "<h3 id=\"#{numericAnchor(@id, info['numeric'])}\"><code>#{@id} (#{info['numeric']})</code></h3>"
     end
   end
 
