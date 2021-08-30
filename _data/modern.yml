@@ -215,6 +215,9 @@ numerics:
   RPL_NOTIFY:
     numeric: '273'
 
+  RPL_WHOISCERTFP:
+    numeric: '276'
+
   RPL_GLIST:
     numeric: '280'
 
@@ -271,6 +274,9 @@ numerics:
 
   RPL_WHOISCHANNELS:
     numeric: '319'
+
+  RPL_LISTSTART:
+    numeric: '321'
 
   RPL_LIST:
     numeric: '322'
@@ -631,6 +637,9 @@ numerics:
 
   ERR_CHANOWNPRIVNEEDED:
     numeric: '499'
+
+  ERR_UMODEUNKNOWNFLAG:
+    numeric: '501'
 
   ERR_USERSDONTMATCH:
     numeric: '502'

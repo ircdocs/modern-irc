@@ -33,7 +33,7 @@ module IRCdocsPlugin
     def render(context)
       super
 
-      "<h3 id=\"#{@id}-message\">#{@id} Message</h3>"
+      "<h3 id=\"#{@id.downcase}-message\">#{@id} Message</h3>"
     end
   end
 
@@ -46,7 +46,7 @@ module IRCdocsPlugin
     def render(context)
       super
 
-      "<a href=\"##{@id}-message\"><code>#{@id}</code></a>"
+      "<a href=\"##{@id.downcase}-message\"><code>#{@id}</code></a>"
     end
   end
 

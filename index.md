@@ -576,13 +576,13 @@ Upon successful completion of the registration process, the server MUST send, in
 
 # Feature Advertisement
 
-IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The [`RPL_ISUPPORT`](#rplisupport-005) `(005)` numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
+IRC servers and networks implement many different IRC features, limits, and protocol options that clients should be aware of. The {% numeric RPL_ISUPPORT %} numeric is designed to advertise these features to clients on connection registration, providing a simple way for clients to change their behaviour based on what is implemented on the server.
 
 Once client registration is complete, the server MUST send at least one `RPL_ISUPPORT` numeric to the client. The server MAY send more than one `RPL_ISUPPORT` numeric and consecutive `RPL_ISUPPORT` numerics SHOULD be sent adjacent to each other.
 
 Clients SHOULD NOT assume a server supports a feature unless it has been advertised in `RPL_ISUPPORT`. For `RPL_ISUPPORT` parameters which specify a 'default' value, clients SHOULD assume the default value for these parameters until the server advertises these parameters itself. This is generally done for compatibility reasons with older versions of the IRC protocol that do not specify the `RPL_ISUPPORT` numeric and servers that do not advertise those specific tokens.
 
-For more information and specific details on tokens, see the [`RPL_ISUPPORT`](#rplisupport-005) reply.
+For more information and specific details on tokens, see the {% numeric RPL_ISUPPORT %} reply.
 
 A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#RPL_ISUPPORT-parameters) section.
 
@@ -616,7 +616,7 @@ Clients and servers should implement capability negotiation and the `CAP` comman
 
 Messages are client-to-server only unless otherwise specified. If messages may be sent from the server to a connected client, it will be noted in the message's description. For server-to-client messages of this type, the message `<source>` usually indicates the client the message relates to, but this will be noted in the description.
 
-In message descriptions, 'command' refers to the message's behaviour when sent from a client to the server. Similarly, 'Command Examples' represent example messages sent from a client to the server, and 'Message Examples' represent example messages sent from the server to a client. If a command is sent from a client to a server with less parameters than the command requires to be processed, the server will reply with an [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) numeric and the command will fail.
+In message descriptions, 'command' refers to the message's behaviour when sent from a client to the server. Similarly, 'Command Examples' represent example messages sent from a client to the server, and 'Message Examples' represent example messages sent from the server to a client. If a command is sent from a client to a server with less parameters than the command requires to be processed, the server will reply with an {% numeric ERR_NEEDMOREPARAMS %} numeric and the command will fail.
 
 In the `"Parameters:"` section, optional parts or parameters are noted with square brackets as such: `"[<param>]"`. Curly braces around a part of parameter indicate that it may be repeated zero or more times, for example: `"<key>{,<key>}"` indicates that there must be at least one `<key>`, and that there may be additional keys separated by the comma `(",", 0x2C)` character.
 
@@ -657,9 +657,9 @@ Servers may also consider requiring [`SASL` Authentication](#authenticate-messag
 
 Numeric replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_ALREADYREGISTRED`](#erralreadyregistered-462) `(462)`
-* [`ERR_PASSWDMISMATCH`](#errpasswdmismatch-464) `(464)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_ALREADYREGISTERED %}
+* {% numeric ERR_PASSWDMISMATCH %}
 
 Command Example:
 
@@ -682,10 +682,10 @@ The `NICK` message may be sent from the server to clients to acknowledge their `
 
 Numeric Replies:
 
-* [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431) `(431)`
-* [`ERR_ERRONEUSNICKNAME`](#errerroneusnickname-432) `(432)`
-* [`ERR_NICKNAMEINUSE`](#errnicknameinuse-433) `(433)`
-* [`ERR_NICKCOLLISION`](#errnickcollision-436) `(436)`
+* {% numeric ERR_NONICKNAMEGIVEN %}
+* {% numeric ERR_ERRONEUSNICKNAME %}
+* {% numeric ERR_NICKNAMEINUSE %}
+* {% numeric ERR_NICKCOLLISION %}
 
 Command Example:
 
@@ -719,8 +719,8 @@ If the client sends a `USER` command after the server has successfully received 
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_ALREADYREGISTRED`](#erralreadyregistred-462) `(462)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_ALREADYREGISTERED %}
 
 Command Examples:
 
@@ -752,10 +752,10 @@ The `<name>` specified by this command is separate to the accounts specified by 
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_PASSWDMISMATCH`](#errpasswdmismatch-464) `(464)`
-* [`ERR_NOOPERHOST`](#errnooperhost-491) `(491)`
-* [`RPL_YOUREOPER`](#erryoureoper-381) `(381)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_PASSWDMISMATCH %}
+* {% numeric ERR_NOOPERHOST %}
+* {% numeric RPL_YOUREOPER %}
 
 Command Example:
 
@@ -810,11 +810,11 @@ The `JOIN` command indicates that the client wants to join the given channel(s),
 
 While a client is joined to a channel, they receive all relevant information about that channel including the `JOIN`, `PART`, `KICK`, and `MODE` messages affecting the channel. They receive all `PRIVMSG` and `NOTICE` messages sent to the channel, and they also receive `QUIT` messages from other clients joined to the same channel (to let them know those users have left the channel and the network). This allows them to keep track of other channel members and channel modes.
 
-If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with [`RPL_TOPIC`](#rpltopic-332)), and no message if the channel does not have a topic. They are also sent a list of users currently joined to the channel (with one or more [`RPL_NAMREPLY`](#rplnamreply-353) numerics). These `RPL_NAMREPLY` messages sent by the server MUST include the requesting client that has just joined the channel.
+If a client's `JOIN` command to the server is successful, they receive a `JOIN` message from the server with their client as the message `<source>` and the channel they have joined as the first parameter of the message. After this, they are sent the channel's topic (with {% numeric RPL_TOPIC %}), and no message if the channel does not have a topic. They are also sent a list of users currently joined to the channel (with one or more {% numeric RPL_NAMREPLY %} numerics). These `RPL_NAMREPLY` messages sent by the server MUST include the requesting client that has just joined the channel.
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
-Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) reply and the command will fail.
+Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an {% numeric ERR_TOOMANYCHANNELS %} reply and the command will fail.
 
 Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-message) command for each channel they are a member of.
 
@@ -822,15 +822,15 @@ This message may be sent from a server to a client to notify the client that som
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* [`ERR_TOOMANYCHANNELS`](#errtoomanychannels-405) `(405)`
-* [`ERR_BADCHANNELKEY`](#errbadchannelkey-475) `(475)`
-* [`ERR_BANNEDFROMCHAN`](#errbannedfromchan-474) `(474)`
-* [`ERR_CHANNELISFULL`](#errchannelisfull-471) `(471)`
-* [`ERR_INVITEONLYCHAN`](#errinviteonlychan-473) `(473)`
-* [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_TOOMANYCHANNELS %}
+* {% numeric ERR_BADCHANNELKEY %}
+* {% numeric ERR_BANNEDFROMCHAN %}
+* {% numeric ERR_CHANNELISFULL %}
+* {% numeric ERR_INVITEONLYCHAN %}
+* {% numeric RPL_TOPIC %}
+* {% numeric RPL_NAMREPLY %}
 
 Command Examples:
 
@@ -860,15 +860,15 @@ Message Examples:
 
 The `PART` command removes the client from the given channel(s). On sending a successful `PART` command, the user will receive a `PART` message from the server for each channel they have been removed from. `<reason>` is the reason that the client has left the channel(s).
 
-For each channel in the parameter of this command, if the channel exists and the client is not joined to it, they will receive an [`ERR_NOTONCHANNEL`](#errnotonchannel-442) reply and that channel will be ignored. If the channel does not exist, the client will receive an [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) reply and that channel will be ignored.
+For each channel in the parameter of this command, if the channel exists and the client is not joined to it, they will receive an {% numeric ERR_NOTONCHANNEL %} reply and that channel will be ignored. If the channel does not exist, the client will receive an {% numeric ERR_NOSUCHCHANNEL %} reply and that channel will be ignored.
 
 This message may be sent from a server to a client to notify the client that someone has been removed from a channel. In this case, the message `<source>` will be the client who is being removed, and `<channel>` will be the channel which that client has been removed from. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `PART` messages as a series of messages with a single channel name on each. If a `PART` message is distributed in this way, `<reason>` (if it exists) should be on each of these messages.
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_NOTONCHANNEL %}
 
 Command Examples:
 
@@ -888,11 +888,11 @@ Message Examples:
 
 The `TOPIC` command is used to change or view the topic of the given channel. If `<topic>` is not given, either `RPL_TOPIC` or `RPL_NOTOPIC` is returned specifying the current channel topic or lack of one. If `<topic>` is an empty string, the topic for the channel will be cleared.
 
-If the client sending this command is not joined to the given channel, and tries to view its' topic, the server MAY return the [`ERR_NOTONCHANNEL`](#errnotonchannel-442) numeric and have the command fail.
+If the client sending this command is not joined to the given channel, and tries to view its' topic, the server MAY return the {% numeric ERR_NOTONCHANNEL %} numeric and have the command fail.
 
 If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICWHOTIME` SHOULD also be sent to that client.
 
-If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned and the command will fail.
+If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned and the command will fail.
 
 If the topic of a channel is changed or cleared, every client in that channel (including the author of the topic change) will receive a `TOPIC` command with the new topic as argument (or an empty argument if the topic was cleared) alerting them to how the topic has changed.
 
@@ -900,13 +900,13 @@ Clients joining the channel in the future will receive a `RPL_TOPIC` numeric (or
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
-* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
-* [`RPL_NOTOPIC`](#rplnotopic-331) `(331)`
-* [`RPL_TOPIC`](#rpltopic-332) `(332)`
-* [`RPL_TOPICWHOTIME`](#rpltopicwhotime-333) `(333)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_NOTONCHANNEL %}
+* {% numeric ERR_CHANOPRIVSNEEDED %}
+* {% numeric RPL_NOTOPIC %}
+* {% numeric RPL_TOPIC %}
+* {% numeric RPL_TOPICWHOTIME %}
 
 Command Examples:
 
@@ -932,8 +932,8 @@ If no parameter is given for this command, servers SHOULD return one `RPL_ENDOFN
 
 Numeric Replies:
 
-* [`RPL_NAMREPLY`](#rplnamreply-353) `(353)`
-* [`RPL_ENDOFNAMES`](#rplendofnames-366) `(366)`
+* {% numeric RPL_NAMREPLY %}
+* {% numeric RPL_ENDOFNAMES %}
 
 Command Examples:
 
@@ -959,9 +959,9 @@ In response to a successful `LIST` command, the server MAY send one `RPL_LISTSTA
 
 Numeric Replies:
 
-* [`RPL_LISTSTART`](#rplliststart-321) `(321)`
-* [`RPL_LIST`](#rpllist-322) `(322)`
-* [`RPL_LISTEND`](#rpllistend-323) `(323)`
+* {% numeric RPL_LISTSTART %}
+* {% numeric RPL_LIST %}
+* {% numeric RPL_LISTEND %}
 
 Command Examples:
 
@@ -993,12 +993,12 @@ When the invite is successful, the server MUST send a `RPL_INVITING` numeric to 
 
 Numeric Replies:
 
-* [`RPL_INVITING`](#rplinviting-341) `(341)`
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
-* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
-* [`ERR_USERONCHANNEL`](#erruseronchannel-443) `(443)`
+* {% numeric RPL_INVITING %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_NOTONCHANNEL %}
+* {% numeric ERR_CHANOPRIVSNEEDED %}
+* {% numeric ERR_USERONCHANNEL %}
 
 Command Examples:
 
@@ -1027,15 +1027,15 @@ Servers MAY limit the number of target users per `KICK` command via the [`TARGMA
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) `(403)`
-* [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) `(482)`
-* [`ERR_USERNOTINCHANNEL`](#errusernotinchannel-441) `(441)`
-* [`ERR_NOTONCHANNEL`](#errnotonchannel-442) `(442)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_CHANOPRIVSNEEDED %}
+* {% numeric ERR_USERNOTINCHANNEL %}
+* {% numeric ERR_NOTONCHANNEL %}
 
 Deprecated Numeric Reply:
 
-* [`ERR_BADCHANMASK`](#errbadchanmask-476) `(476)`
+* {% numeric ERR_BADCHANMASK %}
 
 Examples:
 
@@ -1071,11 +1071,11 @@ If the MOTD does not exist or could not be found, the `ERR_NOMOTD` numeric is re
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NOMOTD`](#errnomotd-422) `(422)`
-* [`RPL_MOTDSTART`](#rplmotdstart-375) `(375)`
-* [`RPL_MOTD`](#rplmotd-372) `(372)`
-* [`RPL_ENDOFMOTD`](#rplendofmotd-376) `(376)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NOMOTD %}
+* {% numeric RPL_MOTDSTART %}
+* {% numeric RPL_MOTD %}
+* {% numeric RPL_ENDOFMOTD %}
 
 {% messageheader VERSION %}
 
@@ -1092,9 +1092,9 @@ Upon receiving a `VERSION` command, the given server SHOULD respond with one `RP
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_ISUPPORT`](#rplisupport-005) `(005)`
-* [`RPL_VERSION`](#rplversion-351) `(351)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric RPL_ISUPPORT %}
+* {% numeric RPL_VERSION %}
 
 Command Examples:
 
@@ -1119,11 +1119,11 @@ Upon receiving an `ADMIN` command, the given server SHOULD respond with the `RPL
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_ADMINME`](#rpladminme-256) `(256)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric RPL_ADMINME %}
 * [`RPL_ADMINLOC1`](#rpladminloc1-257) `(257)`
 * [`RPL_ADMINLOC2`](#rpladminloc2-258) `(258)`
-* [`RPL_ADMINEMAIL`](#rpladminemail-259) `(259)`
+* {% numeric RPL_ADMINEMAIL %}
 
 Command Examples:
 
@@ -1142,10 +1142,10 @@ The `CONNECT` command forces a server to try to establish a new connection to an
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
-* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
 
 Command Examples:
 
@@ -1164,8 +1164,8 @@ The `TIME` command is used to query local time from the specified server. If the
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_TIME`](#rpltime-391) `(391)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric RPL_TIME %}
 
 Command Examples:
 
@@ -1204,20 +1204,20 @@ The currently supported queries are:
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
-* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
-* [`RPL_STATSCLINE`](#statscline-213) `(213)`
-* [`RPL_STATSHLINE`](#statshline-244) `(244)`
-* [`RPL_STATSILINE`](#statsiline-215) `(215)`
-* [`RPL_STATSKLINE`](#statskline-216) `(216)`
-* [`RPL_STATSLLINE`](#statslline-241) `(241)`
-* [`RPL_STATSOLINE`](#statsoline-243) `(243)`
-* [`RPL_STATSLINKINFO`](#rplstatslinkinfo-211) `(211)`
-* [`RPL_STATSUPTIME`](#rplstatsuptime-242) `(242)`
-* [`RPL_STATSCOMMANDS`](#rplstatscommands-212) `(212)`
-* [`RPL_ENDOFSTATS`](#rplendofstats-219) `(219)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
+* {% numeric RPL_STATSCLINE %}
+* {% numeric RPL_STATSHLINE %}
+* {% numeric RPL_STATSILINE %}
+* {% numeric RPL_STATSKLINE %}
+* {% numeric RPL_STATSLLINE %}
+* {% numeric RPL_STATSOLINE %}
+* {% numeric RPL_STATSLINKINFO %}
+* {% numeric RPL_STATSUPTIME %}
+* {% numeric RPL_STATSCOMMANDS %}
+* {% numeric RPL_ENDOFSTATS %}
 
 Command Examples:
 
@@ -1240,9 +1240,9 @@ Upon receiving an `INFO` command, the given server will respond with zero or mor
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`RPL_INFO`](#rplinfo-371) `(371)`
-* [`RPL_ENDOFINFO`](#rplendofinfo-374) `(374)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric RPL_INFO %}
+* {% numeric RPL_ENDOFINFO %}
 
 Command Examples:
 
@@ -1264,19 +1264,19 @@ The `MODE` command is used to set or remove options (or *modes*) from a given ta
 
 #### User mode
 
-If `<target>` is a nickname that does not exist on the network, the [`ERR_NOSUCHNICK`](#errnosuchnick-401) numeric is returned. If `<target>` is a different nick than the user who sent the command, the [`ERR_USERSDONTMATCH`](#errusersdontmatch-502) numeric is returned.
+If `<target>` is a nickname that does not exist on the network, the {% numeric ERR_NOSUCHNICK %} numeric is returned. If `<target>` is a different nick than the user who sent the command, the {% numeric ERR_USERSDONTMATCH %} numeric is returned.
 
-If `<modestring>` is not given, the [`RPL_UMODEIS`](#rplumodeis-221) numeric is sent back containing the current modes of the target user.
+If `<modestring>` is not given, the {% numeric RPL_UMODEIS %} numeric is sent back containing the current modes of the target user.
 
-If `<modestring>` is given, the supplied modes will be applied, and a `MODE` message will be sent to the user containing the changed modes. If one or more modes sent are not implemented on the server, the server MUST apply the modes that are implemented, and then send the [`ERR_UMODEUNKNOWNFLAG`](#errumodeunknownflag-501) in reply along with the `MODE` message.
+If `<modestring>` is given, the supplied modes will be applied, and a `MODE` message will be sent to the user containing the changed modes. If one or more modes sent are not implemented on the server, the server MUST apply the modes that are implemented, and then send the {% numeric ERR_UMODEUNKNOWNFLAG %} in reply along with the `MODE` message.
 
 #### Channel mode
 
-If `<target>` is a channel that does not exist on the network, the [`ERR_NOSUCHCHANNEL`](#errnosuchchannel-403) numeric is returned.
+If `<target>` is a channel that does not exist on the network, the {% numeric ERR_NOSUCHCHANNEL %} numeric is returned.
 
-If `<modestring>` is not given, the [`RPL_CHANNELMODEIS`](#rplchannelmodeis-324) numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes. Servers MAY also return the [`RPL_CREATIONTIME`](#rplcreationtime-329) numeric following `RPL_CHANNELMODEIS`.
+If `<modestring>` is not given, the {% numeric RPL_CHANNELMODEIS %} numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes. Servers MAY also return the {% numeric RPL_CREATIONTIME %} numeric following `RPL_CHANNELMODEIS`.
 
-If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST not process the message, and [`ERR_CHANOPRIVSNEEDED`](#errchanoprivsneeded-482) numeric is returned.
+If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST not process the message, and {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned.
 If the user has permission to change modes on the target, the supplied modes will be applied based on the type of the mode (see below).
 For type A, B, and C modes, arguments will be sequentially obtained from `<mode arguments>`. If a type B or C mode does not have a parameter when being set, the server MUST ignore that mode.
 If a type A mode has been sent without an argument, the contents of the list MUST be sent to the user, unless it contains sensitive information the user is not allowed to access.
@@ -1313,9 +1313,9 @@ The meaning of standard (and/or well-used) channel and user mode letters can be 
 
 Type A modes are lists that can be viewed. The method of viewing these lists is not standardised across modes and different numerics are used for each. The specific numerics used for these are outlined here:
 
-* **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more [`RPL_BANLIST`](#rplbanlist-367) numerics, followed by one [`RPL_ENDOFBANLIST`](#rplendofbanlist-368) numeric.
-* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more [`RPL_EXCEPTLIST`](#rplexceptlist-348) numerics, followed by one [`RPL_ENDOFEXCEPTLIST`](#rplendofexceptlist-349) numeric.
-* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more [`RPL_INVITELIST`](#rplinvitelist-346) numerics, followed by one [`RPL_ENDOFINVITELIST`](#rplendofinvitelist-347) numeric.
+* **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more {% numeric RPL_BANLIST %} numerics, followed by one {% numeric RPL_ENDOFBANLIST %} numeric.
+* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more {% numeric RPL_EXCEPTLIST %} numerics, followed by one {% numeric RPL_ENDOFEXCEPTLIST %} numeric.
+* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more {% numeric RPL_INVITELIST %} numerics, followed by one {% numeric RPL_ENDOFINVITELIST %} numeric.
 
 After the initial `MODE` command is sent to the server, the client receives the above numerics detailing the entries that appear on the given list. Servers MAY choose to restrict the above information to channel operators, or to only those clients who have permissions to change the given list.
 
@@ -1352,25 +1352,25 @@ The `PRIVMSG` command is used to send private messages between users, as well as
 
 If `<target>` is a channel name and the client is [banned](#ban-channel-mode) and not covered by a [ban exemption](#ban-exemption-channel-mode), the message will not be delivered and the command will silently fail. Channels with the [moderated](#moderated-channel-mode) mode active may block messages from certain users. Other channel modes may affect the delivery of the message or cause the message to be modified before delivery, and these modes are defined by the server software and configuration being used.
 
-If a message cannot be delivered to a channel, the server SHOULD respond with an [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) numeric to let the user know that this message could not be delivered.
+If a message cannot be delivered to a channel, the server SHOULD respond with an {% numeric ERR_CANNOTSENDTOCHAN %} numeric to let the user know that this message could not be delivered.
 
 If `<target>` is a channel name, it may be prefixed with one or more [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
 
-If `<target>` is a user and that user has been set as away, the server may reply with an [`RPL_AWAY`](#rplaway-301) numeric and the command will continue.
+If `<target>` is a user and that user has been set as away, the server may reply with an {% numeric RPL_AWAY %} numeric and the command will continue.
 
 The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<prefix>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
 
 Numeric Replies:
 
-* [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_CANNOTSENDTOCHAN`](#errcannotsendtochan-404) `(404)`
-* [`ERR_TOOMANYTARGETS`](#errtoomanytargets-407) `(407)`
-* [`ERR_NORECIPIENT`](#errnorecipient-411) `(411)`
-* [`ERR_NOTEXTTOSEND`](#errnotexttosend-412) `(412)`
-* [`ERR_NOTOPLEVEL`](#errnotoplevel-413) `(413)`
-* [`ERR_WILDTOPLEVEL`](#errwildtoplevel-414) `(414)`
-* [`RPL_AWAY`](#rplaway-301) `(301)`
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_CANNOTSENDTOCHAN %}
+* {% numeric ERR_TOOMANYTARGETS %}
+* {% numeric ERR_NORECIPIENT %}
+* {% numeric ERR_NOTEXTTOSEND %}
+* {% numeric ERR_NOTOPLEVEL %}
+* {% numeric ERR_WILDTOPLEVEL %}
+* {% numeric RPL_AWAY %}
 
 <div class="warning">
     There are strange "X@Y" target rules and such which are noted in the examples of the original PRIVMSG RFC section. We need to check to make sure modern servers actually process them properly, and if so then specify them.
@@ -1431,16 +1431,16 @@ Clients can rejoin instantly after this command is performed on them. However, i
 
 As nicknames across an IRC network MUST be unique, if duplicates are found when servers join, one or both of the clients MAY be `KILL`ed and removed from the network. Servers may also handle this case in alternate ways that don't involve removing users from the network.
 
-Servers MAY restrict whether specific operators can remove users on other servers (remote users). If the operator tries to remove a remote user but is not privileged to, they should receive the [`ERR_NOPRIVS`](#errnoprivs-723) numeric.
+Servers MAY restrict whether specific operators can remove users on other servers (remote users). If the operator tries to remove a remote user but is not privileged to, they should receive the {% numeric ERR_NOPRIVS %} numeric.
 
 `<comment>` SHOULD reflect why the `KILL` was performed. For user-generated KILLs, it is up to the user to provide an adequate reason.
 
 Numeric Replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
-* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
 
 <div class="warning">
     <p>NOTE: The <tt>KILL</tt> message is weird, and I need to look at it more closely, add some examples, etc.</p>
@@ -1448,7 +1448,7 @@ Numeric Replies:
 
 ## Optional Messages
 
-These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the [`ERR_UNKNOWNCOMMAND`](#errunknowncommand-421) numeric.
+These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the {% numeric ERR_UNKNOWNCOMMAND %} numeric.
 
 ### AWAY message
 
@@ -1463,26 +1463,26 @@ If the [IRCv3 `away-notify` capability](https://ircv3.net/specs/extensions/away-
 
 Servers SHOULD notify clients when a user they're interacting with is away when relevant, including sending these numerics:
 
-1. [`RPL_AWAY`](#rplaway-301), with the away message, when a PRIVMSG command is directed at the away user (not to a channel they are on).
-2. [`RPL_AWAY`](#rplaway-301), with the away message, in replies to [`WHOIS`](#whois-message) messages.
-3. In the [`RPL_USERHOST`](#rpluserhost-302) numeric, as the `+` or `-` character.
+1. {% numeric RPL_AWAY %}, with the away message, when a PRIVMSG command is directed at the away user (not to a channel they are on).
+2. {% numeric RPL_AWAY %}, with the away message, in replies to [`WHOIS`](#whois-message) messages.
+3. In the {% numeric RPL_USERHOST %} numeric, as the `+` or `-` character.
 
 Numeric Replies:
 
-* [`RPL_UNAWAY`](#rplaway-305) `(305)`
-* [`RPL_NOWAWAY`](#rplaway-306) `(306)`
+* {% numeric RPL_UNAWAY %}
+* {% numeric RPL_NOWAWAY %}
 
 ### USERHOST message
 
          Command: USERHOST
       Parameters: <nickname>{ <nickname>}
 
-The `USERHOST` command is used to return information about users with the given nicknames. The `USERHOST` command takes up to five nicknames, each a separate parameters. The nicknames are returned in [`RPL_USERHOST`](#rpluserhost-302) numerics.
+The `USERHOST` command is used to return information about users with the given nicknames. The `USERHOST` command takes up to five nicknames, each a separate parameters. The nicknames are returned in {% numeric RPL_USERHOST %} numerics.
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`RPL_USERHOST`](#rpluserhost-302) `(302)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric RPL_USERHOST %}
 
 Command Examples:
 
