@@ -7,4 +7,3 @@ plugins:
   - jekyll-sitemap
   - jekyll-redirect-from
   - jekyll-sass-converter
-  - jekyll-commonmark-ghpages
