@@ -446,7 +446,7 @@ Sent as a reply to the [`WHOWAS`](#whowas-message) command, this numeric shows d
 
 ### `RPL_WHOISIDLE (317)`
 
-      "<client> <nick> <secs> <signon> :seconds idle, signon time
+      "<client> <nick> <secs> <signon> :seconds idle, signon time"
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates how long the client with the nickname `<nick>` has been idle. `<secs>` is the number of seconds since the client has been active. Servers generally denote specific commands (for instance, perhaps [`JOIN`](#join-message), [`PRIVMSG`](#privmsg-message), [`NOTICE`](#notice-message), etc) as updating the 'idle time', and calculate this off when the idle time was last updated. `<signon>` is a unix timestamp representing when the user joined the network. The text used in the last param of this message may vary.
 
@@ -473,7 +473,7 @@ The channels in this response are affected by the [secret](#secret-channel-mode)
 
 ### `RPL_WHOISSPECIAL (320)`
 
-      "<client> <nick> :blah blah blah
+      "<client> <nick> :blah blah blah"
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric is used for extra human-readable information on the client with nickname `<nick>`. This should only be used for non-essential information that does not need to be machine-readable or understood by client software.
 
@@ -535,7 +535,7 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
 
 ### `RPL_WHOISACTUALLY (338)`
 
-      "<client> <nick> :is actually ...
+      "<client> <nick> :is actually ..."
       "<client> <nick> <host|ip> :Is actually using host"
       "<client> <nick> <username>@<hostname> <ip> :Is actually using host"
 
@@ -641,7 +641,7 @@ Indicates the end of the [Message of the Day](#motd-message) to the client. The 
 
 ### `RPL_WHOISHOST (378)`
 
-      "<client> <nick> :is connecting from *@localhost 127.0.0.1
+      "<client> <nick> :is connecting from *@localhost 127.0.0.1"
 
 Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about where the client with nickname `<nick>` is connecting from.
 

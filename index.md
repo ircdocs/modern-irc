@@ -1344,7 +1344,7 @@ Servers MUST end their reply to `WHOIS` messages with one of these numerics:
 * [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
 * [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
 * [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431) `(431)`
-* [`RPL_ENDOFWHOIS`](#rplendofwhois-318) otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
+* [`RPL_ENDOFWHOIS`](#rplendofwhois-318) `(318)` otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
 
 Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
 
