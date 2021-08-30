@@ -266,7 +266,7 @@ The server MAY negate parameters which have not been previously advertised; in t
 
 A single `RPL_ISUPPORT` reply MUST NOT contain the same parameter multiple times nor advertise and negate the same parameter. However, the server is free to advertise or negate the same parameter in separate replies.
 
-See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#RPL_ISUPPORT-parameters) section.
+See the [Feature Advertisement](#feature-advertisement) section for more details on this numeric. A list of parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 {% numericheader RPL_BOUNCE %}
 
@@ -908,7 +908,7 @@ The text used in the last param of this message varies wildly.
 ---
 
 
-{% h1 RPL_ISUPPORT-parameters %}`RPL_ISUPPORT` Parameters{% endh1 %}
+{% h1 rplisupport-parameters %}`RPL_ISUPPORT` Parameters{% endh1 %}
 
 Used to [advertise features](#feature-advertisement) to clients, the {% numeric RPL_ISUPPORT %} numeric lists parameters that let the client know which features are active and their value, if any.
 

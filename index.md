@@ -584,7 +584,7 @@ Clients SHOULD NOT assume a server supports a feature unless it has been adverti
 
 For more information and specific details on tokens, see the {% numeric RPL_ISUPPORT %} reply.
 
-A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#RPL_ISUPPORT-parameters) section.
+A list of `RPL_ISUPPORT` parameters is available in the [`RPL_ISUPPORT` Parameters](#rplisupport-parameters) section.
 
 
 ---
@@ -1082,7 +1082,7 @@ Numeric Replies:
          Command: VERSION
       Parameters: [<target>]
 
-The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT` parameters](#RPL_ISUPPORT-parameters) of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
+The `VERSION` command is used to query the version of the software and the [`RPL_ISUPPORT` parameters](#rplisupport-parameters) of the given server. If `<target>` is not given, the information for the server the client is connected to should be returned.
 
 If `<target>` is a server, the information for that server is requested. If `<target>` is a client, the information for the server that client is connected to is requested. If `<target>` is given and a matching server cannot be found, the server will respond with the `ERR_NOSUCHSERVER` numeric and the command will fail.
 
