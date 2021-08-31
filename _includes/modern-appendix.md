@@ -658,7 +658,7 @@ Indicates that the `JOIN` command failed because the client has joined their max
 
 ### `ERR_NOORIGIN (409)`
 
-      ":No origin specified"
+      "<client> :No origin specified"
 
 Indicates a PING or PONG message missing the originator parameter which is required by old IRC servers.
 Nowadays, this may be used by some servers when the PING `<token>` is empty.
