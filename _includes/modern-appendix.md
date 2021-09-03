@@ -566,7 +566,7 @@ Sent as a reply to the [`NAMES`](#names-message) command, this numeric specifies
 
 Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [ban list](#ban-channel-mode). `<mask>` is the given mask on the ban list.
 
-`<who>` and `<set-ts>` are optional and MAY be included in responses. `<who>` is either the nickmask of the client that set the ban or the server name, and `<set-ts>` is the unix timestamp of when the ban was set.
+`<who>` and `<set-ts>` are optional and MAY be included in responses. `<who>` is either the nickmask of the client that set the ban or the server name, and `<set-ts>` is the UNIX timestamp of when the ban was set.
 
 ### `RPL_ENDOFBANLIST (368)`
 
