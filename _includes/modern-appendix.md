@@ -562,7 +562,7 @@ Sent as a reply to the [`NAMES`](#names-message) command, this numeric specifies
 
 ### `RPL_BANLIST (367)`
 
-      "<client> <channel> <mask> [<who> [<set-ts>]]"
+      "<client> <channel> <mask> [<who> <set-ts>]"
 
 Sent as a reply to the [`MODE`](#mode-message) command, when clients are viewing the current entries on a channel's [ban list](#ban-channel-mode). `<mask>` is the given mask on the ban list.
 
