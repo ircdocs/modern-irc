@@ -122,6 +122,13 @@ If this mode is set on a channel, and a client sends a `JOIN` request for that c
 This mode is standard, and the mode letter used for it is `"+k"`.
 
 This mode letter sets a 'key' that must be supplied in order to join this channel. If this mode is set, its' value is the key that is required.
+Servers may validate the value (eg. to forbid spaces, as they make it harder to use the key in `JOIN` messages). If the value is invalid, they SHOULD return [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696).
+However, clients MUST be able to handle any of the following:
+
+* [`ERR_INVALIDMODEPARAM`](#errinvalidmodeparam-696)
+* [`ERR_INVALIDKEY`](#errinvalidkey-525)
+* `MODE` echoed with a different key (eg. truncated or stripped of invalid characters)
+* the key changed ignored, and no `MODE` echoed if no other mode change was valid.
 
 If this mode is set on a channel, and a client sends a `JOIN` request for that channel, they must supply `<key>` in order for the command to succeed. If they do not supply a `<key>`, or the key they supply does not match the value of this mode, they will receive an {% numeric ERR_BADCHANNELKEY %} reply and the command will fail.
 
@@ -758,6 +765,8 @@ Returned to indicate that a {% message JOIN %} command failed because the client
 
 Returned to indicate that a {% message JOIN %} command failed because the channel requires a [key](#key-channel-mode) and the key was either incorrect or not supplied. The text used in the last param of this message may vary.
 
+Not to be confused with [`ERR_INVALIDKEY`](#errinvalidkey-525), which may be returned when setting a key.
+
 {% numericheader ERR_BADCHANMASK %}
 
       "<channel> :Bad Channel Mask"
@@ -804,6 +813,14 @@ Indicates that a {% message MODE %} command affecting a user contained a `MODE` 
 
 Indicates that a {% message MODE %} command affecting a user failed because they were trying to set or view modes for other users. The text used in the last param of this message varies, for instance when trying to view modes for another user, a server may send: `"Can't view modes for other users"`.
 
+{% numericheader ERR_INVALIDKEY %}
+
+    "<client> <target chan> :Key is not well-formed"
+
+Indicates the value of a key channel mode change (`+k`) was rejected.
+
+Not to be confused with [`ERR_BADCHANNELKEY`](#errbadchannelkey-475), which is returned when someone tries to join a channel.
+
 {% numericheader RPL_STARTTLS %}
 
       "<client> :STARTTLS successful, proceed with TLS handshake"
@@ -819,6 +836,12 @@ The text used in the last param of this message varies wildly.
 This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-3.1.html) extension and indicates that a server-side error occured and the `STARTTLS` command failed. For more information on this numeric, see the linked IRCv3 specification.
 
 The text used in the last param of this message varies wildly.
+
+{% numericheader ERR_INVALIDMODEPARAM %}
+
+    "<client> <target chan/user> <mode char> <parameter> :<description>"
+
+Indicates that there was a problem with a mode parameter. Replaces various implementation-specific mode-specific numerics.
 
 {% numericheader ERR_NOPRIVS %}
 
