@@ -1457,10 +1457,20 @@ Casemapping, at least right now, is a topic where implementations differ greatly
 
 ---
 
+# Obsolete Commands and Numerics
 
-# Obsolete Numerics
+## Obsolete Commands
+
+* [`SUMMON`](https://datatracker.ietf.org/doc/html/rfc2812#section-4.5):
+  was used to request people to connect to the network, by writing to their TTY.
+  This only made sense back when users had shells on the same server as the IRC daemon.
+* [`TRACE`](https://datatracker.ietf.org/doc/html/rfc2812#section-3.4.8):
+  showed a path in the server graph, between the user and a target.
+  Nowadays, many servers either don't implement it, or return redacted data.
+
+## Obsolete Numerics
 
 These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) that are not contained in this document or that should be considered obsolete.
 
 * **`RPL_BOUNCE (005)`**: `005` is now used for [`RPL_ISUPPORT`](#rplisupport-005). `RPL_BOUNCE` was moved to [`010`](#rplbounce-010).
-* **`RPL_SUMMONING (342)`**: No. Just, no. The `SUMMON` command isn't used, don't implement this.
+* **`RPL_SUMMONING (342)`**: Was a reply to the deprecated `SUMMON` command.
