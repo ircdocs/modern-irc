@@ -394,12 +394,6 @@ The ABNF representation for `<reply>` is:
 
 `<isop>` is included if the user with the nickname of `<nickname>` has registered as an [operator](#operators). `<isaway>` represents whether that user has set an [away] message. `"+"` represents that the user is not away, and `"-"` represents that the user is away.
 
-### `RPL_ISON (303)`
-
-      "<client> :[<nickname>{ <nickname>}]"
-
-Sent as a reply to the [`ISON`](#ison-message) command, this numeric lists the nicks that are present on the network. The last parameter of this numeric (if there are any results) is a list of nicknames, delimited by a SPACE character `(' ', 0x20)`.
-
 ### `RPL_UNAWAY (305)`
 
       "<client> :You are no longer marked as being away"
@@ -1467,6 +1461,9 @@ Casemapping, at least right now, is a topic where implementations differ greatly
 * [`TRACE`](https://datatracker.ietf.org/doc/html/rfc2812#section-3.4.8):
   showed a path in the server graph, between the user and a target.
   Nowadays, many servers either don't implement it, or return redacted data.
+* [`ISON`](https://datatracker.ietf.org/doc/html/rfc2812#section-4.9):
+  replaced by the [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html) specification
+* `WATCH`: was never specified, and is also replaced by [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html).
 
 ## Obsolete Numerics
 
