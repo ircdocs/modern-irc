@@ -131,7 +131,7 @@ To create a new channel or become part of an existing channel, a user is require
 
 Channels also contain a [topic](#topic-message). The topic is a line shown to all users when they join the channel, and all users in the channel are notified when the topic of a channel is changed. Channel topics commonly state channel rules, links, quotes from channel members, a general description of the channel, or whatever the [channel operators](#channel-operators) want to share with the clients in their channel.
 
-A user may be joined to several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
+A user may be joined to several channels at once, but a limit may be imposed by the server as to how many channels a client can be in at one time. This limit is specified by the {% isupport CHANLIMIT %} `RPL_ISUPPORT` parameter. See the [Feature Advertisement](#feature-advertisement) section for more details on `RPL_ISUPPORT`.
 
 If the IRC network becomes disjoint because of a split between servers, the channel on either side is composed of only those clients which are connected to servers on the respective sides of the split, possibly ceasing to exist on one side. When the split is healed, the connecting servers ensure the network state is consistent between them.
 
@@ -709,7 +709,7 @@ It must be noted that `<realname>` must be the last parameter because it may con
 
 Since it is easy for a client to lie about its username by relying solely on the `USER` command, the use of an "Identity Server" is recommended. This lookup can be performed by the server using the [Ident Protocol](http://tools.ietf.org/html/rfc1413). If the host which a user connects from has such an "Identity Server" enabled, the username is set to that as in the reply from that server. If the host does not have such a server enabled, the username is set to the value of the `<username>` parameter, prefixed by a tilde `('~', 0x7E)` to show that this value is user-set.
 
-The maximum length of `<username>` may be specified by the [`USERLEN`](#userlen-parameter) `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
+The maximum length of `<username>` may be specified by the {% isupport USERLEN %} `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
 The minimum length of `<username>` is 1, ie. it MUST not be empty. If it is empty, the server SHOULD reject the command with [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) (even if an empty parameter is provided); otherwise it MUST use a default value instead.
 
 The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterisk character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
@@ -815,7 +815,7 @@ If a client's `JOIN` command to the server is successful, they receive a `JOIN` 
 
 The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban](#ban-channel-mode) - [exemption](#ban-exemption-channel-mode), [invite-only](#invite-only-channel-mode) - [exemption](#invite-exemption-channel-mode), and other (depending on server software) channel modes affect whether or not a given client may join a channel. More information on each of these modes and how they affect the `JOIN` command is available in their respective sections.
 
-Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the [`CHANLIMIT`](#chanlimit-parameter) `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an {% numeric ERR_TOOMANYCHANNELS %} reply and the command will fail.
+Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the {% isupport CHANLIMIT %} `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an {% numeric ERR_TOOMANYCHANNELS %} reply and the command will fail.
 
 Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-message) command for each channel they are a member of.
 
@@ -954,7 +954,7 @@ The `LIST` command is used to get a list of channels along with some information
 
 The first possible parameter to this command is a list of channel names, delimited by a comma `(",", 0x2C)` character. If this parameter is given, the information for only the given channels is returned. If this parameter is not given, the information about all visible channels (those not hidden by the [secret](#secret-channel-mode) channel mode rules) is returned.
 
-The second possible parameter to this command is a list of conditions as defined in the [`ELIST`](#elist-parameter) `RPL_ISUPPORT` parameter, delimited by a comma `(",", 0x2C)` character. Clients MUST NOT submit an `ELIST` condition unless the server has explicitly defined support for that condition with the `ELIST` token. If this parameter is supplied, the server filters the returned list of channels with the given conditions as specified in the [`ELIST`](#elist-parameter) documentation.
+The second possible parameter to this command is a list of conditions as defined in the {% isupport ELIST %} `RPL_ISUPPORT` parameter, delimited by a comma `(",", 0x2C)` character. Clients MUST NOT submit an `ELIST` condition unless the server has explicitly defined support for that condition with the `ELIST` token. If this parameter is supplied, the server filters the returned list of channels with the given conditions as specified in the {% isupport ELIST %} documentation.
 
 In response to a successful `LIST` command, the server MAY send one `RPL_LISTSTART` numeric, MUST send back zero or more `RPL_LIST` numerics, and MUST send back one `RPL_LISTEND` numeric.
 
@@ -1301,12 +1301,12 @@ The ABNF representation for `<modestring>` is:
 
 There are four categories of channel modes, defined as follows:
 
-* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list. The numerics used to retrieve contents of Type A modes depends on the specific mode. Also see the [`EXTBAN`](#extban-parameter) parameter.
+* **Type A**: Modes that add or remove an address to or from a list. These modes MUST always have a parameter when sent from the server to a client. A client MAY issue this type of mode without an argument to obtain the current contents of the list. The numerics used to retrieve contents of Type A modes depends on the specific mode. Also see the {% isupport EXTBAN %} parameter.
 * **Type B**: Modes that change a setting on a channel. These modes MUST always have a parameter.
 * **Type C**: Modes that change a setting on a channel. These modes MUST have a parameter when being set, and MUST NOT have a parameter when being unset.
 * **Type D**: Modes that change a setting on a channel. These modes MUST NOT have a parameter.
 
-Channel mode letters, along with their types, are defined in the [`CHANMODES`](#chanmodes-parameter) parameter. User mode letters are always **Type D** modes.
+Channel mode letters, along with their types, are defined in the {% isupport CHANMODES %} parameter. User mode letters are always **Type D** modes.
 
 The meaning of standard (and/or well-used) channel and user mode letters can be found in the [Channel Modes](#channel-modes) and [User Modes](#user-modes) sections. The meaning of any mode letters not in this list are defined by the server software and configuration.
 
@@ -1355,7 +1355,7 @@ If `<target>` is a channel name and the client is [banned](#ban-channel-mode) an
 
 If a message cannot be delivered to a channel, the server SHOULD respond with an {% numeric ERR_CANNOTSENDTOCHAN %} numeric to let the user know that this message could not be delivered.
 
-If `<target>` is a channel name, it may be prefixed with one or more [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the [`STATUSMSG`](#statusmsg-parameter) `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
+If `<target>` is a channel name, it may be prefixed with one or more [channel membership prefix character (`@`, `+`, etc)](#channel-membership-prefixes) and the message will be delivered only to the members of that channel with the given or higher status in the channel. Servers that support this feature will list the prefixes which this is supported for in the {% isupport STATUSMSG %} `RPL_ISUPPORT` parameter, and this SHOULD NOT be attempted by clients unless the prefix has been advertised in this token.
 
 If `<target>` is a user and that user has been set as away, the server may reply with an {% numeric RPL_AWAY %} numeric and the command will continue.
 

@@ -11,9 +11,17 @@
 #
 # {% numericheader RPL_WELCOME %}
 #   - create the RPL_WELCOME numeric header
+#   - numeric data MUST exist in the _data/modern.yml file
 #
 # {% numeric RPL_WELCOME %}
 #   - link to the RPL_WELCOME numeric
+#   - numeric data MUST exist in the _data/modern.yml file
+#
+# {% isupportheader TARGMAX %}
+#   - create the ISUPPORT TARGMAX parameter header
+#
+# {% isupport TARGMAX %}
+#   - link to the TARGMAX ISUPPORT parameter
 
 def slug(input)
   input.strip.gsub(/\s+/, ' ')
@@ -85,6 +93,32 @@ module IRCdocsPlugin
       "<a href=\"##{numericAnchor(@id, info['numeric'])}\"><code>#{@id}</code></a> <code>(#{info['numeric']})</code>"
     end
   end
+
+  class IsupportHeaderTag < Liquid::Tag
+    def initialize(name, params, tokens)
+      super
+      @id = slug(params)
+    end
+
+    def render(context)
+      super
+
+      "<h3 id=\"#{@id.downcase}-parameter\"><code>#{@id}</code> Parameter</h3>"
+    end
+  end
+
+  class IsupportTag < Liquid::Tag
+    def initialize(name, params, tokens)
+      super
+      @id = slug(params)
+    end
+
+    def render(context)
+      super
+
+      "<a href=\"##{@id.downcase}-parameter\"><code>#{@id}</code></a>"
+    end
+  end
 end
 
 Liquid::Template.register_tag('messageheader', IRCdocsPlugin::MessageHeaderTag)
@@ -93,3 +127,5 @@ Liquid::Template.register_tag('message', IRCdocsPlugin::MessageTag)
 Liquid::Template.register_tag('command', IRCdocsPlugin::MessageTag)
 Liquid::Template.register_tag('numericheader', IRCdocsPlugin::NumericHeaderTag)
 Liquid::Template.register_tag('numeric', IRCdocsPlugin::NumericTag)
+Liquid::Template.register_tag('isupportheader', IRCdocsPlugin::IsupportHeaderTag)
+Liquid::Template.register_tag('isupport', IRCdocsPlugin::IsupportTag)

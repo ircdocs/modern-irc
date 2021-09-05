@@ -2,7 +2,7 @@
 
 IRC has various types of channels that act in different ways. What differentiates these channels is the character the channel name starts with. For instance, channels starting with `#` are regular channels, and channels starting with `&` are local channels.
 
-Upon joining, clients are shown which types of channels the server supports with the [`CHANTYPES`](#chantypes-parameter) parameter.
+Upon joining, clients are shown which types of channels the server supports with the {% isupport CHANTYPES %} parameter.
 
 Here, we go through the different types of channels that exist and are widely-used these days.
 
@@ -87,7 +87,7 @@ If this mode is set on a channel, and a client sends a `JOIN` request for this c
 
 ### Exception Channel Mode
 
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the [`EXCEPTS`](#excepts-parameter) `RPL_ISUPPORT` parameter on connection.
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the {% isupport EXCEPTS %} `RPL_ISUPPORT` parameter on connection.
 
 This channel mode controls a list of client masks that are exempt from the ['ban'](#ban-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
 
@@ -111,7 +111,7 @@ If this mode is set on a channel, a user must have received an {% message INVITE
 
 ### Invite-Exception Channel Mode
 
-This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the [`INVEX`](#invex-parameter) `RPL_ISUPPORT` parameter on connection.
+This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the {% isupport INVEX %} `RPL_ISUPPORT` parameter on connection.
 
 This channel mode controls a list of channel masks that are exempt from the [invite-only](#invite-only-channel-mode) channel mode. If this mode has values, each of these values should be a client mask.
 
@@ -166,7 +166,7 @@ If this mode is enabled, users MUST be joined to the channel in order to send [p
 
 ## Channel Membership Prefixes
 
-Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in {% message NAMES %}, {% message WHO %} and {% message WHOIS %} messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the [`PREFIX`](#prefix-parameter) `RPL_ISUPPORT` parameter on connection.
+Users joined to a channel may get certain privileges or status in that channel based on channel modes given to them. These users are given prefixes before their nickname whenever it is associated with a channel (ie, in {% message NAMES %}, {% message WHO %} and {% message WHOIS %} messages). The standard and common prefixes are listed here, and MUST be advertised by the server in the {% isupport PREFIX %} `RPL_ISUPPORT` parameter on connection.
 
 ### Founder Prefix
 
@@ -265,7 +265,7 @@ A token is of the form `PARAMETER`, `PARAMETER=VALUE` or `-PARAMETER`. Servers M
 
 Tokens of the form `PARAMETER` or `PARAMETER=VALUE` are used to advertise features or information to clients. A parameter MAY have a default value and value MAY be empty when sent by servers. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields SHOULD be delimited with a comma character `(",", 0x2C)`.
 
-If the value of a parameter changes, the server SHOULD re-advertise the parameter with the new value in an `RPL_ISUPPORT` reply. An example of this is a client becoming an [IRC operator](#oper-message) and their [`CHANLIMIT`](#chanlimit-parameter) changing.
+If the value of a parameter changes, the server SHOULD re-advertise the parameter with the new value in an `RPL_ISUPPORT` reply. An example of this is a client becoming an [IRC operator](#oper-message) and their {% isupport CHANLIMIT %} changing.
 
 Tokens of the form `-PARAMETER` are used to negate a previously specified parameter. If the client receives a token like this, the client MUST consider that parameter to be removed and revert to the behaviour that would occur if the parameter was not specified. The client MUST act as though the paramater is no longer advertised to it. These tokens are intended to allow servers to change their features without disconnecting clients. Tokens of this form MUST NOT contain a value field.
 
@@ -941,7 +941,7 @@ Certain parameters described here may not be standardised nor widely-advertised.
 
 If a 'default value' is listed for a parameter, this is the assumed value of the parameter until and unless it is advertised by the server. This is primarily to interoperate with servers that don't advertise particular well-known and well-used parameters. If an 'empty value' is listed for a parameter, this is the assumed value of the parameter if it is advertised without a value.
 
-### `AWAYLEN` Parameter
+{% isupportheader AWAYLEN %}
 
       Format: AWAYLEN=<number>
 
@@ -955,7 +955,7 @@ Examples:
 
       AWAYLEN=307
 
-### `CASEMAPPING` Parameter
+{% isupportheader CASEMAPPING %}
 
       Format: CASEMAPPING=<casemap>
 
@@ -980,13 +980,13 @@ Examples:
 
       CASEMAPPING=rfc1459
 
-### `CHANLIMIT` Parameter
+{% isupportheader CHANLIMIT %}
 
       Format: CHANLIMIT=<prefixes>:[limit]{,<prefixes>:[limit]}
 
 The `CHANLIMIT` parameter indicates the number of channels a client may join.
 
-The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',', 0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the [`CHANTYPES`](#chantypes-parameter) parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
+The value MUST be specified and is a list of `"<prefixes>:<limit>"` pairs, delimited by a comma `(',', 0x2C)`. `<prefixes>` is a list of channel prefix characters as defined in the {% isupport CHANTYPES %} parameter. `<limit>` is OPTIONAL and if specified is a positive integer indicating the maximum number of these types of channels a client may join. If there is no limit to the number of these channels a client may join, `<limit>` will not be specified.
 
 Clients should not assume other clients are limited to what is specified in the `CHANLIMIT` parameter.
 
@@ -999,7 +999,7 @@ Examples:
       CHANLIMIT=#:70,&:        ; indicates that clients may join 70 '#' channels and any
                                number of '&' channels
 
-### `CHANMODES` Parameter
+{% isupportheader CHANMODES %}
 
       Format: CHANMODES=A,B,C,D[,X,Y...]
 
@@ -1009,7 +1009,7 @@ The value lists the channel mode letters of **Type A**, **B**, **C**, and **D**,
 
 To allow for future extensions, a server MAY send additional types, delimited by a comma `(',', 0x2C)`. However, server authors SHOULD NOT extend this parameter without good reason, and SHOULD CONSIDER whether their mode would work as one of the existing types instead. The behaviour of any additional types is undefined.
 
-Server MUST NOT list modes in this parameter that are also advertised in the [`PREFIX`](#prefix-parameter) parameter. However, modes within the [`PREFIX`](#prefix-parameter) parameter may be treated as type B modes.
+Server MUST NOT list modes in this parameter that are also advertised in the {% isupport PREFIX %} parameter. However, modes within the {% isupport PREFIX %} parameter may be treated as type B modes.
 
 Examples:
 
@@ -1019,7 +1019,7 @@ Examples:
 
       CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTGZ
 
-### `CHANNELLEN` Parameter
+{% isupportheader CHANNELLEN %}
 
       Format: CHANNELLEN=<string>
 
@@ -1035,7 +1035,7 @@ Examples:
 
       CHANNELLEN=64
 
-### `CHANTYPES` Parameter
+{% isupportheader CHANTYPES %}
 
        Format: CHANTYPES=[string]
       Default: CHANTYPES=#
@@ -1052,7 +1052,7 @@ Examples:
 
       CHANTYPES=#&
 
-### `ELIST` Parameter
+{% isupportheader ELIST %}
 
       Format: ELIST=<string>
 
@@ -1076,7 +1076,7 @@ Examples:
 
       ELIST=CMNTU
 
-### `EXCEPTS` Parameter
+{% isupportheader EXCEPTS %}
 
       Format: EXCEPTS=[character]
        Empty: e
@@ -1091,7 +1091,7 @@ Examples:
 
       EXCEPTS=e
 
-### `EXTBAN` Parameter
+{% isupportheader EXTBAN %}
 
       Format: EXTBAN=[<prefix>],<types>
 
@@ -1117,7 +1117,7 @@ Examples:
 
       EXTBAN=,ABCNOQRSTUcjmprsz
 
-### `HOSTLEN` Parameter
+{% isupportheader HOSTLEN %}
 
       Format: HOSTLEN=<number>
       Status: Proposed
@@ -1133,7 +1133,7 @@ Examples:
       HOSTLEN=63
       HOSTLEN=64
 
-### `INVEX` Parameter
+{% isupportheader INVEX %}
 
       Format: INVEX=[character]
        Empty: I
@@ -1148,7 +1148,7 @@ Examples:
 
       INVEX=I
 
-### `KICKLEN` Parameter
+{% isupportheader KICKLEN %}
 
       Format: KICKLEN=<length>
 
@@ -1162,13 +1162,13 @@ Examples:
 
       KICKLEN=307
 
-### `MAXLIST` Parameter
+{% isupportheader MAXLIST %}
 
       Format: MAXLIST=<modes>:<limit>{,<modes>:<limit>}
 
-The `MAXLIST` parameter specifies how many "variable" modes of type A that have been defined in the [`CHANMODES`](#chanmodes-parameter) parameter that a client may set in total on a channel.
+The `MAXLIST` parameter specifies how many "variable" modes of type A that have been defined in the {% isupport CHANMODES %} parameter that a client may set in total on a channel.
 
-The value MUST be specified and is a list of `<modes>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<modes>` is a list of type A modes defined in [`CHANMODES`](#chanmodes-parameter). `<limit>` is a positive integer specifying the maximum number of entries that all of the modes in `<modes>`, combined, may set on a channel.
+The value MUST be specified and is a list of `<modes>:<limit>` pairs, delimited by a comma `(',', 0x2C)`. `<modes>` is a list of type A modes defined in {% isupport CHANMODES %}. `<limit>` is a positive integer specifying the maximum number of entries that all of the modes in `<modes>`, combined, may set on a channel.
 
 A client MUST NOT make any assumptions on how many mode entries may actually exist on any given channel. This limit only applies to the client setting new modes of the given types, and other clients may have different limits.
 
@@ -1184,7 +1184,7 @@ Examples:
                                a combination of "b", "e", and "I" modes, and that they
                                may set up to 50 "q" modes.
 
-### `MAXTARGETS` Parameter
+{% isupportheader MAXTARGETS %}
 
       Format: MAXTARGETS=[number]
 
@@ -1192,7 +1192,7 @@ The `MAXTARGETS` parameter specifies the maximum number of targets a {% message 
 
 The value is OPTIONAL and if specified, `[number]` is a positive integer representing the maximum number of targets those commands may have. If there is no limit, then `[number]` MAY not be specified.
 
-The [`TARGMAX`](#targmax-parameter) parameter SHOULD be advertised instead of or in addition to this parameter. [`TARGMAX`](#targmax-parameter) is intended to replace `MAXTARGETS` as that parameter is more clear about which commands limits apply to.
+The {% isupport TARGMAX %} parameter SHOULD be advertised instead of or in addition to this parameter. {% isupport TARGMAX %} is intended to replace `MAXTARGETS` as that parameter is more clear about which commands limits apply to.
 
 Examples:
 
@@ -1200,11 +1200,11 @@ Examples:
 
       MAXTARGETS=20
 
-### `MODES` Parameter
+{% isupportheader MODES %}
 
       Format: MODES=[number]
 
-The `MODES` parameter specifies how many 'variable' modes may be set on a channel by a single {% message MODE %} command from a client. A 'variable' mode is defined as being a type A, B or C mode as defined in the [`CHANMODES`](#chanmodes-parameter) parameter, or in the channel modes specified in the [`PREFIX`](#prefix-parameter) parameter.
+The `MODES` parameter specifies how many 'variable' modes may be set on a channel by a single {% message MODE %} command from a client. A 'variable' mode is defined as being a type A, B or C mode as defined in the {% isupport CHANMODES %} parameter, or in the channel modes specified in the {% isupport PREFIX %} parameter.
 
 A client SHOULD NOT issue more 'variable' modes than this in a single {% message MODE %} command. A server MAY however issue more 'variable' modes than this in a single {% message MODE %} message. The value is OPTIONAL and when not specified indicates that there is no limit to the number of 'variable' modes that may be set in a single client {% message MODE %} command.
 
@@ -1218,7 +1218,7 @@ Examples:
 
       MODES=20
 
-### `NETWORK` Parameter
+{% isupportheader NETWORK %}
 
       Format: NETWORK=<string>
 
@@ -1230,7 +1230,7 @@ Examples:
 
       NETWORK=Rizon
 
-### `NICKLEN` Parameter
+{% isupportheader NICKLEN %}
 
        Format: NICKLEN=<number>
 
@@ -1246,7 +1246,7 @@ Examples:
 
       NICKLEN=31
 
-### `PREFIX` Parameter
+{% isupportheader PREFIX %}
 
        Format: PREFIX=[(modes)prefixes]
       Default: PREFIX=(ov)@+
@@ -1265,7 +1265,7 @@ Examples:
 
       PREFIX=(qaohv)~&@%+
 
-### `SAFELIST` Parameter
+{% isupportheader SAFELIST %}
 
       Format: SAFELIST
 
@@ -1277,7 +1277,7 @@ Examples:
 
       SAFELIST
 
-### `SILENCE` Parameter
+{% isupportheader SILENCE %}
 
       Format: SILENCE[=<limit>]
 
@@ -1295,13 +1295,13 @@ Examples:
 
       SILENCE=32
 
-### `STATUSMSG` Parameter
+{% isupportheader STATUSMSG %}
 
       Format: STATUSMSG=<string>
 
 The `STATUSMSG` parameter indicates that the server supports a method for clients to send a message via the {% message PRIVMSG %} / {% message NOTICE %} commands to those people on a channel with (one of) the specified [channel membership prefixes](#channel-membership-prefixes).
 
-The value MUST be specified and MUST be a list of prefixes as specified in the [`PREFIX`](#prefix-parameter) parameter. Most servers today advertise every prefix in their [`PREFIX`](#prefix-parameter) parameter in `STATUSMSG`.
+The value MUST be specified and MUST be a list of prefixes as specified in the {% isupport PREFIX %} parameter. Most servers today advertise every prefix in their {% isupport PREFIX %} parameter in `STATUSMSG`.
 
 Examples:
 
@@ -1311,7 +1311,7 @@ Examples:
 
       STATUSMSG=~&@%+
 
-### `TARGMAX` Parameter
+{% isupportheader TARGMAX %}
 
       Format: TARGMAX=[<command>:[limit]{,<command>:[limit]}]
 
@@ -1327,7 +1327,7 @@ Examples:
 
       TARGMAX=ACCEPT:,KICK:1,LIST:1,NAMES:1,NOTICE:4,PRIVMSG:4,WHOIS:1
 
-### `TOPICLEN` Parameter
+{% isupportheader TOPICLEN %}
 
       Format: TOPICLEN=<number>
 
@@ -1341,7 +1341,7 @@ Examples:
 
       TOPICLEN=390
 
-### `USERLEN` Parameter
+{% isupportheader USERLEN %}
 
       Format: USERLEN=<number>
       Status: Proposed
@@ -1475,7 +1475,7 @@ Casemapping, at least right now, is a topic where implementations differ greatly
 ### Clients
 
 * Does your client store state using nicks/channel names as keys, and if so do you casefold those keys appropriately?
-* Does your client discover the casemapping to use from the [`CASEMAPPING`](#casemapping-parameter) `RPL_ISUPPORT` parameter on connection? If so, does your client use the appropriate casemapping based on it?
+* Does your client discover the casemapping to use from the {% isupport CASEMAPPING %} `RPL_ISUPPORT` parameter on connection? If so, does your client use the appropriate casemapping based on it?
 
 
 ---
