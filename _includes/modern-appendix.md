@@ -1463,7 +1463,8 @@ Casemapping, at least right now, is a topic where implementations differ greatly
   Nowadays, many servers either don't implement it, or return redacted data.
 * [`ISON`](https://datatracker.ietf.org/doc/html/rfc2812#section-4.9):
   replaced by the [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html) specification
-* `WATCH`: was never specified, and is also replaced by [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html).
+* [`WATCH`](https://github.com/grawity/irc-docs/blob/master/client/draft-meglio-irc-watch-00.txt):
+  was never formally specified, and is also replaced by [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html).
 
 ## Obsolete Numerics
 
