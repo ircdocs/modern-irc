@@ -283,7 +283,7 @@ The specific parts of an IRC message are:
 
 These message parts, and parameters themselves, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
 
-Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes. There is no ratified provision for continuation messages at this time.
+Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes.
 
 ---
 
@@ -298,8 +298,6 @@ The following sections describe how to process each part, but here are a few com
 
 ### Tags
 
-The **tags** part is optional, and MUST NOT be sent unless explicitly enabled by [a capability](#capability-negotiation). This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it gets processed further.
-
 This is the format of the **tags** part:
 
       <tags>          ::= <tag> [';' <tag>]*
@@ -310,9 +308,11 @@ This is the format of the **tags** part:
 
 Basically, a series of `<key>[=<value>]` segments, separated by `(';', 0x3B)`.
 
+The **tags** part is optional, and MUST NOT be sent unless explicitly enabled by [a capability](#capability-negotiation). This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it gets processed further.
+
 Here are some examples of tags sections and how they could be represented as [JSON](https://www.json.org/) objects:
 
-      @id=123AB;rose         ->  {"id": "123AB", "rose": true}
+      @id=123AB;rose         ->  {"id": "123AB", "rose": ""}
 
       @url=;netsplit=tur,ty  ->  {"url": "", "netsplit": "tur,ty"}
 
@@ -343,14 +343,14 @@ Information on specific commands / numerics can be found in the [Client Messages
 
 ### Parameters
 
-**Parameters** (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. What specific parameters mean changes for every single message.
-
 This is the format of the **parameters** part:
 
       parameter       ::=  *( SPACE middle ) [ SPACE ":" trailing ]
       nospcrlfcl      ::=  <sequence of any characters except NUL, CR, LF, colon (`:`) and SPACE>
       middle          ::=  nospcrlfcl *( ":" / nospcrlfcl )
       trailing        ::=  *( ":" / " " / nospcrlfcl )
+
+**Parameters** (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. What specific parameters mean changes for every single message.
 
 Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, this syntax is insufficient in two cases: a parameter that contains one or more spaces, and an empty parameter. To permit such parameters, the final parameter can be prepended with a `(':', 0x3A)` character, in which case that character is stripped and the rest of the message is treated as the final parameter, including any spaces it contains. Parameters that contain spaces, are empty, or begin with a `':'` character MUST be sent with a preceding `':'`; in other cases the use of a preceding `':'` on the final parameter is OPTIONAL.
 
