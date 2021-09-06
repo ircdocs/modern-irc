@@ -543,9 +543,9 @@ Sent as a reply to the {% message MODE %} command, this numeric indicates the en
 
 {% numericheader RPL_VERSION %}
 
-      "<client> <version> <server> :<comments>"
+      "<client> <version>.<debuglevel> <server> :<comments>"
 
-Sent as a reply to the {% message VERSION %} command, this numeric indicates information about the desired server. `<version>` is the name and version of the software being used (including any revision information). `<server>` is the name of the server. `<comments>` may contain any further comments or details about the specific version of the server.
+Sent as a reply to the {% message VERSION %} command, this numeric indicates information about the desired server. `<version>` is the name and version of the software being used (including any revision information), and `<debuglevel>` is used to indicate if the server is running in debug mode. `<server>` is the name of the server. `<comments>` may contain any further comments or details about the specific version of the server.
 
 {% numericheader RPL_NAMREPLY %}
 
