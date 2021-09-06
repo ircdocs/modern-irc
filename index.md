@@ -298,7 +298,7 @@ The following sections describe how to process each part, but here are a few com
 
 ### Tags
 
-The **tags** part is optional, and MUST NOT be sent unless explicitly enabled by a [capability](#capability-negotiation). Messages may omit the part entirely. This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it's processed further.
+The **tags** part is optional, and MUST NOT be sent unless explicitly enabled by [a capability](#capability-negotiation). This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it gets processed further.
 
 This is the format of the **tags** part:
 
