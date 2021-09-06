@@ -589,7 +589,7 @@ Sent as a reply to the {% message WHOWAS %} command, this numeric indicates the 
 
       "<client> :<string>"
 
-Sent as a reply to the {% message INFO %} command, this numeric returns information describing the server: e.g. its version, list of authors and contributors, and any other miscellaneous information which may be considered to be relevant.
+Sent as a reply to the {% message INFO %} command, this numeric returns human-readable information describing the server: e.g. its version, list of authors and contributors, and any other miscellaneous information which may be considered to be relevant.
 
 {% numericheader RPL_ENDOFINFO %}
 
