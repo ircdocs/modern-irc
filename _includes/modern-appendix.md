@@ -585,6 +585,18 @@ Sent as a reply to the {% message MODE %} command, this numeric indicates the en
 
 Sent as a reply to the {% message WHOWAS %} command, this numeric indicates the end of a `WHOWAS` reponse for the nickname `<nick>`. This numeric is sent after all other `WHOWAS` response numerics have been sent to the client.
 
+{% numericheader RPL_INFO %}
+
+      "<client> :<string>"
+
+Sent as a reply to the {% message INFO %} command, this numeric returns information describing the server: e.g. its version, list of authors and contributors, and any other miscellaneous information which may be considered to be relevant.
+
+{% numericheader RPL_ENDOFINFO %}
+
+      "<client> :End of INFO list"
+
+Indicates the end of an INFO response.
+
 {% numericheader RPL_MOTDSTART %}
 
       "<client> :- <server> Message of the day - "
