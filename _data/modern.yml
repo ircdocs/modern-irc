@@ -392,6 +392,9 @@ numerics:
   RPL_WHOISHOST:
     numeric: '378'
 
+  RPL_WHOISMODES:
+    numeric: '379'
+
   RPL_YOUREOPER:
     numeric: '381'
 

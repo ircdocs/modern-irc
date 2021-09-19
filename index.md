@@ -1489,6 +1489,8 @@ The following numerics MAY be returned as part of the whois reply:
 * {% numeric RPL_WHOISSPECIAL %}
 * {% numeric RPL_WHOISACCOUNT %}
 * {% numeric RPL_WHOISACTUALLY %}
+* {% numeric RPL_WHOISHOST %}
+* {% numeric RPL_WHOISMODES %}
 * {% numeric RPL_WHOISSECURE %}
 
 Servers typically send some of these numerics only to the client itself and to servers operators, as they contain privacy-sensitive information that should not be revealed to other users.
