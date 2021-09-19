@@ -864,7 +864,7 @@ The `<subject>` MUST be the one requested by the client, but may be casefolded; 
 
     "<client> <subject> :<line of help text>"
 
-When sending a reply to a {% command HELP %} command to the client, servers reply with each line of the help section as this numeric. Help lines MAY be wrapped to 80 characters by the server.
+Returns a line of {% command HELP %} text to the client. Lines MAY be wrapped to a certain line length by the server. Note that the final line MUST be a {% numeric RPL_ENDOFHELP %} numeric.
 
 The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
 
