@@ -760,7 +760,7 @@ Numeric Replies:
 
 Deprecated Numeric Reply:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* {% numeric ERR_NOSUCHSERVER %}
 
 
 ### PONG message
@@ -1454,6 +1454,84 @@ The `NOTICE` command is used to send notices between users, as well as to send n
 The `NOTICE` message is used similarly to {% command PRIVMSG %}. The difference between `NOTICE` and {% command PRIVMSG %} is that automatic replies must never be sent in response to a `NOTICE` message. This rule also applies to servers -- they must not send any error back to the client on receipt of a `NOTICE` command. The intention of this is to avoid loops between a client automatically sending something in response to something it received. This is typically used by 'bots' (a client with a program, and not a user, controlling their actions) and also for server messages to clients.
 
 One thing for bot authors to note is that the `NOTICE` message may be interpreted differently by various clients. Some clients highlight or interpret any `NOTICE` sent to a channel in the same way that a `PRIVMSG` with their nickname gets interpreted. This means that users may be irritated by the use of `NOTICE` messages rather than `PRIVMSG` messages by clients or bots, and they are not commonly used by client bots for this reason.
+
+## User-Based Queries
+
+### WHOIS message
+
+         Command: WHOIS
+      Parameters: [<target>] <nick>
+
+This command is used to query information about particular users.
+The server will answer this command with several numeric messages with information about the nicks, ending with [`RPL_ENDOFWHOIS`](#rplendofwhois-318).
+
+Servers MUST end their reply to `WHOIS` messages with one of these numerics:
+
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NONICKNAMEGIVEN %}
+* {% numeric RPL_ENDOFWHOIS %}otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
+
+Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
+
+If the `<target>` parameter is specified, it SHOULD be a server name or the nick of a user. Servers SHOULD send the query to a specific server with that name, or to the server `<target>` is connected to, respectively.
+Typically, it is used by clients who want to know how long the user in question has been idle (as typically only the server the user is directly connected to knows that information, while everything else this command returns is globally known).
+
+The following numerics MAY be returned as part of the whois reply:
+
+* {% numeric RPL_WHOISCERTFP %}
+* {% numeric RPL_WHOISREGNICK %}
+* {% numeric RPL_WHOISUSER %}
+* {% numeric RPL_WHOISSERVER %}
+* {% numeric RPL_WHOISOPERATOR %}
+* {% numeric RPL_WHOISIDLE %}
+* {% numeric RPL_WHOISCHANNELS %}
+* {% numeric RPL_WHOISSPECIAL %}
+* {% numeric RPL_WHOISACCOUNT %}
+* {% numeric RPL_WHOISACTUALLY %}
+* {% numeric RPL_WHOISHOST %}
+* {% numeric RPL_WHOISMODES %}
+* {% numeric RPL_WHOISSECURE %}
+
+Servers typically send some of these numerics only to the client itself and to servers operators, as they contain privacy-sensitive information that should not be revealed to other users.
+
+Server implementers wishing to send information not covered by these numerics may send other vendor-specific numerics, such that:
+
+* the first and second parameters MUST be the client's nick, and the target nick, and
+* the last parameter SHOULD be designed to be human-readable, so that user interfaces can display unknown numerics
+
+Additionally, server implementers should consider submitting these to [IRCv3](https://ircv3.net/) for standardization, if relevant.
+
+#### Optional extensions
+
+This section describes extension to the common `WHOIS` command above.
+They exist mainly on historical servers, and are rarely implemented, because of resource usage they incur.
+
+* Servers MAY allow more than one target nick.
+  They can advertise the maximum the number of target users per `WHOIS` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter, and silently drop targets if the number of targets exceeds the limit.
+
+* Servers MAY allow wildcards in `<nick>`. Servers who do SHOULD reply with information about all matching nicks. They may restrict what information is available in this case, to limit resource usage.
+
+#### Examples
+
+Command Examples:
+
+      WHOIS val                     ; request information on user "val"
+      WHOIS val val                 ; request information on user "val",
+                                    from the server they are on
+      WHOIS calcium.libera.chat val ; request information on user "val",
+                                    from server calcium.libera.chat
+
+Reply Example:
+
+      :calcium.libera.chat 311 val val ~val limnoria/val * :Val
+      :calcium.libera.chat 319 val val :#ircv3 #libera +#limnoria
+      :calcium.libera.chat 319 val val :#weechat
+      :calcium.libera.chat 312 val val calcium.libera.chat :Montreal, CA
+      :calcium.libera.chat 671 val val :is using a secure connection [TLSv1.3, TLS_AES_256_GCM_SHA384]
+      :calcium.libera.chat 317 val val 657 1628028154 :seconds idle, signon time
+      :calcium.libera.chat 330 val val pinkieval :is logged in as
+      :calcium.libera.chat 318 val val :End of /WHOIS list.
 
 
 ## Operator Messages
