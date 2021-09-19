@@ -1,0 +1,1122 @@
+numerics:
+  RPL_WELCOME:
+    numeric: '001'
+
+  RPL_YOURHOST:
+    numeric: '002'
+
+  RPL_CREATED:
+    numeric: '003'
+
+  RPL_MYINFO:
+    numeric: '004'
+
+  RPL_ISUPPORT:
+    numeric: '005'
+
+  RPL_SNOMASK:
+    numeric: '008'
+
+  RPL_STATMEMTOT:
+    numeric: '009'
+
+  RPL_BOUNCE:
+    numeric: '010'
+
+  RPL_YOURCOOKIE:
+    numeric: '014'
+
+  RPL_MAP:
+    numeric: '015'
+
+  RPL_MAPMORE:
+    numeric: '016'
+
+  RPL_MAPEND:
+    numeric: '017'
+
+  RPL_MAPUSERS:
+    numeric: '018'
+
+  RPL_HELLO:
+    numeric: '020'
+
+  RPL_APASSWARN_SET:
+    numeric: '030'
+
+  RPL_APASSWARN_SECRET:
+    numeric: '031'
+
+  RPL_APASSWARN_CLEAR:
+    numeric: '032'
+
+  RPL_YOURID:
+    numeric: '042'
+
+  RPL_SAVENICK:
+    numeric: '043'
+
+  RPL_ATTEMPTINGJUNC:
+    numeric: '050'
+
+  RPL_ATTEMPTINGREROUTE:
+    numeric: '051'
+
+  RPL_REMOTEISUPPORT:
+    numeric: '105'
+
+  RPL_TRACELINK:
+    numeric: '200'
+
+  RPL_TRACECONNECTING:
+    numeric: '201'
+
+  RPL_TRACEHANDSHAKE:
+    numeric: '202'
+
+  RPL_TRACEUNKNOWN:
+    numeric: '203'
+
+  RPL_TRACEOPERATOR:
+    numeric: '204'
+
+  RPL_TRACEUSER:
+    numeric: '205'
+
+  RPL_TRACESERVER:
+    numeric: '206'
+
+  RPL_TRACESERVICE:
+    numeric: '207'
+
+  RPL_TRACENEWTYPE:
+    numeric: '208'
+
+  RPL_TRACECLASS:
+    numeric: '209'
+
+  RPL_STATSLINKINFO:
+    numeric: '211'
+
+  RPL_STATSCOMMANDS:
+    numeric: '212'
+
+  RPL_STATSCLINE:
+    numeric: '213'
+
+  RPL_STATSILINE:
+    numeric: '215'
+
+  RPL_STATSKLINE:
+    numeric: '216'
+
+  RPL_STATSYLINE:
+    numeric: '218'
+
+  RPL_ENDOFSTATS:
+    numeric: '219'
+
+  RPL_UMODEIS:
+    numeric: '221'
+
+  RPL_STATSSPAMF:
+    numeric: '229'
+
+  RPL_STATSEXCEPTTKL:
+    numeric: '230'
+
+  RPL_SERVLIST:
+    numeric: '234'
+
+  RPL_SERVLISTEND:
+    numeric: '235'
+
+  RPL_STATSVERBOSE:
+    numeric: '236'
+
+  RPL_STATSENGINE:
+    numeric: '237'
+
+  RPL_STATSIAUTH:
+    numeric: '239'
+
+  RPL_STATSLLINE:
+    numeric: '241'
+
+  RPL_STATSUPTIME:
+    numeric: '242'
+
+  RPL_STATSOLINE:
+    numeric: '243'
+
+  RPL_STATSHLINE:
+    numeric: '244'
+
+  RPL_LUSERCLIENT:
+    numeric: '251'
+
+  RPL_LUSEROP:
+    numeric: '252'
+
+  RPL_LUSERUNKNOWN:
+    numeric: '253'
+
+  RPL_LUSERCHANNELS:
+    numeric: '254'
+
+  RPL_LUSERME:
+    numeric: '255'
+
+  RPL_ADMINME:
+    numeric: '256'
+
+  RPL_ADMINLOC1:
+    numeric: '257'
+
+  RPL_ADMINLOC2:
+    numeric: '258'
+
+  RPL_ADMINEMAIL:
+    numeric: '259'
+
+  RPL_TRACELOG:
+    numeric: '261'
+
+  RPL_TRYAGAIN:
+    numeric: '263'
+
+  RPL_USINGSSL:
+    numeric: '264'
+
+  RPL_LOCALUSERS:
+    numeric: '265'
+
+  RPL_GLOBALUSERS:
+    numeric: '266'
+
+  RPL_START_NETSTAT:
+    numeric: '267'
+
+  RPL_NETSTAT:
+    numeric: '268'
+
+  RPL_END_NETSTAT:
+    numeric: '269'
+
+  RPL_PRIVS:
+    numeric: '270'
+
+  RPL_SILELIST:
+    numeric: '271'
+
+  RPL_ENDOFSILELIST:
+    numeric: '272'
+
+  RPL_NOTIFY:
+    numeric: '273'
+
+  RPL_WHOISCERTFP:
+    numeric: '276'
+
+  RPL_GLIST:
+    numeric: '280'
+
+  RPL_CHANINFO_KICKS:
+    numeric: '296'
+
+  RPL_END_CHANINFO:
+    numeric: '299'
+
+  RPL_NONE:
+    numeric: '300'
+
+  RPL_AWAY:
+    numeric: '301'
+
+  RPL_USERHOST:
+    numeric: '302'
+
+  RPL_ISON:
+    numeric: '303'
+
+  RPL_TEXT:
+    numeric: '304'
+
+  RPL_UNAWAY:
+    numeric: '305'
+
+  RPL_NOWAWAY:
+    numeric: '306'
+
+  RPL_WHOISREGNICK:
+    numeric: '307'
+
+  RPL_WHOISUSER:
+    numeric: '311'
+
+  RPL_WHOISSERVER:
+    numeric: '312'
+
+  RPL_WHOISOPERATOR:
+    numeric: '313'
+
+  RPL_WHOWASUSER:
+    numeric: '314'
+
+  RPL_ENDOFWHO:
+    numeric: '315'
+
+  RPL_WHOISPRIVDEAF:
+    numeric: '316'
+
+  RPL_WHOISIDLE:
+    numeric: '317'
+
+  RPL_ENDOFWHOIS:
+    numeric: '318'
+
+  RPL_WHOISCHANNELS:
+    numeric: '319'
+
+  RPL_WHOISSPECIAL:
+    numeric: '320'
+
+  RPL_LISTSTART:
+    numeric: '321'
+
+  RPL_LIST:
+    numeric: '322'
+
+  RPL_LISTEND:
+    numeric: '323'
+
+  RPL_CHANNELMODEIS:
+    numeric: '324'
+
+  RPL_NOCHANPASS:
+    numeric: '326'
+
+  RPL_CHANNEL_URL:
+    numeric: '328'
+
+  RPL_CREATIONTIME:
+    numeric: '329'
+
+  RPL_WHOISACCOUNT:
+    numeric: '330'
+
+  RPL_NOTOPIC:
+    numeric: '331'
+
+  RPL_TOPIC:
+    numeric: '332'
+
+  RPL_TOPICWHOTIME:
+    numeric: '333'
+
+  RPL_WHOISACTUALLY:
+    numeric: '338'
+
+  RPL_USERIP:
+    numeric: '340'
+
+  RPL_INVITING:
+    numeric: '341'
+
+  RPL_WHOISKILL:
+    numeric: '343'
+
+  RPL_INVITELIST:
+    numeric: '346'
+
+  RPL_ENDOFINVITELIST:
+    numeric: '347'
+
+  RPL_EXCEPTLIST:
+    numeric: '348'
+
+  RPL_ENDOFEXCEPTLIST:
+    numeric: '349'
+
+  RPL_WHOISGATEWAY:
+    numeric: '350'
+
+  RPL_VERSION:
+    numeric: '351'
+
+  RPL_WHOREPLY:
+    numeric: '352'
+
+  RPL_NAMREPLY:
+    numeric: '353'
+
+  RPL_WHOSPCRPL:
+    numeric: '354'
+
+  RPL_NAMREPLY_:
+    numeric: '355'
+
+  RPL_LINKS:
+    numeric: '364'
+
+  RPL_ENDOFLINKS:
+    numeric: '365'
+
+  RPL_ENDOFNAMES:
+    numeric: '366'
+
+  RPL_BANLIST:
+    numeric: '367'
+
+  RPL_ENDOFBANLIST:
+    numeric: '368'
+
+  RPL_ENDOFWHOWAS:
+    numeric: '369'
+
+  RPL_INFO:
+    numeric: '371'
+
+  RPL_MOTD:
+    numeric: '372'
+
+  RPL_ENDOFINFO:
+    numeric: '374'
+
+  RPL_MOTDSTART:
+    numeric: '375'
+
+  RPL_ENDOFMOTD:
+    numeric: '376'
+
+  RPL_WHOISHOST:
+    numeric: '378'
+
+  RPL_WHOISMODES:
+    numeric: '379'
+
+  RPL_YOUREOPER:
+    numeric: '381'
+
+  RPL_REHASHING:
+    numeric: '382'
+
+  RPL_YOURESERVICE:
+    numeric: '383'
+
+  RPL_NOTOPERANYMORE:
+    numeric: '385'
+
+  RPL_ENDOFALIST:
+    numeric: '389'
+
+  RPL_TIME:
+    numeric: '391'
+
+  RPL_USERSSTART:
+    numeric: '392'
+
+  RPL_USERS:
+    numeric: '393'
+
+  RPL_ENDOFUSERS:
+    numeric: '394'
+
+  RPL_NOUSERS:
+    numeric: '395'
+
+  RPL_VISIBLEHOST:
+    numeric: '396'
+
+  RPL_CLONES:
+    numeric: '399'
+
+  ERR_UNKNOWNERROR:
+    numeric: '400'
+
+  ERR_NOSUCHNICK:
+    numeric: '401'
+
+  ERR_NOSUCHSERVER:
+    numeric: '402'
+
+  ERR_NOSUCHCHANNEL:
+    numeric: '403'
+
+  ERR_CANNOTSENDTOCHAN:
+    numeric: '404'
+
+  ERR_TOOMANYCHANNELS:
+    numeric: '405'
+
+  ERR_WASNOSUCHNICK:
+    numeric: '406'
+
+  ERR_TOOMANYTARGETS:
+    numeric: '407'
+
+  ERR_NOSUCHSERVICE:
+    numeric: '408'
+
+  ERR_NOORIGIN:
+    numeric: '409'
+
+  ERR_INVALIDCAPCMD:
+    numeric: '410'
+
+  ERR_NORECIPIENT:
+    numeric: '411'
+
+  ERR_NOTEXTTOSEND:
+    numeric: '412'
+
+  ERR_NOTOPLEVEL:
+    numeric: '413'
+
+  ERR_WILDTOPLEVEL:
+    numeric: '414'
+
+  ERR_BADMASK:
+    numeric: '415'
+
+  ERR_TOOMANYMATCHES:
+    numeric: '416'
+
+  ERR_INPUTTOOLONG:
+    numeric: '417'
+
+  ERR_LENGTHTRUNCATED:
+    numeric: '419'
+
+  ERR_AMBIGUOUSCOMMAND:
+    numeric: '420'
+
+  ERR_UNKNOWNCOMMAND:
+    numeric: '421'
+
+  ERR_NOMOTD:
+    numeric: '422'
+
+  ERR_NOADMININFO:
+    numeric: '423'
+
+  ERR_FILEERROR:
+    numeric: '424'
+
+  ERR_NOOPERMOTD:
+    numeric: '425'
+
+  ERR_TOOMANYAWAY:
+    numeric: '429'
+
+  ERR_EVENTNICKCHANGE:
+    numeric: '430'
+
+  ERR_NONICKNAMEGIVEN:
+    numeric: '431'
+
+  ERR_ERRONEUSNICKNAME:
+    numeric: '432'
+
+  ERR_NICKNAMEINUSE:
+    numeric: '433'
+
+  ERR_NICKCOLLISION:
+    numeric: '436'
+
+  ERR_TARGETTOOFAST:
+    numeric: '439'
+
+  ERR_SERVICESDOWN:
+    numeric: '440'
+
+  ERR_USERNOTINCHANNEL:
+    numeric: '441'
+
+  ERR_NOTONCHANNEL:
+    numeric: '442'
+
+  ERR_USERONCHANNEL:
+    numeric: '443'
+
+  ERR_NOLOGIN:
+    numeric: '444'
+
+  ERR_SUMMONDISABLED:
+    numeric: '445'
+
+  ERR_USERSDISABLED:
+    numeric: '446'
+
+  ERR_NONICKCHANGE:
+    numeric: '447'
+
+  ERR_FORBIDDENCHANNEL:
+    numeric: '448'
+
+  ERR_NOTIMPLEMENTED:
+    numeric: '449'
+
+  ERR_NOTREGISTERED:
+    numeric: '451'
+
+  ERR_IDCOLLISION:
+    numeric: '452'
+
+  ERR_NICKLOST:
+    numeric: '453'
+
+  ERR_HOSTILENAME:
+    numeric: '455'
+
+  ERR_ACCEPTFULL:
+    numeric: '456'
+
+  ERR_ACCEPTEXIST:
+    numeric: '457'
+
+  ERR_ACCEPTNOT:
+    numeric: '458'
+
+  ERR_NOHIDING:
+    numeric: '459'
+
+  ERR_NOTFORHALFOPS:
+    numeric: '460'
+
+  ERR_NEEDMOREPARAMS:
+    numeric: '461'
+
+  ERR_ALREADYREGISTERED:
+    numeric: '462'
+
+  ERR_NOPERMFORHOST:
+    numeric: '463'
+
+  ERR_PASSWDMISMATCH:
+    numeric: '464'
+
+  ERR_YOUREBANNEDCREEP:
+    numeric: '465'
+
+  ERR_KEYSET:
+    numeric: '467'
+
+  ERR_LINKSET:
+    numeric: '469'
+
+  ERR_CHANNELISFULL:
+    numeric: '471'
+
+  ERR_UNKNOWNMODE:
+    numeric: '472'
+
+  ERR_INVITEONLYCHAN:
+    numeric: '473'
+
+  ERR_BANNEDFROMCHAN:
+    numeric: '474'
+
+  ERR_BADCHANNELKEY:
+    numeric: '475'
+
+  ERR_BADCHANMASK:
+    numeric: '476'
+
+  ERR_BANLISTFULL:
+    numeric: '478'
+
+  ERR_NOPRIVILEGES:
+    numeric: '481'
+
+  ERR_CHANOPRIVSNEEDED:
+    numeric: '482'
+
+  ERR_CANTKILLSERVER:
+    numeric: '483'
+
+  ERR_UNIQOPRIVSNEEDED:
+    numeric: '485'
+
+  ERR_NOOPERHOST:
+    numeric: '491'
+
+  ERR_BADLOGTYPE:
+    numeric: '495'
+
+  ERR_BADLOGSYS:
+    numeric: '496'
+
+  ERR_BADLOGVALUE:
+    numeric: '497'
+
+  ERR_ISOPERLCHAN:
+    numeric: '498'
+
+  ERR_CHANOWNPRIVNEEDED:
+    numeric: '499'
+
+  ERR_UMODEUNKNOWNFLAG:
+    numeric: '501'
+
+  ERR_USERSDONTMATCH:
+    numeric: '502'
+
+  ERR_USERNOTONSERV:
+    numeric: '504'
+
+  ERR_SILELISTFULL:
+    numeric: '511'
+
+  ERR_BADPING:
+    numeric: '513'
+
+  ERR_BADEXPIRE:
+    numeric: '515'
+
+  ERR_DONTCHEAT:
+    numeric: '516'
+
+  ERR_DISABLED:
+    numeric: '517'
+
+  ERR_WHOSYNTAX:
+    numeric: '522'
+
+  ERR_WHOLIMEXCEED:
+    numeric: '523'
+
+  ERR_INVALIDKEY:
+    numeric: '525'
+
+  ERR_CANTSENDTOUSER:
+    numeric: '531'
+
+  ERR_BADHOSTMASK:
+    numeric: '550'
+
+  ERR_HOSTUNAVAIL:
+    numeric: '551'
+
+  ERR_USINGSLINE:
+    numeric: '552'
+
+  ERR_NOTLOWEROPLEVEL:
+    numeric: '560'
+
+  ERR_NOTMANAGER:
+    numeric: '561'
+
+  ERR_CHANSECURED:
+    numeric: '562'
+
+  ERR_UPASSSET:
+    numeric: '563'
+
+  ERR_UPASSNOTSET:
+    numeric: '564'
+
+  ERR_NOMANAGER:
+    numeric: '566'
+
+  ERR_UPASS_SAME_APASS:
+    numeric: '567'
+
+  RPL_REAWAY:
+    numeric: '597'
+
+  RPL_GONEAWAY:
+    numeric: '598'
+
+  RPL_NOTAWAY:
+    numeric: '599'
+
+  RPL_LOGON:
+    numeric: '600'
+
+  RPL_LOGOFF:
+    numeric: '601'
+
+  RPL_WATCHOFF:
+    numeric: '602'
+
+  RPL_WATCHSTAT:
+    numeric: '603'
+
+  RPL_NOWON:
+    numeric: '604'
+
+  RPL_NOWOFF:
+    numeric: '605'
+
+  RPL_WATCHLIST:
+    numeric: '606'
+
+  RPL_ENDOFWATCHLIST:
+    numeric: '607'
+
+  RPL_WATCHCLEAR:
+    numeric: '608'
+
+  RPL_NOWISAWAY:
+    numeric: '609'
+
+  RPL_ISLOCOP:
+    numeric: '611'
+
+  RPL_ISNOTOPER:
+    numeric: '612'
+
+  RPL_ENDOFISOPER:
+    numeric: '613'
+
+  RPL_DCCLIST:
+    numeric: '618'
+
+  RPL_OMOTDSTART:
+    numeric: '624'
+
+  RPL_OMOTD:
+    numeric: '625'
+
+  RPL_ENDOFOMOTD:
+    numeric: '626'
+
+  RPL_SETTINGS:
+    numeric: '630'
+
+  RPL_ENDOFSETTINGS:
+    numeric: '631'
+
+  RPL_SYNTAX:
+    numeric: '650'
+
+  RPL_CHANNELSMSG:
+    numeric: '651'
+
+  RPL_WHOWASIP:
+    numeric: '652'
+
+  RPL_UNINVITED:
+    numeric: '653'
+
+  RPL_SPAMCMDFWD:
+    numeric: '659'
+
+  RPL_STARTTLS:
+    numeric: '670'
+
+  RPL_WHOISSECURE:
+    numeric: '671'
+
+  RPL_CANNOTSETMODES:
+    numeric: '673'
+
+  RPL_WHOISYOURID:
+    numeric: '674'
+
+  ERR_REDIRECT:
+    numeric: '690'
+
+  ERR_STARTTLS:
+    numeric: '691'
+
+  ERR_INVALIDMODEPARAM:
+    numeric: '696'
+
+  ERR_LISTMODEALREADYSET:
+    numeric: '697'
+
+  ERR_LISTMODENOTSET:
+    numeric: '698'
+
+  RPL_COMMANDS:
+    numeric: '700'
+
+  RPL_COMMANDSEND:
+    numeric: '701'
+
+  RPL_MODLIST:
+    numeric: '702'
+
+  RPL_ENDOFMODLIST:
+    numeric: '703'
+
+  RPL_HELPSTART:
+    numeric: '704'
+
+  RPL_HELPTXT:
+    numeric: '705'
+
+  RPL_ENDOFHELP:
+    numeric: '706'
+
+  ERR_TARGCHANGE:
+    numeric: '707'
+
+  RPL_ETRACEFULL:
+    numeric: '708'
+
+  RPL_ETRACE:
+    numeric: '709'
+
+  RPL_KNOCK:
+    numeric: '710'
+
+  RPL_KNOCKDLVR:
+    numeric: '711'
+
+  ERR_TOOMANYKNOCK:
+    numeric: '712'
+
+  ERR_CHANOPEN:
+    numeric: '713'
+
+  ERR_KNOCKONCHAN:
+    numeric: '714'
+
+  RPL_TARGUMODEG:
+    numeric: '716'
+
+  RPL_TARGNOTIFY:
+    numeric: '717'
+
+  RPL_UMODEGMSG:
+    numeric: '718'
+
+  RPL_OMOTDSTART:
+    numeric: '720'
+
+  RPL_OMOTD:
+    numeric: '721'
+
+  RPL_ENDOFOMOTD:
+    numeric: '722'
+
+  ERR_NOPRIVS:
+    numeric: '723'
+
+  RPL_TESTMASK:
+    numeric: '724'
+
+  RPL_TESTLINE:
+    numeric: '725'
+
+  RPL_NOTESTLINE:
+    numeric: '726'
+
+  RPL_TESTMASKGECOS:
+    numeric: '727'
+
+  RPL_QUIETLIST:
+    numeric: '728'
+
+  RPL_ENDOFQUIETLIST:
+    numeric: '729'
+
+  RPL_MONONLINE:
+    numeric: '730'
+
+  RPL_MONOFFLINE:
+    numeric: '731'
+
+  RPL_MONLIST:
+    numeric: '732'
+
+  RPL_ENDOFMONLIST:
+    numeric: '733'
+
+  ERR_MONLISTFULL:
+    numeric: '734'
+
+  RPL_RSACHALLENGE2:
+    numeric: '740'
+
+  RPL_ENDOFRSACHALLENGE2:
+    numeric: '741'
+
+  ERR_MLOCKRESTRICTED:
+    numeric: '742'
+
+  ERR_INVALIDBAN:
+    numeric: '743'
+
+  ERR_TOPICLOCK:
+    numeric: '744'
+
+  RPL_SCANMATCHED:
+    numeric: '750'
+
+  RPL_SCANUMODES:
+    numeric: '751'
+
+  RPL_ETRACEEND:
+    numeric: '759'
+
+  RPL_WHOISKEYVALUE:
+    numeric: '760'
+
+  RPL_KEYVALUE:
+    numeric: '761'
+
+  RPL_METADATAEND:
+    numeric: '762'
+
+  ERR_METADATALIMIT:
+    numeric: '764'
+
+  ERR_TARGETINVALID:
+    numeric: '765'
+
+  ERR_NOMATCHINGKEY:
+    numeric: '766'
+
+  ERR_KEYINVALID:
+    numeric: '767'
+
+  ERR_KEYNOTSET:
+    numeric: '768'
+
+  ERR_KEYNOPERMISSION:
+    numeric: '769'
+
+  RPL_XINFO:
+    numeric: '771'
+
+  RPL_XINFOSTART:
+    numeric: '773'
+
+  RPL_XINFOEND:
+    numeric: '774'
+
+  RPL_STATSCOUNTRY:
+    numeric: '801'
+
+  RPL_CHECK:
+    numeric: '802'
+
+  RPL_OTHERUMODEIS:
+    numeric: '803'
+
+  RPL_OTHERSNOMASKIS:
+    numeric: '804'
+
+  RPL_LOGGEDIN:
+    numeric: '900'
+
+  RPL_LOGGEDOUT:
+    numeric: '901'
+
+  ERR_NICKLOCKED:
+    numeric: '902'
+
+  RPL_SASLSUCCESS:
+    numeric: '903'
+
+  ERR_SASLFAIL:
+    numeric: '904'
+
+  ERR_SASLTOOLONG:
+    numeric: '905'
+
+  ERR_SASLABORTED:
+    numeric: '906'
+
+  ERR_SASLALREADY:
+    numeric: '907'
+
+  RPL_SASLMECHS:
+    numeric: '908'
+
+  RPL_ACCESSLIST:
+    numeric: '910'
+
+  RPL_ENDOFACCESSLIST:
+    numeric: '911'
+
+  ERR_BADCHANNEL:
+    numeric: '926'
+
+  RPL_ENDOFSPAMFILTER:
+    numeric: '940'
+
+  RPL_SPAMFILTER:
+    numeric: '941'
+
+  ERR_INVALIDWATCHNICK:
+    numeric: '942'
+
+  RPL_IDLETIMESET:
+    numeric: '944'
+
+  RPL_NICKLOCKOFF:
+    numeric: '945'
+
+  ERR_NICKNOTLOCKED:
+    numeric: '946'
+
+  RPL_NICKLOCKON:
+    numeric: '947'
+
+  ERR_INVALIDIDLETIME:
+    numeric: '948'
+
+  RPL_UNSILENCED:
+    numeric: '950'
+
+  RPL_SILENCED:
+    numeric: '951'
+
+  ERR_SILENCE:
+    numeric: '952'
+
+  RPL_ENDOFEXEMPTIONLIST:
+    numeric: '953'
+
+  RPL_EXEMPTIONLIST:
+    numeric: '954'
+
+  RPL_ENDOFPROPLIST:
+    numeric: '960'
+
+  RPL_PROPLIST:
+    numeric: '961'
+
+  RPL_UNLOADEDMODULE:
+    numeric: '973'
+
+  RPL_SERVLOCKON:
+    numeric: '988'
+
+  RPL_SERVLOCKOFF:
+    numeric: '989'
+
+  RPL_DCCALLOWSTART:
+    numeric: '990'
+
+  RPL_DCCALLOWLIST:
+    numeric: '991'
+
+  RPL_DCCALLOWEND:
+    numeric: '992'
+
+  RPL_DCCALLOWTIMED:
+    numeric: '993'
+
+  RPL_DCCALLOWPERMANENT:
+    numeric: '994'
+
+  RPL_DCCALLOWREMOVED:
+    numeric: '995'
+
+  ERR_DCCALLOWINVALID:
+    numeric: '996'
+
+  RPL_DCCALLOWEXPIRED:
+    numeric: '997'
+
+  ERR_UNKNOWNDCCALLOWCMD:
+    numeric: '998'
+
+  ERR_NUMERIC_ERR:
+    numeric: '999'
