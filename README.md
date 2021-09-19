@@ -19,6 +19,34 @@ If something written in these documents isn't correct for or interoperable with 
 ---
 
 
+## Custom Liquid tags
+
+These custom Liquid tags simplify referring to different parts of the IRC protocol, and can be used in the Modern doc:
+
+    {% commandheader WHO %} and {% messageheader WHO %}
+    - create the WHO message header, with an appropriate ID
+
+    {% command WHO %} and {% message WHO %}
+    - link to the WHO message
+
+    {% numericheader RPL_WELCOME %}
+    - create the RPL_WELCOME numeric header
+    - numeric data MUST exist in the _data/modern.yml file
+
+    {% numeric RPL_WELCOME %}
+    - link to the RPL_WELCOME numeric
+    - numeric data MUST exist in the _data/modern.yml file
+
+    {% isupportheader TARGMAX %}
+    - create the ISUPPORT TARGMAX parameter header
+
+    {% isupport TARGMAX %}
+    - link to the TARGMAX ISUPPORT parameter
+
+
+---
+
+
 ## Modern IRC Client Protocol
 
 This is an attempt to create an updated document about how the IRC client protocol works these days.
