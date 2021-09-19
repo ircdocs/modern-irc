@@ -663,7 +663,7 @@ This is generally sent in response to channel modes, such as a channel being [mo
 
 Indicates that the `JOIN` command failed because the client has joined their maximum number of channels. The text used in the last param of this message may vary.
 
-### `ERR_NOORIGIN (409)`
+{% numericheader ERR_NOORIGIN %}
 
       "<client> :No origin specified"
 

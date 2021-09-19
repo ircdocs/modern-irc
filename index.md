@@ -746,7 +746,7 @@ The `PING` command is sent by either clients or servers to check the other side 
 
 The `<token>` may be any non-empty string.
 
-When receiving a `PING` message, clients or servers must reply to it with a [`PONG`](#pong-message) message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
+When receiving a `PING` message, clients or servers must reply to it with a {% message PONG } message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
 
 Clients should not send `PING` during connection registration, though servers may accept it.
 Servers may send `PING` during connection registration and clients must reply to them.
@@ -755,8 +755,8 @@ Older versions of the protocol gave specific semantics to the `<token>` and allo
 
 Numeric Replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOORIGIN`](#errnoorigin-409) `(409)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOORIGIN %}
 
 Deprecated Numeric Reply:
 
@@ -768,7 +768,7 @@ Deprecated Numeric Reply:
          Command: PONG
       Parameters: [<server>] <token>
 
-The `PONG` command is used as a reply to [`PING`](#ping-message) commands, by both clients and servers.
+The `PONG` command is used as a reply to {% message PING commands, by both clients and servers.
 The `<token>` should be the same as the one in the `PING` message that triggered this `PONG`.
 
 Servers MUST send a `<server>` parameter, and clients SHOULD ignore it. It exists for historical reasons, and indicates the name of the server sending the PONG.
