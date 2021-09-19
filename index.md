@@ -1234,25 +1234,19 @@ Command Examples:
       Parameters: [<subject>]
 
 The `HELP` command is used to return documentation about the IRC server and the IRC commands it implements.
-When receiving an `HELP` command, servers MUST either:
 
-1. reply with {% numeric ERR_UNKNOWNCOMMAND %} if they don't support the command at all,
-2. reply with a single {% numeric ERR_HELPNOTFOUND %} message if they do not know about the `<subject>`, or
-3. reply with a single {% numeric RPL_HELPSTART %} message, then arbitrarily many {% numeric RPL_HELPTXT %} messages, then a single {% numeric RPL_ENDOFHELP %}.
+When receiving a `HELP` command, servers MUST either: reply with a single {% numeric ERR_HELPNOTFOUND %} message; or reply with a single {% numeric RPL_HELPSTART %} message, then arbitrarily many {% numeric RPL_HELPTXT %} messages, then a single {% numeric RPL_ENDOFHELP %}. Servers MAY return the {% numeric RPL_HELPTXT %} form for unknown subjects, especially if their reply would not fit in a single line.
 
-Servers MAY use the third option even on unknown `<subject>`; especially if their reply would not fit in a single line.
+The {% numeric RPL_HELPSTART %} message SHOULD be some sort of title and the first {% numeric RPL_HELPTXT %} message SHOULD be empty. This is what most servers do today.
 
-It is recommended for the {% numeric RPL_HELPSTART %} message to be some sort of title and for the first {% numeric RPL_HELPTXT %} message to be empty; as if the help was part of a longer document.
-
-Servers may define any `<subject>` they want.
+Servers MAY define any `<subject>` they want.
 Servers typically have documentation for most of the IRC commands they support.
 
-Clients SHOULD gracefully handle legacy servers that reply to `HELP` using a set of {% command NOTICE %}.
-On these servers, they may try the `HELPOP` command instead (with the same syntax), which may return the numeric-based type of reply.
+Clients SHOULD gracefully handle older servers that reply to `HELP` with a set of {% command NOTICE %} messages.
+On these servers, the client may try sending the `HELPOP` command (with the same syntax specified here), which may return the numeric-based reply.
 
 Numerics:
 
-* {% numeric ERR_UNKNOWNCOMMAND %}
 * {% numeric ERR_HELPNOTFOUND %}
 * {% numeric RPL_HELPSTART %}
 * {% numeric RPL_HELPTXT %}
