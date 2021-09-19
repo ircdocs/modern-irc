@@ -419,7 +419,7 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
 Sent as a reply to the {% message AWAY %} command, this lets the client know that they are set as being away. The text used in the last param of this message may vary.
 
-### `RPL_WHOISREGNICK (307)`
+{% numericheader RPL_WHOISREGNICK %}
 
       "<client> <nick> :has identified for this nick"
 
@@ -478,7 +478,7 @@ Sent as a reply to the {% message WHOIS %} command, this numeric lists the chann
 
 The channels in this response are affected by the [secret](#secret-channel-mode) channel mode and the [invisible](#invisible-user-mode) user mode, and may be affected by other modes depending on server software and configuration.
 
-### `RPL_WHOISSPECIAL (320)`
+{% numericheader RPL_WHOISSPECIAL %}
 
       "<client> <nick> :blah blah blah"
 
@@ -514,7 +514,7 @@ Sent to a client to inform them of the currently-set modes of a channel. `<chann
 
 Sent to a client to inform them of the creation time of a channel. `<channel>` is the name of the channel. `<creationtime>` is a unix timestamp representing when the channel was created on the network.
 
-### `RPL_WHOISACCOUNT (330)`
+{% numericheader RPL_WHOISACCOUNT %}
 
       "<client> <nick> <account> :is logged in as"
 
@@ -540,7 +540,7 @@ Sent to a client when joining the `<channel>` to inform them of the current [top
 
 Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after {% numeric RPL_TOPIC %}.
 
-### `RPL_WHOISACTUALLY (338)`
+{% numericheader RPL_WHOISACTUALLY %}
 
       "<client> <nick> :is actually ..."
       "<client> <nick> <host|ip> :Is actually using host"
@@ -646,7 +646,7 @@ When sending the {% message Message of the Day %} to the client, servers reply w
 
 Indicates the end of the [Message of the Day](#motd-message) to the client. The text used in the last param of this message may vary.
 
-### `RPL_WHOISHOST (378)`
+{% numericheader RPL_WHOISHOST %}
 
       "<client> <nick> :is connecting from *@localhost 127.0.0.1"
 
@@ -654,7 +654,7 @@ Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows det
 
 See also: [`RPL_WHOISACTUALLY`](#rplwhoisactually-338), for similar semantics on other servers.
 
-### `RPL_WHOISMODES (379)`
+{% numericheader RPL_WHOISMODES %}
 
       "<client> <nick> :is using modes +ailosw"
 
@@ -893,7 +893,7 @@ This numeric is used by the IRCv3 [`tls`](http://ircv3.net/specs/extensions/tls-
 
 The text used in the last param of this message varies wildly.
 
-### `RPL_WHOISSECURE (671)`
+{% numericheader RPL_WHOISSECURE %}
 
       "<client> <nick> :is using a secure connection"
 
