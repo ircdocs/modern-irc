@@ -872,8 +872,7 @@ The `<subject>` MUST be the one requested by the client, up to casing; unless it
 
     "<client> <subject> :<last line of help text>"
 
-Indicates the end of the reply to the {% command HELP %} command to the client.
-The text used in the last param of this message may vary, and SHOULD be shown to the user as any other line.
+Returns the final {% command HELP %} line to the client.
 
 The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
 
