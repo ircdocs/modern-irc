@@ -663,6 +663,13 @@ This is generally sent in response to channel modes, such as a channel being [mo
 
 Indicates that the `JOIN` command failed because the client has joined their maximum number of channels. The text used in the last param of this message may vary.
 
+{% numericheader ERR_NOORIGIN %}
+
+      "<client> :No origin specified"
+
+Indicates a PING or PONG message missing the originator parameter which is required by old IRC servers.
+Nowadays, this may be used by some servers when the PING `<token>` is empty.
+
 {% numericheader ERR_UNKNOWNCOMMAND %}
 
       "<client> <command> :Unknown command"
