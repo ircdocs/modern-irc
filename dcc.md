@@ -88,7 +88,7 @@ To accept a given chat request, open a TCP connection to the given port. To reje
 
 ### Sending Messages
 
-After opening the direct TCP connection, clients will send lines to each other separated by the pair of characters `CR` `('\r', 0x13)` and `LF` `('\n', 0x10)`.
+After opening the direct TCP connection, clients will send lines to each other separated by the pair of characters `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)`.
 
 There are no prepended commands or verbs such as `PRIVMSG` and `NOTICE`.
 
