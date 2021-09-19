@@ -853,12 +853,12 @@ Indicates that there was a problem with a mode parameter. Replaces various imple
 
 {% numericheader RPL_HELPSTART %}
 
-    "<client> <subject> :<firt line of help section>"
+    "<client> <subject> :<first line of help section>"
 
-Indicates the start of a reply to a {% command HELP %} command to the client.
+Indicates the start of a reply to a {% command HELP %} command.
 The text used in the last param of this message may vary, and SHOULD be displayed as-is by IRC clients to their users; possibly emphasized as a the title of the help section.
 
-The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+The `<subject>` MUST be the one requested by the client, but may be casefolded; unless it would be an invalid parameter, in which case it MUST be `*`.
 
 {% numericheader RPL_HELPTXT %}
 
