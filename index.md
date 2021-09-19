@@ -1568,6 +1568,28 @@ Numeric Replies:
     <p>NOTE: The <tt>KILL</tt> message is weird, and I need to look at it more closely, add some examples, etc.</p>
 </div>
 
+### SQUIT message
+
+         Command: SQUIT
+      Parameters: <server> <comment>
+
+The `SQUIT` command disconnects a server from the network. `SQUIT` is a privileged command and is only available to IRC Operators. `<comment>` is the reason why the server link is being disconnected.
+
+In a traditional spanning-tree topology, the command gets forwarded to the specified server. And the link between the specified server and the last server to propagate the command gets broken.
+
+Numeric replies:
+
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
+
+Examples:
+
+     SQUIT tolsun.oulu.fi :Bad Link ?  ; Command to uplink of the server
+                                     tolson.oulu.fi to terminate its
+                                     connection with comment "Bad Link".
+
 ## Optional Messages
 
 These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the {% numeric ERR_UNKNOWNCOMMAND %} numeric.
