@@ -259,7 +259,7 @@ Software SHOULD use the [UTF-8](http://tools.ietf.org/html/rfc3629) character en
 Names of IRC entities (clients, servers, channels) are casemapped. This prevents, for example, someone having the nickname `'Dan'` and someone else having the nickname `'dan'`, confusing other users. Servers MUST advertise the casemapping they use in the [`RPL_ISUPPORT`](#feature-advertisement) numeric that's sent when connection registration has completed.
 
 
-## Messages
+## Message Format
 
 An IRC message is a single line, delimited by a pair of `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)` characters.
 
@@ -268,20 +268,22 @@ An IRC message is a single line, delimited by a pair of `CR` `('\r', 0x0D)` and 
 
 ---
 
-Messages have this format:
+Messages have this format, as rough ABNF:
 
-      [@tags] [:source] <command> <parameters>
+      message         ::= ['@' <tags> SPACE] [':' <source> SPACE] <command> <parameters> <crlf>
+      SPACE           ::=  %x20 *( %x20 )   ; space character(s)
+      crlf            ::=  %x0D %x0A        ; "carriage return" "linefeed"
 
 The specific parts of an IRC message are:
 
 - **tags**: Optional metadata on a message, starting with `('@', 0x40)`.
-- **source**: Optional note of where the message came from, starting with `(':', 0x3A)`. Also called the **prefix**.
+- **source**: Optional note of where the message came from, starting with `(':', 0x3A)`.
 - **command**: The specific command this message represents.
 - **parameters**: If it exists, data relevant to this specific command.
 
 These message parts, and parameters themselves, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
 
-Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes. There is no ratified provision for continuation messages at this time.
+Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes.
 
 ---
 
@@ -296,11 +298,9 @@ The following sections describe how to process each part, but here are a few com
 
 ### Tags
 
-The **tags** part is optional. Messages may omit the part entirely. This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it's processed further.
+This is the format of the **tags** part:
 
-This is the format of the **tags** part, as rough ABNF:
-
-      <tags>          ::= '@' <tag> [';' <tag>]*
+      <tags>          ::= <tag> [';' <tag>]*
       <tag>           ::= <key> ['=' <escaped value>]
       <key>           ::= [ <vendor> '/' ] <sequence of letters, digits, hyphens (`-`)>
       <escaped value> ::= <sequence of any characters except NUL, CR, LF, semicolon (`;`) and SPACE>
@@ -308,9 +308,11 @@ This is the format of the **tags** part, as rough ABNF:
 
 Basically, a series of `<key>[=<value>]` segments, separated by `(';', 0x3B)`.
 
+The **tags** part is optional, and MUST NOT be sent unless explicitly enabled by [a capability](#capability-negotiation). This message part starts with a leading `('@', 0x40)` character, which MUST be the first character of the message itself. The leading `('@', 0x40)` is stripped from the value before it gets processed further.
+
 Here are some examples of tags sections and how they could be represented as [JSON](https://www.json.org/) objects:
 
-      @id=123AB;rose         ->  {"id": "123AB", "rose": true}
+      @id=123AB;rose         ->  {"id": "123AB", "rose": ""}
 
       @url=;netsplit=tur,ty  ->  {"url": "", "netsplit": "tur,ty"}
 
@@ -319,16 +321,20 @@ For more information on processing tags – including the naming and registratio
 
 ### Source
 
-The **source** is optional and starts with a `(':', 0x3A)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
+      source          ::=  servername / ( nickname [ "!" user ] [ "@" host ] )
+
+The **source** (formerly known as **prefix**) is optional and starts with a `(':', 0x3A)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
 
 The source indicates the true origin of a message. If the source is missing from a message, it's is assumed to have originated from the client/server on the other end of the connection the message was received on.
 
-Clients SHOULD NOT include a source when sending a message. If they do include one, the only valid source is the current nickname of the client.
+Clients MUST NOT include a source when sending a message.
 
 Servers MAY include a source on any message, and MAY leave a source off of any message. Clients MUST be able to process any given message the same way whether it contains a source or does not contain one.
 
 
 ### Command
+
+      command         ::=  letter* / 3digit
 
 The **command** must either be a valid IRC command or a numeric (a three-digit number represented as text).
 
@@ -337,14 +343,14 @@ Information on specific commands / numerics can be found in the [Client Messages
 
 ### Parameters
 
+This is the format of the **parameters** part:
+
+      parameter       ::=  *( SPACE middle ) [ SPACE ":" trailing ]
+      nospcrlfcl      ::=  <sequence of any characters except NUL, CR, LF, colon (`:`) and SPACE>
+      middle          ::=  nospcrlfcl *( ":" / nospcrlfcl )
+      trailing        ::=  *( ":" / " " / nospcrlfcl )
+
 **Parameters** (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. What specific parameters mean changes for every single message.
-
-This is the format of the **parameters** part, as rough ABNF:
-
-      params      =  *( SPACE middle ) [ SPACE ":" trailing ]
-      nospcrlfcl  =  <sequence of any characters except NUL, CR, LF, colon (`:`) and SPACE>
-      middle      =  nospcrlfcl *( ":" / nospcrlfcl )
-      trailing    =  *( ":" / " " / nospcrlfcl )
 
 Parameters are a series of values separated by one or more ASCII SPACE characters `(' ', 0x20)`. However, this syntax is insufficient in two cases: a parameter that contains one or more spaces, and an empty parameter. To permit such parameters, the final parameter can be prepended with a `(':', 0x3A)` character, in which case that character is stripped and the rest of the message is treated as the final parameter, including any spaces it contains. Parameters that contain spaces, are empty, or begin with a `':'` character MUST be sent with a preceding `':'`; in other cases the use of a preceding `':'` on the final parameter is OPTIONAL.
 
@@ -367,137 +373,9 @@ Here are some examples of messages and how the parameters would be represented a
 As these examples show, a trailing parameter (a final parameter with a preceding `':'`) has the same semantics as any other parameter, and MUST NOT be treated specially or stored separately once the `':'` is stripped.
 
 
-
-
-<!-- ### Parameters
-
-Parameters (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. The meaning of specific parameters changes for every single message.
-
-Older IRC protocol specifications explicitly limited the number of parameters to 15. However, today some clients and servers may return as many parameters as can fit in the message length limit. When sending parameters, try to send a max of 15 to not break older software. When receiving parameters (especially for clients), try not to place a limit on the number of incoming parameters you'll parse.
-
-### Prefix
-
-The prefix is used by servers to indicate the true origin of a message. If the prefix is missing from the message, it is assumed to have originated from the connection from which it was received.
-
-Clients SHOULD NOT use a prefix when sending a message from themselves. If they use a prefix, the only valid prefix is the registered nickname associated with the client. If the source identified by the prefix cannot be found in the server's internal database, or if the source is registered from a different link than from which the message arrived, the server MUST ignore the message silently.
-
-Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix. In other words, servers MAY add a prefix to any message sent to clients, and clients MUST be able to handle this correctly.
-
-### Tags
-
-Tags are additional and optional metadata included with relevant messages.
-
-Every message tag is enabled by a capability (as outlined in the [Capability Negotiation](#capability-negotiation) section). One capability may enable several tags if those tags are intended to be used together.
-
-Each tag may have its own rules about how it can be used: from client to server only, from server to client only, or in both directions.
-
-Servers MUST NOT add a tag to a message if the client has not requested the capability which enables the tag. Servers MUST NOT add a tag to a message before replying to a client's request (`CAP REQ`) for the capability which enables that tag with an acknowledgement (`CAP ACK`). If a client requests a capability which enables one or more message tags, that client MUST be able to parse the tags syntax.
-
-Similarly, clients MUST NOT add a tag to messages before the server replies to the client's request (`CAP REQ`) with an acknowledgement (`CAP ACK`). If the server accepts a capability request which enables tags on messages sent from the client to the server, the server MUST be able to parse the tags syntax on incoming messages from clients.
-
-Both clients and servers MAY parse supplied tags without any capabilities being enabled on the connection. They SHOULD ignore the tags of capabilities which are not enabled.
-
-Clients that enable message tags MUST NOT fail to parse any message because of the presence of tags on that message. In other words, clients that enable message tags MUST assume that any message from the server may contain message tags, and must handle this correctly.
-
-More information on the naming and registration of tags, including how to escape values, can be found in the IRCv3 [Message Tags specification](http://ircv3.net/specs/core/message-tags-3.2.html).
-
-## Messages
-
-Servers and clients send each other messages which may or may not generate a reply; client to server communication is essentially asynchronous in nature.
-
-Each IRC message may consist of up to four main parts: tags (optional), the prefix (optional), the command, and the command parameters.
-
-Clients MAY include a prefix of their nickname on messages they send (after connection registration has been completed). However, I'd avoid doing so as it makes the protocol more fragile and makes messages more likely to be misinterpreted by the server.
-
-Servers may supply tags (when negotiated) and a prefix on any or all messages they send to clients.
-
-Information on standard client messages are available in the [Client Messages](#client-messages) and [Numerics](#numerics) sections.
-
-### Prefix
-
-The prefix is used by servers to indicate the true origin of a message. If the prefix is missing from the message, it is assumed to have originated from the connection from which it was received.
-
-Clients SHOULD NOT use a prefix when sending a message from themselves. If they use a prefix, the only valid prefix is the registered nickname associated with the client. If the source identified by the prefix cannot be found in the server's internal database, or if the source is registered from a different link than from which the message arrived, the server MUST ignore the message silently.
-
-Clients MUST be able to correctly parse and handle any message from the server containing a prefix in the same way it would handle the message if it did not contain a prefix. In other words, servers MAY add a prefix to any message sent to clients, and clients MUST be able to handle this correctly.
-
-### Command
-
-The command must either be a valid IRC command or a three-digit number represented as text.
-
-Information on specific commands can be found in the [Client Messages](#client-messages) section.
-
-### Parameters
-
-Parameters (or 'params') are extra pieces of information added to the end of a message. These parameters generally make up the 'data' portion of the message. The meaning of specific parameters changes for every single message.
-
-Older IRC protocol specifications explicitly limited the number of parameters to 15. However, today some clients and servers may return as many parameters as can fit in the message length limit. When sending parameters, try to send a max of 15 to not break older software. When receiving parameters (especially for clients), try not to place a limit on the number of incoming parameters you'll parse. -->
-
-
-<!-- ## Wire Format
-
-The protocol messages are extracted from a contiguous stream of octets. A pair of characters, `CR` `('\r', 0x0D)` and `LF` `('\n', 0x0A)`, act as message separators. Empty messages are silently ignored, which permits use of the sequence CR-LF between messages.
-
-The tags, prefix, command, and all parameters are separated by one (or more) ASCII space character(s) `(' ', 0x20)`.
-
-The presence of tags is indicated with a single leading 'at sign' character `('@', 0x40)`, which MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the list of tags.
-
-The presence of a prefix is indicated with a single leading colon character `(':', 0x3A)`. If there are no tags it MUST be the first character of the message itself. There MUST NOT be any whitespace between this leading character and the prefix
-
-Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes. There is no ratified provision for continuation messages at this time.
-
-### Wire format in ABNF
-
-Extracted messages are parsed into the components `tags`, `prefix`, `command`, and a list of parameters as described above. This section describes the rough ABNF for this message format, as well as extra parsing notes.
-
-The rough ABNF representation for an IRC message is:
-
-      message     =  [ "@" tags SPACE ] [ ":" prefix SPACE ] command
-                     [ params ] crlf
-
-      tags        =  tag *[ ";" tag ]
-      tag         =  key [ "=" value ]
-      key         =  [ vendor "/" ] 1*( ALPHA / DIGIT / "-" )
-      value       =  *valuechar
-      valuechar   =  <any octet except NUL, BELL, CR, LF, semicolon (`;`) and SPACE>
-      vendor      =  hostname
-
-      prefix      =  servername / ( nickname [ [ "!" user ] "@" host ] )
-
-      command     =  1*letter / 3digit
-
-      params      =  *( SPACE middle ) [ SPACE ":" trailing ]
-      nospcrlfcl  =  <any octet except NUL, CR, LF, colon (`:`) and SPACE>
-      middle      =  nospcrlfcl *( ":" / nospcrlfcl )
-      trailing    =  *( ":" / " " / nospcrlfcl )
-
-
-      SPACE       =  %x20 *( %x20 )   ; space character(s)
-      crlf        =  %x0D %x0A        ; "carriage return" "linefeed"
-
-NOTES:
-
-1. `<SPACE>` consists only of ASCII SPACE character(s) `(' ', 0x20)`. Specifically notice that TABULATION, control characters, and any other whitespace (including Unicode whitespace characters) are not considered a part of `<SPACE>`.
-2. After extracting the parameter list, all parameters are equal, whether matched by `<middle>` or `<trailing>`. `<trailing>` is just a syntactic trick to allow `SPACE` `(0x20)` characters within a parameter.
-3. The `NUL` `(0x00)` character is not special in message framing, but as it would cause extra complexities in traditional C string handling, it is not allowed within messages.
-4. The last parameter may be an empty string.
-5. Use of the extended prefix (`[ [ "!" user ] "@" host ]`) is only intended for server to client messages in order to provide clients with more useful information about who a message is from without the need for additional queries. Servers SHOULD provide this extended prefix on any message where the prefix contains a nickname.
-6. Software SHOULD AVOID sending messages with more than 14 `<middle>` parts, but MUST parse incoming messages with any number of them as in the ABNF above.
-
-Most protocol messages specify additional semantics and syntax for the extracted parameter strings dictated by their position in the list. As an example, for many server commands, the first parameter of that message is a list of targets.
-
-Please also see our [Message Parsing and Assembly](#message-parsing-and-assembly) implementation considerations, for things you should keep in mind while writing software that parses or assembles IRC messages.
-
-<div class="warning">
-    TODO: This section is unfinished. Defining the various names (nickname, username, hostname) and such are likely to require quite a bit of thought. This is to cater for how software can let IRC operators use almost anything in them including formatting characters, etc. We should also make sure that the ABNF block above is correct and defined properly.
-</div>
-
--->
-
-
 ## Numeric Replies
 
-Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. Distinct from a normal message, a numeric reply MUST contain the sender prefix and use a three-digit numeric as the command. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
+Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. Distinct from a normal message, a numeric reply MUST contain a `<source>` and use a three-digit numeric as the command. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
 
 In all other respects, a numeric reply is just like a normal message. A list of numeric replies is supplied in the [Numerics](#numerics) section.
 
@@ -1033,7 +911,7 @@ Servers MAY reject the command with the `ERR_CHANOPRIVSNEEDED` numeric. In parti
 
 If the user is already on the target channel, the server MUST reject the command with the `ERR_USERONCHANNEL` numeric.
 
-When the invite is successful, the server MUST send a `RPL_INVITING` numeric to the command issuer, and an `INVITE` message, with the issuer as prefix, to the target user.  Other channel members SHOULD NOT be notified.
+When the invite is successful, the server MUST send a `RPL_INVITING` numeric to the command issuer, and an `INVITE` message, with the issuer as `<source>`, to the target user.  Other channel members SHOULD NOT be notified.
 
 Numeric Replies:
 
@@ -1402,7 +1280,7 @@ If `<target>` is a channel name, it may be prefixed with one or more [channel me
 
 If `<target>` is a user and that user has been set as away, the server may reply with an {% numeric RPL_AWAY %} numeric and the command will continue.
 
-The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<prefix>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
+The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<source>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
 
 Numeric Replies:
 
