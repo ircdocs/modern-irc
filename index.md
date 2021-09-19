@@ -1579,10 +1579,10 @@ In a traditional spanning-tree topology, the command gets forwarded to the speci
 
 Numeric replies:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
-* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
 
 Examples:
 
