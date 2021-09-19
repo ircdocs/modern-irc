@@ -389,6 +389,9 @@ numerics:
   RPL_ENDOFMOTD:
     numeric: '376'
 
+  RPL_WHOISHOST:
+    numeric: '378'
+
   RPL_YOUREOPER:
     numeric: '381'
 

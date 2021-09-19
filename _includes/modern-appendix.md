@@ -423,7 +423,7 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
       "<client> <nick> :has identified for this nick"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of this nick on the network.
+Sent as a reply to the {% command WHOIS %} command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of this nick on the network.
 
 See also [`RPL_WHOISACCOUNT`](#rplwhoisaccount-330), for information on the account name of the user.
 
@@ -461,7 +461,7 @@ Sent as a reply to the {% message WHOIS %} command, this numeric indicates how l
 
       "<client> <nick> :End of /WHOIS list"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates the end of a `WHOIS` response for the client with the nickname `<nick>`.
+Sent as a reply to the {% command WHOIS %} command, this numeric indicates the end of a `WHOIS` response for the client with the nickname `<nick>`.
 
 `<nick>` MUST be exactly the `<nick>` parameter sent by the client in its `WHOIS` message.
 This means the case MUST be preserved, and if the client sent multiple nicks, this MUST be the comma-separated list of nicks, even if some of them were dropped.
@@ -482,7 +482,7 @@ The channels in this response are affected by the [secret](#secret-channel-mode)
 
       "<client> <nick> :blah blah blah"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric is used for extra human-readable information on the client with nickname `<nick>`. This should only be used for non-essential information that does not need to be machine-readable or understood by client software.
+Sent as a reply to the {% command WHOIS %} command, this numeric is used for extra human-readable information on the client with nickname `<nick>`. This should only be used for non-essential information that does not need to be machine-readable or understood by client software.
 
 {% numericheader RPL_LISTSTART %}
 
@@ -518,7 +518,7 @@ Sent to a client to inform them of the creation time of a channel. `<channel>` i
 
       "<client> <nick> <account> :is logged in as"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of `<account>`.
+Sent as a reply to the {% command WHOIS %} command, this numeric indicates that the client with the nickname `<nick>` was authenticated as the owner of `<account>`.
 
 This does not necessarily mean the user owns their current nickname, which is covered by[`RPL_WHOISREGNICK`](#rplwhoisregnick-307).
 
@@ -546,13 +546,13 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
       "<client> <nick> <host|ip> :Is actually using host"
       "<client> <nick> <username>@<hostname> <ip> :Is actually using host"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about the client with the nickname `<nick>`.
+Sent as a reply to the {% command WHOIS %} command, this numeric shows details about the client with the nickname `<nick>`.
 
-`<username>` represents the name set by the [`USER`](#user-message) command (though `<username>` may be set by the server in other ways).
+`<username>` represents the name set by the {% command USER %} command (though `<username>` may be set by the server in other ways).
 
 `<host>` and `<ip>` represent the real host and IP address the client is connecting from. `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this. The resulting IPv6 is equivalent, as this is a partial expansion of the `::` shorthand.
 
-See also: [`RPL_WHOISHOST`](#rplwhoishost-378), for similar semantics on other servers.
+See also: {% numeric RPL_WHOISHOST %}, for similar semantics on other servers.
 
 {% numericheader RPL_INVITING %}
 
@@ -650,15 +650,15 @@ Indicates the end of the [Message of the Day](#motd-message) to the client. The 
 
       "<client> <nick> :is connecting from *@localhost 127.0.0.1"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows details about where the client with nickname `<nick>` is connecting from.
+Sent as a reply to the {% command WHOIS %} command, this numeric shows details about where the client with nickname `<nick>` is connecting from.
 
-See also: [`RPL_WHOISACTUALLY`](#rplwhoisactually-338), for similar semantics on other servers.
+See also: {% numeric RPL_WHOISACTUALLY %}, for similar semantics on other servers.
 
 {% numericheader RPL_WHOISMODES %}
 
       "<client> <nick> :is using modes +ailosw"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client what user modes the target users has.
+Sent as a reply to the {% command WHOIS %} command, this numeric shows the client what user modes the target users has.
 
 {% numericheader RPL_YOUREOPER %}
 
@@ -897,7 +897,7 @@ The text used in the last param of this message varies wildly.
 
       "<client> <nick> :is using a secure connection"
 
-Sent as a reply to the [`WHOIS`](#whois-message) command, this numeric shows the client is connecting to the server in a way the server considers reasonably safe from eavesdropping (e.g. connecting from localhost, using TLS, using Tor).
+Sent as a reply to the {% command WHOIS %} command, this numeric shows the client is connecting to the server in a way the server considers reasonably safe from eavesdropping (e.g. connecting from localhost, using TLS, using Tor).
 
 {% numericheader ERR_STARTTLS %}
 
