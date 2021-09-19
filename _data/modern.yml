@@ -302,7 +302,7 @@ numerics:
   RPL_CREATIONTIME:
     numeric: '329'
 
-  RPL_WHOISSPECIAL:
+  RPL_WHOISACCOUNT:
     numeric: '330'
 
   RPL_NOTOPIC:
@@ -314,7 +314,7 @@ numerics:
   RPL_TOPICWHOTIME:
     numeric: '333'
 
-  RPL_WHOISSPECIAL:
+  RPL_WHOISACTUALLY:
     numeric: '338'
 
   RPL_USERIP:
