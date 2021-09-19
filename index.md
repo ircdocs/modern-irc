@@ -1632,9 +1632,9 @@ Servers may generate it themselves, and MAY allow operators to send them.
 
 Numeric replies:
 
-* [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) `(461)`
-* [`ERR_NOPRIVILEGES`](#errnoprivileges-481) `(481)`
-* [`ERR_NOPRIVS`](#errnoprivs-723) `(723)`
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOPRIVILEGES %}
+* {% numeric ERR_NOPRIVS %}
 
 Examples:
 
