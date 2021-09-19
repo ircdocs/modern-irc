@@ -97,7 +97,7 @@ There have been several terms created over time to describe the roles of differe
 * **Leaf**: A 'leaf' is a server that is only connected to a single other server on the network. Typically, leafs are the primary servers that handle client connections. In the figure above, Servers 7, 8, 10, 13, 14, and others would be considered leaf servers.
 * **Services**: A 'services' server is a special type of server that extends the capabilities of the server software on the network (ie, they provide *services* to the network). Services are not used on all networks, and the capabilities typically provided by them may be built-into server software itself rather than being provided by a separate software package. Features usually handled by services include client account registration (as are typically used for [SASL authentication](#authenticate-message)), channel registration (allowing client accounts to 'own' channels), and further modifications and extensions to the IRC protocol. 'Services' themselves are **not** specified in any way by the protocol, they are different from the [services](#services) defined by the RFCs. What they provide depends entirely on the software packages being run.
 
-A trend these days is to hide the real structure of a network from regular users. Networks that implement this may restrict or modify commands like [`MAP`](#map-message) so that regular users see every other server on the network as linked directly to the current server. When this is done, servers that do not handle client connections may also be hidden from users (hubs hidden in this way can be called 'hidden hubs'). Generally, IRC operators can always see the true structure of a network.
+A trend these days is to hide the real structure of a network from regular users. Networks that implement this may restrict or modify commands like {% command MAP %} so that regular users see every other server on the network as linked directly to the current server. When this is done, servers that do not handle client connections may also be hidden from users (hubs hidden in this way can be called 'hidden hubs'). Generally, IRC operators can always see the true structure of a network.
 
 These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the servers they run and their roles.
 
@@ -107,7 +107,7 @@ A client is anything connecting to a server that is not another server. Each cli
 
 ### Services
 
-Services were a different kind of clients than users, defined in the [RFC2812](https://tools.ietf.org/html/rfc2812.html#section-1.2.2). They were to provide or collect information about the IRC network. They are no longer used now. As such the service-related messages (SERVICE, SERVLIST and SQUERY) are also deprecated.
+Services were a different kind of clients than users, defined in the [RFC2812](https://tools.ietf.org/html/rfc2812.html#section-1.2.2). They were to provide or collect information about the IRC network. They are no longer used now. As such the service-related messages (`SERVICE`, `SERVLIST` and `SQUERY`) are also deprecated.
 
 #### Operators
 
@@ -432,13 +432,13 @@ The commands specified in steps 1-3 should be sent on connection. If the server 
 
 1. If the server supports capability negotiation, the {% command CAP %} command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
 
-2. The {% command PASS %} command is not required for the connection to be registered, but if included it MUST precede the latter of the NICK and USER commands.
+2. The {% command PASS %} command is not required for the connection to be registered, but if included it MUST precede the latter of the {% command NICK %} and {% command USER %} commands.
 
 3. The {% command NICK %} and {% command USER %} commands are used to set the user's nickname, username and "real name". Unless the registration is suspended by a {% command CAP %} negotiation, these commands will end the registration process.
 
 4. The client should request advertised capabilities it wishes to enable here.
 
-5. If the client supports [`SASL` authentication](#authenticate-message) and wishes to authenticate with the server, it should attempt this after a successful [`CAP ACK`](#cap-message) of the `sasl` capability is received and while registration is suspended.
+5. If the client supports [SASL authentication](#authenticate-message) and wishes to authenticate with the server, it should attempt this after a successful [`CAP ACK`](#cap-message) of the `sasl` capability is received and while registration is suspended.
 
 6. If the server support capability negotiation, [`CAP END`](#cap-message) will end the negotiation period and resume the registration.
 
@@ -446,7 +446,7 @@ If the server is waiting to complete a lookup of client information (such as hos
 
 Additionally, some servers also send a {% message PING %} and require a matching {% command PONG %} from the client before continuing. This exchange may happen immediately on connection and at any time during connection registration, so clients MUST respond correctly to it.
 
-Upon successful completion of the registration process, the server MUST send, in this order, the {% numeric RPL_WELCOME %}, {% numeric RPL_YOURHOST %}, {% numeric RPL_CREATED %}, {% numeric RPL_MYINFO %}, and at least one {% numeric RPL_ISUPPORT %} numeric to the client. The server SHOULD then respond as though the client sent the [`LUSERS`](#lusers-message) command and return the appropriate numerics. If the user has client modes set on them automatically upon joining the network, the server SHOULD send the client the {% numeric RPL_UMODEIS %} reply. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the {% message MOTD %} command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the {% numeric ERR_NOMOTD %} numeric.
+Upon successful completion of the registration process, the server MUST send, in this order, the {% numeric RPL_WELCOME %}, {% numeric RPL_YOURHOST %}, {% numeric RPL_CREATED %}, {% numeric RPL_MYINFO %}, and at least one {% numeric RPL_ISUPPORT %} numeric to the client. The server SHOULD then respond as though the client sent the {% command LUSERS %} command and return the appropriate numerics. If the user has client modes set on them automatically upon joining the network, the server SHOULD send the client the {% numeric RPL_UMODEIS %} reply. The server MAY send other numerics and messages. The server MUST then respond as though the client sent it the {% message MOTD %} command, i.e. it must send either the successful [Message of the Day](#motd-message) numerics or the {% numeric ERR_NOMOTD %} numeric.
 
 
 ---
@@ -531,7 +531,7 @@ The `PASS` command is used to set a 'connection password'. If set, the password 
 
 The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once the client has been registered.
 
-Servers may also consider requiring [`SASL` Authentication](#authenticate-message) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
+Servers may also consider requiring [SASL authentication](#authenticate-message) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
 
 Numeric replies:
 
@@ -614,6 +614,49 @@ Command Examples:
                                   ; User gets registered with username
                                   "danp" and real name "Ronnie Reagan"
 
+
+### PING message
+
+         Command: PING
+      Parameters: <token>
+
+The `PING` command is sent by either clients or servers to check the other side of the connection is still connected and/or to check for connection latency, at the application layer.
+
+The `<token>` may be any non-empty string.
+
+When receiving a `PING` message, clients or servers must reply to it with a {% message PONG %} message with the same `<token>` value. This allows either to match `PONG` with the `PING` they reply to, for example to compute latency.
+
+Clients should not send `PING` during connection registration, though servers may accept it.
+Servers may send `PING` during connection registration and clients must reply to them.
+
+Older versions of the protocol gave specific semantics to the `<token>` and allowed an extra parameter; but these features are not consistently implemented and should not be relied on. Instead, the `<token>` should be treated as an opaque value by the receiver.
+
+Numeric Replies:
+
+* {% numeric ERR_NEEDMOREPARAMS %}
+* {% numeric ERR_NOORIGIN %}
+
+Deprecated Numeric Reply:
+
+* {% numeric ERR_NOSUCHSERVER %}
+
+
+### PONG message
+
+         Command: PONG
+      Parameters: [<server>] <token>
+
+The `PONG` command is used as a reply to {% message PING %} commands, by both clients and servers.
+The `<token>` should be the same as the one in the `PING` message that triggered this `PONG`.
+
+Servers MUST send a `<server>` parameter, and clients SHOULD ignore it. It exists for historical reasons, and indicates the name of the server sending the PONG.
+Clients MUST NOT send a `<server>` parameter.
+
+Numeric Replies:
+
+* None
+
+
 ### OPER message
 
          Command: OPER
@@ -625,7 +668,7 @@ If the client does not send the correct password for the given name, the server 
 
 If the client is not connecting from a valid host for the given name, the server replies with an `ERR_NOOPERHOST` message and the request is not successful.
 
-If the supplied name and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a [`MODE`](#mode-message) message indicating their new user modes, and other messages may be sent.
+If the supplied name and password are both correct, and the user is connecting from a valid host, the `RPL_YOUREOPER` message is sent to the user. The user will also receive a {% command MODE %} message indicating their new user modes, and other messages may be sent.
 
 The `<name>` specified by this command is separate to the accounts specified by SASL authentication, and is generally stored in the IRCd configuration.
 
@@ -646,7 +689,7 @@ Command Example:
         Command: QUIT
      Parameters: [<reason>]
 
-The `QUIT` command is used to terminate a client's connection to the server. The server acknowledges this by replying with an [`ERROR`](#error-message) message and closing the connection to the client.
+The `QUIT` command is used to terminate a client's connection to the server. The server acknowledges this by replying with an {% command ERROR %} message and closing the connection to the client.
 
 This message may also be sent from the server to a client to show that a client has exited from the network. This is typically only dispatched to clients that share a channel with the exiting user. When the `QUIT` message is sent to clients, `<source>` represents the client that has exited the network.
 
@@ -695,7 +738,7 @@ The [key](#key-channel-mode), [client limit](#client-limit-channel-mode) , [ban]
 
 Servers MAY restrict the number of channels a client may be joined to at one time. This limit SHOULD be defined in the {% isupport CHANLIMIT %} `RPL_ISUPPORT` parameter. If the client cannot join this channel because they would be over their limit, they will receive an {% numeric ERR_TOOMANYCHANNELS %} reply and the command will fail.
 
-Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a [`PART`](#part-message) command for each channel they are a member of.
+Note that this command also accepts the special argument of `("0", 0x30)` instead of any of the usual parameters, which requests that the sending client leave all channels they are currently connected to. The server will process this command as though the client had sent a {% command PART %} command for each channel they are a member of.
 
 This message may be sent from a server to a client to notify the client that someone has joined a channel. In this case, the message `<source>` will be the client who is joining, and `<channel>` will be the channel which that client has joined. Servers SHOULD NOT send multiple channels in this message to clients, and SHOULD distribute these multiple-channel `JOIN` messages as a series of messages with a single channel name on each.
 
@@ -858,7 +901,7 @@ Command Examples:
       Parameters: <nickname> <channel>
       Alt Params: 0
 
-The INVITE command is used to invite a user to a channel.  The parameter `<nickname>` is the nickname of the person to be invited to the target channel `<channel>`.
+The `INVITE` command is used to invite a user to a channel.  The parameter `<nickname>` is the nickname of the person to be invited to the target channel `<channel>`.
 
 The target channel SHOULD exist (at least one user is on it).  Otherwise, the server SHOULD reject the command with the `ERR_NOSUCHCHANNEL` numeric.
 
@@ -1284,11 +1327,89 @@ Message Examples:
          Command: NOTICE
       Parameters: <target>{,<target>} <text to be sent>
 
-The `NOTICE` command is used to send notices between users, as well as to send notices to channels. `<target>` is interpreted the same way as it is for the [`PRIVMSG`](#privmsg-message) command.
+The `NOTICE` command is used to send notices between users, as well as to send notices to channels. `<target>` is interpreted the same way as it is for the {% command PRIVMSG %} command.
 
-The `NOTICE` message is used similarly to [`PRIVMSG`](#privmsg-message). The difference between `NOTICE` and [`PRIVMSG`](#privmsg-message) is that automatic replies must never be sent in response to a `NOTICE` message. This rule also applies to servers -- they must not send any error back to the client on receipt of a `NOTICE` command. The intention of this is to avoid loops between a client automatically sending something in response to something it received. This is typically used by 'bots' (a client with a program, and not a user, controlling their actions) and also for server messages to clients.
+The `NOTICE` message is used similarly to {% command PRIVMSG %}. The difference between `NOTICE` and {% command PRIVMSG %} is that automatic replies must never be sent in response to a `NOTICE` message. This rule also applies to servers -- they must not send any error back to the client on receipt of a `NOTICE` command. The intention of this is to avoid loops between a client automatically sending something in response to something it received. This is typically used by 'bots' (a client with a program, and not a user, controlling their actions) and also for server messages to clients.
 
 One thing for bot authors to note is that the `NOTICE` message may be interpreted differently by various clients. Some clients highlight or interpret any `NOTICE` sent to a channel in the same way that a `PRIVMSG` with their nickname gets interpreted. This means that users may be irritated by the use of `NOTICE` messages rather than `PRIVMSG` messages by clients or bots, and they are not commonly used by client bots for this reason.
+
+## User-Based Queries
+
+### WHOIS message
+
+         Command: WHOIS
+      Parameters: [<target>] <nick>
+
+This command is used to query information about particular users.
+The server will answer this command with several numeric messages with information about the nicks, ending with [`RPL_ENDOFWHOIS`](#rplendofwhois-318).
+
+Servers MUST end their reply to `WHOIS` messages with one of these numerics:
+
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NONICKNAMEGIVEN %}
+* {% numeric RPL_ENDOFWHOIS %}otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
+
+Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
+
+If the `<target>` parameter is specified, it SHOULD be a server name or the nick of a user. Servers SHOULD send the query to a specific server with that name, or to the server `<target>` is connected to, respectively.
+Typically, it is used by clients who want to know how long the user in question has been idle (as typically only the server the user is directly connected to knows that information, while everything else this command returns is globally known).
+
+The following numerics MAY be returned as part of the whois reply:
+
+* {% numeric RPL_WHOISCERTFP %}
+* {% numeric RPL_WHOISREGNICK %}
+* {% numeric RPL_WHOISUSER %}
+* {% numeric RPL_WHOISSERVER %}
+* {% numeric RPL_WHOISOPERATOR %}
+* {% numeric RPL_WHOISIDLE %}
+* {% numeric RPL_WHOISCHANNELS %}
+* {% numeric RPL_WHOISSPECIAL %}
+* {% numeric RPL_WHOISACCOUNT %}
+* {% numeric RPL_WHOISACTUALLY %}
+* {% numeric RPL_WHOISHOST %}
+* {% numeric RPL_WHOISMODES %}
+* {% numeric RPL_WHOISSECURE %}
+
+Servers typically send some of these numerics only to the client itself and to servers operators, as they contain privacy-sensitive information that should not be revealed to other users.
+
+Server implementers wishing to send information not covered by these numerics may send other vendor-specific numerics, such that:
+
+* the first and second parameters MUST be the client's nick, and the target nick, and
+* the last parameter SHOULD be designed to be human-readable, so that user interfaces can display unknown numerics
+
+Additionally, server implementers should consider submitting these to [IRCv3](https://ircv3.net/) for standardization, if relevant.
+
+#### Optional extensions
+
+This section describes extension to the common `WHOIS` command above.
+They exist mainly on historical servers, and are rarely implemented, because of resource usage they incur.
+
+* Servers MAY allow more than one target nick.
+  They can advertise the maximum the number of target users per `WHOIS` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter, and silently drop targets if the number of targets exceeds the limit.
+
+* Servers MAY allow wildcards in `<nick>`. Servers who do SHOULD reply with information about all matching nicks. They may restrict what information is available in this case, to limit resource usage.
+
+#### Examples
+
+Command Examples:
+
+      WHOIS val                     ; request information on user "val"
+      WHOIS val val                 ; request information on user "val",
+                                    from the server they are on
+      WHOIS calcium.libera.chat val ; request information on user "val",
+                                    from server calcium.libera.chat
+
+Reply Example:
+
+      :calcium.libera.chat 311 val val ~val limnoria/val * :Val
+      :calcium.libera.chat 319 val val :#ircv3 #libera +#limnoria
+      :calcium.libera.chat 319 val val :#weechat
+      :calcium.libera.chat 312 val val calcium.libera.chat :Montreal, CA
+      :calcium.libera.chat 671 val val :is using a secure connection [TLSv1.3, TLS_AES_256_GCM_SHA384]
+      :calcium.libera.chat 317 val val 657 1628028154 :seconds idle, signon time
+      :calcium.libera.chat 330 val val pinkieval :is logged in as
+      :calcium.libera.chat 318 val val :End of /WHOIS list.
 
 
 ## Operator Messages
@@ -1302,17 +1423,17 @@ The following messages are typically reserved to server operators.
 
 The `KILL` command is used to close the connection between a given client and the server they are connected to. `KILL` is a privileged command and is available only to IRC Operators. `<nickname>` represents the user to be 'killed', and `<comment>` is shown to all users and to the user themselves upon being killed.
 
-When a `KILL` command is used, the client being killed receives the `KILL` message, and the `<source>` of the message SHOULD be the operator who performed the command. The user being killed and every user sharing a channel with them receives a [`QUIT`](#quit-message) message representing that they are leaving the network. The `<reason>` on this `QUIT` message typically has the form: `"Killed (<killer> (<reason>))"` where `<killer>` is the nickname of the user who performed the `KILL`. The user being killed then receives the [`ERROR`](#error-message) message, typically containing a `<reason>` of `"Closing Link: <servername> (Killed (<killer> (<reason>)))"`. After this, their connection is closed.
+When a `KILL` command is used, the client being killed receives the `KILL` message, and the `<source>` of the message SHOULD be the operator who performed the command. The user being killed and every user sharing a channel with them receives a {% command QUIT %} message representing that they are leaving the network. The `<reason>` on this `QUIT` message typically has the form: `"Killed (<killer> (<reason>))"` where `<killer>` is the nickname of the user who performed the `KILL`. The user being killed then receives the {% command ERROR %} message, typically containing a `<reason>` of `"Closing Link: <servername> (Killed (<killer> (<reason>)))"`. After this, their connection is closed.
 
 If a `KILL` message is received by a client, it means that the user specified by `<nickname>` is being killed. With certain servers, users may elect to receive `KILL` messages created for other users to keep an eye on the network. This behavior may also be restricted to operators.
 
-Clients can rejoin instantly after this command is performed on them. However, it can serve as a warning to a user to stop their activity. As it breaks the flow of data from the user, it can also be used to stop large amounts of 'flooding' from abusive users or due to accidents. Abusive users may not care and promptly reconnect and resume their abusive behaviour. In these cases, opers may look at the [`KLINE`](#kline-message) command to keep them from rejoining the network for a longer time.
+Clients can rejoin instantly after this command is performed on them. However, it can serve as a warning to a user to stop their activity. As it breaks the flow of data from the user, it can also be used to stop large amounts of 'flooding' from abusive users or due to accidents. Abusive users may not care and promptly reconnect and resume their abusive behaviour. In these cases, opers may look at the {% command KLINE %} command to keep them from rejoining the network for a longer time.
 
 As nicknames across an IRC network MUST be unique, if duplicates are found when servers join, one or both of the clients MAY be `KILL`ed and removed from the network. Servers may also handle this case in alternate ways that don't involve removing users from the network.
 
 Servers MAY restrict whether specific operators can remove users on other servers (remote users). If the operator tries to remove a remote user but is not privileged to, they should receive the {% numeric ERR_NOPRIVS %} numeric.
 
-`<comment>` SHOULD reflect why the `KILL` was performed. For user-generated KILLs, it is up to the user to provide an adequate reason.
+`<comment>` SHOULD reflect why the `KILL` was performed. For user-generated `KILL`s, it is up to the user to provide an adequate reason.
 
 Numeric Replies:
 
@@ -1337,13 +1458,13 @@ These messages are not required for a server implementation to work, but SHOULD 
 The `AWAY` command lets clients indicate that their user is away.
 If this command is sent with a parameter (the 'away message') then the user is set to be away. If this command is sent with no parameters, the user is no longer away.
 
-The server acknowledges the change in away status by returning the `RPL_NOWAWAY` and `RPL_UNAWAY` numerics.
+The server acknowledges the change in away status by returning the {% numeric RPL_NOWAWAY %} and {% numeric RPL_UNAWAY %} numerics.
 If the [IRCv3 `away-notify` capability](https://ircv3.net/specs/extensions/away-notify.html) has been requested by a client, the server MAY also send that client `AWAY` messages to tell them how the away status of other users has changed.
 
 Servers SHOULD notify clients when a user they're interacting with is away when relevant, including sending these numerics:
 
-1. {% numeric RPL_AWAY %}, with the away message, when a PRIVMSG command is directed at the away user (not to a channel they are on).
-2. {% numeric RPL_AWAY %}, with the away message, in replies to [`WHOIS`](#whois-message) messages.
+1. {% numeric RPL_AWAY %}, with the away message, when a {% command PRIVMSG %} command is directed at the away user (not to a channel they are on).
+2. {% numeric RPL_AWAY %}, with the away message, in replies to {% command WHOIS %} messages.
 3. In the {% numeric RPL_USERHOST %} numeric, as the `+` or `-` character.
 
 Numeric Replies:

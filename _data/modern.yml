@@ -248,6 +248,9 @@ numerics:
   RPL_NOWAWAY:
     numeric: '306'
 
+  RPL_WHOISREGNICK:
+    numeric: '307'
+
   RPL_WHOISUSER:
     numeric: '311'
 
@@ -275,6 +278,9 @@ numerics:
   RPL_WHOISCHANNELS:
     numeric: '319'
 
+  RPL_WHOISSPECIAL:
+    numeric: '320'
+
   RPL_LISTSTART:
     numeric: '321'
 
@@ -296,6 +302,9 @@ numerics:
   RPL_CREATIONTIME:
     numeric: '329'
 
+  RPL_WHOISACCOUNT:
+    numeric: '330'
+
   RPL_NOTOPIC:
     numeric: '331'
 
@@ -304,6 +313,9 @@ numerics:
 
   RPL_TOPICWHOTIME:
     numeric: '333'
+
+  RPL_WHOISACTUALLY:
+    numeric: '338'
 
   RPL_USERIP:
     numeric: '340'
@@ -376,6 +388,12 @@ numerics:
 
   RPL_ENDOFMOTD:
     numeric: '376'
+
+  RPL_WHOISHOST:
+    numeric: '378'
+
+  RPL_WHOISMODES:
+    numeric: '379'
 
   RPL_YOUREOPER:
     numeric: '381'
