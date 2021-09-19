@@ -760,7 +760,7 @@ Numeric Replies:
 
 Deprecated Numeric Reply:
 
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
+* {% numeric ERR_NOSUCHSERVER %}
 
 
 ### PONG message
@@ -1467,10 +1467,10 @@ The server will answer this command with several numeric messages with informati
 
 Servers MUST end their reply to `WHOIS` messages with one of these numerics:
 
-* [`ERR_NOSUCHNICK`](#errnosuchnick-401) `(401)`
-* [`ERR_NOSUCHSERVER`](#errnosuchserver-402) `(402)`
-* [`ERR_NONICKNAMEGIVEN`](#errnonicknamegiven-431) `(431)`
-* [`RPL_ENDOFWHOIS`](#rplendofwhois-318) `(318)` otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NONICKNAMEGIVEN %}
+* {% numeric RPL_ENDOFWHOIS %}otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
 
 Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
 
@@ -1479,17 +1479,17 @@ Typically, it is used by clients who want to know how long the user in question 
 
 The following numerics MAY be returned as part of the whois reply:
 
-* [`RPL_WHOISCERTFP`](#rplwhoiscertfp-276) `(276)`
-* [`RPL_WHOISREGNICK`](#rplwhoisregnick-307) `(307)`
-* [`RPL_WHOISUSER`](#rplwhoisuser-311) `(311)`
-* [`RPL_WHOISSERVER`](#rplwhoisserver-312) `(312)`
-* [`RPL_WHOISOPERATOR`](#rplwhoisoperator-313) `(313)`
-* [`RPL_WHOISIDLE`](#rplwhoisidle-317) `(317)`
-* [`RPL_WHOISCHANNELS`](#rplwhoischannels-319) `(319)`
-* [`RPL_WHOISSPECIAL`](#rplwhoisspecial-320) `(320)`
-* [`RPL_WHOISACCOUNT`](#rplwhoisaccount-330) `(330)`
-* [`RPL_WHOISACTUALLY`](#rplwhoisactually-338) `(338)`
-* [`RPL_WHOISSECURE`](#rplwhoissecure-671) `(671)`
+* {% numeric RPL_WHOISCERTFP %}
+* {% numeric RPL_WHOISREGNICK %}
+* {% numeric RPL_WHOISUSER %}
+* {% numeric RPL_WHOISSERVER %}
+* {% numeric RPL_WHOISOPERATOR %}
+* {% numeric RPL_WHOISIDLE %}
+* {% numeric RPL_WHOISCHANNELS %}
+* {% numeric RPL_WHOISSPECIAL %}
+* {% numeric RPL_WHOISACCOUNT %}
+* {% numeric RPL_WHOISACTUALLY %}
+* {% numeric RPL_WHOISSECURE %}
 
 Servers typically send some of these numerics only to the client itself and to servers operators, as they contain privacy-sensitive information that should not be revealed to other users.
 
@@ -1506,7 +1506,7 @@ This section describes extension to the common `WHOIS` command above.
 They exist mainly on historical servers, and are rarely implemented, because of resource usage they incur.
 
 * Servers MAY allow more than one target nick.
-  They can advertise the maximum the number of target users per `WHOIS` command via the [`TARGMAX` parameter of `RPL_ISUPPORT`](#targmax-parameter), and silently drop targets if the number of targets exceeds the limit.
+  They can advertise the maximum the number of target users per `WHOIS` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter, and silently drop targets if the number of targets exceeds the limit.
 
 * Servers MAY allow wildcards in `<nick>`. Servers who do SHOULD reply with information about all matching nicks. They may restrict what information is available in this case, to limit resource usage.
 
