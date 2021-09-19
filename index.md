@@ -1228,6 +1228,62 @@ Command Examples:
       :Wiz STATS c eff.org            ; request by WiZ for C/N line
                                       information from server eff.org
 
+### HELP message
+
+         Command: HELP
+      Parameters: [<subject>]
+
+The `HELP` command is used to return documentation about the IRC server and the IRC commands it implements.
+When receiving an `HELP` command, servers MUST either:
+
+1. reply with {% numeric ERR_UNKNOWNCOMMAND %} if they don't support the command at all,
+2. reply with a single {% numeric ERR_HELPNOTFOUND %} message if they do not know about the `<subject>`, or
+3. reply with a single {% numeric RPL_HELPSTART %} message, then arbitrarily many {% numeric RPL_HELPTXT %} messages, then a single {% numeric RPL_ENDOFHELP %}.
+
+Servers MAY use the third option even on unknown `<subject>`; especially if their reply would not fit in a single line.
+
+It is recommended for the {% numeric RPL_HELPSTART %} message to be some sort of title and for the first {% numeric RPL_HELPTXT %} message to be empty; as if the help was part of a longer document.
+
+Servers may define any `<subject>` they want.
+Servers typically have documentation for most of the IRC commands they support.
+
+Clients SHOULD gracefully handle legacy servers that reply to `HELP` using a set of {% command NOTICE %}.
+On these servers, they may try the `HELPOP` command instead (with the same syntax), which may return the numeric-based type of reply.
+
+Numerics:
+
+* {% numeric ERR_UNKNOWNCOMMAND %}
+* {% numeric ERR_HELPNOTFOUND %}
+* {% numeric RPL_HELPSTART %}
+* {% numeric RPL_HELPTXT %}
+* {% numeric RPL_ENDOFHELP %}
+
+Command Examples:
+
+      HELP                                                     ; request generic help
+      :server 704 val * :** Help System **                     ; first line
+      :server 705 val * :
+      :server 705 val * :Try /HELP <command> for specific help,
+      :server 705 val * :/HELP USERCMDS to list available
+      :server 706 val * :commands, or join the #help channel   ; last line
+
+      HELP PRIVMSG                                             ; request help on PRIVMSG
+      :server 704 val PRIVMSG :** The PRIVMSG command **
+      :server 705 val PRIVMSG :
+      :server 705 val PRIVMSG :The /PRIVMSG command is the main way
+      :server 706 val PRIVMSG :to send messages to other users.
+
+      HELP :unknown subject                                    ; request help on "unknown subject"
+      :server 524 val * :I do not know anything about this
+
+      HELP :unknown subject
+      :server 704 val * :** Help System **
+      :server 705 val * :
+      :server 705 val * :I do not know anything about this.
+      :server 705 val * :
+      :server 705 val * :Try /HELP USERCMDS to list available
+      :server 706 val * :commands, or join the #help channel
+
 ### INFO message
 
          Command: INFO

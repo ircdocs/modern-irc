@@ -813,6 +813,14 @@ Indicates that a {% message MODE %} command affecting a user contained a `MODE` 
 
 Indicates that a {% message MODE %} command affecting a user failed because they were trying to set or view modes for other users. The text used in the last param of this message varies, for instance when trying to view modes for another user, a server may send: `"Can't view modes for other users"`.
 
+{% numericheader ERR_HELPNOTFOUND %}
+
+      "<client> <subject> :No help available on this topic"
+
+Indicates that a {% message HELP %} command requested help on a subject the server does not know about.
+
+The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+
 {% numericheader ERR_INVALIDKEY %}
 
     "<client> <target chan> :Key is not well-formed"
@@ -842,6 +850,32 @@ The text used in the last param of this message varies wildly.
     "<client> <target chan/user> <mode char> <parameter> :<description>"
 
 Indicates that there was a problem with a mode parameter. Replaces various implementation-specific mode-specific numerics.
+
+{% numericheader RPL_HELPSTART %}
+
+    "<client> <subject> :<firt line of help section>"
+
+Indicates the start of a reply to a {% command HELP %} command to the client.
+The text used in the last param of this message may vary, and SHOULD be displayed as-is by IRC clients to their users; possibly emphasized as a the title of the help section.
+
+The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+
+{% numericheader RPL_HELPTXT %}
+
+    "<client> <subject> :<line of help text>"
+
+When sending a reply to a {% command HELP %} command to the client, servers reply with each line of the help section as this numeric. Help lines MAY be wrapped to 80 characters by the server.
+
+The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+
+{% numericheader RPL_ENDOFHELP %}
+
+    "<client> <subject> :<last line of help text>"
+
+Indicates the end of the reply to the {% command HELP %} command to the client.
+The text used in the last param of this message may vary, and SHOULD be shown to the user as any other line.
+
+The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
 
 {% numericheader ERR_NOPRIVS %}
 
