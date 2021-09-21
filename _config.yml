@@ -3,5 +3,7 @@ exclude:
   - CNAME
   - Gemfile
   - Gemfile.lock
-gems:
+plugins:
   - jekyll-sitemap
+  - jekyll-redirect-from
+  - jekyll-sass-converter
