@@ -612,9 +612,11 @@ Sent as a reply to the {% message NAMES %} command, this numeric specifies the e
 
 {% numericheader RPL_BANLIST %}
 
-      "<client> <channel> <mask>"
+      "<client> <channel> <mask> [<who> <set-ts>]"
 
 Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [ban list](#ban-channel-mode). `<mask>` is the given mask on the ban list.
+
+`<who>` and `<set-ts>` are optional and MAY be included in responses. `<who>` is either the nickname or nickmask of the client that set the ban, or a server name, and `<set-ts>` is the UNIX timestamp of when the ban was set.
 
 {% numericheader RPL_ENDOFBANLIST %}
 
