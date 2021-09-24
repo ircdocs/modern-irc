@@ -401,12 +401,6 @@ The ABNF representation for `<reply>` is:
 
 `<isop>` is included if the user with the nickname of `<nickname>` has registered as an [operator](#operators). `<isaway>` represents whether that user has set an [away] message. `"+"` represents that the user is not away, and `"-"` represents that the user is away.
 
-{% numericheader RPL_ISON %}
-
-      "<client> :[<nickname>{ <nickname>}]"
-
-Sent as a reply to the {% message ISON %} command, this numeric lists the nicks that are present on the network. The last parameter of this numeric (if there are any results) is a list of nicknames, delimited by a SPACE character `(' ', 0x20)`.
-
 {% numericheader RPL_UNAWAY %}
 
       "<client> :You are no longer marked as being away"
@@ -1552,10 +1546,24 @@ Casemapping, at least right now, is a topic where implementations differ greatly
 
 ---
 
+# Obsolete Commands and Numerics
 
-# Obsolete Numerics
+## Obsolete Commands
+
+* [`SUMMON`](https://datatracker.ietf.org/doc/html/rfc2812#section-4.5):
+  was used to request people to connect to the network, by writing to their TTY.
+  This only made sense back when users had shells on the same server as the IRC daemon.
+* [`TRACE`](https://datatracker.ietf.org/doc/html/rfc2812#section-3.4.8):
+  showed a path in the server graph, between the user and a target.
+  Nowadays, many servers either don't implement it, or return redacted data.
+* [`ISON`](https://datatracker.ietf.org/doc/html/rfc2812#section-4.9):
+  replaced by the [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html) specification
+* [`WATCH`](https://github.com/grawity/irc-docs/blob/master/client/draft-meglio-irc-watch-00.txt):
+  was never formally specified, and is also replaced by [IRCv3 Monitor](https://ircv3.net/specs/extensions/monitor.html).
+
+## Obsolete Numerics
 
 These are numerics contained in [RFC1459](https://tools.ietf.org/html/rfc1459) and [RFC2812](https://tools.ietf.org/html/rfc2812) that are not contained in this document or that should be considered obsolete.
 
-* **`RPL_BOUNCE (005)`**: `005` is now used for {% numeric RPL_ISUPPORT %}. {% numeric RPL_BOUNCE %} was moved to `010`.
-* **`RPL_SUMMONING (342)`**: No. Just, no. The `SUMMON` command isn't used, don't implement this.
+* **`RPL_BOUNCE (005)`**: `005` is now used for {% numeric RPL_ISUPPORT %}. {% numeric RPL_BOUNCE %} was moved to `010`
+* **`RPL_SUMMONING (342)`**: Was a reply to the deprecated `SUMMON` command.
