@@ -1296,6 +1296,8 @@ Examples:
 
       NETWORK=Rizon
 
+      NETWORK=Example\x20Network
+
 {% isupportheader NICKLEN %}
 
        Format: NICKLEN=<number>
