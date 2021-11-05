@@ -1335,6 +1335,46 @@ One thing for bot authors to note is that the `NOTICE` message may be interprete
 
 ## User-Based Queries
 
+### WHO message
+
+         Command: WHO
+      Parameters: [ <mask> [ "o" ] ]
+
+This command is used to query a list of users who match the provided mask.
+The server will answer this command with zero, one or more [`RPL_WHOREPLY`](#rplwhoreply-352), and end the list with [`RPL_ENDOFWHO`](#rplendofwho-315).
+
+The mask can be one of the following:
+
+* A channel name, in which case the channel members are listed.
+* An exact nickname, in which case a single user is returned.
+* A mask pattern, in which case all visible users whose host, server, real name or nickname matches are listed.
+* Absent or set to "0", in which case all visible users are listed.
+
+Visible users are users who aren't invisible (user mode `+i`) and who don't have a common channel with the requesting client.
+Servers MAY filter or limit visible users replies arbitrarily.
+
+If the "o" flag is given, only server operators are returned.
+
+Numeric Replies:
+
+* {% numeric RPL_WHOREPLY %}
+* {% numeric RPL_ENDOFWHO %}
+* {% numeric ERR_NOSUCHSERVER %}
+
+#### Examples
+
+Command Examples:
+
+      WHO emersion        ; request information on user "emersion"
+      WHO #ircv3          ; list users in the "#ircv3" channel
+      WHO * o             ; list all server operators
+
+Reply Example:
+
+      :calcium.libera.chat 352 emersion #ircv3 ~emersion sourcehut/staff/emersion calcium.libera.chat emersion H :1 Simon Ser
+      :calcium.libera.chat 352 val #ircv3 ~val limnoria/val calcium.libera.chat val H :1 Val
+      :calcium.libera.chat 315 #ircv3 :End of WHO list
+
 ### WHOIS message
 
          Command: WHOIS
