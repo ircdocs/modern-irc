@@ -819,7 +819,7 @@ Indicates that a {% message MODE %} command affecting a user failed because they
 
 Indicates that a {% message HELP %} command requested help on a subject the server does not know about.
 
-The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+The `<subject>` MUST be the one requested by the client, but may be casefolded; unless it would be an invalid parameter, in which case it MUST be `*`.
 
 {% numericheader ERR_INVALIDKEY %}
 
