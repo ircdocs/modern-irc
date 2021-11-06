@@ -856,7 +856,7 @@ Indicates that there was a problem with a mode parameter. Replaces various imple
     "<client> <subject> :<first line of help section>"
 
 Indicates the start of a reply to a {% command HELP %} command.
-The text used in the last param of this message may vary, and SHOULD be displayed as-is by IRC clients to their users; possibly emphasized as a the title of the help section.
+The text used in the last parameter of this message may vary, and SHOULD be displayed as-is by IRC clients to their users; possibly emphasized as the title of the help section.
 
 The `<subject>` MUST be the one requested by the client, but may be casefolded; unless it would be an invalid parameter, in which case it MUST be `*`.
 
