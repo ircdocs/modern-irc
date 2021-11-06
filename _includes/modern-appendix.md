@@ -866,7 +866,7 @@ The `<subject>` MUST be the one requested by the client, but may be casefolded; 
 
 Returns a line of {% command HELP %} text to the client. Lines MAY be wrapped to a certain line length by the server. Note that the final line MUST be a {% numeric RPL_ENDOFHELP %} numeric.
 
-The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+The `<subject>` MUST be the one requested by the client, but may be casefolded; unless it would be an invalid parameter, in which case it MUST be `*`.
 
 {% numericheader RPL_ENDOFHELP %}
 
@@ -874,7 +874,7 @@ The `<subject>` MUST be the one requested by the client, up to casing; unless it
 
 Returns the final {% command HELP %} line to the client.
 
-The `<subject>` MUST be the one requested by the client, up to casing; unless it would be an invalid parameter, in which case it MUST be `*`.
+The `<subject>` MUST be the one requested by the client, but may be casefolded; unless it would be an invalid parameter, in which case it MUST be `*`.
 
 {% numericheader ERR_NOPRIVS %}
 
