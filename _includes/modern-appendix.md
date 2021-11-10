@@ -1172,7 +1172,7 @@ Extban masks SHOULD also be supported for the [ban exemption](#ban-exemption-cha
 <div class="warning">
     <p>Ensure that extban masks are actually typically supported in ban exemption and invite exemption modes.</p>
 
-    <p>We should include a list of 'typical' extban characters and their associated meaning, but make sure we specify that these are not standardised and may change based on server software. See also: <a href="https://github.com/ircdocs/irc-defs/issues/9"><code>irc-defs#9</code></a></p>
+    <p>We should include a list of 'typical' extban characters and their associated meaning, but make sure we specify that these are not standardised and may change based on server software. See also the irc-defs <a href="https://defs.ircdocs.horse/defs/extbans.html"><code>EXTBAN</code> list</a>.</p>
 </div>
 
 Examples:
