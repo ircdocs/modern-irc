@@ -1350,7 +1350,7 @@ The mask can be one of the following:
 * A mask pattern, in which case all visible users whose host, server, real name or nickname matches are listed.
 * Absent or set to "0", in which case all visible users are listed.
 
-Visible users are users who aren't invisible (user mode `+i`) and who don't have a common channel with the requesting client.
+Visible users are users who aren't invisible ([user mode `+i`](https://modern.ircdocs.horse/#invisible-user-mode)) and who don't have a common channel with the requesting client.
 Servers MAY filter or limit visible users replies arbitrarily.
 
 If the "o" flag is given, only server operators are returned.
@@ -1369,11 +1369,20 @@ Command Examples:
       WHO #ircv3          ; list users in the "#ircv3" channel
       WHO * o             ; list all server operators
 
-Reply Example:
+Reply Examples:
 
-      :calcium.libera.chat 352 emersion #ircv3 ~emersion sourcehut/staff/emersion calcium.libera.chat emersion H :1 Simon Ser
-      :calcium.libera.chat 352 val #ircv3 ~val limnoria/val calcium.libera.chat val H :1 Val
-      :calcium.libera.chat 315 #ircv3 :End of WHO list
+      :calcium.libera.chat 352 dan #ircv3 ~emersion sourcehut/staff/emersion calcium.libera.chat emersion H :1 Simon Ser
+      :calcium.libera.chat 315 dan emersion :End of WHO list
+                                      ; Reply to WHO emersion
+
+      :calcium.libera.chat 352 dan #ircv3 ~emersion sourcehut/staff/emersion calcium.libera.chat emersion H :1 Simon Ser
+      :calcium.libera.chat 352 dan #ircv3 ~val limnoria/val calcium.libera.chat val H :1 Val
+      :calcium.libera.chat 315 dan #ircv3 :End of WHO list
+                                      ; Reply to WHO #ircv3
+
+      :calcium.libera.chat 352 dan #ircv3 ~cooloper libera/staff/cooloper calcium.libera.chat cooloper H :3 Cool operator
+      :calcium.libera.chat 315 dan * :End of WHO list
+                                      ; Reply to WHO * o
 
 ### WHOIS message
 

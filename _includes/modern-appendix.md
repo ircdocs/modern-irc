@@ -417,14 +417,14 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
       "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
 
-Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. `<username>` and `<realname>` represent the names set by the {% message USER %} command (though `<username>` may be set by the server in other ways). `<host>` represents the host used for the client in nickmasks (which may or may not be a real hostname or IP address). `<host>` CANNOT start with a colon `(':', 0x3A)` as this would get parsed as a trailing parameter – IPv6 addresses such as `"::1"` are prefixed with a zero `('0', 0x30)` to ensure this. `<server>` is the name of the server the client is connected to. `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned.
+Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
 
 `<flags>` contains the following characters, in this order:
 
-* Away status: the letter H `('H', 0x48)` to indicate that the user is here, or the letter G `('G', 0x47)` to inducate that the user is gone.
+* Away status: the letter H `('H', 0x48)` to indicate that the user is here, or the letter G `('G', 0x47)` to indicate that the user is gone.
 * Optionally, a literal asterisk character `('*', 0x2A)` to indicate that the user is a server operator.
 * Optionally, the highest [channel membership prefix](#channel-membership-prefixes) that the client has in `<channel>`, if the client has one.
-* Optionally, one or more user mode characters.
+* Optionally, one or more user mode characters and other arbitrary server-specific flags.
 
 {% numericheader RPL_ENDOFWHO %}
 
