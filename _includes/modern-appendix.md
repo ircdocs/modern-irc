@@ -432,7 +432,7 @@ Sent as a reply to the {% message WHO %} command, this numeric gives information
 
 Sent as a reply to the {% command WHO %} command, this numeric indicates the end of a `WHO` response for the mask `<mask>`.
 
-`<mask>` MAY NOT be exactly the `<mask>` parameter sent by the client in its `WHO` message. This means the case MAY NOT be preserved.
+`<mask>` MUST be the same `<mask>` parameter sent by the client in its `WHO` message, but MAY be casefolded.
 
 This numeric is sent after all other `WHO` response numerics have been sent to the client.
 
