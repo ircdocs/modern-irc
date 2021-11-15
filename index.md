@@ -1350,7 +1350,7 @@ The mask can be one of the following:
 * A mask pattern, in which case all visible users whose host, server, real name or nickname matches are listed.
 * Absent or set to "0", in which case all visible users are listed.
 
-Visible users are users who aren't invisible ([user mode `+i`](https://modern.ircdocs.horse/#invisible-user-mode)) and who don't have a common channel with the requesting client.
+Visible users are users who aren't invisible ([user mode `+i`](#invisible-user-mode)) and who don't have a common channel with the requesting client.
 Servers MAY filter or limit visible users replies arbitrarily.
 
 If the "o" flag is given, only server operators are returned.
