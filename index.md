@@ -1452,6 +1452,43 @@ Numeric Replies:
     <p>NOTE: The <tt>KILL</tt> message is weird, and I need to look at it more closely, add some examples, etc.</p>
 </div>
 
+### REHASH message
+
+         Command: REHASH
+      Parameters: None
+
+The `REHASH` command is an administrative command which can be used by an operator to force the local server to re-read and process its configuration file.
+This may include other data, such as modules or TLS certificates.
+
+Servers MAY accept, as an optional argument, the name of a remote server that should be rehashed instead of the current one.
+
+Numeric replies:
+
+* {% numeric RPL_REHASHING %}
+* {% numeric ERR_NOPRIVILEGES %}
+
+Example:
+
+     REHASH                          ; message from user with operator
+                                     status to server asking it to reread
+                                     its configuration file.
+
+### RESTART message
+
+         Command: RESTART
+      Parameters: None
+
+An operator can use the restart command to force the server to restart itself.
+This message is optional since it may be viewed as a risk to allow arbitrary people to connect to a server as an operator and execute this command, causing (at least) a disruption to service.
+
+Numeric replies:
+
+* {% numeric ERR_NOPRIVILEGES %}
+
+Example:
+
+     RESTART                         ; no parameters required.
+
 ### SQUIT message
 
          Command: SQUIT
