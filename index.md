@@ -1245,6 +1245,8 @@ Servers typically have documentation for most of the IRC commands they support.
 Clients SHOULD gracefully handle older servers that reply to `HELP` with a set of {% command NOTICE %} messages.
 On these servers, the client may try sending the `HELPOP` command (with the same syntax specified here), which may return the numeric-based reply.
 
+Clients SHOULD also gracefully handle servers that reply to `HELP` with a set of `290`/`291`/`292`/`293`/`294`/`295` numerics.
+
 Numerics:
 
 * {% numeric ERR_HELPNOTFOUND %}
