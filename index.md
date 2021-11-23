@@ -1365,7 +1365,6 @@ Command Examples:
 
       WHO emersion        ; request information on user "emersion"
       WHO #ircv3          ; list users in the "#ircv3" channel
-      WHO * o             ; list all server operators
 
 Reply Examples:
 
@@ -1377,10 +1376,6 @@ Reply Examples:
       :calcium.libera.chat 352 dan #ircv3 ~val limnoria/val calcium.libera.chat val H :1 Val
       :calcium.libera.chat 315 dan #ircv3 :End of WHO list
                                       ; Reply to WHO #ircv3
-
-      :calcium.libera.chat 352 dan #ircv3 ~cooloper libera/staff/cooloper calcium.libera.chat cooloper H :3 Cool operator
-      :calcium.libera.chat 315 dan * :End of WHO list
-                                      ; Reply to WHO * o
 
 ### WHOIS message
 
