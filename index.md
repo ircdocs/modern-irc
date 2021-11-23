@@ -1338,7 +1338,7 @@ One thing for bot authors to note is that the `NOTICE` message may be interprete
 ### WHO message
 
          Command: WHO
-      Parameters: [ <mask> [ "o" ] ]
+      Parameters: [<mask>]
 
 This command is used to query a list of users who match the provided mask.
 The server will answer this command with zero, one or more [`RPL_WHOREPLY`](#rplwhoreply-352), and end the list with [`RPL_ENDOFWHO`](#rplendofwho-315).
@@ -1352,8 +1352,6 @@ The mask can be one of the following:
 
 Visible users are users who aren't invisible ([user mode `+i`](#invisible-user-mode)) and who don't have a common channel with the requesting client.
 Servers MAY filter or limit visible users replies arbitrarily.
-
-If the "o" flag is given, only server operators are returned.
 
 Numeric Replies:
 
