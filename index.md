@@ -1338,7 +1338,7 @@ One thing for bot authors to note is that the `NOTICE` message may be interprete
 ### WHO message
 
          Command: WHO
-      Parameters: [<mask>]
+      Parameters: <mask>
 
 This command is used to query a list of users who match the provided mask.
 The server will answer this command with zero, one or more [`RPL_WHOREPLY`](#rplwhoreply-352), and end the list with [`RPL_ENDOFWHO`](#rplendofwho-315).
@@ -1347,8 +1347,7 @@ The mask can be one of the following:
 
 * A channel name, in which case the channel members are listed.
 * An exact nickname, in which case a single user is returned.
-* A mask pattern, in which case all visible users whose nickname matches are listed. Servers MAY match other user-specific values, such as the hostname, server, real name or username.
-* Absent or set to "0", in which case all visible users are listed.
+* A mask pattern, in which case all visible users whose nickname matches are listed. Servers MAY match other user-specific values, such as the hostname, server, real name or username. Servers MAY not support mask patterns and return an empty list.
 
 Visible users are users who aren't invisible ([user mode `+i`](#invisible-user-mode)) and who don't have a common channel with the requesting client.
 Servers MAY filter or limit visible users replies arbitrarily.
