@@ -221,7 +221,7 @@ We do try to note numerics where this is the case with a message like *"The text
 
 The first message sent after client registration, this message introduces the client to the network. The text used in the last param of this message varies wildly.
 
-The first parameter of this message is the nickname assigned by the network to the client. Since it may differ from the nickname the client requested with the `NICK` command (due to, e.g. server policy restrictions on nicknames), the client SHOULD use this parameter to determine its effective nickname at the time of connection. (Subsequent nickname changes, client-initiated or not, will be communicated by the server using a [NICK message](#nick-message).)
+The first parameter of this message is the nickname assigned by the network to the client. Since it may differ from the nickname the client requested with the `NICK` command (due to, e.g. length limits or policy restrictions on nicknames), the client SHOULD use this parameter to determine its actual nickname at the time of connection. Subsequent nickname changes, client-initiated or not, will be communicated by the server sending a {% message NICK %} message.
 
 Servers that implement spoofed hostmasks in any capacity SHOULD NOT include the extended (complete) hostmask in the last parameter of this reply, either for all clients or for those whose hostnames have been spoofed. This is because some clients try to extract the hostname from this final parameter of this message and resolve this hostname, in order to discover their 'local IP address'.
 
