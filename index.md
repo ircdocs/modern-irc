@@ -1288,6 +1288,8 @@ If `<target>` is a user and that user has been set as away, the server may reply
 
 The `PRIVMSG` message is sent from the server to client to deliver a message to that client. The `<source>` of the message represents the user or server that sent the message, and the `<target>` represents the target of that `PRIVMSG` (which may be the client, a channel, etc).
 
+When the `PRIVMSG` message is sent from a server to a client and `<target>` starts with a dollar character `('$', 0x24)`, the message is a broadcast sent to all clients on one or multiple servers.
+
 Numeric Replies:
 
 * {% numeric ERR_NOSUCHNICK %}
