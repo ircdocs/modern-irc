@@ -101,6 +101,8 @@ A trend these days is to hide the real structure of a network from regular users
 
 These terms are not generally used in IRC protocol documentation, but may be used by the administrators of a network in order to differentiate the servers they run and their roles.
 
+Servers SHOULD pick a name which contains a dot character `(".", 0x2E)`. This can help clients disambiguate between server names and nicknames in a message source.
+
 ### Clients
 
 A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. See the protocol grammar rules for what may and may not be used in a nickname. In addition to the nickname, all servers must have the following information about all clients: The real name/address of the host that the client is connecting from, the username of the client on that host, and the server to which the client is connected.
