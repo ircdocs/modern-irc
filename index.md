@@ -430,7 +430,7 @@ The recommended order of commands during registration is as follows:
 
 The commands specified in steps 1-3 should be sent on connection. If the server supports [capability negotiation](#capability-negotiation) then registration will be suspended and the client can negotiate client capabilities (steps 4-6). If the server does not support capability negotiation then registration will continue immediately without steps 4-6.
 
-1. If the server supports capability negotiation, the {% command CAP %} command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](http://ircv3.net/specs/core/capability-negotiation-3.2.html) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
+1. If the server supports capability negotiation, the {% command CAP %} command suspends the registration process and immediately starts the [capability negotiation](#capability-negotiation) process. `CAP LS 302` means that the client supports [version `302`](https://ircv3.net/specs/extensions/capability-negotiation.html#cap-ls-version) of client capability negotiation. The registration process is resumed when the client sends `CAP END` to the server.
 
 2. The {% command PASS %} command is not required for the connection to be registered, but if included it MUST precede the latter of the {% command NICK %} and {% command USER %} commands.
 
@@ -484,7 +484,7 @@ Capability negotiation is started by the client issuing a `CAP LS 302` command (
 
 If used during initial registration, and the server supports capability negotiation, the `CAP` command will suspend registration. Once capability negotiation has ended the registration process will continue.
 
-Clients and servers should implement capability negotiation and the `CAP` command based on the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications. Updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
+Clients and servers should implement capability negotiation and the `CAP` command based on the [Capability Negotiation specification](https://ircv3.net/specs/extensions/capability-negotiation.html). Updates, improvements, and new versions of capability negotiation are managed by the [IRCv3 Working Group](http://ircv3.net/irc/).
 
 
 ---
@@ -510,7 +510,7 @@ The `CAP` command is used for capability negotiation between a server and a clie
 
 The `CAP` message may be sent from the server to the client.
 
-For the exact semantics of the `CAP` command and subcommands, please see the [IRCv3.1](http://ircv3.net/specs/core/capability-negotiation-3.1.html) and [IRCv3.2](http://ircv3.net/specs/core/capability-negotiation-3.2.html) Capability Negotiation specifications.
+For the exact semantics of the `CAP` command and subcommands, please see the [Capability Negotiation specification](https://ircv3.net/specs/extensions/capability-negotiation.html).
 
 ### AUTHENTICATE message
 
