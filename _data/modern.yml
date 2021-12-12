@@ -686,6 +686,9 @@ numerics:
   ERR_WHOLIMEXCEED:
     numeric: '523'
 
+  ERR_HELPNOTFOUND:
+    numeric: '524'
+
   ERR_INVALIDKEY:
     numeric: '525'
 
