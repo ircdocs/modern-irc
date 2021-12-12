@@ -714,6 +714,24 @@ Message Example:
                                        the message: "Quit: Bye for now!"
 
 
+### ERROR message
+
+        Command: ERROR
+     Parameters: <reason>
+
+This message is sent from a server to a client to report a fatal error, before terminating the client's connection.
+
+This MUST only be used to report fatal errors. Regular errors should use the appropriate numerics or the IRCv3 [standard replies](https://ircv3.net/specs/extensions/standard-replies) framework.
+
+Numeric Replies:
+
+* None
+
+Command Example:
+
+      ERROR :Connection timeout        ; Server closing a client connection because it
+                                       is unresponsive.
+
 ## Channel Operations
 
 This group of messages is concerned with manipulating channels, their properties (channel modes), and their contents (typically clients).
