@@ -263,7 +263,7 @@ When clients send a {% message VERSION %} command to an external server (i.e. no
 
 A token is of the form `PARAMETER`, `PARAMETER=VALUE` or `-PARAMETER`. Servers MUST send the parameter as upper-case text.
 
-Tokens of the form `PARAMETER` or `PARAMETER=VALUE` are used to advertise features or information to clients. A parameter MAY have a default value and value MAY be empty when sent by servers. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields SHOULD be delimited with a comma character `(",", 0x2C)`.
+Tokens of the form `PARAMETER` or `PARAMETER=VALUE` are used to advertise features or information to clients. A parameter MAY have a default value and value MAY be empty when sent by servers. Unless otherwise stated, when a parameter contains a value, the value MUST be treated as being case sensitive. The value MAY contain multiple fields, if this is the case the fields SHOULD be delimited with a comma character `(",", 0x2C)`. The value MAY contain escape sequences: `\x20` for the space character `(" ", 0x20)`, `\x5C` for the backslash character `("\", 0x5C)` and `\x3D` for the equal character `("=", 0x3D)`.
 
 If the value of a parameter changes, the server SHOULD re-advertise the parameter with the new value in an `RPL_ISUPPORT` reply. An example of this is a client becoming an [IRC operator](#oper-message) and their {% isupport CHANLIMIT %} changing.
 
@@ -1340,6 +1340,8 @@ Examples:
       NETWORK=EFNet
 
       NETWORK=Rizon
+
+      NETWORK=Example\x20Network
 
 {% isupportheader NICKLEN %}
 
