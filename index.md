@@ -378,11 +378,11 @@ Servers SHOULD handle single `\r` or `\n` character as if it was a `\r\n` pair, 
 
 Servers and clients SHOULD ignore empty lines.
 
-Servers SHOULD gracefully handle messages over the 512-bytes limit. This includes:
+Servers SHOULD gracefully handle messages over the 512-bytes limit. They may:
 
-* sending an error numeric back
-* truncating on the 510th byte (and adding `\r\n` at the end) or the last UTF-8 character or grapheme that fits.
-* ignoring the message or closing the connection, but this may be confusing to users of buggy clients.
+* Send an error numeric back.
+* Truncate on the 510th byte (and add `\r\n` at the end) or on the last UTF-8 character or grapheme that fits.
+* Ignore the message or close the connection – but this may be confusing to users of buggy clients.
 
 ## Numeric Replies
 
