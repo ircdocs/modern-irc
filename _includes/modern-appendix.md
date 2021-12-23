@@ -413,6 +413,29 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
 Sent as a reply to the {% message AWAY %} command, this lets the client know that they are set as being away. The text used in the last param of this message may vary.
 
+{% numericheader RPL_WHOREPLY %}
+
+      "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
+
+Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
+
+`<flags>` contains the following characters, in this order:
+
+* Away status: the letter H `('H', 0x48)` to indicate that the user is here, or the letter G `('G', 0x47)` to indicate that the user is gone.
+* Optionally, a literal asterisk character `('*', 0x2A)` to indicate that the user is a server operator.
+* Optionally, the highest [channel membership prefix](#channel-membership-prefixes) that the client has in `<channel>`, if the client has one.
+* Optionally, one or more user mode characters and other arbitrary server-specific flags.
+
+{% numericheader RPL_ENDOFWHO %}
+
+      "<client> <mask> :End of WHO list"
+
+Sent as a reply to the {% command WHO %} command, this numeric indicates the end of a `WHO` response for the mask `<mask>`.
+
+`<mask>` MUST be the same `<mask>` parameter sent by the client in its `WHO` message, but MAY be casefolded.
+
+This numeric is sent after all other `WHO` response numerics have been sent to the client.
+
 {% numericheader RPL_WHOISREGNICK %}
 
       "<client> <nick> :has identified for this nick"
