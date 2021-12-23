@@ -372,6 +372,17 @@ Here are some examples of messages and how the parameters would be represented a
 
 As these examples show, a trailing parameter (a final parameter with a preceding `':'`) has the same semantics as any other parameter, and MUST NOT be treated specially or stored separately once the `':'` is stripped.
 
+### Compatibility with incorrect software
+
+Servers SHOULD handle single `\r` or `\n` character as if it was a `\r\n` pair, to support existing clients that might send this. However, clients and servers alike MUST NOT send single `\r` or `\n` characters.
+
+Servers and clients SHOULD ignore empty lines.
+
+Servers SHOULD gracefully handle messages over the 512-bytes limit. This includes:
+
+* sending an error numeric back
+* truncating on the 510th byte (and adding `\r\n` at the end) or the last UTF-8 character or grapheme that fits.
+* ignoring the message or closing the connection, but this may be confusing to users of buggy clients.
 
 ## Numeric Replies
 
