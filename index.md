@@ -384,6 +384,8 @@ Servers SHOULD gracefully handle messages over the 512-bytes limit. They may:
 * Truncate on the 510th byte (and add `\r\n` at the end) or, preferably, on the last UTF-8 character or grapheme that fits.
 * Ignore the message or close the connection – but this may be confusing to users of buggy clients.
 
+Finally, clients and servers SHOULD NOT use more than one space (`\x20`) character as `SPACE` as defined in the grammar above.
+
 ## Numeric Replies
 
 Most messages sent from a client to a server generates a reply of some sort. The most common form of reply is the numeric reply, used for both errors and normal replies. Distinct from a normal message, a numeric reply MUST contain a `<source>` and use a three-digit numeric as the command. A numeric reply SHOULD contain the target of the reply as the first parameter of the message. A numeric reply is not allowed to originate from a client.
