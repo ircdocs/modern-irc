@@ -379,6 +379,9 @@ Most messages sent from a client to a server generates a reply of some sort. The
 
 In all other respects, a numeric reply is just like a normal message. A list of numeric replies is supplied in the [Numerics](#numerics) section.
 
+When parsing numerics, clients SHOULD NOT parse the last parameter, as it is only intended to be human-readable. Unless specified otherwise, they MUST ignore any unexpected parameter before the last parameter, as these allow servers to extend existing numerics by adding parameters before the human-readable fallback.
+Server implementers should nonetheless consider the effects of such extensions on non-conforming clients.
+
 
 ## Wildcard Expressions
 
