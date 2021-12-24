@@ -668,12 +668,6 @@ Sent to a client which has just successfully issued an {% message OPER %} comman
 
 Sent to an [operator](#operators) which has just successfully issued a {% message REHASH %} command. The text used in the last param of this message may vary.
 
-{% numericheader ERR_INPUTTOOLONG %}
-
-      "<client> :Input line was too long"
-
-Indicates a given line does not follow the specified size limits (512 bytes for the main section, 4094 or 8191 bytes for the tag section).
-
 {% numericheader ERR_UNKNOWNERROR %}
 
       "<client> <command>{ <subcommand>} :<info>"
@@ -728,6 +722,12 @@ Indicates that the `JOIN` command failed because the client has joined their max
 
 Indicates a PING or PONG message missing the originator parameter which is required by old IRC servers.
 Nowadays, this may be used by some servers when the PING `<token>` is empty.
+
+{% numericheader ERR_INPUTTOOLONG %}
+
+      "<client> :Input line was too long"
+
+Indicates a given line does not follow the specified size limits (512 bytes for the main section, 4094 or 8191 bytes for the tag section).
 
 {% numericheader ERR_UNKNOWNCOMMAND %}
 
