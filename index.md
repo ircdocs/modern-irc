@@ -959,15 +959,13 @@ Message Examples:
 ### KICK message
 
           Command: KICK
-       Parameters: <channel> *( "," <channel> ) <user> *( "," <user> ) [<comment>]
+       Parameters: <channel> <user> *( "," <user> ) [<comment>]
 
 The KICK command can be used to request the forced removal of a user from a channel.
 It causes the `<user>` to be removed from the `<channel>` by force.
 If no comment is given, the server SHOULD use a default message instead.
 
-For the message to be syntactically correct, there MUST be either one channel parameter and multiple user parameter, or as many channel parameters as there are user parameters.  
-
-The server MUST NOT send KICK messages with multiple channels or users to clients.
+The server MUST NOT send KICK messages with multiple users to clients.
 This is necessary to maintain backward compatibility with existing client software.
 
 Servers MAY limit the number of target users per `KICK` command via the [`TARGMAX` parameter of `RPL_ISUPPORT`](#targmax-parameter), and silently drop targets if the number of targets exceeds the limit.
