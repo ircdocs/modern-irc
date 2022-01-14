@@ -1128,6 +1128,8 @@ and rely on specific parameters instead.
 
 The `TIME` command is used to query local time from the specified server. If the server parameter is not given, the server handling the command must reply to the query.
 
+The reply does not use a machine-readable format, so, if the server supports the [IRCv3 `server-time` capability](https://ircv3.net/specs/extensions/server-time.html), clients should send a `PING` and read the `time` tag on the reply instead.
+
 Numeric Replies:
 
 * {% numeric ERR_NOSUCHSERVER %}
