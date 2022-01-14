@@ -1100,6 +1100,27 @@ Command Examples:
       CONNECT  eff.org 12765 csd.bu.edu
       ; Attempt to connect csu.bu.edu to eff.org on port 12765
 
+### LUSERS message
+
+         Command: LUSERS
+      Parameters: None
+
+Returns statistics about local and global users, as numeric replies.
+
+Servers MUST reply with `RPL_LUSERCLIENT` and `RPL_LUSERME`, and SHOULD also include
+all those defined below.
+
+Clients SHOULD NOT try to parse the free-form text in the trailing parameter,
+and rely on specific parameters instead.
+
+* {% numeric RPL_LUSERCLIENT %}
+* {% numeric RPL_LUSEROP %}
+* {% numeric RPL_LUSERUNKNOWN %}
+* {% numeric RPL_LUSERCHANNELS %}
+* {% numeric RPL_LUSERME %}
+* {% numeric RPL_LOCALUSERS %}
+* {% numeric RPL_GLOBALUSERS %}
+
 ### TIME message
 
          Command: TIME
