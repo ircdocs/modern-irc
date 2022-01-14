@@ -374,7 +374,7 @@ As these examples show, a trailing parameter (a final parameter with a preceding
 
 ### Compatibility with incorrect software
 
-Servers SHOULD handle single `\r` or `\n` character as if it was a `\r\n` pair, to support existing clients that might send this. However, clients and servers alike MUST NOT send single `\r` or `\n` characters.
+Servers SHOULD handle single `\n` character, and MAY handle a single `\r` character, as if it was a `\r\n` pair, to support existing clients that might send this. However, clients and servers alike MUST NOT send single `\r` or `\n` characters.
 
 Servers and clients SHOULD ignore empty lines.
 
