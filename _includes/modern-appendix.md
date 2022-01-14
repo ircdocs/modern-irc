@@ -703,6 +703,17 @@ Sent to a client which has just successfully issued an {% message OPER %} comman
 
 Sent to an [operator](#operators) which has just successfully issued a {% message REHASH %} command. The text used in the last param of this message may vary.
 
+{% numericheader RPL_TIME %}
+
+      "<client> <server> [<timestamp> [<TS offset>]] :<human-readable time>"
+
+Reply to the {% message TIME %} command. Typically only contains the human-readable time, but it may include a UNIX timestamp.
+
+Clients SHOULD NOT parse the human-readable time.
+
+`<TS offset>` is used by some servers using a TS-based server-to-server protocol (eg. TS6), and represents the offset between the server's system time, and the TS of the network. A positive value means the server is lagging behind the TS of the network.
+Clients SHOULD ignore its value.
+
 {% numericheader ERR_UNKNOWNERROR %}
 
       "<client> <command>{ <subcommand>} :<info>"
