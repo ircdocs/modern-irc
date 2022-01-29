@@ -1549,11 +1549,16 @@ When sending, we always recommend UTF-8. When decoding, we generally recommend t
 
 For clients, this is fine. Even if they incorrectly decode a private message, the user should see that the message has been decoded incorrectly and be able to resolve the issue (hopefully by telling the sending user to use UTF-8).
 
-However, servers are in a trickier position (especially for PRIVMSG/NOTICE or any other command that takes arbitrary user input such as USER, TOPIC, etc). Servers in C/C++ or similar languages can simply treat this input from the user as a character array they accept and then spit out again, no trouble. However, servers implemented in higher-level languages may wish to treat IRC lines and messages as Unicode text internally. For servers to treat messages in this way, they need to decode lines as they're received and later encode the lines before they're sent out.
+However, servers are in a trickier position (especially for PRIVMSG/NOTICE or any other command that takes arbitrary user input such as USER, TOPIC, etc). Servers should simply treat this input from the user as a character array they accept and then spit out again, no trouble.
 
-This presents an issue. What if the line from the user is decoded incorrectly, and then this modified line is sent out? (see also: [Mojibake](https://en.wikipedia.org/wiki/Mojibake)). What these servers may instead do is either follow the lead of the lower-level servers and treat these parameters as byte arrays not to be parsed or decoded in any way. These servers may also simply attempt to decode all incoming lines as UTF-8, and if the line cannot be decoded it is ignored. The former ensures all messages are sent correctly, and the latter vastly simplifies server implementations in these higher-level languages.
+Servers implemented in languages with first-class Unicode strings may wish to treat IRC lines and messages as Unicode text internally. For servers to treat messages in this way, they need to decode lines as they're received and later encode the lines before they're sent out.
 
-For what it's worth, the servers I've worked on have done the latter of the two options, discarding any lines that cannot be decoded as UTF-8. It's not a great solution, but it's a difficult issue to deal with. If anyone has a better way to deal with this, please feel free to <a href="mailto:daniel@danieloaks.net">contact me</a> so I can update this section.
+This presents an issue. What if the line from the user is decoded incorrectly, modified (eg. by casefolding), and then sent out? (see also: [Mojibake](https://en.wikipedia.org/wiki/Mojibake)). What these servers may instead do is either:
+
+1. follow the lead of the majority of existing servers and treat these parameters as byte arrays not to be parsed or decoded in any way.
+2. attempt to decode all incoming lines as UTF-8 (possibly using Hybrid encoding like clients do) and if the line cannot be decoded it is ignored or returns an error. The [IRCv3 `UTF8ONLY` specification](https://ircv3.net/specs/extensions/utf8-only) allows them to signal this to clients.
+
+The former ensures all messages are sent correctly, and the latter simplifies server implementations and allows clients to disable decoding heuristics.
 
 
 ## Message Parsing and Assembly
