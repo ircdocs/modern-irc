@@ -66,3 +66,17 @@ In this document, I describe what I think is the most sane way to interpret them
 ## Client-to-Client Protocol (CTCP)
 
 Describes a subset of CTCP that is sane and lets software interoperate with most of the other IRC software out there today. Leaves out quoting mechanisms defined by earlier specifications that have not been widely implemented nor followed today, and defines the messages that most clients implementing CTCP should be aware of.
+
+## Building
+
+Install dependencies:
+
+```
+bundle config set --local path 'vendor/bundle'
+bundle install
+```
+
+Then, either:
+
+* `bundle exec jekyll build` to write locally in `_site/`
+* `bundle exec jekyll serve --incremental` to start a webserver
