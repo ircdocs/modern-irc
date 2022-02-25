@@ -9,7 +9,6 @@
         <link href="/css/screen.css" rel="stylesheet" type="text/css" />
 
         <script src="/js/anchor.min.js"></script>
-        <script src="/js/toc.js"></script>
 
         <meta charset='utf-8'>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -33,11 +32,6 @@
         {% endif %}
 
         <a onclick="toggledarkmode()" id="darkmodebtn"><i class="fa fa-sun-o show-when-dark"></i><i class="fa fa-moon-o show-when-light"></i></a>
-        <div id="show-toc" onclick=""><div onclick="">Table of Contents</div></div>
-        <div id="toc-popup" style="display: none"><div onclick="">
-            <h2>Table of Contents</h2>
-            <div onclick="" id="table-of-contents"></div>
-        </div></div>
 
         {% if page.ietf %}
         <div id="hovering-ietf-warning" onclick="disableietf();"><div>
@@ -65,7 +59,17 @@
                 <h1>{{ page.title }}</h1>
 
                 <div id="spec">
-                    {{ content }}
+                    {% if page.toc %}
+                        {% assign content_array = content | split: site.excerpt_separator %}
+                        {% assign excerpt_only = content_array | first %}
+                        {% assign content_remainder = content_array | last %}
+                        {{ excerpt_only }}
+                        <hr />
+                        <h1 id="toc">Table of Contents</h1>
+                        {{ content_remainder | toc }}
+                    {% else %}
+                        {{ content }}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ copyrights:
     org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
     editor: true
+toc: true
 ---
 
 {% include copyrights.html %}
@@ -38,6 +39,7 @@ There have been many extensions to DCC through the years, such as XDCC, SDCC and
 
 If you are a new software author implementing this feature, please keep in mind that **DCC has no encryption.** If you must implement DCC, please look at the [SDCC](#secure-dcc-sdcc) section at the bottom of this document so that you can implement even the most minor security measures for this protocol.
 
+<!--toc-->
 
 ---
 

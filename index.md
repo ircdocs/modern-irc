@@ -20,6 +20,7 @@ copyrights:
     org_link: "https://limnoria.net"
     email: "vlorentz.ircdocs@isometry.eu"
     editor: true
+toc: true
 ---
 
 {% include copyrights.html %}
@@ -36,8 +37,6 @@ copyrights:
     <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">GitHub repository</a>!</p>
 </div>
 
-<div id="printable-toc" style="display: none"></div>
-
 ---
 
 
@@ -49,6 +48,8 @@ IRC is a text-based chat protocol which has proven itself valuable and useful. I
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
+
+<!--toc-->
 
 ---
 
