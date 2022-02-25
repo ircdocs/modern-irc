@@ -30,12 +30,12 @@ These custom Liquid tags simplify referring to different parts of the IRC protoc
     - link to the WHO message
 
     {% numericheader RPL_WELCOME %}
-    - create the RPL_WELCOME numeric header
-    - numeric data MUST exist in the _data/modern.yml file
+    - create the `RPL_WELCOME` numeric header
+    - numeric data MUST exist in the `_data/modern.yml` file
 
     {% numeric RPL_WELCOME %}
-    - link to the RPL_WELCOME numeric
-    - numeric data MUST exist in the _data/modern.yml file
+    - link to the `RPL_WELCOME` numeric
+    - numeric data MUST exist in the `_data/modern.yml` file
 
     {% isupportheader TARGMAX %}
     - create the ISUPPORT TARGMAX parameter header
