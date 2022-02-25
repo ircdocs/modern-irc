@@ -32,7 +32,7 @@ copyrights:
 </div>
 
 <div class="warning">
-    <p>NOTE: This is NOWHERE NEAR FINISHED. Dragons be here, insane stuff be here.</p>
+    <p>NOTE: This is a WORK IN PROGRESS. All major points of the protocol are covered, but some common message and mode types are missing.</p>
     <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">GitHub repository</a>!</p>
 </div>
 
