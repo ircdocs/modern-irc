@@ -48,7 +48,16 @@ Servers SHOULD pick a name which contains a dot character `(".", 0x2E)`. This ca
 
 ### Clients
 
-A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. See the protocol grammar rules for what may and may not be used in a nickname. In addition to the nickname, all servers must have the following information about all clients: The real name/address of the host that the client is connecting from, the username of the client on that host, and the server to which the client is connected.
+A client is anything connecting to a server that is not another server. Each client is distinguished from other clients by a unique nickname. In addition to the nickname, all servers must have the following information about all clients: the real name/address of the host that the client is connecting from, the username of the client on that host, and the server to which the client is connected.
+
+Nicknames are non-empty strings with the following restrictions:
+
+- They MUST NOT contain any of the following characters: space `(' ', 0x20)`, comma `(',', 0x2C)`, asterisk `('*', 0x2A)`, question mark `('?', 0x3F)`, exclamation mark `('!', 0x21)`, at sign `('@', 0x40)`.
+- They MUST NOT start with any of the following characters: dollar `('$', 0x24)`, colon `(':', 0x3A)`.
+- They MUST NOT start with a character listed as a [channel type](#channel-types) prefix.
+- They SHOULD NOT contain any dot character `('.', 0x2E)`.
+
+Servers MAY have additional implementation-specific nickname restrictions.
 
 ### Services
 
