@@ -389,6 +389,13 @@ body
                                     content: counter(toc-lvl-1) "." counter(toc-lvl-2) "." counter(toc-lvl-3)
                                     counter-increment: toc-lvl-3
                                     padding-right: 1rem
+                                > ul
+                                    counter-reset: toc-lvl-4
+                                    > li
+                                        &::before
+                                            content: counter(toc-lvl-1) "." counter(toc-lvl-2) "." counter(toc-lvl-3) "." counter(toc-lvl-4)
+                                            counter-increment: toc-lvl-4
+                                            padding-right: 1rem
                 &.parent-appendixes
                     &.parent-appendixes-1
                         counter-reset: toc-appendixes
