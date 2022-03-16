@@ -14,6 +14,7 @@ copyrights:
 ietf: https://tools.ietf.org/html/draft-oakley-irc-ctcp-02
 ietf-html-editors-copy: https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.html
 ietf-txt-editors-copy: https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-oakley-irc-ctcp-latest.txt
+toc: true
 ---
 
 {% include copyrights.html %}
@@ -27,7 +28,6 @@ ietf-txt-editors-copy: https://rawgit.com/DanielOaks/irc-rfcs/master/dist/draft-
 
 <div id="printable-toc" style="display: none"></div>
 
-
 ---
 
 
@@ -39,6 +39,8 @@ The original CTCP specifications are lengthy and cover quoting mechanisms which 
 
 The IRCv3 Working Group is investigating replacing some functions currently performed by CTCP with alternate methods such as [Metadata](https://github.com/ircv3/ircv3-specifications/issues/244) and [client-only message tags](http://ircv3.net/specs/core/message-tags-3.3.html), which should also allow these functions to be performed more widely and used to better effect.
 
+
+<!--toc-->
 
 ---
 

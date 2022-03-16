@@ -7,3 +7,5 @@ plugins:
   - jekyll-sitemap
   - jekyll-redirect-from
   - jekyll-sass-converter
+  - jekyll-toc
+excerpt_separator: <!--toc-->

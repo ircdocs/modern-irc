@@ -8,6 +8,7 @@ copyrights:
     org_link: "http://ircdocs.horse/"
     email: "daniel@danieloaks.net"
     editor: true
+toc: true
 ---
 
 {% include copyrights.html %}
@@ -16,8 +17,6 @@ copyrights:
     <p>This document describes what I consider to be almost universally understood formatting. It is a <a href="./about.html#living-specification">living specification</a> which is updated in response to feedback and implementations as they change.</p>
     <p>If I've missed out on some formatting character or method which is understood by a majority of IRC software in use today, or have made a mistake in this document, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
 </div>
-
-<div id="printable-toc" style="display: none"></div>
 
 ---
 
@@ -32,6 +31,8 @@ Following what's described in this document should let your software send and in
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](http://tools.ietf.org/html/rfc2119).
 
+
+<!--toc-->
 
 ---
 

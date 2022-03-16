@@ -115,48 +115,6 @@ html, body
         padding: 1.5rem 1.85rem
         border-radius: 1.5rem
 
-#toc-popup
-    background: rgba(20,20,20,0.75)
-    position: fixed
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    overflow-y: scroll
-    -webkit-overflow-scrolling: touch
-    > div
-        max-width: calc(100% - 2rem)
-        width: 40rem
-        background: #fbfbfb
-        margin: 1rem auto
-        padding: 1.5rem 1.85rem
-        border-radius: 1.5rem
-        > h2
-            margin-top: 0
-    #table-of-contents
-        li
-            margin-top: 0.3rem
-#show-toc
-    @media print
-        display: none
-    position: fixed
-    bottom: 0
-    left: 0
-    width: 100%
-    pointer-events: none
-    > div
-        display: block
-        margin: 0 auto
-        height: 2.5rem
-        max-width: 16rem
-        padding: 0.75rem
-        background: rgba(255, 255, 255, 0.925)
-        border: 0.1rem solid #2b2b2b
-        border-bottom: none
-        border-radius: 1rem 1rem 0 0
-        cursor: pointer
-        text-align: center
-        pointer-events: all
 
 .copyright .line
     display: block
@@ -208,6 +166,11 @@ li
             margin-top: 0
         &:last-child
             margin-bottom: 0
+
+#toc
+    li
+        margin-top: 0
+
 
 .displaynone
     display: none
@@ -400,16 +363,11 @@ body
 @media print
     #darkmodebtn
         display: none
-    #printable-toc
+
+    #toc
         display: block !important
         page-break-before: always
-        &::before
-            content: "Table of Contents"
-            color: #3e3e4e
-            margin-bottom: 1rem
-            font-size: 2rem
-            font-weight: bold
-        > ul
+        + ul
             padding: 0.5rem 0
             counter-reset: toc-lvl-1
             > li
@@ -443,6 +401,9 @@ body
         ul, ol
             margin: 0
             list-style-type: none
+        + ul
+            margin: 0
+            list-style: none
         li
             margin: 0
             padding-top: 0.25rem
@@ -501,7 +462,7 @@ body
     font-size: 1.7rem
 
 // dark theme color changing transitions
-body, .warning, .note, #show-toc > div
+body, .warning, .note > div
     transition: background 0.2s, color 0.2s
 
 pre
@@ -550,11 +511,3 @@ body.dark
     
     pre
         background: #282831
-
-    #show-toc > div
-        background: rgba(187, 187, 187, 0.925)
-        color: #333
-    #toc-popup > div
-        background: #334
-        a
-            color: #bcbcff
