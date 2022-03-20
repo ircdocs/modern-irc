@@ -183,6 +183,12 @@ Command Examples:
       LIST >3                         ; Command to list all channels with
                                       more than three users.
 
+      LIST C>60                       ; Command to list all channels with
+                                      created at least 60 minutes ago
+
+      LIST T<60                       ; Command to list all channels with
+                                      a topic changed within the last 60 minutes
+
 ### INVITE message
 
          Command: INVITE

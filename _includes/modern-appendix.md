@@ -1213,10 +1213,10 @@ The value MUST be specified, and is a non-delimited list of letters, each of whi
 
 The following search extensions are defined:
 
-* **C**: Searching based on channel creation time, via the `"C<val"` and `"C>val"` modifiers to search for a channel creation time that is higher or lower than `val`.
+* **C**: Searching based on channel creation time, via the `"C<val"` and `"C>val"` modifiers to search for a channel that was created either less than `val` minutes ago, or more than `val` minutes ago, respectively
 * **M**: Searching based on a mask.
 * **N**: Searching based on a non-matching mask. i.e., the opposite of `M`.
-* **T**: Searching based on topic set time, via the `"T<val"` and `"T>val"` modifiers to search for a topic time that is higher or lower than `val`.
+* **T**: Searching based on topic set time, via the `"T<val"` and `"T>val"` modifiers to search for a topic time that was set less than `val` minutes ago, or more than `val` minutes ago, respectively.
 * **U**: Searching based on user count within the channel, via the `"<val"` and `">val"` modifiers to search for a channel that has less or more than `val` users, respectively.
 
 Examples:
@@ -1226,6 +1226,11 @@ Examples:
       ELIST=MU
 
       ELIST=CMNTU
+
+<div class="warning">
+    <p>A widespread bug in existing implementations is to swap the semantics of <code>"C<val"</code> with <code>"C>val"</code>, and/or <code>"T<val"</code> with <code>"T>val"</code>, due to ambiguous legacy specifications. You should check the server you are using implements them as expected.</p>
+</div>
+
 
 {% isupportheader EXCEPTS %}
 
