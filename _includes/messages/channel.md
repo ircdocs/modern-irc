@@ -136,7 +136,7 @@ The `NAMES` command is used to view the nicknames joined to a channel and their 
 
 The channel names are evaluated one-by-one. For each channel that exists and they are able to see the users in, the server returns one of more `RPL_NAMREPLY` numerics containing the users joined to the channel and a single `RPL_ENDOFNAMES` numeric. If the channel name is invalid or the channel does not exist, one `RPL_ENDOFNAMES` numeric containing the given channel name should be returned. If the given channel has the [secret](#secret-channel-mode) channel mode set and the user is not joined to that channel, one `RPL_ENDOFNAMES` numeric is returned. Users with the [invisible](#invisible-user-mode) user mode set are not shown in channel responses unless the requesting client is also joined to that channel.
 
-Servers MAY allow more than one target channel. They can advertise the maximum the number of target users per `WHOIS` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter.
+Servers MAY allow more than one target channel. They can advertise the maximum the number of target users per `NAMES` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter.
 
 Numeric Replies:
 
