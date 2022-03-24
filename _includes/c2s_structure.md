@@ -48,7 +48,8 @@ This is the format of the **tags** part:
 
       <tags>          ::= <tag> [';' <tag>]*
       <tag>           ::= <key> ['=' <escaped value>]
-      <key>           ::= [ <vendor> '/' ] <sequence of letters, digits, hyphens (`-`)>
+      <key>           ::= [ <client_prefix> ] [ <vendor> '/' ] <sequence of letters, digits, hyphens (`-`)>
+      <client_prefix> ::= '+'
       <escaped value> ::= <sequence of any characters except NUL, CR, LF, semicolon (`;`) and SPACE>
       <vendor>        ::= <host>
 
