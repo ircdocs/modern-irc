@@ -627,6 +627,20 @@ Sent as a reply to the {% message NAMES %} command, this numeric lists the clien
 
 Sent as a reply to the {% message NAMES %} command, this numeric specifies the end of a list of channel member names.
 
+{% numericheader RPL_LINKS %}
+
+      "<client> * <server> :<hopcount> <server info>"
+
+Sent as a reply to the {% message LINKS %} command, this numeric specifies one of the known servers on the network.
+
+`<server info>` is a string containing a description of that server.
+
+{% numericheader RPL_ENDOFLINKS %}
+
+      "<client> * :End of /LINKS list"
+
+Sent as a reply to the {% message LINKS %} command, this numeric specifies the end of a list of channel member names.
+
 {% numericheader RPL_BANLIST %}
 
       "<client> <channel> <mask> [<who> <set-ts>]"
