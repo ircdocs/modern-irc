@@ -104,7 +104,7 @@ Command Examples:
 
 With LINKS, a user can list all servers which are known by the server answering the query, usually including the server itself.
 
-In replying to the LINKS message, a server MUST send replies back using 0 or more {% numeric RPL_LINKS %} messages and mark the end of the list using a {% numeric RPL_ENDOFLINKS %} message.
+In replying to the LINKS message, a server MUST send replies back using zero or more {% numeric RPL_LINKS %} messages and mark the end of the list using a {% numeric RPL_ENDOFLINKS %} message.
 
 Servers MAY omit some or all servers on the network, including itself.
 
