@@ -99,7 +99,7 @@ Command Examples:
 
 ### LINKS message
 
-         Command: LUSERS
+         Command: LINKS
       Parameters: None
 
 With LINKS, a user can list all servers which are known by the server answering the query, usually including the server itself.
