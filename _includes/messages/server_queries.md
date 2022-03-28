@@ -110,7 +110,7 @@ Servers MAY omit some or all servers on the network, including itself.
 
 Numeric Replies:
 
-* {% numeric ERR_NOSUCHCOMMAND %}
+* {% numeric ERR_UNKNOWNCOMMAND %}
 * {% numeric RPL_LINKS %}
 * {% numeric RPL_ENDOFLINKS %}
 
