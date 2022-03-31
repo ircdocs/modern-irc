@@ -97,23 +97,6 @@ Command Examples:
       CONNECT  eff.org 12765 csd.bu.edu
       ; Attempt to connect csu.bu.edu to eff.org on port 12765
 
-### LINKS message
-
-         Command: LINKS
-      Parameters: None
-
-With LINKS, a user can list all servers which are known by the server answering the query, usually including the server itself.
-
-In replying to the LINKS message, a server MUST send replies back using zero or more {% numeric RPL_LINKS %} messages and mark the end of the list using a {% numeric RPL_ENDOFLINKS %} message.
-
-Servers MAY omit some or all servers on the network, including itself.
-
-Numeric Replies:
-
-* {% numeric ERR_UNKNOWNCOMMAND %}
-* {% numeric RPL_LINKS %}
-* {% numeric RPL_ENDOFLINKS %}
-
 ### LUSERS message
 
          Command: LUSERS
