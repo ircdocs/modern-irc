@@ -85,7 +85,8 @@ This channel mode controls a list of client masks that are 'banned' from joining
 
 If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an {% numeric ERR_BANNEDFROMCHAN %} reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
 
-### Exception Channel Mode
+<a id="exception-channel-mode"></a>
+### Ban Exemption Channel Mode
 
 This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the {% isupport EXCEPTS %} `RPL_ISUPPORT` parameter on connection.
 
@@ -109,7 +110,8 @@ This channel mode controls whether new users need to be invited to the channel b
 
 If this mode is set on a channel, a user must have received an {% message INVITE %} for this channel before being allowed to join it. If they have not received an invite, they will receive an {% numeric ERR_INVITEONLYCHAN %} reply and the command will fail.
 
-### Invite-Exception Channel Mode
+<a id="invite-exception-channel-mode"></a>
+### Invite-Exemption Channel Mode
 
 This mode is used in almost all IRC software today. The standard mode letter used for it is `"+I"`, but it SHOULD be defined in the {% isupport INVEX %} `RPL_ISUPPORT` parameter on connection.
 
@@ -581,25 +583,25 @@ Sent as a reply to the {% message INVITE %} command to indicate that the attempt
 
       "<client> <channel> <mask>"
 
-Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [invite-exception list](#invite-exception-channel-mode). `<mask>` is the given mask on the invite-exception list.
+Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [invite-exemption list](#invite-exemption-channel-mode). `<mask>` is the given mask on the invite-exemption list.
 
 {% numericheader RPL_ENDOFINVITELIST %}
 
       "<client> <channel> :End of channel invite list"
 
-Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [invite-exception list](#invite-exception-channel-mode).
+Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [invite-exemption list](#invite-exemption-channel-mode).
 
 {% numericheader RPL_EXCEPTLIST %}
 
       "<client> <channel> <mask>"
 
-Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [exception list](#exception-channel-mode). `<mask>` is the given mask on the exception list.
+Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [exemption list](#exemption-channel-mode). `<mask>` is the given mask on the exemption list.
 
 {% numericheader RPL_ENDOFEXCEPTLIST %}
 
-      "<client> <channel> :End of channel exception list"
+      "<client> <channel> :End of channel exemption list"
 
-Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [exception list](#exception-channel-mode).
+Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [exemption list](#exemption-channel-mode).
 
 {% numericheader RPL_VERSION %}
 
@@ -1232,9 +1234,9 @@ Examples:
       Format: EXCEPTS=[character]
        Empty: e
 
-The `EXCEPTS` parameter indicates that the server supports ban exceptions, as specified in the [ban exemption](#ban-exemption-channel-mode) channel mode section.
+The `EXCEPTS` parameter indicates that the server supports ban exemptions, as specified in the [ban exemption](#ban-exemption-channel-mode) channel mode section.
 
-The value is OPTIONAL and when not specified indicates that the letter `"e"` is used as the channel mode for ban exceptions. If the value is specified, the character indicates the letter which is used for ban exceptions.
+The value is OPTIONAL and when not specified indicates that the letter `"e"` is used as the channel mode for ban exemptions. If the value is specified, the character indicates the letter which is used for ban exemptions.
 
 Examples:
 
@@ -1289,9 +1291,9 @@ Examples:
       Format: INVEX=[character]
        Empty: I
 
-The `INVEX` parameter indicates that the server supports invite exceptions, as specified in the [invite exemption](#invite-exemption-channel-mode) channel mode section.
+The `INVEX` parameter indicates that the server supports invite exemptions, as specified in the [invite exemption](#invite-exemption-channel-mode) channel mode section.
 
-The value is OPTIONAL and when not specified indicates that the letter `"I"` is used as the channel mode for invite exceptions. If the value is specified, the character indicates the letter which is used for invite exceptions.
+The value is OPTIONAL and when not specified indicates that the letter `"I"` is used as the channel mode for invite exemptions. If the value is specified, the character indicates the letter which is used for invite exemptions.
 
 Examples:
 

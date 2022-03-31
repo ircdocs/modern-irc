@@ -319,8 +319,8 @@ The meaning of standard (and/or well-used) channel and user mode letters can be 
 Type A modes are lists that can be viewed. The method of viewing these lists is not standardised across modes and different numerics are used for each. The specific numerics used for these are outlined here:
 
 * **[Ban List `"+b"`](#ban-channel-mode)**: Ban lists are returned with zero or more {% numeric RPL_BANLIST %} numerics, followed by one {% numeric RPL_ENDOFBANLIST %} numeric.
-* **[Exception List `"+e"`](#exception-channel-mode)**: Exception lists are returned with zero or more {% numeric RPL_EXCEPTLIST %} numerics, followed by one {% numeric RPL_ENDOFEXCEPTLIST %} numeric.
-* **[Invite-Exception List `"+I"`](#invite-exception-channel-mode)**: Invite-exception lists are returned with zero or more {% numeric RPL_INVITELIST %} numerics, followed by one {% numeric RPL_ENDOFINVITELIST %} numeric.
+* **[Exemption List `"+e"`](#exemption-channel-mode)**: Exemption lists are returned with zero or more {% numeric RPL_EXCEPTLIST %} numerics, followed by one {% numeric RPL_ENDOFEXCEPTLIST %} numeric.
+* **[Invite-Exemption List `"+I"`](#invite-exemption-channel-mode)**: Invite-exemption lists are returned with zero or more {% numeric RPL_INVITELIST %} numerics, followed by one {% numeric RPL_ENDOFINVITELIST %} numeric.
 
 After the initial `MODE` command is sent to the server, the client receives the above numerics detailing the entries that appear on the given list. Servers MAY choose to restrict the above information to channel operators, or to only those clients who have permissions to change the given list.
 
