@@ -577,17 +577,25 @@ See also: {% numeric RPL_WHOISHOST %}, for similar semantics on other servers.
 
 Sent as a reply to the {% message INVITE %} command to indicate that the attempt was successful and the client with the nickname `<nick>` has been invited to `<channel>`.
 
-{% numericheader RPL_INVITELIST %}
+{% numericheader RPL_INVEXLIST %}
 
       "<client> <channel> <mask>"
 
 Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [invite-exception list](#invite-exception-channel-mode). `<mask>` is the given mask on the invite-exception list.
 
-{% numericheader RPL_ENDOFINVITELIST %}
+This numeric should not be confused with {% numeric RPL_INVITELIST %}, which is used as a reply to {% message INVITE %}.
+
+This numeric is sometimes erroneously called `RPL_INVITELIST`, as this was the name used in RFC2812.
+
+{% numericheader RPL_ENDOFINVEXLIST %}
 
       "<client> <channel> :End of channel invite list"
 
 Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [invite-exception list](#invite-exception-channel-mode).
+
+This numeric should not be confused with {% numeric RPL_ENDOFINVITELIST %}, which is used as a reply to {% message INVITE %}.
+
+This numeric is sometimes erroneously called `RPL_ENDOFINVITELIST`, as this was the name used in RFC2812.
 
 {% numericheader RPL_EXCEPTLIST %}
 

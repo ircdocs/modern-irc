@@ -314,6 +314,12 @@ numerics:
   RPL_TOPICWHOTIME:
     numeric: '333'
 
+  RPL_INVITELIST:
+    numeric: '336'
+
+  RPL_ENDOFINVITELIST:
+    numeric: '337'
+
   RPL_WHOISACTUALLY:
     numeric: '338'
 
@@ -326,10 +332,10 @@ numerics:
   RPL_WHOISKILL:
     numeric: '343'
 
-  RPL_INVITELIST:
+  RPL_INVEXLIST:
     numeric: '346'
 
-  RPL_ENDOFINVITELIST:
+  RPL_ENDOFINVEXLIST:
     numeric: '347'
 
   RPL_EXCEPTLIST:
