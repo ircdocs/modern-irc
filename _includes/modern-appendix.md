@@ -557,6 +557,31 @@ Sent to a client when joining the `<channel>` to inform them of the current [top
 
 Sent to a client to let them know who set the topic (`<nick>`) and when they set it (`<setat>` is a unix timestamp). Sent after {% numeric RPL_TOPIC %}.
 
+{% numericheader RPL_INVITELIST %}
+
+      "<client> <channel>"
+
+Sent to a client as a reply to the {% command INVITE %} command when used with no parameter, to indicate a channel the client was invited to.
+
+This numeric should not be confused with {% numeric RPL_INVEXLIST %}, which is used as a reply to {% message MODE %}.
+
+
+<div class="warning">
+    <p>Some rare implementations use 346 instead of 336 for this reply.</p>
+</div>
+
+{% numericheader RPL_ENDOFINVITELIST %}
+
+      "<client> <channel> :End of Channel Invite Exception List"
+
+Sent as a reply to the {% message INVITE %} command when used with no parameter, this numeric indicates the end of invitations a client received.
+
+This numeric should not be confused with {% numeric RPL_ENDOFINVEXLIST %}, which is used as a reply to {% message MODE %}.
+
+<div class="warning">
+    <p>Some rare implementations use 347 instead of 337 for this reply.</p>
+</div>
+
 {% numericheader RPL_WHOISACTUALLY %}
 
       "<client> <nick> :is actually ..."
