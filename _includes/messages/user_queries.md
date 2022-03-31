@@ -21,6 +21,11 @@ Numeric Replies:
 * {% numeric RPL_ENDOFWHO %}
 * {% numeric ERR_NOSUCHSERVER %}
 
+See also:
+
+* IRCv3 [`multi-prefix` Extension](https://ircv3.net/specs/extensions/multi-prefix)
+* [WHOX](https://ircv3.net/specs/extensions/whox)
+
 #### Examples
 
 Command Examples:
@@ -96,6 +101,8 @@ They exist mainly on historical servers, and are rarely implemented, because of 
   They can advertise the maximum the number of target users per `WHOIS` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter, and silently drop targets if the number of targets exceeds the limit.
 
 * Servers MAY allow wildcards in `<nick>`. Servers who do SHOULD reply with information about all matching nicks. They may restrict what information is available in this case, to limit resource usage.
+
+* IRCv3 [`multi-prefix` Extension](https://ircv3.net/specs/extensions/multi-prefix)
 
 #### Examples
 
