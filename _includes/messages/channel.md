@@ -63,6 +63,10 @@ Message Examples:
 
       :dan-!d@localhost JOIN #test    ; dan- is joining the channel #test
 
+See also:
+
+* IRCv3 [`extended-join` Extension](https://ircv3.net/specs/extensions/extended-join)
+
 ### PART message
 
          Command: PART
@@ -148,6 +152,15 @@ Command Examples:
       NAMES #twilight_zone,#42        ; List all visible users on
                                       "#twilight_zone" and "#42".
 
+      NAMES                           ; Attempt to list all visible users on
+                                      the network, which SHOULD be responded to
+                                      as specified above.
+
+See also:
+
+* IRCv3 [`multi-prefix` Extension](https://ircv3.net/specs/extensions/multi-prefix)
+* IRCv3 [`userhost-in-names` Extension](https://ircv3.net/specs/extensions/userhost-in-names)
+
 ### LIST message
 
          Command: LIST
@@ -217,6 +230,10 @@ Message Examples:
 
       :dan-!d@localhost INVITE Wiz #test    ; dan- has invited Wiz
                                             to the channel #test
+
+See also:
+
+* IRCv3 [`invite-notify` Extension](https://ircv3.net/specs/extensions/invite-notify)
 
 #### Invite list
 

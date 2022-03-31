@@ -138,6 +138,10 @@ Command Examples:
       :Angel TIME *.au                ; user angel checking the time on a
                                       server matching "*.au"
 
+See also:
+
+* IRCv3 [`server-time` Extension](https://ircv3.net/specs/extensions/server-time)
+
 ### STATS message
 
          Command: STATS
