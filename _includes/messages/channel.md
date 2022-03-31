@@ -223,9 +223,9 @@ Message Examples:
 Servers MAY allow the `INVITE` with no parameter, and reply with a list of channels the sender is invited to as {% numeric RPL_INVITELIST %} numerics, ending with a {% numeric RPL_ENDOFINVITELIST %} numeric.
 
 <div class="warning">
-    <p>A widespread bug in old implementations is to use numerics 346/347 instead of 336/337 as `RPL_INVITELIST`/`RPL_ENDOFINVITELIST`, due to ambiguous legacy specifications. You should check the server you are using implements them as expected.</p>
+    <p>Some rare implementations use numerics 346/347 instead of 336/337 as `RPL_INVITELIST`/`RPL_ENDOFINVITELIST`. You should check the server you are using implements them as expected.</p>
 
-    <p>346/347 now stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for <a href="#invite-exemption-channel-mode">invite-exemption list</a>.</p>
+    <p>346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for <a href="#invite-exemption-channel-mode">invite-exemption list</a>.</p>
 </div>
 
 ### KICK message
