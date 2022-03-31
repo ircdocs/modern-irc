@@ -29,7 +29,7 @@ The `PASS` command is used to set a 'connection password'. If set, the password 
 
 The password supplied must match the one defined in the server configuration. It is possible to send multiple `PASS` commands before registering but only the last one sent is used for verification and it may not be changed once the client has been registered.
 
-If the password supplied does not match the password expected by the server, then the server SHOULD send {% numeric ERR_PASSWDMISMATCH %} and MUST close the connection with {% message ERROR %}.
+If the password supplied does not match the password expected by the server, then the server SHOULD send {% numeric ERR_PASSWDMISMATCH %} and MAY then close the connection with {% message ERROR %}. Servers MUST send at least one of these two messages.
 
 Servers may also consider requiring [SASL authentication](#authenticate-message) upon connection as an alternative to this, when more information or an alternate form of identity verification is desired.
 
