@@ -572,7 +572,7 @@ This numeric should not be confused with {% numeric RPL_INVEXLIST %}, which is u
 
 {% numericheader RPL_ENDOFINVITELIST %}
 
-      "<client> <channel> :End of Channel Invite Exception List"
+      "<client> :End of /INVITE list"
 
 Sent as a reply to the {% message INVITE %} command when used with no parameter, this numeric indicates the end of invitations a client received.
 
@@ -614,7 +614,7 @@ This numeric is sometimes erroneously called `RPL_INVITELIST`, as this was the n
 
 {% numericheader RPL_ENDOFINVEXLIST %}
 
-      "<client> <channel> :End of channel invite list"
+      "<client> <channel> :End of Channel Invite Exception List"
 
 Sent as a reply to the {% message MODE %} command, this numeric indicates the end of a channel's [invite-exception list](#invite-exception-channel-mode).
 
