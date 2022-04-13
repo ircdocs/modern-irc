@@ -454,7 +454,7 @@ Sent as a reply to the {% message WHOIS %} command, this numeric shows details a
 
       "<client> <nick> <server> :<server info>"
 
-Sent as a reply to the {% message WHOIS %} command, this numeric shows which server the client with the nickname `<nick>` is connected to. `<server>` is the name of the server (as used in message prefixes). `<server info>` is a string containing a description of that server.
+Sent as a reply to the {% message WHOIS %} (or {% message WHOWAS %}) command, this numeric shows which server the client with the nickname `<nick>` is (or was) connected to. `<server>` is the name of the server (as used in message prefixes). `<server info>` is a string containing a description of that server.
 
 {% numericheader RPL_WHOISOPERATOR %}
 
@@ -466,7 +466,7 @@ Sent as a reply to the {% message WHOIS %} command, this numeric indicates that 
 
       "<client> <nick> <username> <host> * :<realname>"
 
-Sent as a reply to the {% message WHOWAS %} command, this numeric shows details about the last client that used the nickname `<nick>`. The purpose of each argument is the same as with the {% numeric RPL_WHOISUSER %} numeric.
+Sent as a reply to the {% message WHOWAS %} command, this numeric shows details about one of the last clients that used the nickname `<nick>`. The purpose of each argument is the same as with the {% numeric RPL_WHOISUSER %} numeric.
 
 {% numericheader RPL_WHOISIDLE %}
 
@@ -563,7 +563,7 @@ Sent to a client to let them know who set the topic (`<nick>`) and when they set
       "<client> <nick> <host|ip> :Is actually using host"
       "<client> <nick> <username>@<hostname> <ip> :Is actually using host"
 
-Sent as a reply to the {% command WHOIS %} command, this numeric shows details about the client with the nickname `<nick>`.
+Sent as a reply to the {% command WHOIS %} and {% command WHOWAS %} commands, this numeric shows details about the client with the nickname `<nick>`.
 
 `<username>` represents the name set by the {% command USER %} command (though `<username>` may be set by the server in other ways).
 
@@ -761,6 +761,13 @@ This is generally sent in response to channel modes, such as a channel being [mo
       "<client> <channel> :You have joined too many channels"
 
 Indicates that the `JOIN` command failed because the client has joined their maximum number of channels. The text used in the last param of this message may vary.
+
+{% numericheader ERR_WASNOSUCHNICK %}
+
+      "<client> :There was no such nickname"
+
+Returned as a reply to {% message WHOWAS %} to indicate there is no history information for that nickname.
+
 
 {% numericheader ERR_NOORIGIN %}
 

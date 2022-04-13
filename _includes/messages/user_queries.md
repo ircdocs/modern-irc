@@ -115,3 +115,54 @@ Reply Example:
       :calcium.libera.chat 330 val val pinkieval :is logged in as
       :calcium.libera.chat 318 val val :End of /WHOIS list.
 
+### WHOWAS message
+
+         Command: WHOWAS
+      Parameters: <nick> [<count>]
+
+Whowas asks for information about a nickname which no longer exists.
+This may either be due to a nickname change or the user leaving IRC.
+In response to this query, the server searches through its nickname history, looking for any nicks which are lexically the same (no wild card matching here).
+The history is searched backward, returning the most recent entry first.
+If there are multiple entries, up to `<count>` replies will be returned (or all of them if no `<count>` parameter is given).
+
+If given, `<count>` SHOULD be a non-positive number. Otherwise, a full search is done.
+
+Servers MUST reply with either {% numeric ERR_WASNOSUCHNICK %} or a non-empty list of WHOWAS entries,
+both followed with {% numeric RPL_ENDOFWHOWAS %}
+
+A WHOWAS entry is a series of numeric messages starting with {% numeric RPL_WHOWASUSER %}, optionally followed by other numerics relevant to that user, such as {% numeric RPL_WHOISACTUALLY %} and {% numeric RPL_WHOISSERVER %}.
+Clients MUST NOT assume any particular numeric other than {% numeric RPL_WHOWASUSER %} is present in a WHOWAS entry.
+
+If the `<nick>` argument is missing, they SHOULD send a single reply, using either {% numeric ERR_NONICKNAMEGIVEN %} or {% numeric ERR_NEEDMOREPARAMS %}.
+
+#### Examples
+
+Command Examples:
+
+      WHOWAS someone
+      WHOWAS someone 2
+
+Reply Examples:
+
+      :inspircd.server.example 314 val someone ident3 127.0.0.1 * :Realname
+      :inspircd.server.example 312 val someone My.Little.Server :Sun Mar 20 2022 10:59:26
+      :inspircd.server.example 314 val someone ident2 127.0.0.1 * :Realname
+      :inspircd.server.example 312 val someone My.Little.Server :Sun Mar 20 2022 10:59:16
+      :inspircd.server.example 369 val someone :End of WHOWAS
+
+      :ergo.server.example 314 val someone ~ident3 127.0.0.1 * Realname
+      :ergo.server.example 314 val someone ~ident2 127.0.0.1 * Realname
+      :ergo.server.example 369 val someone :End of WHOWAS
+
+      :solanum.server.example 314 val someone ~ident3 localhost * :Realname
+      :solanum.server.example 338 val someone 127.0.0.1 :actually using host
+      :solanum.server.example 312 val someone solanum.server.example :Sun Mar 20 10:07:44 2022
+      :solanum.server.example 314 val someone ~ident2 localhost * :Realname
+      :solanum.server.example 338 val someone 127.0.0.1 :actually using host
+      :solanum.server.example 312 val someone solanum.server.example :Sun Mar 20 10:07:34 2022
+      :solanum.server.example 369 val someone :End of WHOWAS
+
+      :server.example 406 val someone :There was no such nickname
+      :server.example 369 val someone :End of WHOWAS
+
