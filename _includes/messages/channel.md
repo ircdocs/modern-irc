@@ -130,15 +130,13 @@ Command Examples:
 ### NAMES message
 
          Command: NAMES
-      Parameters: [<channel>{,<channel>}]
+      Parameters: <channel>{,<channel>}
 
 The `NAMES` command is used to view the nicknames joined to a channel and their [channel membership prefixes](#channel-membership-prefixes). The param of this command is a list of channel names, delimited by a comma `(",", 0x2C)` character.
 
 The channel names are evaluated one-by-one. For each channel that exists and they are able to see the users in, the server returns one of more `RPL_NAMREPLY` numerics containing the users joined to the channel and a single `RPL_ENDOFNAMES` numeric. If the channel name is invalid or the channel does not exist, one `RPL_ENDOFNAMES` numeric containing the given channel name should be returned. If the given channel has the [secret](#secret-channel-mode) channel mode set and the user is not joined to that channel, one `RPL_ENDOFNAMES` numeric is returned. Users with the [invisible](#invisible-user-mode) user mode set are not shown in channel responses unless the requesting client is also joined to that channel.
 
-Servers MAY only return information about the first `<channel>` and silently ignore the others. This seems to be an attempt to reduce possible abuse. Due to this, clients SHOULD only query information about one channel when using the `NAMES` command.
-
-If no parameter is given for this command, servers SHOULD return one `RPL_ENDOFNAMES` numeric with the `<channel>` parameter set to an asterisk character `('*', 0x2A)`. Servers MAY also choose to return information about every single channel and every single user on the network in response to this command being given without a parameter, but most servers these days return nothing.
+Servers MAY allow more than one target channel. They can advertise the maximum the number of target users per `NAMES` command via the {% isupport TARGMAX %} `RPL_ISUPPORT` parameter.
 
 Numeric Replies:
 
@@ -149,10 +147,6 @@ Command Examples:
 
       NAMES #twilight_zone,#42        ; List all visible users on
                                       "#twilight_zone" and "#42".
-
-      NAMES                           ; Attempt to list all visible users on
-                                      the network, which SHOULD be responded to
-                                      as specified above.
 
 ### LIST message
 
