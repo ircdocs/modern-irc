@@ -83,7 +83,7 @@ This mode is standard, and the mode letter used for it is `"+b"`.
 
 This channel mode controls a list of client masks that are 'banned' from joining or speaking in the channel. If this mode has values, each of these values should be a client mask.
 
-If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an {% numeric ERR_BANNEDFROMCHAN %} reply and the `JOIN` command will fail. See the [ban exemption](#ban-exemption-channel-mode) mode for more details.
+If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an {% numeric ERR_BANNEDFROMCHAN %} reply and the `JOIN` command will fail. See the [ban exception](#ban-exception-channel-mode) mode for more details.
 
 ### Exception Channel Mode
 
@@ -870,13 +870,13 @@ Indicates that a mode character used by a client is not recognized by the server
 
       "<client> <channel> :Cannot join channel (+i)"
 
-Returned to indicate that a {% message JOIN %} command failed because the channel is set to [invite-only] mode and the client has not been [invited](#invite-message) to the channel or had an [invite exemption](#invite-exemption-channel-mode) set for them. The text used in the last param of this message may vary.
+Returned to indicate that a {% message JOIN %} command failed because the channel is set to [invite-only] mode and the client has not been [invited](#invite-message) to the channel or had an [invite exception](#invite-exception-channel-mode) set for them. The text used in the last param of this message may vary.
 
 {% numericheader ERR_BANNEDFROMCHAN %}
 
       "<client> <channel> :Cannot join channel (+b)"
 
-Returned to indicate that a {% message JOIN %} command failed because the client has been [banned](#ban-channel-mode) from the channel and has not had a [ban exemption](#ban-exemption-channel-mode) set for them. The text used in the last param of this message may vary.
+Returned to indicate that a {% message JOIN %} command failed because the client has been [banned](#ban-channel-mode) from the channel and has not had a [ban exception](#ban-exception-channel-mode) set for them. The text used in the last param of this message may vary.
 
 {% numericheader ERR_BADCHANNELKEY %}
 
@@ -1244,7 +1244,7 @@ Examples:
       Format: EXCEPTS=[character]
        Empty: e
 
-The `EXCEPTS` parameter indicates that the server supports ban exceptions, as specified in the [ban exemption](#ban-exemption-channel-mode) channel mode section.
+The `EXCEPTS` parameter indicates that the server supports ban exceptions, as specified in the [ban exception](#ban-exception-channel-mode) channel mode section.
 
 The value is OPTIONAL and when not specified indicates that the letter `"e"` is used as the channel mode for ban exceptions. If the value is specified, the character indicates the letter which is used for ban exceptions.
 
@@ -1264,10 +1264,10 @@ The `EXTBAN` parameter indicates the types of "extended ban masks" that the serv
 
 Extbans may allow clients to issue bans based on account name, SSL certificate fingerprints and other attributes, based on what the server supports.
 
-Extban masks SHOULD also be supported for the [ban exemption](#ban-exemption-channel-mode) and [invite exemption](#invite-exemption-channel-mode) modes.
+Extban masks SHOULD also be supported for the [ban exception](#ban-exception-channel-mode) and [invite exception](#invite-exception-channel-mode) modes.
 
 <div class="warning">
-    <p>Ensure that extban masks are actually typically supported in ban exemption and invite exemption modes.</p>
+    <p>Ensure that extban masks are actually typically supported in ban exception and invite exception modes.</p>
 
     <p>We should include a list of 'typical' extban characters and their associated meaning, but make sure we specify that these are not standardised and may change based on server software. See also the irc-defs <a href="https://defs.ircdocs.horse/defs/extbans.html"><code>EXTBAN</code> list</a>.</p>
 </div>
@@ -1301,7 +1301,7 @@ Examples:
       Format: INVEX=[character]
        Empty: I
 
-The `INVEX` parameter indicates that the server supports invite exceptions, as specified in the [invite exemption](#invite-exemption-channel-mode) channel mode section.
+The `INVEX` parameter indicates that the server supports invite exceptions, as specified in the [invite exception](#invite-exception-channel-mode) channel mode section.
 
 The value is OPTIONAL and when not specified indicates that the letter `"I"` is used as the channel mode for invite exceptions. If the value is specified, the character indicates the letter which is used for invite exceptions.
 
