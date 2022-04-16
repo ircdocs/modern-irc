@@ -85,6 +85,7 @@ This channel mode controls a list of client masks that are 'banned' from joining
 
 If this mode is set on a channel, and a client sends a `JOIN` request for this channel, their nickmask (the combination of `nick!user@host`) is compared with each banned client mask set with this mode. If they match one of these banned masks, they will receive an {% numeric ERR_BANNEDFROMCHAN %} reply and the `JOIN` command will fail. See the [ban exception](#ban-exception-channel-mode) mode for more details.
 
+<a id="ban-exception-channel-mode"></a>
 ### Exception Channel Mode
 
 This mode is used in almost all IRC software today. The standard mode letter used for it is `"+e"`, but it SHOULD be defined in the {% isupport EXCEPTS %} `RPL_ISUPPORT` parameter on connection.
