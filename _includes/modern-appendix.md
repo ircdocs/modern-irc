@@ -1222,7 +1222,7 @@ The following search extensions are defined:
 
 * **C**: Searching based on channel creation time, via the `"C<val"` and `"C>val"` modifiers to search for a channel that was created either less than `val` minutes ago, or more than `val` minutes ago, respectively
 * **M**: Searching based on a mask.
-* **N**: Searching based on a non-matching mask. i.e., the opposite of `M`.
+* **N**: Searching based on a non-matching !mask. i.e., the opposite of `M`.
 * **T**: Searching based on topic set time, via the `"T<val"` and `"T>val"` modifiers to search for a topic time that was set less than `val` minutes ago, or more than `val` minutes ago, respectively.
 * **U**: Searching based on user count within the channel, via the `"<val"` and `">val"` modifiers to search for a channel that has less or more than `val` users, respectively.
 
