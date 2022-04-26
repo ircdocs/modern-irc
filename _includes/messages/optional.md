@@ -22,6 +22,22 @@ Numeric Replies:
 * {% numeric RPL_UNAWAY %}
 * {% numeric RPL_NOWAWAY %}
 
+### LINKS message
+
+         Command: LINKS
+      Parameters: None
+
+With LINKS, a user can list all servers which are known by the server answering the query, usually including the server itself.
+
+In replying to the LINKS message, a server MUST send replies back using zero or more {% numeric RPL_LINKS %} messages and mark the end of the list using a {% numeric RPL_ENDOFLINKS %} message.
+
+Servers MAY omit some or all servers on the network, including itself.
+
+Numeric Replies:
+
+* {% numeric RPL_LINKS %}
+* {% numeric RPL_ENDOFLINKS %}
+
 ### USERHOST message
 
          Command: USERHOST
