@@ -187,7 +187,6 @@ Command Examples:
 
          Command: INVITE
       Parameters: <nickname> <channel>
-      Alt Params: 0
 
 The `INVITE` command is used to invite a user to a channel.  The parameter `<nickname>` is the nickname of the person to be invited to the target channel `<channel>`.
 
@@ -218,6 +217,16 @@ Message Examples:
 
       :dan-!d@localhost INVITE Wiz #test    ; dan- has invited Wiz
                                             to the channel #test
+
+#### Invite list
+
+Servers MAY allow the `INVITE` with no parameter, and reply with a list of channels the sender is invited to as {% numeric RPL_INVITELIST %} numerics, ending with a {% numeric RPL_ENDOFINVITELIST %} numeric.
+
+<div class="warning">
+    <p>Some rare implementations use numerics 346/347 instead of 336/337 as `RPL_INVITELIST`/`RPL_ENDOFINVITELIST`. You should check the server you are using implements them as expected.</p>
+
+    <p>346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for <a href="#invite-exemption-channel-mode">invite-exemption list</a>.</p>
+</div>
 
 ### KICK message
 
