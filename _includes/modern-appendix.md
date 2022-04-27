@@ -716,7 +716,7 @@ Indicates the start of the [Message of the Day](#motd-message) to the client. Th
 
       "<client> :<line of the motd>"
 
-When sending the {% message Message of the Day %} to the client, servers reply with each line of the `MOTD` as this numeric. `MOTD` lines MAY be wrapped to 80 characters by the server.
+When sending the {% message Message of the Day %} to the client, servers reply with each line of the `MOTD` as this numeric. `MOTD` lines MAY be wrapped to 80 characters by the server. `MOTD` lines MAY be prefixed with the string `"- "` (dash followed by space).
 
 {% numericheader RPL_ENDOFMOTD %}
 
