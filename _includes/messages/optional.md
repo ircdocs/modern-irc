@@ -16,6 +16,7 @@ Servers SHOULD notify clients when a user they're interacting with is away when 
 1. {% numeric RPL_AWAY %}, with the away message, when a {% command PRIVMSG %} command is directed at the away user (not to a channel they are on).
 2. {% numeric RPL_AWAY %}, with the away message, in replies to {% command WHOIS %} messages.
 3. In the {% numeric RPL_USERHOST %} numeric, as the `+` or `-` character.
+4. In the {% numeric RPL_WHOREPLY %} numeric, as the `H` or `G` character.
 
 Numeric Replies:
 
