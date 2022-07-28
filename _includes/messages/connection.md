@@ -92,6 +92,8 @@ The minimum length of `<username>` is 1, ie. it MUST not be empty. If it is empt
 
 The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterisk character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
+Clients SHOULD use the nickname as a fallback value for `<username>` and `<realname>` when they don't have a meaningful value to use.
+
 If a client tries to send the `USER` command after they have already completed registration with the server, the `ERR_ALREADYREGISTERED` reply should be sent and the attempt should fail.
 
 If the client sends a `USER` command after the server has successfully received a username using the Ident Protocol, the `<username>` parameter from this command should be ignored in favour of the one received from the identity server.
