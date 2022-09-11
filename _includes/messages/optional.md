@@ -6,7 +6,7 @@ These messages are not required for a server implementation to work, but SHOULD 
       Parameters: [ <text> ]
 
 The `AWAY` command lets clients indicate that their user is away.
-If this command is sent with a parameter (the 'away message') then the user is set to be away. If this command is sent with no parameters, the user is no longer away.
+If this command is sent with a nonempty parameter (the 'away message') then the user is set to be away. If this command is sent with no parameters, or with the empty string as the parameter, the user is no longer away.
 
 The server acknowledges the change in away status by returning the {% numeric RPL_NOWAWAY %} and {% numeric RPL_UNAWAY %} numerics.
 If the [IRCv3 `away-notify` capability](https://ircv3.net/specs/extensions/away-notify.html) has been requested by a client, the server MAY also send that client `AWAY` messages to tell them how the away status of other users has changed.
