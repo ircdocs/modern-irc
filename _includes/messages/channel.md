@@ -242,7 +242,7 @@ Servers MAY allow the `INVITE` with no parameter, and reply with a list of chann
 <div class="warning">
     <p>Some rare implementations use numerics 346/347 instead of 336/337 as `RPL_INVITELIST`/`RPL_ENDOFINVITELIST`. You should check the server you are using implements them as expected.</p>
 
-    <p>346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for <a href="#invite-exemption-channel-mode">invite-exemption list</a>.</p>
+    <p>346/347 now generally stands for `RPL_INVEXLIST`/`RPL_ENDOFINVEXLIST`, used for <a href="#invite-exception-channel-mode">invite-exception list</a>.</p>
 </div>
 
 ### KICK message
