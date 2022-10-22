@@ -88,7 +88,7 @@ It must be noted that `<realname>` must be the last parameter because it may con
 Servers MAY use the [Ident Protocol](http://tools.ietf.org/html/rfc1413) to look up the 'real username' of clients. If username lookups are enabled and a client does not have an Identity Server enabled, the username provided by the client SHOULD be prefixed by a tilde `('~', 0x7E)` to show that this value is user-set.
 
 The maximum length of `<username>` may be specified by the {% isupport USERLEN %} `RPL_ISUPPORT` parameter. If this length is advertised, the username MUST be silently truncated to the given length before being used.
-The minimum length of `<username>` is 1, ie. it MUST not be empty. If it is empty, the server SHOULD reject the command with [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) (even if an empty parameter is provided); otherwise it MUST use a default value instead.
+The minimum length of `<username>` is 1, ie. it MUST NOT be empty. If it is empty, the server SHOULD reject the command with [`ERR_NEEDMOREPARAMS`](#errneedmoreparams-461) (even if an empty parameter is provided); otherwise it MUST use a default value instead.
 
 The second and third parameters of this command SHOULD be sent as one zero `('0', 0x30)` and one asterisk character `('*', 0x2A)` by the client, as the meaning of these two parameters varies between different versions of the IRC protocol.
 
