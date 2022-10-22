@@ -136,7 +136,7 @@ In response to this query, the server searches through its nickname history, loo
 The history is searched backward, returning the most recent entry first.
 If there are multiple entries, up to `<count>` replies will be returned (or all of them if no `<count>` parameter is given).
 
-If given, `<count>` SHOULD be a non-positive number. Otherwise, a full search is done.
+If given, `<count>` SHOULD be a positive number. Otherwise, a full search is done.
 
 Servers MUST reply with either {% numeric ERR_WASNOSUCHNICK %} or a non-empty list of WHOWAS entries,
 both followed with {% numeric RPL_ENDOFWHOWAS %}
