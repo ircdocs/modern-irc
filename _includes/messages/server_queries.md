@@ -94,7 +94,7 @@ Command Examples:
       CONNECT tolsun.oulu.fi
       ; Attempt to connect the current server to tololsun.oulu.fi
 
-      CONNECT  eff.org 12765 csd.bu.edu
+      CONNECT eff.org 12765 csd.bu.edu
       ; Attempt to connect csu.bu.edu to eff.org on port 12765
 
 ### LUSERS message
