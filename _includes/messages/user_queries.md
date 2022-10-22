@@ -10,7 +10,7 @@ The mask can be one of the following:
 
 * A channel name, in which case the channel members are listed.
 * An exact nickname, in which case a single user is returned.
-* A mask pattern, in which case all visible users whose nickname matches are listed. Servers MAY match other user-specific values, such as the hostname, server, real name or username. Servers MAY not support mask patterns and return an empty list.
+* A mask pattern, in which case all visible users whose nickname matches are listed. Servers MAY match other user-specific values, such as the hostname, server, real name or username. Servers may not support mask patterns and return an empty list.
 
 Visible users are users who aren't invisible ([user mode `+i`](#invisible-user-mode)) and who don't have a common channel with the requesting client.
 Servers MAY filter or limit visible users replies arbitrarily.
