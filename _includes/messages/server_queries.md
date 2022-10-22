@@ -285,7 +285,7 @@ If `<target>` is a channel that does not exist on the network, the {% numeric ER
 
 If `<modestring>` is not given, the {% numeric RPL_CHANNELMODEIS %} numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes. Servers MAY also return the {% numeric RPL_CREATIONTIME %} numeric following `RPL_CHANNELMODEIS`.
 
-If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST not process the message, and {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned.
+If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST NOT process the message, and {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned.
 If the user has permission to change modes on the target, the supplied modes will be applied based on the type of the mode (see below).
 For type A, B, and C modes, arguments will be sequentially obtained from `<mode arguments>`. If a type B or C mode does not have a parameter when being set, the server MUST ignore that mode.
 If a type A mode has been sent without an argument, the contents of the list MUST be sent to the user, unless it contains sensitive information the user is not allowed to access.
