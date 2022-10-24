@@ -37,6 +37,7 @@ Numeric Replies:
 * {% numeric ERR_BANNEDFROMCHAN %}
 * {% numeric ERR_CHANNELISFULL %}
 * {% numeric ERR_INVITEONLYCHAN %}
+* {% numeric ERR_BADCHANMASK %}
 * {% numeric RPL_TOPIC %}
 * {% numeric RPL_TOPICWHOTIME %}
 * {% numeric RPL_NAMREPLY %}
