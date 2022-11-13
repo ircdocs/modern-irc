@@ -130,7 +130,7 @@ This section ONLY deals with the spanning-tree topology, shown in the figure bel
 
 Communication on a one-to-one basis is usually only performed by clients, since most server-server traffic is not a result of servers talking only to each other.
 
-Servers MUST be able to send a message from any one client to any other. It is REQUIRED that all servers be able to send a message in exactly one direction along the spanning tree to reach any client. Thus the path of a message being delivered is the shortest path between any two points on the spanning tree.
+Servers MUST be able to send a message from any one client to any other.
 
 The following examples all refer to the figure above.
 
