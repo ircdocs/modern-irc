@@ -5,7 +5,7 @@
 
 The `PRIVMSG` command is used to send private messages between users, as well as to send messages to channels. `<target>` is the nickname of a client or the name of a channel.
 
-If `<target>` is a channel name and the client is [banned](#ban-channel-mode) and not covered by a [ban exception](#ban-exception-channel-mode), the message will not be delivered and the command will silently fail. Channels with the [moderated](#moderated-channel-mode) mode active may block messages from certain users. Other channel modes may affect the delivery of the message or cause the message to be modified before delivery, and these modes are defined by the server software and configuration being used.
+If `<target>` is a channel name and the client is [banned](#ban-channel-mode) and not covered by a [ban exception](#ban-exception-channel-mode), the message will not be delivered. Channels with the [moderated](#moderated-channel-mode) mode active may block messages from certain users. Other channel modes may affect the delivery of the message or cause the message to be modified before delivery, and these modes are defined by the server software and configuration being used.
 
 If a message cannot be delivered to a channel, the server SHOULD respond with an {% numeric ERR_CANNOTSENDTOCHAN %} numeric to let the user know that this message could not be delivered.
 
