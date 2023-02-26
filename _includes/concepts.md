@@ -111,7 +111,7 @@ Specific prefixes and moderation levels are covered in the [Channel Membership P
 
 ## Communication Types
 
-This section describes how current implementations deliver different classes of messages.
+*This section describes how current implementations deliver different classes of messages and is not normative.*
 
 This section ONLY deals with the spanning-tree topology, shown in the figure below. This is because spanning-tree is the topology specified and used in all IRC software today. Other topologies are being experimented with, but are not yet used in production by networks.
 
@@ -130,7 +130,7 @@ This section ONLY deals with the spanning-tree topology, shown in the figure bel
 
 Communication on a one-to-one basis is usually only performed by clients, since most server-server traffic is not a result of servers talking only to each other.
 
-Servers MUST be able to send a message from any one client to any other. It is REQUIRED that all servers be able to send a message in exactly one direction along the spanning tree to reach any client. Thus the path of a message being delivered is the shortest path between any two points on the spanning tree.
+Servers should be able to send a message from any one client to any other. Servers send a message in exactly one direction along the spanning tree to reach any client. Thus the path of a message being delivered is the shortest path between any two points on the spanning tree.
 
 The following examples all refer to the figure above.
 
@@ -146,7 +146,7 @@ The main goal of IRC is to provide a forum which allows easy and efficient confe
 
 #### To A Channel
 
-In IRC, the channel has a role equivalent to that of the multicast group; their existence is dynamic and the actual conversation carried out on a channel MUST only be sent to servers which are supporting users on a given channel. Moreover, the message SHALL only be sent once to every local link as each server is responsible for fanning the original message to ensure it will reach all recipients.
+In IRC, the channel has a role equivalent to that of the multicast group; their existence is dynamic and the actual conversation carried out on a channel is generally sent only to servers which are supporting users on a given channel, and only once to every local link as each server is responsible for fanning the original message to ensure it will reach all recipients.
 
 The following examples all refer to the above figure:
 
@@ -164,7 +164,7 @@ To provide with some mechanism to send messages to a large body of related users
 
 The least efficient style of one-to-many conversation is through clients talking to a 'list' of targets (client, channel, ask). How this is done is almost self-explanatory: the client gives a list of destinations to which the message is to be delivered and the server breaks it up and dispatches a separate copy of the message to each given destination.
 
-This is not as efficient as using a channel since the destination list MAY be broken up and the dispatch sent without checking to make sure duplicates aren't sent down each path.
+This is not as efficient as using a channel since the destination list may be broken up and the dispatch sent without checking to make sure duplicates aren't sent down each path.
 
 ### One-To-All
 
