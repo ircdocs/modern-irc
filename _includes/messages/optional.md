@@ -3,7 +3,7 @@ These messages are not required for a server implementation to work, but SHOULD 
 ### AWAY message
 
          Command: AWAY
-      Parameters: [ <text> ]
+      Parameters: [<text>]
 
 The `AWAY` command lets clients indicate that their user is away.
 If this command is sent with a nonempty parameter (the 'away message') then the user is set to be away. If this command is sent with no parameters, or with the empty string as the parameter, the user is no longer away.
