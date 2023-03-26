@@ -22,11 +22,11 @@ Numeric Replies:
 * {% numeric ERR_NOSUCHNICK %}
 * {% numeric ERR_NOSUCHSERVER %}
 * {% numeric ERR_CANNOTSENDTOCHAN %}
-* {% numeric ERR_TOOMANYTARGETS %}
+* ERR_TOOMANYTARGETS (407)
 * {% numeric ERR_NORECIPIENT %}
 * {% numeric ERR_NOTEXTTOSEND %}
-* {% numeric ERR_NOTOPLEVEL %}
-* {% numeric ERR_WILDTOPLEVEL %}
+* ERR_NOTOPLEVEL (413)
+* ERR_WILDTOPLEVEL (414)
 * {% numeric RPL_AWAY %}
 
 <div class="warning">
