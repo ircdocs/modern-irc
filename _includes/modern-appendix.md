@@ -46,7 +46,7 @@ We only cover modes that are widely-used by IRC software today and whose meaning
 
 This mode is standard, and the mode letter used for it is `"+i"`.
 
-If a user is set to 'invisible', they will not show up in commands such as [`WHO`](#who-command) or [`NAMES`](#names-command) unless they share a channel with the user that submitted the command. In addition, some servers hide all channels from the [`WHOIS`](#whois-command) reply of an invisible user they do not share with the user that submitted the command.
+If a user is set to 'invisible', they will not show up in commands such as {% message WHO %} or {% message NAMES %} unless they share a channel with the user that submitted the command. In addition, some servers hide all channels from the {% message WHOIS %} reply of an invisible user they do not share with the user that submitted the command.
 
 ### Oper User Mode
 
@@ -888,7 +888,7 @@ Returned when a client command cannot be parsed because not enough parameters we
 
       "<client> :You may not reregister"
 
-Returned when a client tries to change a detail that can only be set during registration (such as resending the [`PASS`](#pass-command) or [`USER`](#user-command) after registration). The text used in the last param of this message varies.
+Returned when a client tries to change a detail that can only be set during registration (such as resending the {% message PASS %} or {% message USER %} after registration). The text used in the last param of this message varies.
 
 {% numericheader ERR_PASSWDMISMATCH %}
 
