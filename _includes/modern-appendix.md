@@ -418,7 +418,7 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
       "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
 
-Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
+Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. If the {% message WHO %} command was given a channel as the `<mask>` parameter, then the same channel MUST be returned in `<channel>`. Otherwise `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
 
 `<flags>` contains the following characters, in this order:
 
