@@ -175,13 +175,13 @@ Numeric Replies:
 * {% numeric ERR_NEEDMOREPARAMS %}
 * {% numeric ERR_NOPRIVILEGES %}
 * {% numeric ERR_NOPRIVS %}
-* {% numeric RPL_STATSCLINE %}
-* {% numeric RPL_STATSHLINE %}
-* {% numeric RPL_STATSILINE %}
-* {% numeric RPL_STATSKLINE %}
-* {% numeric RPL_STATSLLINE %}
-* {% numeric RPL_STATSOLINE %}
-* {% numeric RPL_STATSLINKINFO %}
+* RPL_STATSCLINE (213)
+* RPL_STATSHLINE (244)
+* RPL_STATSILINE (215)
+* RPL_STATSKLINE (216)
+* RPL_STATSLLINE (241)
+* RPL_STATSOLINE (243)
+* RPL_STATSLINKINFO (211)
 * {% numeric RPL_STATSUPTIME %}
 * {% numeric RPL_STATSCOMMANDS %}
 * {% numeric RPL_ENDOFSTATS %}

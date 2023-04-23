@@ -286,6 +286,26 @@ Because this numeric does not specify whether to enable SSL and is not interpret
 
 This numeric is also known as `RPL_REDIR` by some software.
 
+{% numericheader RPL_STATSCOMMANDS %}
+
+      "<client> <command> <count> [<byte count> <remote count>]"
+
+Sent as a reply to the {% message STATS %} command, when a client requests statistics on command usage.
+
+`<byte count>` and `<remote count>` are optional and MAY be included in responses.
+
+{% numericheader RPL_ENDOFSTATS %}
+
+      "<client> <stats letter> :End of /STATS report"
+
+Indicates the end of a STATS response.
+
+{% numericheader RPL_STATSUPTIME %}
+
+      "<client> :Server Up <days> days <hours>:<minutes>:<seconds>"
+
+Sent as a reply to the {% message STATS %} command, when a client requests the server uptime. The text used in the last param of this message may vary.
+
 {% numericheader RPL_UMODEIS %}
 
       "<client> <user modes>"
@@ -824,6 +844,18 @@ Returned as a reply to {% message WHOWAS %} to indicate there is no history info
 Indicates a PING or PONG message missing the originator parameter which is required by old IRC servers.
 Nowadays, this may be used by some servers when the PING `<token>` is empty.
 
+{% numericheader ERR_NORECIPIENT %}
+
+      "<client> :No recipient given (<command>)"
+
+Returned by the {% message PRIVMSG %} command to indicate the message wasn't delivered because there was no recipient given.
+
+{% numericheader ERR_NOTEXTTOSEND %}
+
+      "<client> :No text to send"
+
+Returned by the {% message PRIVMSG %} command to indicate the message wasn't delivered because there was no text to send.
+
 {% numericheader ERR_INPUTTOOLONG %}
 
       "<client> :Input line was too long"
@@ -842,6 +874,12 @@ Sent to a registered client to indicate that the command they sent isn't known b
 
 Indicates that the [Message of the Day](#motd-message) file does not exist or could not be found. The text used in the last param of this message may vary.
 
+{% numericheader ERR_NONICKNAMEGIVEN %}
+
+      "<client> :No nickname given"
+
+Returned when a nickname parameter is expected for a command but isn't given.
+
 {% numericheader ERR_ERRONEUSNICKNAME %}
 
       "<client> <nick> :Erroneus nickname"
@@ -853,6 +891,12 @@ Returned when a {% message NICK %} command cannot be successfully completed as t
       "<client> <nick> :Nickname is already in use"
 
 Returned when a {% message NICK %} command cannot be successfully completed as the desired nickname is already in use on the network. The text used in the last param of this message may vary.
+
+{% numericheader ERR_NICKCOLLISION %}
+
+      "<client> <nick> :Nickname collision KILL from <user>@<host>"
+
+Returned by a server to a client when it detects a nickname collision (registered of a NICK that already exists by another server). The text used in the last param of this message may vary.
 
 {% numericheader ERR_USERNOTINCHANNEL %}
 
