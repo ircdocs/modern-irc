@@ -11,7 +11,7 @@ When a `KILL` command is used, the client being killed receives the `KILL` messa
 
 If a `KILL` message is received by a client, it means that the user specified by `<nickname>` is being killed. With certain servers, users may elect to receive `KILL` messages created for other users to keep an eye on the network. This behavior may also be restricted to operators.
 
-Clients can rejoin instantly after this command is performed on them. However, it can serve as a warning to a user to stop their activity. As it breaks the flow of data from the user, it can also be used to stop large amounts of 'flooding' from abusive users or due to accidents. Abusive users may not care and promptly reconnect and resume their abusive behaviour. In these cases, opers may look at the {% command KLINE %} command to keep them from rejoining the network for a longer time.
+Clients can rejoin instantly after this command is performed on them. However, it can serve as a warning to a user to stop their activity. As it breaks the flow of data from the user, it can also be used to stop large amounts of 'flooding' from abusive users or due to accidents. Abusive users may not care and promptly reconnect and resume their abusive behaviour. In these cases, opers may look at the KLINE command to keep them from rejoining the network for a longer time.
 
 As nicknames across an IRC network MUST be unique, if duplicates are found when servers join, one or both of the clients MAY be `KILL`ed and removed from the network. Servers may also handle this case in alternate ways that don't involve removing users from the network.
 
