@@ -884,7 +884,7 @@ Returned when a nickname parameter is expected for a command but isn't given.
 
       "<client> <nick> :Erroneus nickname"
 
-Returned when a {% message NICK %} command cannot be successfully completed as the desired nickname contains characters that are disallowed by the server. See the [wire format](#wire-format-in-abnf) section for more information on characters which are allowed in various IRC servers. The text used in the last param of this message may vary.
+Returned when a {% message NICK %} command cannot be successfully completed as the desired nickname contains characters that are disallowed by the server. See the [`NICK` command](#nick-command) for more information on characters which are allowed in various IRC servers. The text used in the last param of this message may vary.
 
 {% numericheader ERR_NICKNAMEINUSE %}
 

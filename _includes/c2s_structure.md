@@ -68,7 +68,9 @@ For more information on processing tags – including the naming and registratio
 
 ### Source
 
-      source          ::=  servername / ( nickname [ "!" user ] [ "@" host ] )
+      source          ::=  <servername> / ( <nickname> [ "!" <user> ] [ "@" <host> ] )
+      nick            ::=  <any characters except NUL, CR, LF, chantype character, and SPACE> <possibly empty sequence of any characters except NUL, CR, LF, and SPACE>
+      user            ::=  <sequence of any characters except NUL, CR, LF, and SPACE>
 
 The **source** (formerly known as **prefix**) is optional and starts with a `(':', 0x3A)` character (which is stripped from the value), and if there are no tags it MUST be the first character of the message itself.
 
