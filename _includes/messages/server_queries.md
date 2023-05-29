@@ -349,3 +349,12 @@ Message Examples:
                                       ; The irc.example.com server gave channel
                                       operator privileges to bunny on #foobar.
 
+Requesting modes for a channel:
+
+      MODE #foobar
+
+Getting modes for a channel (and channel creation time):
+
+      :irc.example.com 324 dan #foobar +nrt
+      :irc.example.com 329 dan #foobar 1620807422
+
