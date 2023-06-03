@@ -134,7 +134,7 @@ This formatting character works as a toggle. It enables underlined text (e.g. <u
 
 This formatting character works as a toggle. It enables strikethrough'd text (e.g. <span style="text-decoration: line-through">strokethrough text</span>).
 
-This character is a relatively new addition, and was defined by Textual (as of right now, Textual's the only client that understands this character). However, if you do add strikethrough capabilities within your client, please use this character as it is already defined and in use.
+This character is a relatively new addition, and was defined by Textual. As of right now, at least HexChat, IRCCloud, The Lounge and Textual are known to support it.
 
 ## Monospace
 
