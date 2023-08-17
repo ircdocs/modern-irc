@@ -19,7 +19,6 @@ Numeric Replies:
 
 * {% numeric RPL_WHOREPLY %}
 * {% numeric RPL_ENDOFWHO %}
-* {% numeric ERR_NOSUCHSERVER %}
 
 See also:
 
