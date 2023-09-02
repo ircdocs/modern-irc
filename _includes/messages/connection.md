@@ -102,6 +102,7 @@ Numeric Replies:
 
 * {% numeric ERR_NEEDMOREPARAMS %}
 * {% numeric ERR_ALREADYREGISTERED %}
+* {% numeric ERR_INVALIDUSERNAME %}
 
 Command Examples:
 

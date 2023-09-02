@@ -271,6 +271,17 @@ Command Examples:
 
 The `MODE` command is used to set or remove options (or *modes*) from a given target.
 
+Numeric Replies:
+
+* {% numeric RPL_UMODEIS %}
+* {% numeric RPL_CHANNELMODEIS %}
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHCHANNEL %}
+* {% numeric ERR_USERSDONTMATCH %}
+* {% numeric ERR_CHANOPRIVSNEEDED %}
+* {% numeric ERR_UMODEUNKNOWNFLAG %}
+* {% numeric ERR_ONLYSERVERSCANCHANGE %}
+
 #### User mode
 
 If `<target>` is a nickname that does not exist on the network, the {% numeric ERR_NOSUCHNICK %} numeric is returned. If `<target>` is a different nick than the user who sent the command, the {% numeric ERR_USERSDONTMATCH %} numeric is returned.
