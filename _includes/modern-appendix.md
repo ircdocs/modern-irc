@@ -300,17 +300,17 @@ Sent as a reply to the {% message STATS %} command, when a client requests stati
 
 Indicates the end of a STATS response.
 
-{% numericheader RPL_STATSUPTIME %}
-
-      "<client> :Server Up <days> days <hours>:<minutes>:<seconds>"
-
-Sent as a reply to the {% message STATS %} command, when a client requests the server uptime. The text used in the last param of this message may vary.
-
 {% numericheader RPL_UMODEIS %}
 
       "<client> <user modes>"
 
 Sent to a client to inform that client of their currently-set user modes.
+
+{% numericheader RPL_STATSUPTIME %}
+
+      "<client> :Server Up <days> days <hours>:<minutes>:<seconds>"
+
+Sent as a reply to the {% message STATS %} command, when a client requests the server uptime. The text used in the last param of this message may vary.
 
 {% numericheader RPL_LUSERCLIENT %}
 
@@ -434,29 +434,6 @@ Sent as a reply to the {% message AWAY %} command, this lets the client know tha
 
 Sent as a reply to the {% message AWAY %} command, this lets the client know that they are set as being away. The text used in the last param of this message may vary.
 
-{% numericheader RPL_WHOREPLY %}
-
-      "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
-
-Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. If the {% message WHO %} command was given a channel as the `<mask>` parameter, then the same channel MUST be returned in `<channel>`. Otherwise `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
-
-`<flags>` contains the following characters, in this order:
-
-* Away status: the letter H `('H', 0x48)` to indicate that the user is here, or the letter G `('G', 0x47)` to indicate that the user is gone.
-* Optionally, a literal asterisk character `('*', 0x2A)` to indicate that the user is a server operator.
-* Optionally, the highest [channel membership prefix](#channel-membership-prefixes) that the client has in `<channel>`, if the client has one.
-* Optionally, one or more user mode characters and other arbitrary server-specific flags.
-
-{% numericheader RPL_ENDOFWHO %}
-
-      "<client> <mask> :End of WHO list"
-
-Sent as a reply to the {% command WHO %} command, this numeric indicates the end of a `WHO` response for the mask `<mask>`.
-
-`<mask>` MUST be the same `<mask>` parameter sent by the client in its `WHO` message, but MAY be casefolded.
-
-This numeric is sent after all other `WHO` response numerics have been sent to the client.
-
 {% numericheader RPL_WHOISREGNICK %}
 
       "<client> <nick> :has identified for this nick"
@@ -488,6 +465,16 @@ Sent as a reply to the {% message WHOIS %} command, this numeric indicates that 
       "<client> <nick> <username> <host> * :<realname>"
 
 Sent as a reply to the {% message WHOWAS %} command, this numeric shows details about one of the last clients that used the nickname `<nick>`. The purpose of each argument is the same as with the {% numeric RPL_WHOISUSER %} numeric.
+
+{% numericheader RPL_ENDOFWHO %}
+
+      "<client> <mask> :End of WHO list"
+
+Sent as a reply to the {% command WHO %} command, this numeric indicates the end of a `WHO` response for the mask `<mask>`.
+
+`<mask>` MUST be the same `<mask>` parameter sent by the client in its `WHO` message, but MAY be casefolded.
+
+This numeric is sent after all other `WHO` response numerics have been sent to the client.
 
 {% numericheader RPL_WHOISIDLE %}
 
@@ -661,6 +648,19 @@ Sent as a reply to the {% message MODE %} command, this numeric indicates the en
 
 Sent as a reply to the {% message VERSION %} command, this numeric indicates information about the desired server. `<version>` is the name and version of the software being used (including any revision information). `<server>` is the name of the server. `<comments>` may contain any further comments or details about the specific version of the server.
 
+{% numericheader RPL_WHOREPLY %}
+
+      "<client> <channel> <username> <host> <server> <nick> <flags> :<hopcount> <realname>"
+
+Sent as a reply to the {% message WHO %} command, this numeric gives information about the client with the nickname `<nick>`. Refer to {% numeric RPL_WHOISUSER %} for the meaning of the fields `<username>`, `<host>` and `<realname>`. `<server>` is the name of the server the client is connected to. If the {% message WHO %} command was given a channel as the `<mask>` parameter, then the same channel MUST be returned in `<channel>`. Otherwise `<channel>` is an arbitrary channel the client is joined to or a literal asterisk character `('*', 0x2A)` if no channel is returned. `<hopcount>` is the number of intermediate servers between the client issuing the `WHO` command and the client `<nick>`, it might be unreliable so clients SHOULD ignore it.
+
+`<flags>` contains the following characters, in this order:
+
+* Away status: the letter H `('H', 0x48)` to indicate that the user is here, or the letter G `('G', 0x47)` to indicate that the user is gone.
+* Optionally, a literal asterisk character `('*', 0x2A)` to indicate that the user is a server operator.
+* Optionally, the highest [channel membership prefix](#channel-membership-prefixes) that the client has in `<channel>`, if the client has one.
+* Optionally, one or more user mode characters and other arbitrary server-specific flags.
+
 {% numericheader RPL_NAMREPLY %}
 
       "<client> <symbol> <channel> :[prefix]<nick>{ [prefix]<nick>}"
@@ -675,12 +675,6 @@ Sent as a reply to the {% message NAMES %} command, this numeric lists the clien
 
 `<nick>` is the nickname of a client joined to that channel, and `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that client has in the channel, if they have one. The last parameter of this numeric is a list of `[prefix]<nick>` pairs, delimited by a SPACE character `(' ', 0x20)`.
 
-{% numericheader RPL_ENDOFNAMES %}
-
-      "<client> <channel> :End of /NAMES list"
-
-Sent as a reply to the {% message NAMES %} command, this numeric specifies the end of a list of channel member names.
-
 {% numericheader RPL_LINKS %}
 
       "<client> * <server> :<hopcount> <server info>"
@@ -694,6 +688,12 @@ Sent as a reply to the {% message LINKS %} command, this numeric specifies one o
       "<client> * :End of /LINKS list"
 
 Sent as a reply to the {% message LINKS %} command, this numeric specifies the end of a list of channel member names.
+
+{% numericheader RPL_ENDOFNAMES %}
+
+      "<client> <channel> :End of /NAMES list"
+
+Sent as a reply to the {% message NAMES %} command, this numeric specifies the end of a list of channel member names.
 
 {% numericheader RPL_BANLIST %}
 
@@ -721,6 +721,12 @@ Sent as a reply to the {% message WHOWAS %} command, this numeric indicates the 
 
 Sent as a reply to the {% message INFO %} command, this numeric returns human-readable information describing the server: e.g. its version, list of authors and contributors, and any other miscellaneous information which may be considered to be relevant.
 
+{% numericheader RPL_MOTD %}
+
+      "<client> :<line of the motd>"
+
+When sending the {% message Message of the Day %} to the client, servers reply with each line of the `MOTD` as this numeric. `MOTD` lines MAY be wrapped to 80 characters by the server.
+
 {% numericheader RPL_ENDOFINFO %}
 
       "<client> :End of INFO list"
@@ -732,12 +738,6 @@ Indicates the end of an INFO response.
       "<client> :- <server> Message of the day - "
 
 Indicates the start of the [Message of the Day](#motd-message) to the client. The text used in the last param of this message may vary, and SHOULD be displayed as-is by IRC clients to their users.
-
-{% numericheader RPL_MOTD %}
-
-      "<client> :<line of the motd>"
-
-When sending the {% message Message of the Day %} to the client, servers reply with each line of the `MOTD` as this numeric. `MOTD` lines MAY be wrapped to 80 characters by the server.
 
 {% numericheader RPL_ENDOFMOTD %}
 
