@@ -258,7 +258,7 @@ This message may be sent from a server to a client to notify the client that som
 
 If no comment is given, the server SHOULD use a default message instead.
 
-Servers MUST NOT send multiple channels in this message to clients, and MUST distribute these multiple-channel `KICK` messages as a series of messages with a single channel name on each.
+Servers MUST NOT send multiple users in this message to clients, and MUST distribute these multiple-user `KICK` messages as a series of messages with a single user name on each.
 This is necessary to maintain backward compatibility with existing client software.
 If a `KICK` message is distributed in this way, `<comment>` (if it exists) should be on each of these messages.
 
