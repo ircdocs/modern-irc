@@ -253,10 +253,14 @@ Servers MAY allow the `INVITE` with no parameter, and reply with a list of chann
 
 The KICK command can be used to request the forced removal of a user from a channel.
 It causes the `<user>` to be removed from the `<channel>` by force.
+
+This message may be sent from a server to a client to notify the client that someone has been removed from a channel. In this case, the message `<source>` will be the client who sent the kick, and `<channel>` will be the channel which the target client has been removed from.
+
 If no comment is given, the server SHOULD use a default message instead.
 
-The server MUST NOT send KICK messages with multiple users to clients.
+Servers MUST NOT send multiple users in this message to clients, and MUST distribute these multiple-user `KICK` messages as a series of messages with a single user name on each.
 This is necessary to maintain backward compatibility with existing client software.
+If a `KICK` message is distributed in this way, `<comment>` (if it exists) should be on each of these messages.
 
 Servers MAY limit the number of target users per `KICK` command via the [`TARGMAX` parameter of `RPL_ISUPPORT`](#targmax-parameter), and silently drop targets if the number of targets exceeds the limit.
 
