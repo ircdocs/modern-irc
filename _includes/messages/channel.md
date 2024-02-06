@@ -109,7 +109,7 @@ If `RPL_TOPIC` is returned to the client sending this command, `RPL_TOPICWHOTIME
 
 If the [protected topic](#protected-topic-mode) mode is set on a channel, then clients MUST have appropriate channel permissions to modify the topic of that channel. If a client does not have appropriate channel permissions and tries to change the topic, the {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned and the command will fail.
 
-If the topic of a channel is changed or cleared, every client in that channel (including the author of the topic change) will receive a `TOPIC` command with the new topic as argument (or an empty argument if the topic was cleared) alerting them to how the topic has changed.
+If the topic of a channel is changed or cleared, every client in that channel (including the author of the topic change) will receive a `TOPIC` command with the new topic as argument (or an empty argument if the topic was cleared) alerting them to how the topic has changed. If the `<topic>` param is provided but the same as the previous topic (ie. it is unchanged), servers MAY notify the author and/or other users anyway.
 
 Clients joining the channel in the future will receive a `RPL_TOPIC` numeric (or lack thereof) accordingly.
 
