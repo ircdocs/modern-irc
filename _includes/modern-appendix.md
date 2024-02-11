@@ -1292,7 +1292,7 @@ Examples:
 
 The `CHANTYPES` parameter indicates the channel prefix characters that are available on the current server. Common channel types are listed in the [Channel Types](#channel-types) section.
 
-The value is OPTIONAL and if not specified indicates that no channel types are supported.
+The value is OPTIONAL. If not specified by the server, clients SHOULD assume a value of `CHANTYPES=#&`, corresponding to the RFC1459 behavior.
 
 Examples:
 
