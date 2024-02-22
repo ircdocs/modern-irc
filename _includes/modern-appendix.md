@@ -1220,7 +1220,7 @@ The specified casemappings are as follows:
 * **`rfc1459-strict`**: Same casemapping as `'ascii'`, with the characters `'{'`, `'}'`, and `'|'` being the lower-case equivalents of `'['`, `']'`, and `'\'`, respectively. Note that the difference between this and `rfc1459` above is that in rfc1459-strict, `'^'` and `'~'` are not casefolded.
 * **`rfc7613`**: Proposed casemapping which defines a method based on PRECIS, allowing additional Unicode characters to be correctly casemapped <sup><a href="https://github.com/ircv3/ircv3-specifications/pull/272">[link]</a></sup>.
 
-The value MUST be specified and is a string. Servers MAY advertise alternate casemappings to those above, but clients MAY NOT be able to understand or perform them.
+The value MUST be specified and is a string. Servers MAY advertise alternate casemappings to those above, but clients MAY NOT be able to understand or perform them. If the parameter is not published by the server at all, clients SHOULD assume `CASEMAPPING=rfc1459`.
 
 Servers SHOULD AVOID using the `rfc1459` casemapping unless explicitly required for compatibility reasons or for linking with servers using it. The equivalency of the extra characters is not necessary nor useful today, and issues such as incorrect implementations and a conflict between matching masks exists.
 
@@ -1461,7 +1461,7 @@ Examples:
 
 The `MODES` parameter specifies how many 'variable' modes may be set on a channel by a single {% message MODE %} command from a client. A 'variable' mode is defined as being a type A, B or C mode as defined in the {% isupport CHANMODES %} parameter, or in the channel modes specified in the {% isupport PREFIX %} parameter.
 
-A client SHOULD NOT issue more 'variable' modes than this in a single {% message MODE %} command. A server MAY however issue more 'variable' modes than this in a single {% message MODE %} message. The value is OPTIONAL and when not specified indicates that there is no limit to the number of 'variable' modes that may be set in a single client {% message MODE %} command.
+A client SHOULD NOT issue more 'variable' modes than this in a single {% message MODE %} command. A server MAY however issue more 'variable' modes than this in a single {% message MODE %} message. The value is OPTIONAL and when not specified indicates that there is no limit to the number of 'variable' modes that may be set in a single client {% message MODE %} command. If the parameter is not published by the server at all, clients SHOULD assume `MODES=3`, corresponding to the RFC1459 behavior.
 
 If the value is specified, it MUST be a positive integer.
 
@@ -1512,7 +1512,7 @@ Within channels, clients can have different statuses, denoted by single-characte
 
 The typical prefixes advertised in this parameter are listed in the [Channel Membership Prefixes](#channel-membership-prefixes) section.
 
-The value is OPTIONAL and when it is not specified indicates that no prefixes are supported.
+The value is OPTIONAL and when it is not specified indicates that no prefixes are supported. If the parameter is not published by the server at all, clients SHOULD assume `PREFIX=(ov)@+`, corresponding to the RFC1459 behavior.
 
 Examples:
 
