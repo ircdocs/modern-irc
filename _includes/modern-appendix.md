@@ -498,6 +498,7 @@ This numeric is sent after all other `WHOIS` response numerics have been sent to
       "<client> <nick> :[prefix]<channel>{ [prefix]<channel>}
 
 Sent as a reply to the {% message WHOIS %} command, this numeric lists the channels that the client with the nickname `<nick>` is joined to and their status in these channels. `<prefix>` is the highest [channel membership prefix](#channel-membership-prefixes) that the client has in that channel, if the client has one. `<channel>` is the name of a channel that the client is joined to. The last parameter of this numeric is a list of `[prefix]<channel>` pairs, delimited by a SPACE character `(' ', 0x20)`.
+Clients MUST ignore the trailing SPACE character, if any.
 
 `RPL_WHOISCHANNELS` can be sent multiple times in the same whois reply, if the target is on too many channels to fit in a single message.
 
