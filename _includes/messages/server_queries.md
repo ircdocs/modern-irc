@@ -283,7 +283,7 @@ If `<modestring>` is given, the supplied modes will be applied, and a `MODE` mes
 
 If `<target>` is a channel that does not exist on the network, the {% numeric ERR_NOSUCHCHANNEL %} numeric is returned.
 
-If `<modestring>` is not given, the {% numeric RPL_CHANNELMODEIS %} numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes. Servers MAY also return the {% numeric RPL_CREATIONTIME %} numeric following `RPL_CHANNELMODEIS`.
+If `<modestring>` is not given, the {% numeric RPL_CHANNELMODEIS %} numeric is returned. Servers MAY choose to hide sensitive information such as channel keys when sending the current modes. Servers SHOULD also return the {% numeric RPL_CREATIONTIME %} numeric following `RPL_CHANNELMODEIS`.
 
 If `<modestring>` is given, the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given. If a user does not have appropriate privileges to change modes on the target channel, the server MUST NOT process the message, and {% numeric ERR_CHANOPRIVSNEEDED %} numeric is returned.
 If the user has permission to change modes on the target, the supplied modes will be applied based on the type of the mode (see below).
