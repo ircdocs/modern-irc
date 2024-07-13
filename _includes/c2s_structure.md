@@ -94,7 +94,7 @@ Information on specific commands / numerics can be found in the [Client Messages
 
 This is the format of the **parameters** part:
 
-      parameter       ::=  *( SPACE middle ) [ SPACE ":" trailing ]
+      parameters      ::=  *( SPACE middle ) [ SPACE ":" trailing ]
       nospcrlfcl      ::=  <sequence of any characters except NUL, CR, LF, colon (`:`) and SPACE>
       middle          ::=  nospcrlfcl *( ":" / nospcrlfcl )
       trailing        ::=  *( ":" / " " / nospcrlfcl )
