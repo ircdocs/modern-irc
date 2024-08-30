@@ -832,7 +832,7 @@ Indicates that the `JOIN` command failed because the client has joined their max
 
 {% numericheader ERR_WASNOSUCHNICK %}
 
-      "<client> :There was no such nickname"
+      "<client> <nickname> :There was no such nickname"
 
 Returned as a reply to {% message WHOWAS %} to indicate there is no history information for that nickname.
 
