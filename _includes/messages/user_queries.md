@@ -48,17 +48,10 @@ Reply Examples:
          Command: WHOIS
       Parameters: [<target>] <nick>
 
-This command is used to query information about particular users.
-The server will answer this command with several numeric messages with information about the nicks, ending with [`RPL_ENDOFWHOIS`](#rplendofwhois-318).
+This command is used to query information about a particular user.
+The server SHOULD answer this command with numeric messages with information about the nick.
 
-Servers MUST end their reply to `WHOIS` messages with one of these numerics:
-
-* {% numeric ERR_NOSUCHNICK %}
-* {% numeric ERR_NOSUCHSERVER %}
-* {% numeric ERR_NONICKNAMEGIVEN %}
-* {% numeric RPL_ENDOFWHOIS %}otherwise, even if they did not send any other numeric message. This allows clients to stop waiting for new numerics.
-
-In exceptional error conditions, servers MAY not reply to a `WHOIS` command. Clients SHOULD implement a hard timeout to avoid waiting for a reply which won't come.
+The server SHOULD end its response (to a syntactically well-formed client message) with [`RPL_ENDOFWHOIS`](#rplendofwhois-318), even if it did not send any other numeric message. This allows clients to stop waiting for new numerics. In exceptional error conditions, servers MAY not reply to a `WHOIS` command. Clients SHOULD implement a hard timeout to avoid waiting for a reply which won't come.
 
 Client MUST NOT not assume all numeric messages are sent at once, as server can interleave other messages before the end of the WHOIS response.
 
@@ -67,6 +60,9 @@ Typically, it is used by clients who want to know how long the user in question 
 
 The following numerics MAY be returned as part of the whois reply:
 
+* {% numeric ERR_NOSUCHNICK %}
+* {% numeric ERR_NOSUCHSERVER %}
+* {% numeric ERR_NONICKNAMEGIVEN %}
 * {% numeric RPL_WHOISCERTFP %}
 * {% numeric RPL_WHOISREGNICK %}
 * {% numeric RPL_WHOISUSER %}
