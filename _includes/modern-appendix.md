@@ -24,7 +24,7 @@ This channel is what's referred to as a local channel. Clients can join this cha
 
 If a client on server A and a client on server B join the channel `&info`, they will not be able to see each other or the messages each posts to their server's local channel `&info`. However, if a client on server A and another client on server A join the channel `&info`, they will be able to see each other and the messages the other posts to that local channel.
 
-Generally, the concept of channel ownership is not supported for local channels. Local channels also aren't as widely available as regular channels. As well, some networks disable or disallow local channels as opers across the network can't see nor administrate them.
+Generally, the concept of channel ownership is not supported for local channels. Local channels also aren't as widely available as regular channels. As well, some networks disable or disallow local channels as opers across the network can neither see nor administrate them.
 
 
 ---
