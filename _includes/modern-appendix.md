@@ -149,6 +149,9 @@ This channel mode controls whether the channel is 'secret', and does not have an
 
 A channel that is set to secret will not show up in responses to the {% message LIST %} or {% message NAMES %} command unless the client sending the command is joined to the channel. Likewise, secret channels will not show up in the {% numeric RPL_WHOISCHANNELS %} numeric unless the user the numeric is being sent to is joined to that channel.
 
+Additionally, servers may return {% numeric ERR_NOSUCHCHANNEL %} instead of {% numeric ERR_CHANOPRIVSNEEDED %} or {% numeric ERR_NOTONCHANNEL %} to channel commands ({% message MODE %}, {% message TOPIC %}, {% message PRIVMSG %}, {% message NOTICE %}) to a secret channel from a user not on that channel.
+This allows servers to further conceal the channel's existence silently (as the only other way to reveal a channel is then to {% message JOIN %} it, which notifies channel members on success).
+
 ### Protected Topic Mode
 
 This mode is standard, and the mode letter used for it is `"+t"`.
