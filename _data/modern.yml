@@ -608,6 +608,12 @@ numerics:
   ERR_KEYSET:
     numeric: '467'
 
+  ERR_ONLYSERVERSCANCHANGE:
+    numeric: '468'
+
+  ERR_INVALIDUSERNAME:
+    numeric: '468'
+
   ERR_LINKSET:
     numeric: '469'
 
