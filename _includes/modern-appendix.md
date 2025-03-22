@@ -678,9 +678,10 @@ Sent as a reply to the {% message NAMES %} command, this numeric lists the clien
 
 {% numericheader RPL_LINKS %}
 
-      "<client> * <server> :<hopcount> <server info>"
+      "<client> <server1> <server2> :<hopcount> <server info>"
 
-Sent as a reply to the {% message LINKS %} command, this numeric specifies one of the known servers on the network.
+Sent as a reply to the {% message LINKS %} command, this numeric specifies servers `<server1>` and `<server2>` are linked together.
+For servers which follow a spanning tree topology, `<server2>` is the closest to the client.
 
 `<server info>` is a string containing a description of that server.
 

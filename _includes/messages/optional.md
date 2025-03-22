@@ -39,6 +39,12 @@ Numeric Replies:
 * {% numeric RPL_LINKS %}
 * {% numeric RPL_ENDOFLINKS %}
 
+Reply Example:
+
+     :My.Little.Server 364 nick services.example.org My.Little.Server :1 Anope IRC Services
+     :My.Little.Server 364 nick My.Little.Server My.Little.Server :0 test server
+     :My.Little.Server 365 nick * :End of /LINKS list.
+
 ### USERHOST message
 
          Command: USERHOST
