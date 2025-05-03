@@ -948,6 +948,21 @@ Returned to indicate that the connection could not be registered as the [passwor
 
 Returned to indicate that the server has been configured to explicitly deny connections from this client. The text used in the last param of this message varies wildly and typically also contains the reason for the ban and/or ban details, and SHOULD be displayed as-is by IRC clients to their users.
 
+{% numericheader ERR_ONLYSERVERSCANCHANGE %}
+
+      "<client> <target> :Only servers can change that mode
+
+Server should avoid this numeric, as it conflicts with {% numeric ERR_INVALIDUSERNAME %}
+
+{% numericheader ERR_INVALIDUSERNAME %}
+
+      "<client> :Your username is not valid
+
+Returned to indicate the username provided as the first parameter to {% message USER %}
+is invalid.
+
+Note: for historical reasons, the same numeric is used for {% numeric ERR_ONLYSERVERSCANCHANGE %}
+
 {% numericheader ERR_CHANNELISFULL %}
 
       "<client> <channel> :Cannot join channel (+l)"
