@@ -252,7 +252,7 @@ Part of the post-registration greeting. Clients SHOULD discover available featur
 The ABNF representation for an `RPL_ISUPPORT` token is:
 
       token      =  *1"-" parameter / parameter *1( "=" value )
-      parameter  =  1*20 letter
+      parameter  =  1*20 (letter / "." / "/")
       value      =  * letpun
       letter     =  ALPHA / DIGIT
       punct      =  %d33-47 / %d58-64 / %d91-96 / %d123-126
