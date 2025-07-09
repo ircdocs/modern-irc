@@ -982,9 +982,9 @@ Not to be confused with [`ERR_INVALIDKEY`](#errinvalidkey-525), which may be ret
 
 {% numericheader ERR_BADCHANMASK %}
 
-      "<channel> :Bad Channel Mask"
+      "<client> <channel> :Bad Channel Mask"
 
-Indicates the supplied channel name is not a valid.
+Indicates the supplied channel name is not valid.
 
 This is similar to, but stronger than, {% numeric ERR_NOSUCHCHANNEL %}, which indicates that the channel does not exist, but that it may be a valid name.
 
