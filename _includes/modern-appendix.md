@@ -552,7 +552,7 @@ This does not necessarily mean the user owns their current nickname, which is co
 
       "<client> <channel> :No topic is set"
 
-Sent to a client when joining a channel to inform them that the channel with the name `<channel>` does not have any topic set.
+Sent as a reply to the {% command TOPIC %} command to inform the client that the channel with the name `<channel>` does not have any topic set.
 
 {% numericheader RPL_TOPIC %}
 
