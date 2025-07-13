@@ -213,7 +213,7 @@ Optional parameters are surrounded with the standard square brackets `([<optiona
 
 Server authors that wish to extend one of the numerics listed here SHOULD make their extension into a [client capability](#capability-negotiation). If your extension would be useful to other client and server software, you should consider submitting it to the [IRCv3 Working Group](http://ircv3.net/) for standardisation.
 
-Note that for numerics with "human-readable" informational strings for the last parameter which are not designed to be parsed, such as in `RPL_WELCOME`, servers commonly change this last-param text. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
+Note that some numerics, such as `RPL_WELCOME`, have "human-readable" informational strings for the last parameter; these strings are not designed to be parsed, and servers commonly change such last-param texts. Clients SHOULD NOT rely on these sort of parameters to have exactly the same human-readable string as described in this document. Clients that rely on the format of these human-readable final informational strings may fail.
 We do try to note numerics where this is the case with a message like *"The text used in the last param of this message varies wildly"*.
 
 {% numericheader RPL_WELCOME %}
