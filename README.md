@@ -6,6 +6,8 @@ This site contains documents describing the IRC protocol and related technologie
 * [IRC Formatting](http://modern.ircdocs.horse/formatting.html) document
 * [Client-to-Client Protocol (CTCP)](http://modern.ircdocs.horse/ctcp.html) document
 
+Have questions, suggestions, or want to contribute? Join us on IRC to discuss the project and documentation: #ircdocs on [Libera.Chat](https://libera.chat/).
+
 For suggestions of other documents to create / maintain, please [create an issue](https://github.com/ircdocs/modern-irc/issues) or [send me an email](mailto:daniel@danieloaks.net)!
 
 The behaviour and constants described in these documents SHOULD converge, and/or be interoperable with the majority of IRC software. These documents should allow a client or server author to build software which can communicate with almost any other piece of IRC software it interacts with.
