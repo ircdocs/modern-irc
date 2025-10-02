@@ -32,11 +32,6 @@ toc: true
     <p>If something written in here isn't correct for or interoperable with an IRC server / network you know of, please <a href="https://github.com/ircdocs/modern-irc/issues">open an issue</a> or <a href="mailto:daniel@danieloaks.net">contact me</a>.</p>
 </div>
 
-<div class="warning">
-    <p>NOTE: This is a WORK IN PROGRESS. All major points of the protocol are covered, but some common message and mode types are missing.</p>
-    <p>You can contribute by sending pull requests to our <a href="https://github.com/ircdocs/modern-irc">GitHub repository</a>!</p>
-</div>
-
 ---
 
 
