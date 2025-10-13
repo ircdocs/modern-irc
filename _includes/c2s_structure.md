@@ -29,7 +29,7 @@ The specific parts of an IRC message are:
 
 These message parts, and parameters themselves, are separated by one or more ASCII SPACE characters `(' ', 0x20)`.
 
-Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes.
+Most IRC servers limit messages to 512 bytes in length, including the trailing `CR-LF` characters. Servers may indicate support for greater message sizes via the {% isupport LINELEN %} `RPL_ISUPPORT` paremeter. Implementations which include [message tags](https://ircv3.net/specs/extensions/message-tags.html) need to allow additional bytes for the **tags** section of a message; clients must allow 8191 additional bytes and servers must allow 4096 additional bytes.
 
 ---
 

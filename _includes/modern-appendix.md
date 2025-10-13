@@ -1419,6 +1419,16 @@ Examples:
 
       KICKLEN=307
 
+{% isupportheader LINELEN %}
+
+      Format: LINELEN=<length>
+
+The `LINELEN` parameter indicates the maximum size in bytes of IRC messages, excluding tags. In other words, `LINELEN` indicates the maximum size of this portion of the ABNF:
+
+      [':' <source> SPACE] <command> <parameters> <crlf>
+
+The value MUST be specified and MUST be a positive integer. If `LINELEN` is not sent by the server, clients SHOULD assume that the server will truncate the messages larger than 512 bytes.
+
 {% isupportheader MAXLIST %}
 
       Format: MAXLIST=<modes>:<limit>{,<modes>:<limit>}
