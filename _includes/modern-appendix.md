@@ -102,7 +102,7 @@ This channel mode controls whether new users may join based on the number of use
 
 If this mode is set on a channel, and the number of users joined to that channel matches or exceeds the value of this mode, new users cannot join that channel. If a client sends a `JOIN` request for this channel, they will receive an {% numeric ERR_CHANNELISFULL %} reply and the command will fail.
 
-Servers MAY allow {% message INVITE %} messages by channel members to except a user from the limit.
+Servers MAY allow {% message INVITE %} messages by channel members to exempt a user from the limit.
 
 ### Invite-Only Channel Mode
 
