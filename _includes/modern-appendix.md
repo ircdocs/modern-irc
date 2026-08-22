@@ -613,9 +613,11 @@ Sent as a reply to the {% message INVITE %} command to indicate that the attempt
 
 {% numericheader RPL_INVEXLIST %}
 
-      "<client> <channel> <mask>"
+      "<client> <channel> <mask> [<who> <set-ts>]"
 
 Sent as a reply to the {% message MODE %} command, when clients are viewing the current entries on a channel's [invite-exception list](#invite-exception-channel-mode). `<mask>` is the given mask on the invite-exception list.
+
+`<who>` and `<set-ts>` are optional and MAY be included in responses. `<who>` is either the nickname or nickmask of the client that set the invite-exception, or a server name, and `<set-ts>` is the UNIX timestamp of when the invite-exception was set.
 
 This numeric should not be confused with {% numeric RPL_INVITELIST %}, which is used as a reply to {% message INVITE %}.
 
