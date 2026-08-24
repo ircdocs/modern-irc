@@ -1,4 +1,4 @@
-These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the {% numeric ERR_UNKNOWNCOMMAND %} numeric.
+These messages are not required for a server implementation to work, but SHOULD be implemented. If a command is not implemented, it MUST return the {% numeric ERR_UNKNOWNCOMMAND %} numeric to a client that has completed connection registration.
 
 ### AWAY message
 
