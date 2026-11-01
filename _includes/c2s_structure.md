@@ -131,7 +131,7 @@ Servers SHOULD gracefully handle messages over the 512-bytes limit. They may:
 
 * Send an error numeric back, preferably {% numeric ERR_INPUTTOOLONG %}
 * Truncate on the 510th byte (and add `\r\n` at the end) or, preferably, on the last UTF-8 character or grapheme that fits.
-* Ignore the message or close the connection – but this may be confusing to users of buggy clients.
+* Close the connection – but this may be confusing to users of buggy clients.
 
 Finally, clients and servers SHOULD NOT use more than one space (`\x20`) character as `SPACE` as defined in the grammar above.
 
